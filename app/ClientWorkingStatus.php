@@ -16,5 +16,8 @@ class ClientWorkingStatus extends Model
         'industry',
         'position',
         'name_card_face',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 }

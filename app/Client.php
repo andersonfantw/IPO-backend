@@ -19,6 +19,9 @@ class Client extends Model
         'progress',
         'education_level',
         'idcard_type',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
     public function clientHKIDCard()
     {

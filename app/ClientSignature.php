@@ -10,5 +10,8 @@ class ClientSignature extends Model
     protected $fillable = [
         'uuid',
         'image',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 }

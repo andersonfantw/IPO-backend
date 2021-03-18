@@ -16,6 +16,9 @@ class ClientHKIDCard extends Model
         'gender',
         'birthday',
         'idcard_no',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 
     public function client()

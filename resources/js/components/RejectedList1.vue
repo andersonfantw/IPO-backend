@@ -1,9 +1,9 @@
 <template>
   <div>
-    <SearchBar :store-name-spaced="'UnauditedDataList1HongKong'"></SearchBar>
-    <button type="button" class="btn btn-success">协议及开户资料下载</button>
+    <SearchBar :store-name-spaced="'RejectedList1'"></SearchBar>
     <DataTable
       :value="data"
+      :filters="filters"
       :selection.sync="selectedClients"
       :paginator="true"
       :rows="10"
@@ -27,23 +27,6 @@
           </p>
         </template>
       </Column>
-      <Column
-        headerStyle="width: 8rem; text-align: center"
-        bodyStyle="text-align: center; overflow: visible"
-      >
-        <template #body="slotProps">
-          <form :action="audit_client_url" method="post">
-            <Button
-              name="uuid"
-              :value="slotProps.data.uuid"
-              type="submit"
-              icon="pi pi-user-edit"
-              label="審核"
-              class="p-button-secondary"
-            ></Button>
-          </form>
-        </template>
-      </Column>
       <template #empty>No records found.</template>
     </DataTable>
   </div>
@@ -56,6 +39,7 @@ import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -83,24 +67,31 @@ export default {
     this.columns = JSON.parse(this.p_columns);
     this.filterMatchMode = JSON.parse(this.p_filterMatchMode);
     this.loading = true;
-    let self = this;
-    axios.post("api/UnauditedDataList1HongKong/all_data").then(function (res) {
-      let json = self.getDecryptedJsonObject(res.data);
-      self.data = json.data;
-      // self.$store.commit("IPOTable/ipos", json.data);
-      self.loading = false;
-    });
+    this.loadData();
   },
-  computed: {
-    clientInfo: {
-      get() {
-        return this.$store.state.UnauditedDataList1HongKong.clientInfo;
-      },
-      set(value) {
-        this.$store.commit("UnauditedDataList1HongKong/clientInfo", value);
-      },
+  methods: {
+    loadData() {
+      let self = this;
+      axios
+        .post("api/RejectedList1/all_data", {
+          clientName: self.clientName,
+          IDCardNumber: self.IDCardNumber,
+          mobileNo: self.mobileNo,
+        })
+        .then(function (res) {
+          let json = self.getDecryptedJsonObject(res.data);
+          self.data = json.data;
+          // self.$store.commit("IPOTable/ipos", json.data);
+          self.loading = false;
+        });
     },
   },
+  computed: {
+    ...mapState({
+      filters: (state) => state.RejectedList1.filters,
+    }),
+  },
+  watch: {},
 };
 </script>
 <style>

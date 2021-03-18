@@ -13,10 +13,80 @@ class AuditClientController extends HomeController
     public function audit1(Request $request)
     {
         $input = $request->all();
+        $Client = Client::where('uuid', $input['uuid'])->first();
         if ($request->has(['駁回身份證信息']) && $request->filled(['駁回身份證信息'])) {
-            //
+            $Client->IDCard->status = 'rejected';
+            $Client->IDCard->remark = $input['駁回身份證信息'];
+        } else {
+            $Client->IDCard->status = $input['next_status'];
+            $Client->IDCard->remark = null;
         }
-        return redirect()->route('UnauditedDataList1');
+        $Client->IDCard->count_of_audits++;
+        $Client->IDCard->save();
+        if ($request->has(['駁回銀行卡信息']) && $request->filled(['駁回銀行卡信息'])) {
+            $Client->clientBankCard->status = 'rejected';
+            $Client->clientBankCard->remark = $input['駁回銀行卡信息'];
+        } else {
+            $Client->clientBankCard->status = $input['next_status'];
+            $Client->clientBankCard->remark = null;
+        }
+        $Client->clientBankCard->count_of_audits++;
+        $Client->clientBankCard->save();
+        if ($request->has(['駁回客戶補充資料']) && $request->filled(['駁回客戶補充資料'])) {
+            $Client->status = 'rejected';
+            $Client->remark = $input['駁回客戶補充資料'];
+        } else {
+            $Client->status = $input['next_status'];
+            $Client->remark = null;
+        }
+        $Client->count_of_audits++;
+        $Client->save();
+        if ($request->has(['駁回工作狀態']) && $request->filled(['駁回工作狀態'])) {
+            $Client->clientWorkingStatus->status = 'rejected';
+            $Client->clientWorkingStatus->remark = $input['駁回工作狀態'];
+        } else {
+            $Client->clientWorkingStatus->status = $input['next_status'];
+            $Client->clientWorkingStatus->remark = null;
+        }
+        $Client->clientWorkingStatus->count_of_audits++;
+        $Client->clientWorkingStatus->save();
+        if ($request->has(['駁回財政狀況']) && $request->filled(['駁回財政狀況'])) {
+            $Client->clientFinancialStatus->status = 'rejected';
+            $Client->clientFinancialStatus->remark = $input['駁回財政狀況'];
+        } else {
+            $Client->clientFinancialStatus->status = $input['next_status'];
+            $Client->clientFinancialStatus->remark = null;
+        }
+        $Client->clientFinancialStatus->count_of_audits++;
+        $Client->clientFinancialStatus->save();
+        if ($request->has(['駁回投資經驗及衍生產品認識']) && $request->filled(['駁回投資經驗及衍生產品認識'])) {
+            $Client->clientInvestmentExperience->status = 'rejected';
+            $Client->clientInvestmentExperience->remark = $input['駁回投資經驗及衍生產品認識'];
+        } else {
+            $Client->clientInvestmentExperience->status = $input['next_status'];
+            $Client->clientInvestmentExperience->remark = null;
+        }
+        $Client->clientInvestmentExperience->count_of_audits++;
+        $Client->clientInvestmentExperience->save();
+        if ($request->has(['駁回問卷調查']) && $request->filled(['駁回問卷調查'])) {
+            $Client->clientEvaluationResults->status = 'rejected';
+            $Client->clientEvaluationResults->remark = $input['駁回問卷調查'];
+        } else {
+            $Client->clientEvaluationResults->status = $input['next_status'];
+            $Client->clientEvaluationResults->remark = null;
+        }
+        $Client->clientEvaluationResults->count_of_audits++;
+        $Client->clientEvaluationResults->save();
+        if ($request->has(['駁回簽名']) && $request->filled(['駁回簽名'])) {
+            $Client->clientSignature->status = 'rejected';
+            $Client->clientSignature->remark = $input['駁回簽名'];
+        } else {
+            $Client->clientSignature->status = $input['next_status'];
+            $Client->clientSignature->remark = null;
+        }
+        $Client->clientSignature->count_of_audits++;
+        $Client->clientSignature->save();
+        return redirect()->route($input['redirect_route']);
     }
 
     public function index(Request $request)
@@ -24,6 +94,9 @@ class AuditClientController extends HomeController
         $input = $request->all();
         $Client = Client::where('uuid', $input['uuid'])->first();
         $params = ['menu' => json_encode($this->getMenu())];
+        $params['uuid'] = $Client->uuid;
+        $params['redirect_route'] = $input['redirect_route'];
+        $params['next_status'] = $input['next_status'];
         $params['地區'] = $Client->nationality;
         $params['介紹人'] = $Client->introducer_uuid;
         if ($Client->idcard_type == ClientHKIDCard::class) {

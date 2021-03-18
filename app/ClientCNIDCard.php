@@ -17,6 +17,9 @@ class ClientCNIDCard extends Model
         'given_name',
         'idcard_no',
         'idcard_address',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 
     public function client()

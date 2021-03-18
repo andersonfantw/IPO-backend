@@ -21,8 +21,16 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@main')->name('home');
 
-Route::get('/UnauditedDataList1', 'UnauditedDataList1Controller@main')->name('UnauditedDataList1');
+Route::get('/UnauditedList1', 'UnauditedList1Controller@main')->name('UnauditedList1');
+
+Route::get('/UnauditedList2', 'UnauditedList2Controller@main')->name('UnauditedList2');
+
+Route::get('/RejectedList1', 'RejectedList1Controller@main')->name('RejectedList1');
+
+Route::get('/ReauditList1', 'ReauditList1Controller@main')->name('ReauditList1');
 
 Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient');
 
 Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
+
+Route::any('/DeliverableList2', 'DeliverableList2Controller@main')->name('DeliverableList2');

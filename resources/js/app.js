@@ -23,9 +23,17 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 Vue.component('side-menu', require('./components/SideMenu.vue').default);
 
-Vue.component('unaudited-data-list1-hong-kong', require('./components/UnauditedDataList1HongKong.vue').default);
+Vue.component('unaudited-list1', require('./components/UnauditedList1.vue').default);
+
+Vue.component('unaudited-list2', require('./components/UnauditedList2.vue').default);
+
+Vue.component('rejected-list1', require('./components/RejectedList1.vue').default);
+
+Vue.component('reaudit-list1', require('./components/ReauditList1.vue').default);
 
 Vue.component('audit-client', require('./components/AuditClient.vue').default);
+
+Vue.component('deliverable-list2', require('./components/DeliverableList2.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

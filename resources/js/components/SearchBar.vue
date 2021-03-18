@@ -5,7 +5,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="客户名称">客户名称</span>
         </div>
-        <input type="text" v-model="clientName" class="form-control" />
+        <input type="text" v-model="filters.客户姓名" class="form-control" />
       </div>
     </div>
     <div class="col">
@@ -13,18 +13,15 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="证件号码">证件号码</span>
         </div>
-        <input type="text" v-model="IDNumber" class="form-control" />
+        <input type="text" v-model="filters.证件号码" class="form-control" />
       </div>
     </div>
     <div class="col">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="手机号">手机号</span>
+          <span class="input-group-text" id="手机号码">手机号码</span>
         </div>
-        <input type="text" v-model="mobileNo" class="form-control" />
-        <button type="button" @click="query" class="btn btn-primary">
-          查询
-        </button>
+        <input type="text" v-model="filters.手机号码" class="form-control" />
       </div>
     </div>
   </div>
@@ -32,11 +29,7 @@
 <script>
 export default {
   data() {
-    return {
-      clientName: null,
-      IDNumber: null,
-      mobileNo: null,
-    };
+    return {};
   },
   props: {
     storeNameSpaced: {
@@ -44,15 +37,16 @@ export default {
       required: true,
     },
   },
-  methods: {
-    query() {
-      let clientInfo = {
-        clientName: this.clientName,
-        IDNumber: this.IDNumber,
-        mobileNo: this.mobileNo,
-      };
-      this.$store.commit(this.storeNameSpaced + "/clientInfo", clientInfo);
+  computed: {
+    filters: {
+      get() {
+        return this.$store.state[this.storeNameSpaced].filters;
+      },
+      set(value) {
+        this.$store.commit(this.storeNameSpaced + "/filters", value);
+      },
     },
   },
+  methods: {},
 };
 </script>

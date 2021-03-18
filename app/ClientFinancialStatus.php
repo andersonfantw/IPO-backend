@@ -13,5 +13,8 @@ class ClientFinancialStatus extends Model
         'other_fund_source',
         'annual_income',
         'net_assets',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 }

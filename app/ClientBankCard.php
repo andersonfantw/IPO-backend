@@ -13,5 +13,8 @@ class ClientBankCard extends Model
         'currency',
         'account_no',
         'backcard_face',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 }

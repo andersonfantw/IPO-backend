@@ -24,23 +24,27 @@ class HomeController extends Controller
                     [
                         'label' => "一审资料未审核清单",
                         'icon' => "pi pi-fw pi-caret-right",
-                        'url' => route('UnauditedDataList1'),
+                        'url' => route('UnauditedList1'),
                     ],
                     [
                         'label' => "一审资料再审核清单",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('ReauditList1'),
                     ],
                     [
-                        'label' => "一审资料驳回清单",
+                        'label' => "资料驳回清单",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('RejectedList1'),
                     ],
                     [
                         'label' => "二审资料未审核清单",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('UnauditedList2'),
                     ],
                     [
                         'label' => "二审资料可投递清单",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('DeliverableList2'),
                     ],
                     [
                         'label' => "开户信发送清单",

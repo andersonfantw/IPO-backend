@@ -1,5 +1,8 @@
 <template>
   <form :action="action" method="POST">
+    <input type="hidden" name="uuid" v-model="uuid" />
+    <input type="hidden" name="redirect_route" v-model="redirect_route" />
+    <input type="hidden" name="next_status" v-model="next_status" />
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -336,7 +339,7 @@
               name="駁回財政狀況"
               style="width: 100%"
               placeholder="請寫駁回理由"
-              rows="3"
+              rows="5"
             ></textarea>
           </td>
         </tr>
@@ -515,7 +518,10 @@
             <h5 class="mb-0">{{ 問卷.answer }}</h5>
           </td>
           <td colspan="2" width="33%">
-            <h5 class="mb-0">
+            <h5
+              v-if="問卷.question_text != '沒有任何衍生産品知識及經驗'"
+              class="mb-0"
+            >
               {{ answerToScore(問卷.answer) }}
             </h5>
           </td>
@@ -599,7 +605,7 @@
             name="駁回簽名"
             style="width: 100%"
             placeholder="請寫駁回理由"
-            rows="3"
+            rows="10"
           ></textarea>
         </td>
       </tbody>
@@ -645,6 +651,7 @@ export default {
   },
   components: { Button, InputSwitch, Checkbox },
   props: {
+    uuid: String,
     地區: String,
     介紹人: String,
     姓名: String,
@@ -687,12 +694,16 @@ export default {
     簽名: String,
     直接促銷: String,
     action: String,
+    redirect_route: String,
+    next_status: String,
   },
   created() {
     this.地區map.set("zh-hk", "香港");
     this.地區map.set("zh-cn", "中國");
     this.問卷調查.forEach((問卷) => {
-      this.評估結果 += this.answerToScore(問卷.answer);
+      if (問卷.question_text != "沒有任何衍生産品知識及經驗") {
+        this.評估結果 += this.answerToScore(問卷.answer);
+      }
     });
     this.評估結果 +=
       this.score(this.你有多少年投資經驗) + this.score(this.教育程度);

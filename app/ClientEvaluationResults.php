@@ -13,5 +13,8 @@ class ClientEvaluationResults extends Model
         'investor_characteristics',
         'risk_tolerance',
         'agree',
+        'status',
+        'remark',
+        'count_of_audits',
     ];
 }
