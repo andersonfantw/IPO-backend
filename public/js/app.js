@@ -8266,6 +8266,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8294,7 +8324,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: String,
       required: true
     },
-    audit_client_url: String
+    generate_ayers_account_url: String
   },
   components: {
     SearchBar: _SearchBar__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -8310,6 +8340,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.loadData();
   },
   methods: {
+    generateAccounts: function generateAccounts() {
+      var self = this;
+
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.loading = true;
+        axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("/api/AyersAccount/generate", {
+          clients: self.selectedClients
+        }).then(function (response) {
+          console.log(response);
+          self.loadData();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      } else {
+        alert("請先選中需要生成的用戶！");
+      }
+    },
     loadData: function loadData() {
       var self = this;
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("api/DeliverableList2/all_data").then(function (res) {
@@ -110176,6 +110223,16 @@ var render = function() {
         "button",
         { staticClass: "btn btn-success", attrs: { type: "button" } },
         [_vm._v("协议及开户资料下载")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-info",
+          attrs: { type: "button" },
+          on: { click: _vm.generateAccounts }
+        },
+        [_vm._v("\n    账号生成\n  ")]
       ),
       _vm._v(" "),
       _c(

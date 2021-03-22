@@ -2,6 +2,9 @@
   <div>
     <SearchBar :store-name-spaced="'DeliverableList2'"></SearchBar>
     <button type="button" class="btn btn-success">协议及开户资料下载</button>
+    <button type="button" @click="generateAccounts" class="btn btn-info">
+      账号生成
+    </button>
     <DataTable
       :value="data"
       :filters="filters"
@@ -28,6 +31,33 @@
           </p>
         </template>
       </Column>
+      <!-- <Column
+        headerStyle="width: 8rem; text-align: center"
+        bodyStyle="text-align: center; overflow: visible"
+      >
+        <template #body="slotProps">
+          <form
+            v-if="!slotProps.data.Ayers帳戶號碼"
+            :action="generate_ayers_account_url"
+            method="post"
+          >
+            <input
+              type="hidden"
+              name="redirect_route"
+              value="DeliverableList2"
+            />
+            <input type="hidden" name="next_status" value="" />
+            <Button
+              name="uuid"
+              :value="slotProps.data.uuid"
+              type="submit"
+              icon="pi pi-user-edit"
+              label="生成Ayers帳戶"
+              class="p-button-secondary"
+            ></Button>
+          </form>
+        </template>
+      </Column> -->
       <template #empty>No records found.</template>
     </DataTable>
   </div>
@@ -61,7 +91,7 @@ export default {
       type: String,
       required: true,
     },
-    audit_client_url: String,
+    generate_ayers_account_url: String,
   },
   components: { SearchBar, DataTable, Column, Button, Checkbox },
   created() {
@@ -71,6 +101,23 @@ export default {
     this.loadData();
   },
   methods: {
+    generateAccounts() {
+      let self = this;
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.loading = true;
+        axios
+          .post("/api/AyersAccount/generate", { clients: self.selectedClients })
+          .then(function (response) {
+            console.log(response);
+            self.loadData();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        alert("請先選中需要生成的用戶！");
+      }
+    },
     loadData() {
       let self = this;
       axios.post("api/DeliverableList2/all_data").then(function (res) {

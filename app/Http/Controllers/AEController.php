@@ -20,9 +20,14 @@ class AEController extends Controller
         );
     }
 
-    public function QRCode(Request $request)
+    public function generateQRCode(Request $request)
     {
         $ae = AE::where('name', '王浩進')->first();
-        return QrCode::size(250)->generate("http://192.168.2.102?introducer_uuid=$ae->uuid");
+        return QrCode::format('png')->merge(public_path('images/ccyss-removebg-preview.png'), .3, true)->size(250)->generate("https://pys.chinayss.hk?introducer_uuid=$ae->uuid");
+    }
+
+    public function QRCode(Request $request)
+    {
+        return view('QRCode');
     }
 }

@@ -17,5 +17,6 @@ class ClientDepositProof extends Model
         'other_deposit_method',
         'transfer_time',
         'timezone',
+        'editable',
     ];
 }

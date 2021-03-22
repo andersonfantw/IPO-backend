@@ -34,3 +34,9 @@ Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient');
 Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
 
 Route::any('/DeliverableList2', 'DeliverableList2Controller@main')->name('DeliverableList2');
+
+Route::any('/GenerateAyersAccount', 'AyersAccountController@generate')->name('GenerateAyersAccount');
+
+Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
+
+Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');

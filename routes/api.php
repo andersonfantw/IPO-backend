@@ -46,3 +46,7 @@ Route::prefix('ReauditList1')->group(function () {
 Route::prefix('DeliverableList2')->group(function () {
     Route::any('/all_data', 'DeliverableList2Controller@getData');
 });
+
+Route::prefix('AyersAccount')->group(function () {
+    Route::any('/generate', 'AyersAccountController@generate');
+});

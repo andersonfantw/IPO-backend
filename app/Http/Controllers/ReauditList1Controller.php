@@ -86,7 +86,7 @@ class ReauditList1Controller extends HomeController
                     $row['所在地'] = null;
                 }
                 $row['邮箱'] = $Client->email;
-                $row['提交时间'] = date_format($Client->created_at, "Y/m/d H:i:s");
+                $row['提交时间'] = date_format($Client->created_at, "Y-m-d H:i:s");
                 $row['uuid'] = $Client->uuid;
             }
             $rows[] = $row;
