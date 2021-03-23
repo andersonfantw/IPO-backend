@@ -106,7 +106,7 @@ export default {
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.loading = true;
         axios
-          .post("/api/AyersAccount/generate", { clients: self.selectedClients })
+          .post("api/AyersAccount/generate", { clients: self.selectedClients })
           .then(function (response) {
             console.log(response);
             self.loadData();
@@ -120,7 +120,7 @@ export default {
     },
     loadData() {
       let self = this;
-      axios.post("/api/DeliverableList2/all_data").then(function (res) {
+      axios.post("api/DeliverableList2/all_data").then(function (res) {
         let json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         // self.$store.commit("IPOTable/ipos", json.data);
