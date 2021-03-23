@@ -133,7 +133,8 @@ class AuditClientController extends HomeController
 
     public function loadIDCardFace(Request $request)
     {
-        $Client = session('Client');
+        $input = $request->all();
+        $Client = Client::where('uuid', $input['uuid'])->first();
         return response()->file(storage_path("app/upload/$Client->uuid/{$Client->IDCard->idcard_face}"));
     }
 
@@ -141,7 +142,6 @@ class AuditClientController extends HomeController
     {
         $input = $request->all();
         $Client = Client::where('uuid', $input['uuid'])->first();
-        session(['Client' => $Client]);
         $params = ['menu' => json_encode($this->getMenu())];
         $params['uuid'] = $Client->uuid;
         $params['redirect_route'] = $input['redirect_route'];
