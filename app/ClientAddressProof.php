@@ -11,6 +11,7 @@ class ClientAddressProof extends Model
         'uuid',
         'image',
         'detailed_address',
+        'address_text',
         'editable',
     ];
 }

@@ -79,26 +79,11 @@ class UnauditedList1Controller extends HomeController
                 } elseif ($Client->idcard_type == ClientCNIDCard::class) {
                     $row['客户姓名'] = $Client->IDCard->name_sc;
                     $row['证件号码'] = $Client->IDCard->idcard_no;
+                    $row['所在地'] = $Client->IDCard->idcard_address;
                 }
                 $row['手机号码'] = $Client->mobile;
                 if ($Client->clientAddressProof) {
-                    $json = json_decode($Client->clientAddressProof->detailed_address, true);
-                    if (is_array($json)) {
-                        $row['所在地'] = "{$json['city']},{$json['dist']},{$json['street']},{$json['building']}";
-                        if ($json['floor']) {
-                            $row['所在地'] .= ",{$json['floor']}樓";
-                        }
-                        if ($json['block']) {
-                            $row['所在地'] .= ",{$json['block']}座";
-                        }
-                        if ($json['room']) {
-                            $row['所在地'] .= ",{$json['room']}室";
-                        }
-                    } else {
-                        $row['所在地'] = $Client->clientAddressProof->detailed_address;
-                    }
-                } else {
-                    $row['所在地'] = null;
+                    $row['所在地'] = $Client->clientAddressProof->address_text;
                 }
                 $row['邮箱'] = $Client->email;
                 $row['提交时间'] = date_format($Client->created_at, "Y-m-d H:i:s");

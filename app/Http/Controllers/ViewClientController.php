@@ -66,7 +66,7 @@ class ViewClientController extends HomeController
         $parameters['idcard_back'] = $Client->IDCard->idcard_back;
         $parameters['idcard_remark'] = $Client->IDCard->remark;
         if ($Client->clientAddressProof) {
-            $parameters['住址'] = $Client->clientAddressProof->detailed_address;
+            $parameters['住址'] = $Client->clientAddressProof->address_text;
         }
         $parameters['手機號碼'] = $Client->mobile;
         $parameters['銀行'] = $Client->clientBankCard->bank_name;
@@ -105,6 +105,12 @@ class ViewClientController extends HomeController
         $parameters['簽名'] = $Client->clientSignature->image;
         $parameters['signature_remark'] = $Client->clientSignature->remark;
         $parameters['直接促銷'] = $Client->clientBusinessType->direct_promotion;
+        $Client->clientDepositProof->deposit_account;
+        $Client->clientDepositProof->deposit_amount;
+        $Client->clientDepositProof->deposit_bank;
+        $Client->clientDepositProof->deposit_method;
+        $Client->clientDepositProof->other_deposit_method;
+        $Client->clientDepositProof->transfer_time;
         return $parameters;
     }
 
