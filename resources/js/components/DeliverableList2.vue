@@ -120,7 +120,7 @@ export default {
     },
     loadData() {
       let self = this;
-      axios.post("api/DeliverableList2/all_data").then(function (res) {
+      axios.post("/api/DeliverableList2/all_data").then(function (res) {
         let json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         // self.$store.commit("IPOTable/ipos", json.data);
