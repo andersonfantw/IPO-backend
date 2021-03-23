@@ -40,3 +40,5 @@ Route::any('/GenerateAyersAccount', 'AyersAccountController@generate')->name('Ge
 Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
 
 Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
+
+Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
