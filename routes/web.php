@@ -42,3 +42,7 @@ Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCo
 Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 
 Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
+Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
+Route::any('/LoadBankCard', 'AuditClientController@loadBankCard')->name('LoadBankCard');
+Route::any('/LoadNameCard', 'AuditClientController@loadNameCard')->name('LoadNameCard');
+Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');

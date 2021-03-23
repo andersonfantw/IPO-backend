@@ -133,9 +133,32 @@ class AuditClientController extends HomeController
 
     public function loadIDCardFace(Request $request)
     {
-        $input = $request->all();
-        $Client = Client::where('uuid', $input['uuid'])->first();
+        $Client = Client::where('uuid', $request->input('uuid'))->first();
         return response()->file(storage_path("app/upload/$Client->uuid/{$Client->IDCard->idcard_face}"));
+    }
+
+    public function loadIDCardBack(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->first();
+        return response()->file(storage_path("app/upload/$Client->uuid/{$Client->IDCard->idcard_back}"));
+    }
+
+    public function loadBankCard(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->first();
+        return response()->file(storage_path("app/upload/$Client->uuid/{$Client->clientBankCard->backcard_face}"));
+    }
+
+    public function loadNameCard(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->first();
+        return response()->file(storage_path("app/upload/$Client->uuid/{$Client->clientWorkingStatus->name_card_face}"));
+    }
+
+    public function loadSignature(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->first();
+        return response()->file(storage_path("app/upload/$Client->uuid/{$Client->clientSignature->image}"));
     }
 
     public function index(Request $request)
