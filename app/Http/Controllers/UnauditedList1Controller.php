@@ -81,7 +81,21 @@ class UnauditedList1Controller extends HomeController
                 }
                 $row['手机号码'] = $Client->mobile;
                 if ($Client->clientAddressProof) {
-                    $row['所在地'] = $Client->clientAddressProof->detailed_address;
+                    $json = json_decode($Client->clientAddressProof->detailed_address, true);
+                    if (is_array($json)) {
+                        $row['所在地'] = "{$json['city']},{$json['dist']},{$json['street']},{$json['building']}";
+                        if ($json['floor']) {
+                            $row['所在地'] .= ",{$json['floor']}樓";
+                        }
+                        if ($json['block']) {
+                            $row['所在地'] .= ",{$json['block']}座";
+                        }
+                        if ($json['room']) {
+                            $row['所在地'] .= ",{$json['room']}室";
+                        }
+                    } else {
+                        $row['所在地'] = $Client->clientAddressProof->detailed_address;
+                    }
                 } else {
                     $row['所在地'] = null;
                 }
