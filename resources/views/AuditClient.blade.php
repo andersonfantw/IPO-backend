@@ -16,8 +16,7 @@
         :股票="'{{ $股票 }}'" :衍生認股證="'{{ $衍生認股證 }}'" :牛熊證="'{{ $牛熊證 }}'"
         :期貨及期權="'{{ $期貨及期權 }}'" :債券基金="'{{ $債券基金 }}'" :其他投資經驗="'{{ $其他投資經驗 }}'"
         :是否有意進行衍生產品投資="'{{ $是否有意進行衍生產品投資 }}'" :問卷調查="{{ $問卷調查 }}" :用戶是否同意="{{ $用戶是否同意 }}"
-        :簽名="'{{ route('LoadSignature', ['uuid' => $uuid]) }}'" :直接促銷="'{{ $直接促銷 }}'"
-        :action="'{{ route('audit1') }}'" :redirect_route="'{{ $redirect_route }}'"
-        :next_status="'{{ $next_status }}'">
+        :簽名="'{{ $簽名 }}'" :直接促銷="'{{ $直接促銷 }}'" :action="'{{ route('audit1') }}'"
+        :redirect_route="'{{ $redirect_route }}'" :next_status="'{{ $next_status }}'">
     </audit-client>
 @endsection
