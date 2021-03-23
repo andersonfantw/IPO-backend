@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class DeliverableList2Controller extends HomeController
 {
+    protected $name = 'DeliverableList2';
     private $columnNames;
 
     public function __construct()
@@ -28,8 +29,9 @@ class DeliverableList2Controller extends HomeController
         ];
     }
 
-    public function main(Request $request)
+    protected function setViewParameters(Request $request)
     {
+        $parameters = parent::setViewParameters($request);
         $columns = [
             ['field' => 'Ayers帳戶號碼', 'header' => 'Ayers帳戶號碼'],
             ['field' => '开通账户类型', 'header' => '开通账户类型'],
@@ -49,8 +51,9 @@ class DeliverableList2Controller extends HomeController
             '开户时间' => 'equals',
             '賬戶生成时间' => 'equals',
         ];
-        return view('DeliverableList2', ['menu' => json_encode($this->getMenu()),
-            'columns' => json_encode($columns), 'filterMatchMode' => json_encode($filterMatchMode)]);
+        $parameters['columns'] = json_encode($columns);
+        $parameters['filterMatchMode'] = json_encode($filterMatchMode);
+        return $parameters;
     }
 
     public function getData(Request $request)

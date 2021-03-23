@@ -41,7 +41,7 @@
             <h4 class="mb-0">身份證信息</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回身份證信息">駁回</label
               ><Checkbox
                 id="駁回身份證信息"
@@ -49,7 +49,7 @@
                 v-model="駁回.身份證信息"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -69,12 +69,12 @@
           </td>
           <td width="20%" rowspan="6">
             <textarea
-              v-if="駁回.身份證信息"
               name="駁回身份證信息"
               style="width: 100%"
               placeholder="請寫駁回理由"
-              v-model="idcard_remark"
               rows="10"
+              v-model="idcard_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -137,7 +137,7 @@
             <h4 class="mb-0">銀行卡信息</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回銀行卡信息">駁回</label>
               <Checkbox
                 id="駁回銀行卡信息"
@@ -145,7 +145,7 @@
                 v-model="駁回.銀行卡信息"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -165,12 +165,12 @@
           </td>
           <td width="20%" rowspan="2">
             <textarea
-              v-if="駁回.銀行卡信息"
               name="駁回銀行卡信息"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="10"
               v-model="bankcard_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -189,7 +189,7 @@
             <h4 class="mb-0">客戶補充資料</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回客戶補充資料">駁回</label
               ><Checkbox
                 id="駁回客戶補充資料"
@@ -197,7 +197,7 @@
                 v-model="駁回.客戶補充資料"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -211,12 +211,12 @@
           </td>
           <td width="20%" rowspan="2">
             <textarea
-              v-if="駁回.客戶補充資料"
               name="駁回客戶補充資料"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="3"
               v-model="Client_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -229,7 +229,7 @@
             <h4 class="mb-0">工作狀態</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回工作狀態">駁回</label
               ><Checkbox
                 id="駁回工作狀態"
@@ -237,7 +237,7 @@
                 v-model="駁回.工作狀態"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -257,12 +257,12 @@
           </td>
           <td width="20%" rowspan="4">
             <textarea
-              v-if="駁回.工作狀態"
               name="駁回工作狀態"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="10"
               v-model="working_status_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -311,7 +311,7 @@
             <h4 class="mb-0">財政狀況</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回財政狀況">駁回</label
               ><Checkbox
                 id="駁回財政狀況"
@@ -319,7 +319,7 @@
                 v-model="駁回.財政狀況"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -339,12 +339,12 @@
           </td>
           <td width="20%" rowspan="3">
             <textarea
-              v-if="駁回.財政狀況"
               name="駁回財政狀況"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="5"
               v-model="financial_status_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -385,7 +385,7 @@
             <h4 class="mb-0">投資經驗及衍生產品認識</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回投資經驗及衍生產品認識">駁回</label
               ><Checkbox
                 id="駁回投資經驗及衍生產品認識"
@@ -393,7 +393,7 @@
                 v-model="駁回.投資經驗及衍生產品認識"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -413,12 +413,12 @@
           </td>
           <td width="20%" rowspan="4">
             <textarea
-              v-if="駁回.投資經驗及衍生產品認識"
               name="駁回投資經驗及衍生產品認識"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="5"
               v-model="investment_experience_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -548,7 +548,7 @@
             <h4 class="mb-0">{{ 投資者特徵 }}</h4>
           </td>
           <td rowspan="2" width="17%">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回問卷調查">駁回</label
               ><Checkbox
                 id="駁回問卷調查"
@@ -556,14 +556,14 @@
                 v-model="駁回.問卷調查"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
             <textarea
-              v-if="駁回.問卷調查"
               name="駁回問卷調查"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="3"
               v-model="evaluation_results_remark"
+              readonly
             ></textarea>
           </td>
         </tr>
@@ -590,7 +590,7 @@
             <h4 class="mb-0">簽名</h4>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <!-- <h4 class="mb-0">
               <label class="mb-0" for="駁回簽名">駁回</label
               ><Checkbox
                 id="駁回簽名"
@@ -598,7 +598,7 @@
                 v-model="駁回.簽名"
                 :binary="true"
               />
-            </h4>
+            </h4> -->
           </th>
         </tr>
       </thead>
@@ -608,12 +608,12 @@
         </td>
         <td width="20%">
           <textarea
-            v-if="駁回.簽名"
             name="駁回簽名"
             style="width: 100%"
             placeholder="請寫駁回理由"
             rows="10"
             v-model="signature_remark"
+            readonly
           ></textarea>
         </td>
       </tbody>
@@ -628,7 +628,7 @@
         </td>
       </tbody>
     </table>
-    <Button type="submit" label="提交審核" icon="pi pi-check" iconPos="right" />
+    <!-- <Button type="submit" label="提交審核" icon="pi pi-check" iconPos="right" /> -->
   </form>
 </template>
 <script>

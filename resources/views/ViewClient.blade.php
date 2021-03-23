@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <audit-client :uuid="'{{ $uuid }}'" :地區="'{{ $地區 }}'" :介紹人="'{{ $介紹人 }}'"
+    <view-client :uuid="'{{ $uuid }}'" :地區="'{{ $地區 }}'" :介紹人="'{{ $介紹人 }}'"
         :姓名="'{{ $姓名 }}'" :英文名="'{{ $英文名 }}'" :性別="'{{ $性別 }}'" :手機號碼="'{{ $手機號碼 }}'"
         :出生日期="'{{ $出生日期 }}'" :住址="'{{ $住址 }}'" :證件號碼="'{{ $證件號碼 }}'"
         :idcard_face="'{{ route('LoadIDCardFace', ['uuid' => $uuid]) }}'"
@@ -17,11 +17,11 @@
         :期貨及期權="'{{ $期貨及期權 }}'" :債券基金="'{{ $債券基金 }}'" :其他投資經驗="'{{ $其他投資經驗 }}'"
         :是否有意進行衍生產品投資="'{{ $是否有意進行衍生產品投資 }}'" :問卷調查="{{ $問卷調查 }}" :用戶是否同意="{{ $用戶是否同意 }}"
         :簽名="'{{ $簽名 }}'" :直接促銷="'{{ $直接促銷 }}'" :action="'{{ route('audit1') }}'"
-        :redirect_route="'{{ $redirect_route }}'" :next_status="'{{ $next_status }}'"
-        :Client_remark="'{{ $Client_remark }}'" :idcard_remark="'{{ $idcard_remark }}'"
-        :bankcard_remark="'{{ $bankcard_remark }}'" :working_status_remark="'{{ $working_status_remark }}'"
+        :redirect_route="'{{ $redirect_route }}'" :Client_remark="'{{ $Client_remark }}'"
+        :idcard_remark="'{{ $idcard_remark }}'" :bankcard_remark="'{{ $bankcard_remark }}'"
+        :working_status_remark="'{{ $working_status_remark }}'"
         :financial_status_remark="'{{ $financial_status_remark }}'"
         :investment_experience_remark="'{{ $investment_experience_remark }}'"
         :evaluation_results_remark="'{{ $evaluation_results_remark }}'" :signature_remark="'{{ $signature_remark }}'">
-    </audit-client>
+    </view-client>
 @endsection

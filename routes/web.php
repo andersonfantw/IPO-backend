@@ -19,21 +19,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@main')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/UnauditedList1', 'UnauditedList1Controller@main')->name('UnauditedList1');
+Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');
 
-Route::get('/UnauditedList2', 'UnauditedList2Controller@main')->name('UnauditedList2');
+Route::get('/UnauditedList2', 'UnauditedList2Controller@index')->name('UnauditedList2');
 
-Route::get('/RejectedList1', 'RejectedList1Controller@main')->name('RejectedList1');
+Route::get('/RejectedList1', 'RejectedList1Controller@index')->name('RejectedList1');
 
-Route::get('/ReauditList1', 'ReauditList1Controller@main')->name('ReauditList1');
+Route::get('/ReauditList1', 'ReauditList1Controller@index')->name('ReauditList1');
 
 Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient');
 
+Route::any('/ViewClient', 'ViewClientController@index')->name('ViewClient');
+
 Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
 
-Route::any('/DeliverableList2', 'DeliverableList2Controller@main')->name('DeliverableList2');
+Route::any('/DeliverableList2', 'DeliverableList2Controller@index')->name('DeliverableList2');
 
 Route::any('/GenerateAyersAccount', 'AyersAccountController@generate')->name('GenerateAyersAccount');
 

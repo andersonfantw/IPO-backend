@@ -27,6 +27,25 @@
           </p>
         </template>
       </Column>
+      <Column
+        headerStyle="width: 8rem; text-align: center"
+        bodyStyle="text-align: center; overflow: visible"
+      >
+        <template #body="slotProps">
+          <form :action="view_client_url" method="post">
+            <input type="hidden" name="redirect_route" value="RejectedList1" />
+            <!-- <input type="hidden" name="next_status" value="audited1" /> -->
+            <Button
+              name="uuid"
+              :value="slotProps.data.uuid"
+              type="submit"
+              icon="pi pi-user-edit"
+              label="查看"
+              class="p-button-secondary"
+            ></Button>
+          </form>
+        </template>
+      </Column>
       <template #empty>No records found.</template>
     </DataTable>
   </div>
@@ -60,7 +79,7 @@ export default {
       type: String,
       required: true,
     },
-    audit_client_url: String,
+    view_client_url: String,
   },
   components: { SearchBar, DataTable, Column, Button, Checkbox },
   created() {

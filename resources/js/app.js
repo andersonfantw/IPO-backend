@@ -33,6 +33,8 @@ Vue.component('reaudit-list1', require('./components/ReauditList1.vue').default)
 
 Vue.component('audit-client', require('./components/AuditClient.vue').default);
 
+Vue.component('view-client', require('./components/ViewClient.vue').default);
+
 Vue.component('deliverable-list2', require('./components/DeliverableList2.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to

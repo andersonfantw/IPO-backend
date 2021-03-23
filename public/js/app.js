@@ -7984,6 +7984,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8059,7 +8067,15 @@ __webpack_require__.r(__webpack_exports__);
     直接促銷: String,
     action: String,
     redirect_route: String,
-    next_status: String
+    next_status: String,
+    Client_remark: String,
+    idcard_remark: String,
+    bankcard_remark: String,
+    working_status_remark: String,
+    financial_status_remark: String,
+    investment_experience_remark: String,
+    evaluation_results_remark: String,
+    signature_remark: String
   },
   created: function created() {
     var _this = this;
@@ -8072,6 +8088,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     });
     this.評估結果 += this.score(this.你有多少年投資經驗) + this.score(this.教育程度);
+    this.駁回.身份證信息 = this.idcard_remark ? true : false;
+    this.駁回.銀行卡信息 = this.bankcard_remark ? true : false;
+    this.駁回.客戶補充資料 = this.Client_remark ? true : false;
+    this.駁回.工作狀態 = this.working_status_remark ? true : false;
+    this.駁回.財政狀況 = this.financial_status_remark ? true : false;
+    this.駁回.投資經驗及衍生產品認識 = this.investment_experience_remark ? true : false;
+    this.駁回.問卷調查 = this.evaluation_results_remark ? true : false;
+    this.駁回.簽名 = this.signature_remark ? true : false;
   },
   computed: {
     age: function age() {
@@ -8616,6 +8640,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8644,7 +8687,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: String,
       required: true
     },
-    audit_client_url: String
+    view_client_url: String
   },
   components: {
     SearchBar: _SearchBar__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -9066,6 +9109,890 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   })),
   watch: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ViewClient.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ViewClient.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var primevue_button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! primevue/button */ "./node_modules/primevue/button/index.js");
+/* harmony import */ var primevue_button__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(primevue_button__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! primevue/inputswitch */ "./node_modules/primevue/inputswitch/index.js");
+/* harmony import */ var primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/checkbox */ "./node_modules/primevue/checkbox/index.js");
+/* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_checkbox__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      columns: [],
+      filterMatchMode: {},
+      loading: false,
+      data: null,
+      selectedClients: null,
+      地區map: new Map(),
+      評估結果: 0,
+      駁回: {
+        身份證信息: false,
+        銀行卡信息: false,
+        客戶補充資料: false,
+        工作狀態: false,
+        財政狀況: false,
+        投資經驗及衍生產品認識: false,
+        問卷調查: false,
+        簽名: false
+      }
+    };
+  },
+  components: {
+    Button: primevue_button__WEBPACK_IMPORTED_MODULE_0___default.a,
+    InputSwitch: primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1___default.a,
+    Checkbox: primevue_checkbox__WEBPACK_IMPORTED_MODULE_2___default.a
+  },
+  props: {
+    uuid: String,
+    地區: String,
+    介紹人: String,
+    姓名: String,
+    英文名: String,
+    性別: String,
+    手機號碼: String,
+    出生日期: String,
+    住址: String,
+    證件號碼: String,
+    idcard_face: String,
+    idcard_back: String,
+    銀行: String,
+    銀行卡號: String,
+    backcard_face: String,
+    教育程度: String,
+    工作狀態: String,
+    雇主名稱: String,
+    公司電話: String,
+    公司地址: String,
+    業務性質: String,
+    服務年資: String,
+    職位: String,
+    name_card_face: String,
+    資金來源: String,
+    其他資金來源: String,
+    每年收入: String,
+    資產項目: String,
+    其他資產: String,
+    資產淨值: String,
+    投資目標: String,
+    股票: String,
+    衍生認股證: String,
+    牛熊證: String,
+    期貨及期權: String,
+    債券基金: String,
+    其他投資經驗: String,
+    是否有意進行衍生產品投資: String,
+    問卷調查: Array,
+    用戶是否同意: Number,
+    簽名: String,
+    直接促銷: String,
+    action: String,
+    redirect_route: String,
+    next_status: String,
+    Client_remark: String,
+    idcard_remark: String,
+    bankcard_remark: String,
+    working_status_remark: String,
+    financial_status_remark: String,
+    investment_experience_remark: String,
+    evaluation_results_remark: String,
+    signature_remark: String
+  },
+  created: function created() {
+    var _this = this;
+
+    this.地區map.set("zh-hk", "香港");
+    this.地區map.set("zh-cn", "中國");
+    this.問卷調查.forEach(function (問卷) {
+      if (問卷.question_text != "沒有任何衍生産品知識及經驗") {
+        _this.評估結果 += _this.answerToScore(問卷.answer);
+      }
+    });
+    this.評估結果 += this.score(this.你有多少年投資經驗) + this.score(this.教育程度);
+    this.駁回.身份證信息 = this.idcard_remark ? true : false;
+    this.駁回.銀行卡信息 = this.bankcard_remark ? true : false;
+    this.駁回.客戶補充資料 = this.Client_remark ? true : false;
+    this.駁回.工作狀態 = this.working_status_remark ? true : false;
+    this.駁回.財政狀況 = this.financial_status_remark ? true : false;
+    this.駁回.投資經驗及衍生產品認識 = this.investment_experience_remark ? true : false;
+    this.駁回.問卷調查 = this.evaluation_results_remark ? true : false;
+    this.駁回.簽名 = this.signature_remark ? true : false;
+  },
+  computed: {
+    age: function age() {
+      var date1 = new Date(this.出生日期);
+      var date2 = new Date();
+      var Difference_In_Time = date2.getTime() - date1.getTime();
+      var Difference_In_Years = Difference_In_Time / (1000 * 3600 * 24) / 365;
+      return Math.floor(Difference_In_Years);
+    },
+    你有多少年投資經驗: function _() {
+      var score = 0;
+      var result = null;
+
+      if (this.score(this.股票) > score) {
+        score = this.score(this.股票);
+        result = this.股票;
+      } else if (this.score(this.衍生認股證) > score) {
+        score = this.score(this.衍生認股證);
+        result = this.衍生認股證;
+      } else if (this.score(this.牛熊證) > score) {
+        score = this.score(this.牛熊證);
+        result = this.牛熊證;
+      } else if (this.score(this.期貨及期權) > score) {
+        score = this.score(this.期貨及期權);
+        result = this.期貨及期權;
+      } else if (this.score(this.債券基金) > score) {
+        score = this.score(this.債券基金);
+        result = this.債券基金;
+      }
+
+      return result;
+    },
+    投資者特徵: function _() {
+      if (this.評估結果 <= 19) {
+        return "保守型";
+      } else if (this.評估結果 >= 20 && this.評估結果 <= 29) {
+        return "穩健型";
+      } else if (this.評估結果 >= 30 && this.評估結果 <= 39) {
+        return "平衡型";
+      } else if (this.評估結果 >= 40 && this.評估結果 <= 49) {
+        return "增長型";
+      } else if (this.評估結果 >= 50) {
+        return "進取型";
+      }
+    },
+    風險承受程度: function _() {
+      if (this.評估結果 <= 19) {
+        return "低";
+      } else if (this.評估結果 >= 20 && this.評估結果 <= 29) {
+        return "低至中";
+      } else if (this.評估結果 >= 30 && this.評估結果 <= 39) {
+        return "中";
+      } else if (this.評估結果 >= 40 && this.評估結果 <= 49) {
+        return "中至高";
+      } else if (this.評估結果 >= 50) {
+        return "高";
+      }
+    },
+    computed用戶是否同意: function computed() {
+      return this.用戶是否同意 ? "是" : "否";
+    }
+  },
+  methods: {
+    score: function score(answer) {
+      var A = /^A/i;
+      var B = /^B/i;
+      var C = /^C/i;
+      var D = /^D/i;
+      var E = /^E/i;
+      var 是 = /是/i;
+      var 否 = /否/i;
+
+      if (A.test(answer)) {
+        return 5;
+      } else if (B.test(answer)) {
+        return 4;
+      } else if (C.test(answer)) {
+        return 3;
+      } else if (D.test(answer)) {
+        return 2;
+      } else if (E.test(answer)) {
+        return 1;
+      } else if (是.test(answer)) {
+        return 1;
+      } else if (否.test(answer)) {
+        return 0;
+      }
+    },
+    ageToScore: function ageToScore(age) {
+      if (age >= 18 && age <= 25) {
+        return 5;
+      } else if (age >= 26 && age <= 35) {
+        return 4;
+      } else if (age >= 36 && age <= 50) {
+        return 3;
+      } else if (age >= 51 && age <= 65) {
+        return 2;
+      } else if (age > 65) {
+        return 1;
+      }
+    },
+    answerToScore: function answerToScore(answer) {
+      if (this.isJson(answer)) {
+        var E = /^E/i;
+        answer = JSON.parse(answer);
+        var score = 0;
+        answer.forEach(function (element) {
+          if (!E.test(element)) {
+            score += 2;
+          }
+        });
+        return score;
+      } else {
+        var _score = this.score(answer);
+
+        return _score;
+      }
+    },
+    isJson: function isJson(str) {
+      try {
+        JSON.parse(str);
+      } catch (e) {
+        return false;
+      }
+
+      return true;
+    }
+  }
 });
 
 /***/ }),
@@ -108994,11 +109921,28 @@ var render = function() {
             _c("td", { attrs: { width: "20%", rowspan: "6" } }, [
               _vm.駁回.身份證信息
                 ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.idcard_remark,
+                        expression: "idcard_remark"
+                      }
+                    ],
                     staticStyle: { width: "100%" },
                     attrs: {
                       name: "駁回身份證信息",
                       placeholder: "請寫駁回理由",
                       rows: "10"
+                    },
+                    domProps: { value: _vm.idcard_remark },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.idcard_remark = $event.target.value
+                      }
                     }
                   })
                 : _vm._e()
@@ -109114,11 +110058,28 @@ var render = function() {
             _c("td", { attrs: { width: "20%", rowspan: "2" } }, [
               _vm.駁回.銀行卡信息
                 ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.bankcard_remark,
+                        expression: "bankcard_remark"
+                      }
+                    ],
                     staticStyle: { width: "100%" },
                     attrs: {
                       name: "駁回銀行卡信息",
                       placeholder: "請寫駁回理由",
                       rows: "10"
+                    },
+                    domProps: { value: _vm.bankcard_remark },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.bankcard_remark = $event.target.value
+                      }
                     }
                   })
                 : _vm._e()
@@ -109182,11 +110143,28 @@ var render = function() {
             _c("td", { attrs: { width: "20%", rowspan: "2" } }, [
               _vm.駁回.客戶補充資料
                 ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.Client_remark,
+                        expression: "Client_remark"
+                      }
+                    ],
                     staticStyle: { width: "100%" },
                     attrs: {
                       name: "駁回客戶補充資料",
                       placeholder: "請寫駁回理由",
                       rows: "3"
+                    },
+                    domProps: { value: _vm.Client_remark },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.Client_remark = $event.target.value
+                      }
                     }
                   })
                 : _vm._e()
@@ -109245,11 +110223,28 @@ var render = function() {
             _c("td", { attrs: { width: "20%", rowspan: "4" } }, [
               _vm.駁回.工作狀態
                 ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.working_status_remark,
+                        expression: "working_status_remark"
+                      }
+                    ],
                     staticStyle: { width: "100%" },
                     attrs: {
                       name: "駁回工作狀態",
                       placeholder: "請寫駁回理由",
                       rows: "10"
+                    },
+                    domProps: { value: _vm.working_status_remark },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.working_status_remark = $event.target.value
+                      }
                     }
                   })
                 : _vm._e()
@@ -109349,11 +110344,28 @@ var render = function() {
             _c("td", { attrs: { width: "20%", rowspan: "3" } }, [
               _vm.駁回.財政狀況
                 ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.financial_status_remark,
+                        expression: "financial_status_remark"
+                      }
+                    ],
                     staticStyle: { width: "100%" },
                     attrs: {
                       name: "駁回財政狀況",
                       placeholder: "請寫駁回理由",
                       rows: "5"
+                    },
+                    domProps: { value: _vm.financial_status_remark },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.financial_status_remark = $event.target.value
+                      }
                     }
                   })
                 : _vm._e()
@@ -109443,11 +110455,28 @@ var render = function() {
             _c("td", { attrs: { width: "20%", rowspan: "4" } }, [
               _vm.駁回.投資經驗及衍生產品認識
                 ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.investment_experience_remark,
+                        expression: "investment_experience_remark"
+                      }
+                    ],
                     staticStyle: { width: "100%" },
                     attrs: {
                       name: "駁回投資經驗及衍生產品認識",
                       placeholder: "請寫駁回理由",
                       rows: "5"
+                    },
+                    domProps: { value: _vm.investment_experience_remark },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.investment_experience_remark = $event.target.value
+                      }
                     }
                   })
                 : _vm._e()
@@ -109636,11 +110665,28 @@ var render = function() {
                 _vm._v(" "),
                 _vm.駁回.問卷調查
                   ? _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.evaluation_results_remark,
+                          expression: "evaluation_results_remark"
+                        }
+                      ],
                       staticStyle: { width: "100%" },
                       attrs: {
                         name: "駁回問卷調查",
                         placeholder: "請寫駁回理由",
                         rows: "3"
+                      },
+                      domProps: { value: _vm.evaluation_results_remark },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.evaluation_results_remark = $event.target.value
+                        }
                       }
                     })
                   : _vm._e()
@@ -109713,11 +110759,28 @@ var render = function() {
           _c("td", { attrs: { width: "20%" } }, [
             _vm.駁回.簽名
               ? _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.signature_remark,
+                      expression: "signature_remark"
+                    }
+                  ],
                   staticStyle: { width: "100%" },
                   attrs: {
                     name: "駁回簽名",
                     placeholder: "請寫駁回理由",
                     rows: "10"
+                  },
+                  domProps: { value: _vm.signature_remark },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.signature_remark = $event.target.value
+                    }
                   }
                 })
               : _vm._e()
@@ -110601,6 +111664,49 @@ var render = function() {
                 true
               )
             })
+          }),
+          _vm._v(" "),
+          _c("Column", {
+            attrs: {
+              headerStyle: "width: 8rem; text-align: center",
+              bodyStyle: "text-align: center; overflow: visible"
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "body",
+                fn: function(slotProps) {
+                  return [
+                    _c(
+                      "form",
+                      {
+                        attrs: { action: _vm.view_client_url, method: "post" }
+                      },
+                      [
+                        _c("input", {
+                          attrs: {
+                            type: "hidden",
+                            name: "redirect_route",
+                            value: "RejectedList1"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("Button", {
+                          staticClass: "p-button-secondary",
+                          attrs: {
+                            name: "uuid",
+                            value: slotProps.data.uuid,
+                            type: "submit",
+                            icon: "pi pi-user-edit",
+                            label: "查看"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                }
+              }
+            ])
           })
         ],
         2
@@ -111094,6 +112200,1277 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ViewClient.vue?vue&type=template&id=73878f7b&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ViewClient.vue?vue&type=template&id=73878f7b& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("form", { attrs: { action: _vm.action, method: "POST" } }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.uuid,
+          expression: "uuid"
+        }
+      ],
+      attrs: { type: "hidden", name: "uuid" },
+      domProps: { value: _vm.uuid },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.uuid = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.redirect_route,
+          expression: "redirect_route"
+        }
+      ],
+      attrs: { type: "hidden", name: "redirect_route" },
+      domProps: { value: _vm.redirect_route },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.redirect_route = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.next_status,
+          expression: "next_status"
+        }
+      ],
+      attrs: { type: "hidden", name: "next_status" },
+      domProps: { value: _vm.next_status },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.next_status = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "17%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [
+              _vm._v(_vm._s(_vm.地區map.get(_vm.地區)))
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _vm._m(4),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "17%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.介紹人))])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(5),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(6),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.姓名))])
+          ]),
+          _vm._v(" "),
+          _vm._m(7),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.英文名))])
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%", rowspan: "6" } }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.idcard_remark,
+                  expression: "idcard_remark"
+                }
+              ],
+              staticStyle: { width: "100%" },
+              attrs: {
+                name: "駁回身份證信息",
+                placeholder: "請寫駁回理由",
+                rows: "10",
+                readonly: ""
+              },
+              domProps: { value: _vm.idcard_remark },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.idcard_remark = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(8),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.性別))])
+          ]),
+          _vm._v(" "),
+          _vm._m(9),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.手機號碼))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(10),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.出生日期))])
+          ]),
+          _vm._v(" "),
+          _vm._m(11),
+          _vm._v(" "),
+          _vm._m(12)
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(13),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.住址))])
+          ]),
+          _vm._v(" "),
+          _vm._m(14),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.證件號碼))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", { attrs: { colspan: "2" } }, [
+            _c("img", {
+              staticStyle: { width: "400px" },
+              attrs: { src: _vm.idcard_face }
+            })
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { colspan: "2" } }, [
+            _c("img", {
+              staticStyle: { width: "400px" },
+              attrs: { src: _vm.idcard_back }
+            })
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(15),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(16),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.銀行))])
+          ]),
+          _vm._v(" "),
+          _vm._m(17),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.銀行卡號))])
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%", rowspan: "2" } }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bankcard_remark,
+                  expression: "bankcard_remark"
+                }
+              ],
+              staticStyle: { width: "100%" },
+              attrs: {
+                name: "駁回銀行卡信息",
+                placeholder: "請寫駁回理由",
+                rows: "10",
+                readonly: ""
+              },
+              domProps: { value: _vm.bankcard_remark },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.bankcard_remark = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", { attrs: { colspan: "2" } }, [
+            _c("img", {
+              staticStyle: { width: "400px" },
+              attrs: { src: _vm.backcard_face }
+            })
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { colspan: "2" } })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(18),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(19),
+          _vm._v(" "),
+          _c("td", { attrs: { colspan: "3" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.教育程度))])
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%", rowspan: "2" } }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.Client_remark,
+                  expression: "Client_remark"
+                }
+              ],
+              staticStyle: { width: "100%" },
+              attrs: {
+                name: "駁回客戶補充資料",
+                placeholder: "請寫駁回理由",
+                rows: "3",
+                readonly: ""
+              },
+              domProps: { value: _vm.Client_remark },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.Client_remark = $event.target.value
+                }
+              }
+            })
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(20),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(21),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.工作狀態))])
+          ]),
+          _vm._v(" "),
+          _vm._m(22),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.雇主名稱))])
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%", rowspan: "4" } }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.working_status_remark,
+                  expression: "working_status_remark"
+                }
+              ],
+              staticStyle: { width: "100%" },
+              attrs: {
+                name: "駁回工作狀態",
+                placeholder: "請寫駁回理由",
+                rows: "10",
+                readonly: ""
+              },
+              domProps: { value: _vm.working_status_remark },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.working_status_remark = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(23),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.公司電話))])
+          ]),
+          _vm._v(" "),
+          _vm._m(24),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.公司地址))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(25),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.業務性質))])
+          ]),
+          _vm._v(" "),
+          _vm._m(26),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.職位))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(27),
+          _vm._v(" "),
+          _c("td", { attrs: { colspan: "3" } }, [
+            _c("img", {
+              staticStyle: { width: "400px" },
+              attrs: { src: _vm.name_card_face }
+            })
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(28),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(29),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.資金來源))])
+          ]),
+          _vm._v(" "),
+          _vm._m(30),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [
+              _vm._v(_vm._s(_vm.其他資金來源))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%", rowspan: "3" } }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.financial_status_remark,
+                  expression: "financial_status_remark"
+                }
+              ],
+              staticStyle: { width: "100%" },
+              attrs: {
+                name: "駁回財政狀況",
+                placeholder: "請寫駁回理由",
+                rows: "5",
+                readonly: ""
+              },
+              domProps: { value: _vm.financial_status_remark },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.financial_status_remark = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(31),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.每年收入))])
+          ]),
+          _vm._v(" "),
+          _vm._m(32),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.資產項目))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(33),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.其他資產))])
+          ]),
+          _vm._v(" "),
+          _vm._m(34),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.資產淨值))])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(35),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _vm._m(36),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.投資目標))])
+          ]),
+          _vm._v(" "),
+          _vm._m(37),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%" } }, [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.股票))])
+          ]),
+          _vm._v(" "),
+          _c("td", { attrs: { width: "20%", rowspan: "4" } }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.investment_experience_remark,
+                  expression: "investment_experience_remark"
+                }
+              ],
+              staticStyle: { width: "100%" },
+              attrs: {
+                name: "駁回投資經驗及衍生產品認識",
+                placeholder: "請寫駁回理由",
+                rows: "5",
+                readonly: ""
+              },
+              domProps: { value: _vm.investment_experience_remark },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.investment_experience_remark = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(38),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.衍生認股證))])
+          ]),
+          _vm._v(" "),
+          _vm._m(39),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.牛熊證))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(40),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.期貨及期權))])
+          ]),
+          _vm._v(" "),
+          _vm._m(41),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.債券基金))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(42),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [
+              _vm._v(_vm._s(_vm.其他投資經驗))
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(43),
+          _vm._v(" "),
+          _c("td", [
+            _c("h5", { staticClass: "mb-0" }, [
+              _vm._v(_vm._s(_vm.是否有意進行衍生產品投資))
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(44),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          _c("tr", [
+            _vm._m(45),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+              _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.age))])
+            ]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+              _c("h5", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.ageToScore(_vm.age)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(46),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+              _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.教育程度))])
+            ]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+              _c("h5", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.score(_vm.教育程度)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(47),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+              _c("h5", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.你有多少年投資經驗))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+              _c("h5", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.score(_vm.你有多少年投資經驗)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.問卷調查, function(問卷) {
+            return _c("tr", { key: 問卷.id }, [
+              _c(
+                "th",
+                { attrs: { colspan: "2", width: "33%", scope: "row" } },
+                [
+                  _c("h5", { staticClass: "mb-0" }, [
+                    _vm._v(_vm._s(問卷.question_text) + "?")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+                _c("h5", { staticClass: "mb-0" }, [_vm._v(_vm._s(問卷.answer))])
+              ]),
+              _vm._v(" "),
+              _c("td", { attrs: { colspan: "2", width: "33%" } }, [
+                問卷.question_text != "沒有任何衍生産品知識及經驗"
+                  ? _c("h5", { staticClass: "mb-0" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.answerToScore(問卷.answer)) +
+                          "\n          "
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ])
+          }),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(48),
+            _vm._v(" "),
+            _c("td", { attrs: { width: "17%" } }, [
+              _c("h4", { staticClass: "mb-0" }, [
+                _vm._v("\n            " + _vm._s(_vm.評估結果) + "\n          ")
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(49),
+            _vm._v(" "),
+            _c("td", { attrs: { width: "17%" } }, [
+              _c("h4", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.投資者特徵))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", { attrs: { rowspan: "2", width: "17%" } }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.evaluation_results_remark,
+                    expression: "evaluation_results_remark"
+                  }
+                ],
+                staticStyle: { width: "100%" },
+                attrs: {
+                  name: "駁回問卷調查",
+                  placeholder: "請寫駁回理由",
+                  rows: "3",
+                  readonly: ""
+                },
+                domProps: { value: _vm.evaluation_results_remark },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.evaluation_results_remark = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(50),
+            _vm._v(" "),
+            _c("td", { attrs: { width: "17%" } }, [
+              _c("h4", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.風險承受程度))
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(51),
+            _vm._v(" "),
+            _c("td", { attrs: { width: "17%" } }, [
+              _c("h4", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.computed用戶是否同意))
+              ])
+            ])
+          ])
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _vm._m(52),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("td", { attrs: { colspan: "4" } }, [
+          _c("img", {
+            staticStyle: { width: "400px" },
+            attrs: { src: _vm.簽名 }
+          })
+        ]),
+        _vm._v(" "),
+        _c("td", { attrs: { width: "20%" } }, [
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.signature_remark,
+                expression: "signature_remark"
+              }
+            ],
+            staticStyle: { width: "100%" },
+            attrs: {
+              name: "駁回簽名",
+              placeholder: "請寫駁回理由",
+              rows: "10",
+              readonly: ""
+            },
+            domProps: { value: _vm.signature_remark },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.signature_remark = $event.target.value
+              }
+            }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-bordered" }, [
+      _c("tbody", [
+        _vm._m(53),
+        _vm._v(" "),
+        _c("td", [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.直接促銷))])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "6" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("基礎信息")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("地區")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("開通賬戶")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { width: "17%" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("證券（現金）賬戶")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("介紹人")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("身份證信息")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("姓名")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("英文名")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("性別")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [_c("h5", { staticClass: "mb-0" }, [_vm._v("手機號碼")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("出生日期")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [_c("h5", { staticClass: "mb-0" }, [_vm._v("證件類型")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("h5", { staticClass: "mb-0" }, [_vm._v("身份證")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("住址")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [_c("h5", { staticClass: "mb-0" }, [_vm._v("證件號碼")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("銀行卡信息")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("銀行")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("銀行卡號")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("客戶補充資料")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("教育程度")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("工作狀態")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("工作狀態")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("雇主名稱")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("公司電話")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("公司地址")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("業務性質")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("職位")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("名片")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("財政狀況")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("資金來源")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("其他資金來源")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("每年收入(港元)")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("資產項目")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("其他資產")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("資產淨值")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col", colspan: "4" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("投資經驗及衍生產品認識")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("投資目標")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "20%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("股票")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("衍生認股證")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("牛熊證")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("期貨及期權")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("債券/基金")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("其他投資經驗")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("是否有意進行衍生產品投資?")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { colspan: "2", scope: "col" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("問題")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "2", scope: "col" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("答案")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "2", scope: "col" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("分數")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { colspan: "2", width: "33%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("你現時的歲數是?")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { colspan: "2", width: "33%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("你的教育程度是?")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { colspan: "2", width: "33%", scope: "row" } }, [
+      _c("h5", { staticClass: "mb-0" }, [
+        _vm._v(
+          "\n            你有多少年投資經驗(不包括儲蓄、定期儲蓄及外幣儲蓄)?\n          "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%", scope: "row" } }, [
+      _c("h4", { staticClass: "mb-0" }, [_vm._v("評估結果")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%", scope: "row" } }, [
+      _c("h4", { staticClass: "mb-0" }, [_vm._v("投資者特徵")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%", scope: "row" } }, [
+      _c("h4", { staticClass: "mb-0" }, [_vm._v("風險承受程度")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%", scope: "row" } }, [
+      _c("h4", { staticClass: "mb-0" }, [_vm._v("用戶是否同意")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { colspan: "4", scope: "col" } }, [
+          _c("h4", { staticClass: "mb-0" }, [_vm._v("簽名")])
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { attrs: { width: "17%" } }, [
+      _c("h4", { staticClass: "mb-0" }, [_vm._v("直接促銷")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -124562,6 +126939,7 @@ Vue.component('unaudited-list2', __webpack_require__(/*! ./components/UnauditedL
 Vue.component('rejected-list1', __webpack_require__(/*! ./components/RejectedList1.vue */ "./resources/js/components/RejectedList1.vue")["default"]);
 Vue.component('reaudit-list1', __webpack_require__(/*! ./components/ReauditList1.vue */ "./resources/js/components/ReauditList1.vue")["default"]);
 Vue.component('audit-client', __webpack_require__(/*! ./components/AuditClient.vue */ "./resources/js/components/AuditClient.vue")["default"]);
+Vue.component('view-client', __webpack_require__(/*! ./components/ViewClient.vue */ "./resources/js/components/ViewClient.vue")["default"]);
 Vue.component('deliverable-list2', __webpack_require__(/*! ./components/DeliverableList2.vue */ "./resources/js/components/DeliverableList2.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -125327,6 +127705,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnauditedList2_vue_vue_type_template_id_1194947e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnauditedList2_vue_vue_type_template_id_1194947e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ViewClient.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/ViewClient.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ViewClient_vue_vue_type_template_id_73878f7b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ViewClient.vue?vue&type=template&id=73878f7b& */ "./resources/js/components/ViewClient.vue?vue&type=template&id=73878f7b&");
+/* harmony import */ var _ViewClient_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ViewClient.vue?vue&type=script&lang=js& */ "./resources/js/components/ViewClient.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ViewClient_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ViewClient_vue_vue_type_template_id_73878f7b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ViewClient_vue_vue_type_template_id_73878f7b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ViewClient.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ViewClient.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/ViewClient.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewClient_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ViewClient.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ViewClient.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewClient_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ViewClient.vue?vue&type=template&id=73878f7b&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/ViewClient.vue?vue&type=template&id=73878f7b& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewClient_vue_vue_type_template_id_73878f7b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ViewClient.vue?vue&type=template&id=73878f7b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ViewClient.vue?vue&type=template&id=73878f7b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewClient_vue_vue_type_template_id_73878f7b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewClient_vue_vue_type_template_id_73878f7b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

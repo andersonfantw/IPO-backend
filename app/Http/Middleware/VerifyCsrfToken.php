@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'AuditClient',
+        'ViewClient',
         'audit1',
         'GenerateAyersAccount',
     ];

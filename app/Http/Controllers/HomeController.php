@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    protected $name = 'home';
     private $menu;
     /**
      * Create a new controller instance.
@@ -92,9 +94,37 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function main(Request $request)
+    public function index(Request $request)
     {
-        return view('home', ['menu' => json_encode($this->menu)]);
+        return view($this->name, $this->setViewParameters($request));
+    }
+
+    protected function setViewParameters(Request $request)
+    {
+        return ['menu' => json_encode($this->getMenu())];
+    }
+
+    protected function sendSMS(Request $request, Client $Client)
+    {
+        $input = $request->all();
+        $country_code = addslashes($input['country_code']);
+        $recipient = $Client->mobile;
+        $vc = mt_rand(100000, 999999);
+        $VerificationCode = VerificationCode::updateOrCreate(
+            ['mobile' => $recipient],
+            ['code' => $vc, 'expiry_datetime' => date("Y-m-d H:i:s", (time() + 300))]
+        );
+        $content = "[中國銀盛國際證券]您的手機驗證碼為：{$VerificationCode->code}，驗證碼5分鐘內有效。如非本人操作，請忽略本簡訊。";
+        $response = Http::timeout(10)->get(env('HK_SMS_URL'), [
+            'langeng' => 0,
+            'dos' => 'now',
+            'senderid' => 'CYSS',
+            'content' => $this->Text2Unicode($content),
+            'recipient' => "$country_code$recipient",
+            'username' => env('HK_SMS_USERNAME'),
+            'password' => env('HK_SMS_PASSWORD'),
+        ]);
+        return $response;
     }
 
 }
