@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('AE')->group(function () {
     Route::any('/create', 'AEController@create');
+    Route::any('/createStaff', 'AEController@createStaff');
     Route::any('/QRCode', 'AEController@QRCode');
 });
 

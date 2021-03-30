@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
+use App\Traits\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class UnauditedList1Controller extends HomeController
 {
+    use Report;
+
     protected $name = 'UnauditedList1';
     private $columnNames;
 

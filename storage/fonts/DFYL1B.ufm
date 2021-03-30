@@ -1,0 +1,22 @@
+StartFontMetrics 4.1
+Notice Converted by PHP-font-lib
+Comment https://github.com/PhenX/php-font-lib
+EncodingScheme FontSpecific
+Copyright (c) Copyright DynaLab Inc. 1993
+FontName DFYuanLight1B
+FontSubfamily Regular
+UniqueID DFYuanLight1B
+FullName DFYuanLight1B
+Version 10 July, 1993: 1.00, initial release
+PostScriptName DFYuanLight1B
+Trademark Trademark by DynaLab Inc.
+Weight Medium
+ItalicAngle 0
+IsFixedPitch true
+UnderlineThickness 50
+UnderlinePosition -100
+FontHeightOffset 140
+Ascender 860
+Descender -140
+FontBBox 0 -140 1000 860
+EndFontMetrics
