@@ -49,4 +49,5 @@ Route::any('/LoadBankCard', 'AuditClientController@loadBankCard')->name('LoadBan
 Route::any('/LoadNameCard', 'AuditClientController@loadNameCard')->name('LoadNameCard');
 Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
 
-Route::any('/ChinayssPDF', 'UnauditedList1Controller@chinayss')->name('ChinayssPDF');
+Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
+Route::any('/AccountOpeningForm', 'UnauditedList1Controller@AccountOpeningForm')->name('AccountOpeningForm');

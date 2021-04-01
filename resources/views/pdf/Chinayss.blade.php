@@ -1,14 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style>
-    table.border,
-    td.border,
-    th.border {
+    .border {
         border: 1px solid black;
+        border-collapse: collapse;
     }
 
-    table.border {
+    table {
         width: 100%;
-        border-collapse: collapse;
     }
 
     .page-break {
@@ -47,7 +45,7 @@
             <div>客戶名稱：</div>
         </td>
         <td class="border" style="padding-left: 20px;">
-            投资经验
+            {{ $ClientName }}
         </td>
     </tr>
     <tr class="border">
@@ -56,7 +54,7 @@
             <div>帳戶號碼：</div>
         </td>
         <td class="border" style="padding-left: 20px;">
-            投资经验
+            {{ $ClientAccountNo }}
         </td>
     </tr>
 </table>
@@ -83,7 +81,7 @@
                 65 or above 如客戶的年齡是65歲或以上，閣下的整體投資取向/風險概況將定為"保守型"</div>
         </td>
         <td class="border" style="width: 25%;text-align: center;">
-            投资经验
+            {{ $Q1Score }}
         </td>
     </tr>
 </table>
@@ -100,7 +98,7 @@
             <div>e. Primary or below 小學或以下</div>
         </td>
         <td class="border" style="width: 25%;text-align: center;">
-            投资经验
+            {{ $Q2Score }}
         </td>
     </tr>
     <tr class="border">
@@ -114,7 +112,7 @@
             <div>e. None or less than 1 year, 沒有或少於1年</div>
         </td>
         <td class="border" style="width: 25%;text-align: center;">
-            投资经验
+            {{ $Q3Score }}
         </td>
     </tr>
     <tr class="border">
@@ -268,7 +266,7 @@
             <b>Total Score 總分數</b>
         </td>
         <td class="border" style="width: 25%;text-align: center;">
-            投资经验
+            {{ $TotalScore }}
         </td>
     </tr>
 </table>
@@ -402,7 +400,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="6" style="height:70px">
+        <td colspan="6">
         </td>
     </tr>
     <tr>
@@ -416,12 +414,12 @@
 <table class="border">
     <tr>
         <td colspan="3">
-            <div style="background-color: yellow">Applicable only if client is over 65 years old 僅適用於65歲或以上客戶</div>
+            <span style="background-color: yellow">Applicable only if client is over 65 years old 僅適用於65歲或以上客戶</span>
         </td>
     </tr>
     <tr>
         <td rowspan="4" style="width:10%;">
-            <input type="checkbox" />
+            <input type="checkbox" @if ($Over65) checked @endif />
         </td>
         <td colspan="2">
             <p>If you are at or over 65 years old, in order to protect your interest, CYSS will profile you as a
@@ -459,14 +457,20 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: right;padding: 30px;">
+        <td>
+        </td>
+        <td style="text-align: right;padding: 30px;">
             Client's Signature 客戶簽署
         </td>
-        <td class="border">
+        <td class="border" style="text-align: center;">
+            @if ($Over65)
+                <img src="{{ $ClientSign }}" />
+            @endif
         </td>
     </tr>
 </table>
-<p>DISCLAIMER 免責聲明</p>
+<div class="page-break"></div>
+<p><span style="background-color: yellow">DISCLAIMER 免責聲明</span></p>
 <p>This questionnaire and the result is only one of the factors you may take into account when investing. This should
     not be regarded as an investment advice, an offer to sell, or a solicitation to buy any financial products. You
     should consider carefully your investment objective and risk tolerance ability and seek for independent professional
@@ -497,7 +501,7 @@
     中國銀盛的持牌人會根據上述因素，協助解釋產品是否適合閣下作出投資。但閣下要注意，這並
     非為，亦非被指為中國銀盛的任何陳述或建議。</p>
 <div class="page-break"></div>
-<p>Personal Information Collection Statement 個人資料收集聲明</p>
+<p><span style="background-color: yellow">Personal Information Collection Statement 個人資料收集聲明</span></p>
 <p>The personal information collected will be used for any of the purposes set out above. Depending on the actual
     business or operational needs, the personal information collected may be transferred to (i) the administrative,
     operating or information technology departments of any member of the CYSS; (ii) any third party service provider to
@@ -523,12 +527,30 @@
 <p>閣下有權查閱及要求更正本公司持有有關閣下的個人資料，並以書面向本公司（地址為香港上環德輔
     道西9號6樓）提出要求。</p>
 <div class="page-break"></div>
-<p>Client's Declaration 客戶聲明</p>
+<p><span style="background-color: yellow">Client's Declaration 客戶聲明</span></p>
 <p>I hereby declare and agree that all the information given above is complete, true and accurate, and is given to the
     best of my knowledge. I acknowledge that a copy of "Client Risk Profiling Questionnaire – Investment Products" has
     been given to me.</p>
 <p>本人謹此聲明並同意上述所有資料均是完整、真實及準確，並且是盡本人所知而作答。本人確認收
     到「投資產品-風險承受能力問卷」的副本。</p>
+<div class="border">
+    <div><input type="checkbox" @if ($Agree) checked @endif />I agree and
+        accept the above assessment of my investment
+        appetite/risk
+        profile.</div>
+    <div>本人同意並接受上述評估結果及本人確認同意本問卷評估本人所屬的投資取向/風險概況。</div>
+    <div><input type="checkbox" @if (!$Agree) checked @endif />I disagree
+        with the above assessment of my investment
+        appetite/risk profile should be:
+    </div>
+    <div>本人不同意上述評估結果，且認為本人的投資取向/風險概況為：{{ $ClientAgreedInvestmentOrientation }}</div>
+    <div class="border" style="width: 70%;margin: 30px;">
+        <div>Client's Signature 客戶簽名</div>
+        <img src="{{ $ClientSign }}" />
+    </div>
+    <div>Name 姓名：{{ $ClientName }}</div>
+    <div>Date 日期：{{ $ClientDate }}</div>
+</div>
 <table class="border">
     <tr class="border">
         <td class="border" style="width: 50%;">
@@ -557,27 +579,35 @@
         </td>
     </tr>
     <tr>
-        <td class="border" style="width: 50%;">
-            Name 姓名：
+        <td class="border" style="width: 50%;text-align: center;">
+            <img src="{{ $LicensedPersonSign }}" />
         </td>
-        <td class="border" style="width: 50%;">
-            Name 姓名：
-        </td>
-    </tr>
-    <tr>
-        <td class="border" style="width: 50%;">
-            Date 日期：
-        </td>
-        <td class="border" style="width: 50%;">
-            Date 日期：
+        <td class="border" style="width: 50%;text-align: center;">
+            <img src="{{ $ROSign }}" />
         </td>
     </tr>
     <tr>
         <td class="border" style="width: 50%;">
-            CE No. 中央編號：
+            Name 姓名：{{ $LicensedPersonName }}
         </td>
         <td class="border" style="width: 50%;">
-            CE No. 中央編號：
+            Name 姓名：{{ $ROName }}
+        </td>
+    </tr>
+    <tr>
+        <td class="border" style="width: 50%;">
+            Date 日期：{{ $LicensedPersonDate }}
+        </td>
+        <td class="border" style="width: 50%;">
+            Date 日期：{{ $RODate }}
+        </td>
+    </tr>
+    <tr>
+        <td class="border" style="width: 50%;">
+            CE No. 中央編號：{{ $LicensedPersonCENo }}
+        </td>
+        <td class="border" style="width: 50%;">
+            CE No. 中央編號：{{ $ROCENo }}
         </td>
     </tr>
 </table>

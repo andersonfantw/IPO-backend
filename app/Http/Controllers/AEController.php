@@ -34,7 +34,7 @@ class AEController extends Controller
 
     public function generateQRCode(Request $request)
     {
-        $introducer = Staff::where('name', '张冬梅')->first();
+        $introducer = Staff::where('name', '王浩進')->first();
         return QrCode::format('png')->merge(public_path('images/ccyss-removebg-preview.png'), .3, true)->size(250)->generate("https://pys.chinayss.hk?introducer_uuid=$introducer->uuid");
     }
 
