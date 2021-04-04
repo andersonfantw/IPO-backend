@@ -46,7 +46,7 @@
           </form>
         </template>
       </Column>
-      <template #empty>No records found.</template>
+      <template #empty>沒有找到記錄</template>
     </DataTable>
   </div>
 </template>

@@ -52,10 +52,10 @@ class ViewClientController extends HomeController
         $parameters['介紹人'] = $Client->introducer_uuid;
         $parameters['Client_remark'] = $Client->remark;
         if ($Client->idcard_type == ClientHKIDCard::class) {
-            $parameters['姓名'] = $Client->IDCard->name_tc;
+            $parameters['姓名'] = $Client->IDCard->name_c;
             $parameters['英文名'] = $Client->IDCard->name_en;
         } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-            $parameters['姓名'] = $Client->IDCard->name_sc;
+            $parameters['姓名'] = $Client->IDCard->name_c;
             $parameters['英文名'] = "{$Client->IDCard->surname}{$Client->IDCard->given_name}";
             $parameters['住址'] = $Client->IDCard->idcard_address;
         }

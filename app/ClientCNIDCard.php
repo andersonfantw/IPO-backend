@@ -12,7 +12,7 @@ class ClientCNIDCard extends Model
         'idcard_face',
         'idcard_back',
         'gender',
-        'name_sc',
+        'name_c',
         'surname',
         'given_name',
         'idcard_no',

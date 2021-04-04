@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Client;
 use DB;
 use PDF;
 
@@ -8,15 +9,233 @@ trait Report
 {
     use ImageToBase64;
 
-    public function AccountOpeningForm()
+    public function AccountOpeningForm(Client $Client)
     {
         $logo = $this->imagePathToBase64(public_path('images/logo.png'));
         $data = [
             'logo' => $logo,
+            'AccountNature' => '個人',
+            'AccountType' => '證券現金',
+            'AccountNo' => null,
+            'InternetTradingService' => '是',
+            'ClientNameC' => [
+                $Client->IDCard->name_c,
+                null,
+            ],
+            'ClientNameE' => ['???', '???'],
+            'Gender' => ['男', '女'],
+            'IDNo' => ['???', '???'],
+            'Nationality' => ['???', '???'],
+            'EducationLevel' => ['大學或以上', '中學'],
+            'FullResidentialAddress' => ['???', '???'],
+            'Tel' => ['???', '???'],
+            'Mobile' => ['???', '???'],
+            'Fax' => ['???', '???'],
+            'Email' => ['???', '???'],
+            'EmploymentStatus' => ['自僱', '受僱'],
+            'EmployerName' => ['???', '???'],
+            'OfficeTel' => ['???', '???'],
+            'OfficeAddress' => ['???', '???'],
+            'BusinessNature' => ['???', '???'],
+            'ServiceYears' => ['???', '???'],
+            'Position' => ['???', '???'],
+            'FundingSource' => [
+                [
+                    '薪金' => true,
+                    '家庭收入' => true,
+                    '租金收入' => true,
+                    '退休基金' => true,
+                    '營業溢利' => true,
+                    '利息' => true,
+                    '個人儲蓄' => true,
+                    '投資收入' => true,
+                    '佣金' => true,
+                    '租金收入' => true,
+                    '其他' => '???',
+                ],
+                [
+                    '薪金' => true,
+                    '家庭收入' => true,
+                    '租金收入' => true,
+                    '退休基金' => true,
+                    '營業溢利' => true,
+                    '利息' => true,
+                    '個人儲蓄' => true,
+                    '投資收入' => true,
+                    '佣金' => true,
+                    '租金收入' => true,
+                    '其他' => '???',
+                ],
+            ],
+            'AnnualIncome' => ['>1200000', '<100001'],
+            'NetAsset' => ['>1200000', '<100001'],
+            'InvestmentObjective' => ['股息收入', '資本增值'],
+            'InvestmentObjectiveOther' => ['???', '???'],
+            'InvestmentExperience' => [
+                [
+                    '股票' => '超過十年',
+                    '衍生認股證' => '超過十年',
+                    '牛熊證' => '超過十年',
+                    '期貨及期權' => '超過十年',
+                    '債券/基金' => '超過十年',
+                    '其他' => '超過十年',
+                ],
+                [
+                    '股票' => '三至五年',
+                    '衍生認股證' => '三至五年',
+                    '牛熊證' => '三至五年',
+                    '期貨及期權' => '三至五年',
+                    '債券/基金' => '三至五年',
+                    '其他' => '三至五年',
+                ],
+            ],
+            'DerivativesProductKnowledge' => [
+                [true, true, true],
+                [true, true, true],
+            ],
+            'AssessmentResult' => [
+                '沒有認識',
+                '有認識',
+            ],
+            'Disclosure' => [
+                [
+                    '1' => [
+                        'Option' => true,
+                        'EmployerNameAndRegNo' => '???',
+                    ],
+                    '2' => [
+                        'Option' => true,
+                        'NameOfEmployee/AccountExecutive' => '???',
+                        'Relationship' => '???',
+                    ],
+                    '3' => [
+                        'Option' => true,
+                        'CompanyName' => '???',
+                        'StockCode' => '???',
+                    ],
+                    '4i' => [
+                        'Option' => true,
+                        'NameOfTheSpouse' => '???',
+                        'AccountNo' => '???',
+                    ],
+                    '4ii' => [
+                        'Option' => true,
+                        'CompanyName' => '???',
+                        'AccountNo' => '???',
+                    ],
+                ],
+                [
+                    '1' => [
+                        'Option' => true,
+                        'EmployerNameAndRegNo' => '???',
+                    ],
+                    '2' => [
+                        'Option' => true,
+                        'NameOfEmployee/AccountExecutive' => '???',
+                        'Relationship' => '???',
+                    ],
+                    '3' => [
+                        'Option' => true,
+                        'CompanyName' => '???',
+                        'StockCode' => '???',
+                    ],
+                    '4i' => [
+                        'Option' => true,
+                        'NameOfTheSpouse' => '???',
+                        'AccountNo' => '???',
+                    ],
+                    '4ii' => [
+                        'Option' => true,
+                        'CompanyName' => '???',
+                        'AccountNo' => '???',
+                    ],
+                ],
+            ],
+            'C1' => [
+                '是' => false,
+                'Name' => '???',
+                'DateOfBirth' => '???',
+                'IDNo' => '???',
+                'Nationality' => '???',
+                'Address' => '???',
+            ],
+            'C2' => [
+                '是' => false,
+                'Name' => '???',
+                'DateOfBirth' => '???',
+                'IDNo' => '???',
+                'Nationality' => '???',
+            ],
+            'D' => [
+                '銀行名稱' => '???',
+                '貨幣' => '其他貨幣',
+                '帳戶號碼' => '???',
+                '請註明' => '???',
+                '銀行帳戶持有人名稱' => '???',
+                '地區及銀行代碼' => '???',
+            ],
+            'E' => [
+                '通訊方式' => '電郵',
+                '備註' => '???',
+            ],
+            'F' => [
+                '直接促銷' => true,
+                '任何途徑' => true,
+                '電郵' => true,
+                '郵件' => true,
+                '短訊' => true,
+                '電話' => true,
+            ],
+            'Date' => [
+                '???',
+                '???',
+            ],
+            'J' => [
+                '閣下是美國公民' => [false, false],
+                '納稅人識別號碼' => ['???', '???'],
+                '閣下是綠卡持有者' => [false, false],
+            ],
+            'Witness' => [
+                'Signature' => null,
+                'Name' => '???',
+                'Profession' => '???',
+                'Date' => '???',
+            ],
+            'LicensedPerson' => [
+                'Signature' => '經CA認證',
+                'Name' => '???',
+                'CENo' => '???',
+                'Date' => '???',
+            ],
+            'ResponsibleOfficer' => [
+                'Signature' => null,
+                'Name' => '???',
+                'Date' => '???',
+            ],
+            'DocumentReviewedBy' => [
+                'Name' => '???',
+                'Signature' => '???',
+                'Date' => '???',
+            ],
+            // 'yes' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/yes.png')),
+            // 'image_11_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/11.jpg')),
+            // 'image_a2_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-2.jpg')),
+            // 'image_a3_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-3.jpg')),
+            // 'image_a4_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-4.jpg')),
+            // 'image_a5_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-5.jpg')),
+            // 'image_a6_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-6.jpg')),
+            // 'image_a7_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-7.jpg')),
+            // 'image_a8_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-8.jpg')),
+            // 'image_a9_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-9.jpg')),
+            // 'image_a10_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-10.jpg')),
+            // 'image_a11_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-11.jpg')),
+            // 'image_a12_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-12.jpg')),
+            // 'image_a13_1_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-13-1.jpg')),
+            // 'image_a14_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-14.jpg')),
         ];
-        return view('pdf.AccountOpeningForm', $data);
-        // $pdf = PDF::loadView('pdf.AccountOpeningForm', $data);
-        // return $pdf->stream('AccountOpeningForm.pdf');
+        // return view('pdf.AccountOpeningForm', $data);
+        $pdf = PDF::loadView('pdf.AccountOpeningForm', $data);
+        return $pdf->stream('AccountOpeningForm.pdf');
     }
 
     public function Chinayss()

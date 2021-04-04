@@ -1,7 +1,7 @@
 <template>
   <div>
     <SearchBar :store-name-spaced="'UnauditedList2'"></SearchBar>
-    <button type="button" class="btn btn-success">协议及开户资料下载</button>
+    <button type="button" class="btn btn-success">協議及開戶資料下載</button>
     <DataTable
       :value="data"
       :filters="filters"
@@ -47,7 +47,7 @@
           </form>
         </template>
       </Column>
-      <template #empty>No records found.</template>
+      <template #empty>沒有找到記錄</template>
     </DataTable>
   </div>
 </template>

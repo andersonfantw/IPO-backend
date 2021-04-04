@@ -85,10 +85,10 @@ class DeliverableList2Controller extends HomeController
                         $row['Ayers帳戶號碼'] = $AyersAccount->account_no;
                         $row['开通账户类型'] = $AyersAccount->type;
                         if ($Client->idcard_type == ClientHKIDCard::class) {
-                            $row['客户姓名'] = $Client->IDCard->name_tc;
+                            $row['客户姓名'] = $Client->IDCard->name_c;
                             $row['证件号码'] = $Client->IDCard->idcard_no;
                         } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                            $row['客户姓名'] = $Client->IDCard->name_sc;
+                            $row['客户姓名'] = $Client->IDCard->name_c;
                             $row['证件号码'] = $Client->IDCard->idcard_no;
                         }
                         $row['手机号码'] = $Client->mobile;
@@ -105,10 +105,10 @@ class DeliverableList2Controller extends HomeController
                     $row['Ayers帳戶號碼'] = null;
                     $row['开通账户类型'] = null;
                     if ($Client->idcard_type == ClientHKIDCard::class) {
-                        $row['客户姓名'] = $Client->IDCard->name_tc;
+                        $row['客户姓名'] = $Client->IDCard->name_c;
                         $row['证件号码'] = $Client->IDCard->idcard_no;
                     } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                        $row['客户姓名'] = $Client->IDCard->name_sc;
+                        $row['客户姓名'] = $Client->IDCard->name_c;
                         $row['证件号码'] = $Client->IDCard->idcard_no;
                     }
                     $row['手机号码'] = $Client->mobile;

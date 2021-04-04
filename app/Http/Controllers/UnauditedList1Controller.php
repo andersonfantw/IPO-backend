@@ -28,7 +28,8 @@ class UnauditedList1Controller extends HomeController
             'email' => '邮箱',
             'lastTime' => '提交时间',
             'relation' => '客户姓名',
-            'uuid' => '唯一编码'];
+            'uuid' => '唯一编码',
+        ];
     }
 
     protected function setViewParameters(Request $request)
@@ -77,10 +78,10 @@ class UnauditedList1Controller extends HomeController
             foreach ($this->columnNames as $columnKey => $columnName) {
                 $row['是否上传收据'] = $Client->clientDepositProof ? '已上传收据' : '未上传收据';
                 if ($Client->idcard_type == ClientHKIDCard::class) {
-                    $row['客户姓名'] = $Client->IDCard->name_tc;
+                    $row['客户姓名'] = $Client->IDCard->name_c;
                     $row['证件号码'] = $Client->IDCard->idcard_no;
                 } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                    $row['客户姓名'] = $Client->IDCard->name_sc;
+                    $row['客户姓名'] = $Client->IDCard->name_c;
                     $row['证件号码'] = $Client->IDCard->idcard_no;
                     $row['所在地'] = $Client->IDCard->idcard_address;
                 }

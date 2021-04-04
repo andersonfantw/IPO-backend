@@ -11,7 +11,7 @@ class ClientHKIDCard extends Model
         'uuid',
         'idcard_face',
         'idcard_back',
-        'name_tc',
+        'name_c',
         'name_en',
         'gender',
         'birthday',
