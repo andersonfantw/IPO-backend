@@ -25,6 +25,16 @@ class Client extends Model
         'editable',
     ];
 
+    public function ViewClientIDCard()
+    {
+        return $this->hasOne('App\ViewClientIDCard', 'uuid', 'uuid');
+    }
+
+    public function ViewClientQuestionnaire()
+    {
+        return $this->hasOne('App\ViewClientQuestionnaire', 'uuid', 'uuid');
+    }
+
     public function clientHKIDCard()
     {
         return $this->hasOne('App\ClientHKIDCard', 'uuid', 'uuid');

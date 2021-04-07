@@ -40,17 +40,17 @@
 </table>
 
 
-<p style="font-size: 80%;">China Yinsheng International Securities Limited ("CYSS") 中國銀盛國際證券有限公司("中國銀盛")
+<p class="normal-font">China Yinsheng International Securities Limited ("CYSS") 中國銀盛國際證券有限公司("中國銀盛")
     <br />(中央編號 CE No. : ADJ147)
 </p>
-<p>
+<p class="normal-font">
     (如適用請加"✔＂Please"✔" as appropriate)
 </p>
-<table class="border">
+<table class="border normal-font">
     <tr>
         <td style="text-align: center;background-color:#AED6F1;" class="border">
             <div>ACCOUNT OPENING FORM 開戶表格</div>
-            <div>(For Individual 個人 / Joint Account 聯名)</div>
+            <div>(For Individual 個人/Joint Account 聯名)</div>
         </td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@
         </td>
     </tr>
 </table>
-<table class="border">
+<table class="border normal-font">
     <tr>
         <td class="border" style="text-align: center;background-color:#AED6F1;">
             <div>
@@ -188,18 +188,18 @@
             <table>
                 <tr>
                     <td style="width: 50%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EducationLevel[0] === '大學或以上') checked @endif> University or above 大學或以上
+                        <input type="checkbox" @if ($EducationLevel[0] === 'A' || $EducationLevel[0] === 'B') checked @endif> University or above 大學或以上
                     </td>
                     <td style="width: 50%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EducationLevel[0] === '中學') checked @endif> Secondary 中學
+                        <input type="checkbox" @if ($EducationLevel[0] === 'D') checked @endif> Secondary 中學
                     </td>
                 </tr>
                 <tr>
                     <td style="width: 50%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EducationLevel[0] === '小學或以下') checked @endif> Primary school or below 小學或以下
+                        <input type="checkbox" @if ($EducationLevel[0] === 'E') checked @endif> Primary school or below 小學或以下
                     </td>
                     <td style="width: 50%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EducationLevel[0] === '其他') checked @endif> Others 其他
+                        <input type="checkbox" @if ($EducationLevel[0] === 'B' || $EducationLevel[0] === 'C') checked @endif> Others 其他
                     </td>
                 </tr>
             </table>
@@ -209,11 +209,11 @@
         <td class="border">
             <table>
                 <tr>
-                    <td style="width: 50%">
+                    <td style="width: 25%">
                         <div>Full Residential Address</div>
                         <div>住宅地址</div>
                     </td>
-                    <td style="width: 50%">
+                    <td>
                         {{ $FullResidentialAddress[0] }}
                     </td>
                 </tr>
@@ -265,20 +265,20 @@
         </td>
     </tr>
 </table>
-<div class="page-break"></div>
-<div class="border">
+{{-- <div class="page-break"></div> --}}
+<div class="border normal-font">
     2. Employment Status 工作狀況
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border">
             <table>
                 <tr>
                     <td style="width: 33%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EmploymentStatus[0] === '受僱') checked @endif> Employed 受僱
+                        <input type="checkbox" @if ($EmploymentStatus[0] === '單位任職' || $EmploymentStatus[0] === '单位任职') checked @endif> Employed 受僱
                     </td>
                     <td style="width: 33%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EmploymentStatus[0] === '自僱') checked @endif> Self-Employed 自僱
+                        <input type="checkbox" @if ($EmploymentStatus[0] === '自主創業' || $EmploymentStatus[0] === '自主创业') checked @endif> Self-Employed 自僱
                     </td>
                     <td style="width: 33%;vertical-align: text-top;">
                         <input type="checkbox" @if ($EmploymentStatus[0] === '退休') checked @endif> Retired 退休
@@ -286,10 +286,10 @@
                 </tr>
                 <tr>
                     <td style="width: 33%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EmploymentStatus[0] === '家庭主婦') checked @endif> Housewife 家庭主婦
+                        <input type="checkbox" @if ($EmploymentStatus[0] === '家庭主婦' || $EmploymentStatus[0] === '家庭主妇') checked @endif> Housewife 家庭主婦
                     </td>
                     <td style="width: 33%;vertical-align: text-top;">
-                        <input type="checkbox" @if ($EmploymentStatus[0] === '其他') checked @endif> Others 其他
+                        <input type="checkbox" @if ($EmploymentStatus[0] === '學生' || $EmploymentStatus[0] === '学生') checked @endif> Others 其他
                     </td>
                     <td></td>
                 </tr>
@@ -379,10 +379,10 @@
     </tr>
 </table>
 <div class="page-break"></div>
-<div class="border">
+<div class="border normal-font">
     3. Financial Situation 財政狀況
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border" style="width: 20%;text-align: center;">
             Source of Funding 資金來源
@@ -430,7 +430,7 @@
                 <input type="checkbox" @if ($FundingSource[0]['營業溢利']) checked @endif> Business Profit 營業溢利
             </p>
             <p>
-                <input type="checkbox" @if ($FundingSource[0]['利息']) checked @endif> Dividend 股息 / Interest 利息
+                <input type="checkbox" @if ($FundingSource[0]['利息']) checked @endif> Dividend 股息/Interest 利息
             </p>
             <p>
                 <input type="checkbox" @if ($FundingSource[0]['個人儲蓄']) checked @endif> Personal Savings 個人儲蓄
@@ -445,7 +445,7 @@
                 <input type="checkbox" @if ($FundingSource[0]['租金收入']) checked @endif> Rental Income 租金收入
             </p>
             <p>
-                <input type="checkbox" @if ($FundingSource[0]['其他']) checked @endif> Others 其他: {{ $FundingSource[0]['其他'] }}
+                <input type="checkbox" @if ($FundingSource[0]['其他']) checked @endif> Others 其他: {{ $FundingSource[0]['其他收入來源'] }}
             </p>
         </td>
         <td class="border" style="width: 20%;vertical-align: text-top;">
@@ -470,7 +470,7 @@
                 <input type="checkbox"> Land and Property 房地產
             </p>
             <p>
-                <input type="checkbox"> Cash 現金 / Deposit 存款
+                <input type="checkbox"> Cash 現金/Deposit 存款
             </p>
             <p>
                 <input type="checkbox"> Listed securities 上市證券
@@ -501,11 +501,11 @@
         </td>
     </tr>
 </table>
-<div class="page-break"></div>
-<div class="border">
+{{-- <div class="page-break"></div> --}}
+<div class="border normal-font">
     4. Investment Experience &amp; Derivative Products Knowledge 投資經驗及衍生產品認識
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>
         (i) Investment Objective(s) (please select one) 投資目標 (請選擇一項)
     </p>
@@ -515,15 +515,15 @@
                 <input type="checkbox" @if ($InvestmentObjective[0] === '股息收入') checked @endif> Dividend Income 股息收入
             </td>
             <td>
-                <input type="checkbox" @if ($InvestmentObjective[0] === '資本增值') checked @endif> Capital Appreciation 資本增值
+                <input type="checkbox" @if ($InvestmentObjective[0] === '資本增值' || $InvestmentObjective[0] === '资本增值') checked @endif> Capital Appreciation 資本增值
             </td>
             <td>
-                <input type="checkbox" @if ($InvestmentObjective[0] === '投機') checked @endif> Speculation 投機
+                <input type="checkbox" @if ($InvestmentObjective[0] === '投機' || $InvestmentObjective[0] === '投机') checked @endif> Speculation 投機
             </td>
         </tr>
         <tr>
             <td>
-                <input type="checkbox" @if ($InvestmentObjective[0] === '對沖') checked @endif> Hedging 對沖
+                <input type="checkbox" @if ($InvestmentObjective[0] === '對沖' || $InvestmentObjective[0] === '对冲') checked @endif> Hedging 對沖
             </td>
             <td>
                 <input type="checkbox" @if ($InvestmentObjective[0] === '其他') checked @endif> Others 其他︰{{ $InvestmentObjectiveOther[0] }}
@@ -541,23 +541,23 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === 'E') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === '五至十年') checked @endif> 5-10 years 五至十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === 'D') checked @endif> Less than 3 years 少於三年
             </td>
         </tr>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === '超過十年') checked @endif> Over 10 years 超過十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === 'C') checked @endif> 3-5 years 三至五年
+            </td>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === 'B') checked @endif> 5-10 years 五至十年
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['股票'] === 'A') checked @endif> Over 10 years 超過十年
             </td>
             <td></td>
         </tr>
@@ -568,50 +568,50 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === 'E') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === '五至十年') checked @endif> 5-10 years 五至十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === 'D') checked @endif> Less than 3 years 少於三年
             </td>
         </tr>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === '超過十年') checked @endif> Over 10 years 超過十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === 'C') checked @endif> 3-5 years 三至五年
+            </td>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === 'B') checked @endif> 5-10 years 五至十年
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['衍生認股證'] === 'A') checked @endif> Over 10 years 超過十年
             </td>
             <td></td>
         </tr>
     </table>
     <p>
-        Callable Bull / Bear Contracts (CBBC) 牛熊證
+        Callable Bull/Bear Contracts (CBBC) 牛熊證
     </p>
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === 'E') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === '五至十年') checked @endif> 5-10 years 五至十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === 'D') checked @endif> Less than 3 years 少於三年
             </td>
         </tr>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === '超過十年') checked @endif> Over 10 years 超過十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === 'C') checked @endif> 3-5 years 三至五年
+            </td>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === 'B') checked @endif> 5-10 years 五至十年
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['牛熊證'] === 'A') checked @endif> Over 10 years 超過十年
             </td>
             <td></td>
         </tr>
@@ -622,23 +622,23 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === 'E') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === '五至十年') checked @endif> 5-10 years 五至十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === 'D') checked @endif> Less than 3 years 少於三年
             </td>
         </tr>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === '超過十年') checked @endif> Over 10 years 超過十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === 'C') checked @endif> 3-5 years 三至五年
+            </td>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === 'B') checked @endif> 5-10 years 五至十年
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['期貨及期權'] === 'A') checked @endif> Over 10 years 超過十年
             </td>
             <td></td>
         </tr>
@@ -649,58 +649,30 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === 'E') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === '五至十年') checked @endif> 5-10 years 五至十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === 'D') checked @endif> Less than 3 years 少於三年
             </td>
         </tr>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === '超過十年') checked @endif> Over 10 years 超過十年
+                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === 'C') checked @endif> 3-5 years 三至五年
+            </td>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === 'B') checked @endif> 5-10 years 五至十年
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <input type="checkbox" @if ($InvestmentExperience[0]['債券/基金'] === 'A') checked @endif> Over 10 years 超過十年
             </td>
             <td></td>
         </tr>
     </table>
-</div>
-<div class="page-break"></div>
-<div class="border">
     <p>
-        Others 其他
+        Others 其他：{{ $InvestmentExperience[0]['其他'] }}
     </p>
-    <table>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['其他'] === '沒有') checked @endif> Nil 沒有
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['其他'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['其他'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['其他'] === '五至十年') checked @endif> 5-10 years 五至十年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[0]['其他'] === '超過十年') checked @endif> Over 10 years 超過十年
-            </td>
-            <td></td>
-        </tr>
-    </table>
-    <p></p>
     <div>
         (iii) Assessment of Client's Knowledge of structured and/or
         derivatives product(s)
@@ -712,18 +684,25 @@
     <div>
         <input type="checkbox" @if ($DerivativesProductKnowledge[0][0]) checked @endif> The Client has attended trainings or courses in relation
         to structured and/or derivative product(s)
-        客戶曾接受有關結構性及/或衍生工具產品的培訓或相關課程
+        客戶曾接受有關結構性及/或衍生工具産品的培訓或修讀相關課程
     </div>
     <p></p>
     <div>
         <input type="checkbox" @if ($DerivativesProductKnowledge[0][1]) checked @endif> The Client's current or previous work experience is
         related to structured and/or derivative product(s)
-        客戶現時或之前的工作經驗與結構性及/或衍生工具產品有關
+        客戶現時或之前的工作經驗與結構性及/或衍生工具産品有關
     </div>
     <p></p>
     <div>
         <input type="checkbox" @if ($DerivativesProductKnowledge[0][2]) checked @endif> The Client has executed 5 or more transactions relating
-        to structured and/or derivative product(s) in past 3 years 客戶在過去3年內曾執行過5宗或以上有關結構性及/或衍生工具產品的交易
+        to structured and/or derivative product(s) in past 3 years
+        客戶在過去3年内曾執行過5宗或以上有關結構性及/或衍生工具産品的交易
+    </div>
+    <p></p>
+    <div>
+        <input type="checkbox" @if ($DerivativesProductKnowledge[0][3]) checked @endif> The client have previous experience in investing in derivative products (such as
+        CBBCs/stock options/derivative warrants/stock-linked products, etc.)
+        客戶以往曾否有投資衍生産品的經驗(如牛熊證/股票期權/衍生認股證/股票挂鈎産品等)
     </div>
     <p>
         For clients do not have any of the above mentioned
@@ -747,8 +726,8 @@
         賣換股債券、交易所買賣基金、期貨及期權與及股票期權等。
     </p>
 </div>
-<div class="page-break"></div>
-<table>
+{{-- <div class="page-break"></div> --}}
+<table class="normal-font">
     <tr>
         <td class="border" style="text-align: center">
             <div>
@@ -763,20 +742,21 @@
                 The above Client is characterized as a client 上述客戶被歸類為：
             </div>
             <div>
-                <input type="checkbox" @if ($AssessmentResult[0] === '沒有認識') checked @endif> without knowledge of structured and/ or derivatives
+                <input type="checkbox" @if (!$AssessmentResult[0]) checked @endif> without knowledge of structured and/ or derivatives
                 product(s) 「對結構性及/或衍生工具產品沒有認識」
             </div>
             <div>
-                <input type="checkbox" @if ($AssessmentResult[0] === '有認識') checked @endif> with knowledge of structured and/ or derivatives
+                <input type="checkbox" @if ($AssessmentResult[0]) checked @endif> with knowledge of structured and/ or derivatives
                 product(s) 「對結構性及/或衍生工具產品有認識」
             </div>
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="page-break"></div>
+<div class="border normal-font">
     5. Disclosure 披露
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. Are you an employee/agent of a Licensed Corporation or
         Registered Institution of Hong Kong Securities and Futures
@@ -866,9 +846,6 @@
             </td>
         </tr>
     </table>
-</div>
-<div class="page-break"></div>
-<div class="border">
     <p>
         (ii) Do you alone or jointly with your spouse control 35%
         or more of the voting rights of any corporate margin client
@@ -891,7 +868,7 @@
     <p>
     </p>
 </div>
-<table class="border">
+<table class="normal-font">
     <tr>
         <td class="border" style="text-align: center;background-color:#AED6F1;">
             <div>
@@ -1047,10 +1024,10 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="border normal-font">
     2. Employment Status 工作狀況
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border">
             <table>
@@ -1160,10 +1137,10 @@
     </tr>
 </table>
 <div class="page-break"></div>
-<div class="border">
+<div class="border normal-font">
     3. Financial Situation 財政狀況
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border" style="width: 20%;text-align: center;">
             Source of Funding 資金來源
@@ -1211,7 +1188,7 @@
                 <input type="checkbox" @if ($FundingSource[1]['營業溢利']) checked @endif> Business Profit 營業溢利
             </p>
             <p>
-                <input type="checkbox" @if ($FundingSource[1]['利息']) checked @endif> Dividend 股息 / Interest 利息
+                <input type="checkbox" @if ($FundingSource[1]['利息']) checked @endif> Dividend 股息/Interest 利息
             </p>
             <p>
                 <input type="checkbox" @if ($FundingSource[1]['個人儲蓄']) checked @endif> Personal Savings 個人儲蓄
@@ -1226,7 +1203,7 @@
                 <input type="checkbox" @if ($FundingSource[1]['租金收入']) checked @endif> Rental Income 租金收入
             </p>
             <p>
-                <input type="checkbox" @if ($FundingSource[1]['其他']) checked @endif> Others 其他: {{ $FundingSource[1]['其他'] }}
+                <input type="checkbox" @if ($FundingSource[1]['其他']) checked @endif> Others 其他: {{ $FundingSource[1]['其他收入來源'] }}
             </p>
         </td>
         <td class="border" style="width: 20%;vertical-align: text-top;">
@@ -1251,7 +1228,7 @@
                 <input type="checkbox"> Land and Property 房地產
             </p>
             <p>
-                <input type="checkbox"> Cash 現金 / Deposit 存款
+                <input type="checkbox"> Cash 現金/Deposit 存款
             </p>
             <p>
                 <input type="checkbox"> Listed securities 上市證券
@@ -1282,11 +1259,11 @@
         </td>
     </tr>
 </table>
-<div class="page-break"></div>
-<div class="border">
+{{-- <div class="page-break"></div> --}}
+<div class="border normal-font">
     4. Investment Experience &amp; Derivative Products Knowledge 投資經驗及衍生產品認識
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>
         (i) Investment Objective(s) (please select one) 投資目標 (請選擇一項)
     </p>
@@ -1322,7 +1299,7 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['股票'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[1]['股票'] === '沒有') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
                 <input type="checkbox" @if ($InvestmentExperience[1]['股票'] === '少於三年') checked @endif> Less than 3 years 少於三年
@@ -1349,7 +1326,7 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['衍生認股證'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[1]['衍生認股證'] === '沒有') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
                 <input type="checkbox" @if ($InvestmentExperience[1]['衍生認股證'] === '少於三年') checked @endif> Less than 3 years 少於三年
@@ -1371,12 +1348,12 @@
         </tr>
     </table>
     <p>
-        Callable Bull / Bear Contracts (CBBC) 牛熊證
+        Callable Bull/Bear Contracts (CBBC) 牛熊證
     </p>
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['牛熊證'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[1]['牛熊證'] === '沒有') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
                 <input type="checkbox" @if ($InvestmentExperience[1]['牛熊證'] === '少於三年') checked @endif> Less than 3 years 少於三年
@@ -1403,7 +1380,7 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['期貨及期權'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[1]['期貨及期權'] === '沒有') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
                 <input type="checkbox" @if ($InvestmentExperience[1]['期貨及期權'] === '少於三年') checked @endif> Less than 3 years 少於三年
@@ -1430,7 +1407,7 @@
     <table>
         <tr>
             <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['債券/基金'] === '沒有') checked @endif> Nil 沒有
+                <input type="checkbox" @if ($InvestmentExperience[1]['債券/基金'] === '沒有') checked @endif> Nil 沒有或少於1年
             </td>
             <td style="width: 50%">
                 <input type="checkbox" @if ($InvestmentExperience[1]['債券/基金'] === '少於三年') checked @endif> Less than 3 years 少於三年
@@ -1451,37 +1428,9 @@
             <td></td>
         </tr>
     </table>
-</div>
-<div class="page-break"></div>
-<div class="border">
     <p>
-        Others 其他
+        Others 其他：{{ $InvestmentExperience[1]['其他'] }}
     </p>
-    <table>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['其他'] === '沒有') checked @endif> Nil 沒有
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['其他'] === '少於三年') checked @endif> Less than 3 years 少於三年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['其他'] === '三至五年') checked @endif> 3-5 years 三至五年
-            </td>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['其他'] === '五至十年') checked @endif> 5-10 years 五至十年
-            </td>
-        </tr>
-        <tr>
-            <td style="width: 50%">
-                <input type="checkbox" @if ($InvestmentExperience[1]['其他'] === '超過十年') checked @endif> Over 10 years 超過十年
-            </td>
-            <td></td>
-        </tr>
-    </table>
-    <p></p>
     <div>
         (iii) Assessment of Client's Knowledge of structured and/or
         derivatives product(s)
@@ -1528,8 +1477,7 @@
         賣換股債券、交易所買賣基金、期貨及期權與及股票期權等。
     </p>
 </div>
-<div class="page-break"></div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border" style="text-align: center">
             <div>
@@ -1554,10 +1502,11 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="page-break"></div>
+<div class="border normal-font">
     5. Disclosure 披露
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. Are you an employee/agent of a Licensed Corporation or
         Registered Institution of Hong Kong Securities and Futures
@@ -1647,9 +1596,6 @@
             </td>
         </tr>
     </table>
-</div>
-<div class="page-break"></div>
-<div class="border">
     <p>
         (ii) Do you alone or jointly with your spouse control 35%
         or more of the voting rights of any corporate margin client
@@ -1672,7 +1618,7 @@
     <p>
     </p>
 </div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         C. Ultimate Beneficial Owner(s) of the Account and Ultimate Originator(s) of all Transaction
     </div>
@@ -1680,7 +1626,7 @@
         最終權益擁有人及最終戶口交易指示發出者
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. Are you (and/or the Secondary Joint Account Holder) the
         ultimate beneficial owner(s) in relation to the Account?
@@ -1750,8 +1696,7 @@
         </tr>
     </table>
 </div>
-<div class="page-break"></div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         D. Receiving Bank Account
     </div>
@@ -1759,7 +1704,7 @@
         收款銀行戶口
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         Funds will be transferred to the following bank account
         after receiving the Client's fund withdrawal instruction
@@ -1812,8 +1757,7 @@
         <div>{{ $D['地區及銀行代碼'] }}</div>
     </div>
 </div>
-<div class="page-break"></div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         E. Communication Method
     </div>
@@ -1821,7 +1765,7 @@
         通訊方式
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         Please choose the following method for the purpose of the
         Client's receiving confirmations, notices, message,
@@ -1846,7 +1790,7 @@
         Remarks 備註：{{ $E['備註'] }}
     </p>
 </div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         F. Direct Marketing (Please refer to Personal Information Collection Statement)
     </div>
@@ -1854,7 +1798,7 @@
         直接促銷（請參閱個人資料收集聲明）
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         <input type="checkbox" @if ($F['直接促銷']) checked @endif> The
         Client(s) expressly agree that CYSS shall use the
@@ -1873,8 +1817,8 @@
                 Any Channel 任何途徑
             </td>
             <td>
-                <input type="checkbox" @if ($F['電郵']) checked @endif>
-                E-mail 電郵
+                <input type="checkbox" @if ($F['快遞']) checked @endif>
+                Express Delivery 快遞
             </td>
             <td>
                 <input type="checkbox" @if ($F['郵件']) checked @endif> Mail
@@ -1898,11 +1842,11 @@
         客戶不欲中國銀盛將客戶的個人資料提供予任何其他人士作直接促銷用途。
     </p>
 </div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>G. Standing Authority for Client Money and Client Securities</div>
     <div>客戶款項及客戶證券的常設授權</div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. Unless otherwise defined, the terms used in this
         Authority shall have the same meanings as in the Securities
@@ -2231,17 +2175,20 @@
         this authority. 客戶就上述授權書的內容已獲得解釋，並且客戶明白及同意本授權書的內容。
     </p>
 </div>
-<table style="background-color: #AED6F1">
+<table class="normal-font" style="background-color: #AED6F1">
     <tr>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 個人/聯名帳戶主要持有人簽署
             </div>
             <div>
-                Signature of Individual/ Primary Joint Account Holder
+                Signature of Individual/Primary Joint Account Holder
+            </div>
+            <div style="text-align: center">
+                <img style="width: 200px" src="{{ $ClientSignature[0] }}" />
             </div>
         </td>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 聯名帳戶第二持有人簽署
             </div>
@@ -2269,7 +2216,7 @@
         </td>
     </tr>
 </table>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         H. Joint Account Mandate (Applicable to Joint Account Client only)
     </div>
@@ -2277,7 +2224,7 @@
         聯名帳戶開戶委託書 (只適用於聯名帳戶之客戶)
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. We hereby request and authorise CYSS to open the
         account(s) with CYSS in our joint names and at any time
@@ -2416,9 +2363,9 @@
         上列條文均適用於中國銀盛此次或日後代本人等開立之聯名戶口， 直至本人等以聯名簽署之書面通知取消為止。
     </p>
 </div>
-<table style="background-color: #AED6F1">
+<table class="normal-font" style="background-color: #AED6F1">
     <tr>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 個人/聯名帳戶主要持有人簽署
             </div>
@@ -2426,7 +2373,7 @@
                 Signature of Individual/ Primary Joint Account Holder
             </div>
         </td>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 聯名帳戶第二持有人簽署
             </div>
@@ -2438,24 +2385,24 @@
     <tr>
         <td class="border">
             <div>
-                Client's Name 客戶姓名：{{ $ClientNameC[0] }}
+                Client's Name 客戶姓名：
             </div>
             <div>
-                Date 日期：{{ $Date[0] }}
+                Date 日期：
             </div>
         </td>
         <td class="border">
             <div>
-                Client's Name 客戶姓名：{{ $ClientNameC[1] }}
+                Client's Name 客戶姓名：
             </div>
             <div>
-                Date 日期：{{ $Date[1] }}
+                Date 日期：
             </div>
         </td>
     </tr>
 </table>
 <div class="page-break"></div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         I. Declaration by Client(s)
     </div>
@@ -2463,7 +2410,7 @@
         客戶聲明
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. The undersigned Client(s) agree to open the above account(s) with CYSS.
         以下簽名之客戶（等）同意與中國銀盛開立上述帳戶。
@@ -2668,17 +2615,20 @@
         shall prevail. 如開戶表格之中英文版本文義有歧義，將以英文版本為準。
     </p>
 </div>
-<table style="background-color: #AED6F1">
+<table class="normal-font" style="background-color: #AED6F1">
     <tr>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 個人/聯名帳戶主要持有人簽署
             </div>
             <div>
-                Signature of Individual/ Primary Joint Account Holder
+                Signature of Individual/Primary Joint Account Holder
+            </div>
+            <div style="text-align: center">
+                <img style="width: 200px" src="{{ $ClientSignature[0] }}" />
             </div>
         </td>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 聯名帳戶第二持有人簽署
             </div>
@@ -2706,8 +2656,8 @@
         </td>
     </tr>
 </table>
-<div class="page-break"></div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+{{-- <div class="page-break"></div> --}}
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         J. FATCA Self-Certification (Individual Investor)
     </div>
@@ -2715,7 +2665,7 @@
         海外帳戶稅收合規法案聲明書（個人投資者）
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         1. Self-certification of U.S. tax residency by Individual Clients 美國稅務居民自我聲明
     </div>
@@ -2818,17 +2768,20 @@
         以上聲明有變更，將於30日內通知貴公司。
     </p>
 </div>
-<table style="background-color: #AED6F1">
+<table class="normal-font" style="background-color: #AED6F1">
     <tr>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 個人/聯名帳戶主要持有人簽署
             </div>
             <div>
-                Signature of Individual/ Primary Joint Account Holder
+                Signature of Individual/Primary Joint Account Holder
+            </div>
+            <div style="text-align: center">
+                <img style="width: 200px" src="{{ $ClientSignature[0] }}" />
             </div>
         </td>
-        <td class="border">
+        <td class="border" style="vertical-align: text-top">
             <div>
                 聯名帳戶第二持有人簽署
             </div>
@@ -2856,10 +2809,10 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="border normal-font">
     Witness 見證人
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>
         The undersigned hereby certify 以下簽署特此核證如下：
     </p>
@@ -2872,13 +2825,13 @@
         Client(s) 見證客戶的有關身份證明文件
     </p>
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td rowspan="3" class="border"
             style="width: 50%;vertical-align: text-top;text-align: center;background-color: #AED6F1;">
             Signature of Witness 見證人簽署
             <div>
-                <img src="{{ $Witness['Signature'] }}" />
+                <img style="width: 200px" src="{{ $Witness['Signature'] }}" />
             </div>
         </td>
         <td class="border" style="width: 25%">
@@ -2905,8 +2858,8 @@
         </td>
     </tr>
 </table>
-<div class="page-break"></div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+{{-- <div class="page-break"></div> --}}
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>
         K. Approval of Account Opening
     </div>
@@ -2914,10 +2867,10 @@
         開戶批核
     </div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>Declaration by China Yinsheng International Securities Limited Staff 中國銀盛國際證券有限公司職員聲明</p>
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>
         I, a licensed or registered person, hereby declare that I
         have provided the above Client with a copy of the Client
@@ -2947,8 +2900,8 @@
         品所涉及的風險，及客戶已完全明白其中所述之相關風險。
     </p>
 </div>
-<div class="page-break"></div>
-<table>
+{{-- <div class="page-break"></div> --}}
+<table class="normal-font">
     <tr>
         <td rowspan="3" class="border"
             style="width: 50%;vertical-align: text-top;text-align: center;background-color: #AED6F1;">
@@ -2979,19 +2932,19 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="border normal-font">
     <p>Account Opening Approved By 開戶批核</p>
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>China Yinsheng International Securities Limited 中國銀盛國際證券有限公司</p>
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td rowspan="3" class="border"
             style="width: 50%;vertical-align: text-top;text-align: center;background-color: #AED6F1;">
             <div>Authorized director(s)/Responsible Officer(s)'s Signature</div>
             <div>獲授權董事/負責人員簽署</div>
-            <img src="{{ $ResponsibleOfficer['Signature'] }}" />
+            <img style="width: 200px" src="{{ $ResponsibleOfficer['Signature'] }}" />
         </td>
         <td class="border" style="width: 25%">
             Name 姓名：
@@ -3015,12 +2968,12 @@
         </td>
     </tr>
 </table>
-<div class="page-break"></div>
-<div class="border" style="text-align: center;background-color: #AED6F1;">
+{{-- <div class="page-break"></div> --}}
+<div class="border normal-font" style="text-align: center;background-color: #AED6F1;">
     <div>For Offical Use Only</div>
     <div>只供本公司使用</div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>
         Name of Account Executive:
     </div>
@@ -3035,12 +2988,12 @@
         </tr>
     </table>
 </div>
-<div class="border">
+<div class="border normal-font">
     <p>
         Document reviewed by
     </p>
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td style="width: 33%" class="border">
             <p>
@@ -3139,12 +3092,12 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="border normal-font">
     <p>
         Credit/ Margin Limit
     </p>
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border" style="width: 33%">
             <p>
@@ -3160,12 +3113,12 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="border normal-font">
     <p>
         Limit Approved by
     </p>
 </div>
-<table>
+<table class="normal-font">
     <tr>
         <td class="border" style="width: 33%">
             <p>
@@ -3184,17 +3137,17 @@
         </td>
     </tr>
 </table>
-<div class="border">
+<div class="border normal-font">
     <p>
         Remarks
     </p>
 </div>
 <div class="page-break"></div>
-<div class="border" style="text-align: center;background-color:#AED6F1;">
+<div class="border normal-font" style="text-align: center;background-color:#AED6F1;">
     <div>Documentation Check List For Account Opening</div>
     <div>開立帳戶之文件核對表</div>
 </div>
-<div class="border">
+<div class="border normal-font">
     <div>重要事項：所有提交的文件如非正本，必須經認可人士或中國銀盛員工認證後，方為有效。</div>
     <div>Important note: All documents submitted must either be
         an original or a copy certified by a recognized person

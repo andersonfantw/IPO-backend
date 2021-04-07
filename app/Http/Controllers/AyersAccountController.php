@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\ClientAyersAccount;
+use App\Traits\Report;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class AyersAccountController extends Controller
 {
+    use Report;
+
     public function generate(Request $request)
     {
         $clients = $request->input('clients');
@@ -32,6 +36,8 @@ class AyersAccountController extends Controller
                     'account_no' => "{$account_no}13",
                     'type' => '全權委託賬戶',
                 ]);
+                $Client = Client::where('uuid', $client['uuid'])->first();
+                $this->AccountOpeningForm($Client);
             }
         }
         // return redirect()->route($request->input('redirect_route'));
