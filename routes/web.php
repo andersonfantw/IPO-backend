@@ -50,4 +50,4 @@ Route::any('/LoadNameCard', 'AuditClientController@loadNameCard')->name('LoadNam
 Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
-Route::any('/AccountOpeningForm', 'UnauditedList1Controller@test')->name('AccountOpeningForm');
+Route::any('/TestReport', 'UnauditedList1Controller@test')->name('TestReport');

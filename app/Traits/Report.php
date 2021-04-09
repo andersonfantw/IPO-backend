@@ -11,8 +11,21 @@ trait Report
 
     public function test()
     {
-        $Client = Client::where('uuid', '8c0dba01-9340-4690-971d-3659c6cbde0e')->first();
-        $this->AccountOpeningForm($Client);
+        // $Client = Client::where('uuid', '8c0dba01-9340-4690-971d-3659c6cbde0e')->first();
+        // $this->AccountOpeningForm($Client);
+        return $this->CyssDmaAgreement();
+    }
+
+    public function CyssDmaAgreement()
+    {
+        $logo = $this->imagePathToBase64(public_path('images/logo.png'));
+        $data = [
+            'logo' => $logo,
+        ];
+        // return view('pdf.CyssDmaAgreement', $data);
+        $pdf = PDF::loadView('pdf.CyssDmaAgreement', $data);
+        return $pdf->stream('CyssDmaAgreement.pdf');
+        // $pdf->save(storage_path("app/upload/$Client->uuid/CyssDmaAgreement.pdf"));
     }
 
     public function AccountOpeningForm(Client $Client)
@@ -21,6 +34,10 @@ trait Report
         $fund_source = json_decode($Client->clientFinancialStatus->fund_source, true);
         $direct_promotion = json_decode($Client->clientBusinessType->direct_promotion, true);
         $ClientSignature = $this->imagePathToBase64(storage_path("app/upload/$Client->uuid/signature.jpg"));
+        $Nationality = [
+            'zh-hk' => '中國香港',
+            'zh-cn' => '中國',
+        ];
         $data = [
             'logo' => $logo,
             'AccountNature' => '個人',
@@ -32,7 +49,7 @@ trait Report
             'ClientSignature' => [$ClientSignature, null],
             'Gender' => [$Client->IDCard->gender, null],
             'IDNo' => [$Client->IDCard->idcard_no, null],
-            'Nationality' => [$Client->nationality, null],
+            'Nationality' => [$Nationality[$Client->nationality], null],
             'EducationLevel' => [substr($Client->education_level, 0, 1), null],
             'FullResidentialAddress' => [$Client->ViewClientIDCard->address_line1, null],
             'Tel' => [null, null],
