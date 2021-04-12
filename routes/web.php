@@ -45,9 +45,12 @@ Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 
 Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
 Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
-Route::any('/LoadBankCard', 'AuditClientController@loadBankCard')->name('LoadBankCard');
+Route::any('/LoadHKBankCard', 'AuditClientController@loadHKBankCard')->name('LoadHKBankCard');
+Route::any('/LoadCNBankCard', 'AuditClientController@loadCNBankCard')->name('LoadCNBankCard');
 Route::any('/LoadNameCard', 'AuditClientController@loadNameCard')->name('LoadNameCard');
 Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
+Route::any('/LoadDepositProof', 'AuditClientController@loadDepositProof')->name('LoadDepositProof');
+Route::any('/LoadAddressProof', 'AuditClientController@loadAddressProof')->name('LoadAddressProof');
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
 Route::any('/TestReport', 'UnauditedList1Controller@test')->name('TestReport');

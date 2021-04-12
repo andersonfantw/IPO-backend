@@ -1,35 +1,80 @@
 <template>
   <form :action="action" method="POST">
-    <input type="hidden" name="uuid" v-model="uuid" />
+    <input type="hidden" name="uuid" v-model="Client.uuid" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
     <input type="hidden" name="next_status" v-model="next_status" />
     <table class="table table-bordered">
       <thead>
         <tr>
           <th scope="col" colspan="6">
-            <h4 class="mb-0">基礎信息</h4>
+            <h5 class="mb-0">基礎信息</h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="17%" scope="row">
-            <h5 class="mb-0">地區</h5>
+            <div class="mb-0">地區</div>
           </th>
           <td width="17%">
-            <h5 class="mb-0">{{ 地區map.get(地區) }}</h5>
+            <div class="mb-0">{{ 地區map.get(Client.nationality) }}</div>
           </td>
           <th width="17%">
-            <h5 class="mb-0">開通賬戶</h5>
+            <div class="mb-0">開通賬戶</div>
           </th>
           <td width="17%">
-            <h5 class="mb-0">證券（現金）賬戶</h5>
+            <div class="mb-0">證券（現金）賬戶</div>
           </td>
           <th width="17%">
-            <h5 class="mb-0">介紹人</h5>
+            <div class="mb-0">介紹人</div>
           </th>
           <td width="17%">
-            <h5 class="mb-0">{{ 介紹人 }}</h5>
+            <div class="mb-0">
+              {{ Introducer.name }} ({{ Introducer.type }})
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientAddressProof" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="3">
+            <h5 class="mb-0">住址證明</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <label class="mb-0" for="駁回住址證明">駁回</label
+              ><Checkbox
+                id="駁回住址證明"
+                class="ml-2"
+                v-model="駁回.住址證明"
+                :binary="true"
+              />
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%" scope="row">
+            <div class="mb-0">地址</div>
+          </th>
+          <td width="20%">
+            <div class="mb-0">{{ ClientAddressProof.address_text }}</div>
+          </td>
+          <td width="40%">
+            <img style="width: 400px" :src="address_proof" />
+          </td>
+          <td width="20%" rowspan="6">
+            <textarea
+              v-if="駁回.住址證明"
+              name="駁回住址證明"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="7"
+              v-model="ClientAddressProof.remark"
+            ></textarea>
           </td>
         </tr>
       </tbody>
@@ -38,10 +83,10 @@
       <thead>
         <tr>
           <th scope="col" colspan="4">
-            <h4 class="mb-0">身份證信息</h4>
+            <h5 class="mb-0">身份證信息</h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回身份證信息">駁回</label
               ><Checkbox
                 id="駁回身份證信息"
@@ -49,23 +94,23 @@
                 v-model="駁回.身份證信息"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="20%" scope="row">
-            <h5 class="mb-0">姓名</h5>
+            <div class="mb-0">姓名</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 姓名 }}</h5>
+            <div class="mb-0">{{ ClientIDCard.name_c }}</div>
           </td>
           <th width="20%">
-            <h5 class="mb-0">英文名</h5>
+            <div class="mb-0">英文名</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 英文名 }}</h5>
+            <div class="mb-0">{{ ClientIDCard.name_en }}</div>
           </td>
           <td width="20%" rowspan="6">
             <textarea
@@ -73,112 +118,137 @@
               name="駁回身份證信息"
               style="width: 100%"
               placeholder="請寫駁回理由"
-              v-model="idcard_remark"
+              v-model="ClientIDCard.remark"
               rows="10"
             ></textarea>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">性別</h5>
+            <div class="mb-0">性別</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 性別 }}</h5>
+            <div class="mb-0">{{ ClientIDCard.gender }}</div>
           </td>
           <th>
-            <h5 class="mb-0">手機號碼</h5>
+            <div class="mb-0">手機號碼</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 手機號碼 }}</h5>
+            <div class="mb-0">{{ Client.mobile }}</div>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">出生日期</h5>
+            <div class="mb-0">出生日期</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 出生日期 }}</h5>
+            <div class="mb-0">{{ ClientIDCard.birthday }}</div>
           </td>
           <th>
-            <h5 class="mb-0">證件類型</h5>
+            <div class="mb-0">證件類型</div>
           </th>
           <td>
-            <h5 class="mb-0">身份證</h5>
+            <div class="mb-0">{{ ClientIDCard.passport_type }}</div>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">住址</h5>
+            <div class="mb-0">住址</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 住址 }}</h5>
+            <div class="mb-0">{{ ClientIDCard.address_line1 }}</div>
           </td>
           <th>
-            <h5 class="mb-0">證件號碼</h5>
+            <div class="mb-0">證件號碼</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 證件號碼 }}</h5>
+            <div class="mb-0">{{ ClientIDCard.idcard_no }}</div>
           </td>
         </tr>
         <tr>
           <td colspan="2">
-            <img style="width: 400px" :src="idcard_face" />
+            <img style="width: 300px" :src="idcard_face" />
           </td>
           <td colspan="2">
-            <img style="width: 400px" :src="idcard_back" />
+            <img style="width: 300px" :src="idcard_back" />
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table
+      v-for="銀行卡 in 銀行卡s"
+      :key="銀行卡.id"
+      class="table table-bordered"
+    >
       <thead>
         <tr>
           <th scope="col" colspan="4">
-            <h4 class="mb-0">銀行卡信息</h4>
+            <h5 v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡信息</h5>
+            <h5 v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              大陸銀行卡信息
+            </h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
-              <label class="mb-0" for="駁回銀行卡信息">駁回</label>
+            <h5 class="mb-0">
+              <label class="mb-0" :for="'駁回' + 銀行卡.lcid + '銀行卡信息'"
+                >駁回</label
+              >
               <Checkbox
-                id="駁回銀行卡信息"
+                :id="'駁回' + 銀行卡.lcid + '銀行卡信息'"
                 class="ml-2"
-                v-model="駁回.銀行卡信息"
+                v-model="駁回[銀行卡.lcid + '銀行卡信息']"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="20%" scope="row">
-            <h5 class="mb-0">銀行</h5>
+            <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行名</div>
+            <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              大陸銀行名
+            </div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 銀行 }}</h5>
+            <div class="mb-0">
+              {{ 銀行卡.bank_name }} ({{ 銀行卡.bank_code }})
+            </div>
           </td>
           <th width="20%">
-            <h5 class="mb-0">銀行卡號</h5>
+            <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡號</div>
+            <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              大陸銀行卡號
+            </div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 銀行卡號 }}</h5>
+            <div class="mb-0">{{ 銀行卡.account_no }}</div>
           </td>
           <td width="20%" rowspan="2">
             <textarea
-              v-if="駁回.銀行卡信息"
-              name="駁回銀行卡信息"
+              v-if="駁回[銀行卡.lcid + '銀行卡信息']"
+              :name="'駁回' + 銀行卡.lcid + '銀行卡信息'"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="10"
-              v-model="bankcard_remark"
+              v-model="銀行卡.remark"
             ></textarea>
           </td>
         </tr>
         <tr>
-          <td colspan="2">
-            <img style="width: 400px" :src="backcard_face" />
+          <td colspan="4">
+            <img
+              v-if="銀行卡.lcid == 'zh-hk'"
+              style="width: 300px"
+              :src="hk_backcard_face"
+            />
+            <img
+              v-else-if="銀行卡.lcid == 'zh-cn'"
+              style="width: 300px"
+              :src="cn_backcard_face"
+            />
           </td>
-          <td colspan="2"></td>
         </tr>
       </tbody>
     </table>
@@ -186,10 +256,10 @@
       <thead>
         <tr>
           <th scope="col" colspan="4">
-            <h4 class="mb-0">客戶補充資料</h4>
+            <h5 class="mb-0">客戶補充資料</h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回客戶補充資料">駁回</label
               ><Checkbox
                 id="駁回客戶補充資料"
@@ -197,17 +267,17 @@
                 v-model="駁回.客戶補充資料"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="20%" scope="row">
-            <h5 class="mb-0">教育程度</h5>
+            <div class="mb-0">教育程度</div>
           </th>
           <td colspan="3">
-            <h5 class="mb-0">{{ 教育程度 }}</h5>
+            <div class="mb-0">{{ Client.education_level }}</div>
           </td>
           <td width="20%" rowspan="2">
             <textarea
@@ -216,7 +286,7 @@
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="3"
-              v-model="Client_remark"
+              v-model="Client.remark"
             ></textarea>
           </td>
         </tr>
@@ -226,10 +296,10 @@
       <thead>
         <tr>
           <th scope="col" colspan="4">
-            <h4 class="mb-0">工作狀態</h4>
+            <h5 class="mb-0">工作狀態</h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回工作狀態">駁回</label
               ><Checkbox
                 id="駁回工作狀態"
@@ -237,23 +307,23 @@
                 v-model="駁回.工作狀態"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="20%" scope="row">
-            <h5 class="mb-0">工作狀態</h5>
+            <div class="mb-0">工作狀態</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 工作狀態 }}</h5>
+            <div class="mb-0">{{ ClientWorkingStatus.working_status }}</div>
           </td>
           <th width="20%" scope="row">
-            <h5 class="mb-0">雇主名稱</h5>
+            <div class="mb-0">雇主名稱</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 雇主名稱 }}</h5>
+            <div class="mb-0">{{ ClientWorkingStatus.company_name }}</div>
           </td>
           <td width="20%" rowspan="4">
             <textarea
@@ -262,44 +332,42 @@
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="10"
-              v-model="working_status_remark"
+              v-model="ClientWorkingStatus.remark"
             ></textarea>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">公司電話</h5>
+            <div class="mb-0">公司電話</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 公司電話 }}</h5>
+            <div class="mb-0">{{ ClientWorkingStatus.company_tel }}</div>
           </td>
           <th scope="row">
-            <h5 class="mb-0">公司地址</h5>
+            <div class="mb-0">公司地址</div>
+          </th>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <div class="mb-0">業務性質</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 公司地址 }}</h5>
+            <div class="mb-0">{{ ClientWorkingStatus.industry }}</div>
+          </td>
+          <th scope="row">
+            <div class="mb-0">職位</div>
+          </th>
+          <td>
+            <div class="mb-0">{{ ClientWorkingStatus.position }}</div>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">業務性質</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">{{ 業務性質 }}</h5>
-          </td>
-          <th scope="row">
-            <h5 class="mb-0">職位</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">{{ 職位 }}</h5>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">
-            <h5 class="mb-0">名片</h5>
+            <div class="mb-0">名片</div>
           </th>
           <td colspan="3">
-            <img style="width: 400px" :src="name_card_face" />
+            <img style="width: 300px" :src="name_card_face" />
           </td>
         </tr>
       </tbody>
@@ -308,10 +376,10 @@
       <thead>
         <tr>
           <th scope="col" colspan="4">
-            <h4 class="mb-0">財政狀況</h4>
+            <h5 class="mb-0">財政狀況</h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回財政狀況">駁回</label
               ><Checkbox
                 id="駁回財政狀況"
@@ -319,23 +387,25 @@
                 v-model="駁回.財政狀況"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="20%" scope="row">
-            <h5 class="mb-0">資金來源</h5>
+            <div class="mb-0">資金來源</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 資金來源 }}</h5>
+            <div class="mb-0">{{ ClientFinancialStatus.fund_source }}</div>
           </td>
           <th width="20%" scope="row">
-            <h5 class="mb-0">其他資金來源</h5>
+            <div class="mb-0">其他資金來源</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 其他資金來源 }}</h5>
+            <div class="mb-0">
+              {{ ClientFinancialStatus.other_fund_source }}
+            </div>
           </td>
           <td width="20%" rowspan="3">
             <textarea
@@ -344,36 +414,32 @@
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="5"
-              v-model="financial_status_remark"
+              v-model="ClientFinancialStatus.remark"
             ></textarea>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">每年收入(港元)</h5>
+            <div class="mb-0">每年收入(港元)</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 每年收入 }}</h5>
+            <div class="mb-0">{{ ClientFinancialStatus.annual_income }}</div>
           </td>
           <th scope="row">
-            <h5 class="mb-0">資產項目</h5>
+            <div class="mb-0">資產項目</div>
           </th>
-          <td>
-            <h5 class="mb-0">{{ 資產項目 }}</h5>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">其他資產</h5>
+            <div class="mb-0">其他資產</div>
           </th>
-          <td>
-            <h5 class="mb-0">{{ 其他資產 }}</h5>
-          </td>
+          <td></td>
           <th scope="row">
-            <h5 class="mb-0">資產淨值</h5>
+            <div class="mb-0">資產淨值</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 資產淨值 }}</h5>
+            <div class="mb-0">{{ ClientFinancialStatus.net_assets }}</div>
           </td>
         </tr>
       </tbody>
@@ -382,10 +448,10 @@
       <thead>
         <tr>
           <th scope="col" colspan="4">
-            <h4 class="mb-0">投資經驗及衍生產品認識</h4>
+            <h5 class="mb-0">投資經驗及衍生產品認識</h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回投資經驗及衍生產品認識">駁回</label
               ><Checkbox
                 id="駁回投資經驗及衍生產品認識"
@@ -393,23 +459,25 @@
                 v-model="駁回.投資經驗及衍生產品認識"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th width="20%" scope="row">
-            <h5 class="mb-0">投資目標</h5>
+            <div class="mb-0">投資目標</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 投資目標 }}</h5>
+            <div class="mb-0">
+              {{ ClientInvestmentExperience.investment_objective }}
+            </div>
           </td>
           <th width="20%" scope="row">
-            <h5 class="mb-0">股票</h5>
+            <div class="mb-0">股票</div>
           </th>
           <td width="20%">
-            <h5 class="mb-0">{{ 股票 }}</h5>
+            <div class="mb-0">{{ ClientInvestmentExperience.stock }}</div>
           </td>
           <td width="20%" rowspan="4">
             <textarea
@@ -418,51 +486,53 @@
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="5"
-              v-model="investment_experience_remark"
+              v-model="ClientInvestmentExperience.remark"
             ></textarea>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">衍生認股證</h5>
+            <div class="mb-0">衍生認股證</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 衍生認股證 }}</h5>
+            <div class="mb-0">
+              {{ ClientInvestmentExperience.derivative_warrants }}
+            </div>
           </td>
           <th scope="row">
-            <h5 class="mb-0">牛熊證</h5>
+            <div class="mb-0">牛熊證</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 牛熊證 }}</h5>
+            <div class="mb-0">{{ ClientInvestmentExperience.cbbc }}</div>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">期貨及期權</h5>
+            <div class="mb-0">期貨及期權</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 期貨及期權 }}</h5>
+            <div class="mb-0">
+              {{ ClientInvestmentExperience.futures_and_options }}
+            </div>
           </td>
           <th scope="row">
-            <h5 class="mb-0">債券/基金</h5>
+            <div class="mb-0">債券/基金</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 債券基金 }}</h5>
+            <div class="mb-0">{{ ClientInvestmentExperience.bonds_funds }}</div>
           </td>
         </tr>
         <tr>
           <th scope="row">
-            <h5 class="mb-0">其他投資經驗</h5>
+            <div class="mb-0">其他投資經驗</div>
           </th>
           <td>
-            <h5 class="mb-0">{{ 其他投資經驗 }}</h5>
+            <div class="mb-0">
+              {{ ClientInvestmentExperience.other_investment_experience }}
+            </div>
           </td>
-          <th scope="row">
-            <h5 class="mb-0">是否有意進行衍生產品投資?</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">{{ 是否有意進行衍生產品投資 }}</h5>
-          </td>
+          <th scope="row"></th>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -470,85 +540,51 @@
       <thead>
         <tr>
           <th colspan="2" scope="col">
-            <h4 class="mb-0">問題</h4>
+            <h5 class="mb-0">問題</h5>
           </th>
           <th colspan="2" scope="col">
-            <h4 class="mb-0">答案</h4>
+            <h5 class="mb-0">答案</h5>
           </th>
           <th colspan="2" scope="col">
-            <h4 class="mb-0">分數</h4>
+            <h5 class="mb-0">分數</h5>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th colspan="2" width="33%" scope="row">
-            <h5 class="mb-0">你現時的歲數是?</h5>
+        <tr v-for="[key, value] of Object.entries(ClientScore)" :key="key">
+          <th colspan="3" width="40%" scope="row">
+            <div class="mb-0">{{ value.question_text }}?</div>
           </th>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ age }}</h5>
+          <td colspan="3" width="40%">
+            <div class="mb-0">{{ value.answer }}</div>
           </td>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ ageToScore(age) }}</h5>
+          <td colspan="3" width="20%">
+            <div class="mb-0">{{ value.score }}</div>
           </td>
         </tr>
         <tr>
-          <th colspan="2" width="33%" scope="row">
-            <h5 class="mb-0">你的教育程度是?</h5>
+          <th scope="row">
+            <h5 class="mb-0">評估結果</h5>
           </th>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ 教育程度 }}</h5>
-          </td>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ score(教育程度) }}</h5>
-          </td>
-        </tr>
-        <tr>
-          <th colspan="2" width="33%" scope="row">
+          <td>
             <h5 class="mb-0">
-              你有多少年投資經驗(不包括儲蓄、定期儲蓄及外幣儲蓄)?
-            </h5>
-          </th>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ 你有多少年投資經驗 }}</h5>
-          </td>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ score(你有多少年投資經驗) }}</h5>
-          </td>
-        </tr>
-        <tr v-for="問卷 in 問卷調查" :key="問卷.id">
-          <th colspan="2" width="33%" scope="row">
-            <h5 class="mb-0">{{ 問卷.question_text }}?</h5>
-          </th>
-          <td colspan="2" width="33%">
-            <h5 class="mb-0">{{ 問卷.answer }}</h5>
-          </td>
-          <td colspan="2" width="33%">
-            <h5
-              v-if="問卷.question_text != '沒有任何衍生産品知識及經驗'"
-              class="mb-0"
-            >
-              {{ answerToScore(問卷.answer) }}
-            </h5>
-          </td>
-        </tr>
-        <tr>
-          <th width="17%" scope="row">
-            <h4 class="mb-0">評估結果</h4>
-          </th>
-          <td width="17%">
-            <h4 class="mb-0">
               {{ 評估結果 }}
-            </h4>
+            </h5>
           </td>
-          <th width="17%" scope="row">
-            <h4 class="mb-0">投資者特徵</h4>
+          <th scope="row">
+            <h5 class="mb-0">投資者特徵</h5>
           </th>
-          <td width="17%">
-            <h4 class="mb-0">{{ 投資者特徵 }}</h4>
+          <td>
+            <h5 class="mb-0">{{ 投資者特徵 }}</h5>
           </td>
-          <td rowspan="2" width="17%">
-            <h4 class="mb-0">
+          <th scope="row">
+            <h5 class="mb-0">風險承受程度</h5>
+          </th>
+          <td>
+            <h5 class="mb-0">{{ 風險承受程度 }}</h5>
+          </td>
+          <td rowspan="2" width="20%">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回問卷調查">駁回</label
               ><Checkbox
                 id="駁回問卷調查"
@@ -556,29 +592,31 @@
                 v-model="駁回.問卷調查"
                 :binary="true"
               />
-            </h4>
+            </h5>
             <textarea
               v-if="駁回.問卷調查"
               name="駁回問卷調查"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="3"
-              v-model="evaluation_results_remark"
+              v-model="ClientEvaluationResults.remark"
             ></textarea>
           </td>
         </tr>
         <tr>
-          <th width="17%" scope="row">
-            <h4 class="mb-0">風險承受程度</h4>
+          <th scope="row">
+            <h5 class="mb-0">用戶是否同意</h5>
           </th>
-          <td width="17%">
-            <h4 class="mb-0">{{ 風險承受程度 }}</h4>
+          <td>
+            <h5 class="mb-0">{{ 用戶是否同意 }}</h5>
           </td>
-          <th width="17%" scope="row">
-            <h4 class="mb-0">用戶是否同意</h4>
+          <th scope="row">
+            <h5 class="mb-0">投資者同意的特徵</h5>
           </th>
-          <td width="17%">
-            <h4 class="mb-0">{{ computed用戶是否同意 }}</h4>
+          <td>
+            <h5 class="mb-0">
+              {{ ClientEvaluationResults.investor_characteristics }}
+            </h5>
           </td>
         </tr>
       </tbody>
@@ -587,10 +625,10 @@
       <thead>
         <tr>
           <th colspan="4" scope="col">
-            <h4 class="mb-0">簽名</h4>
+            <h5 class="mb-0">簽名</h5>
           </th>
           <th scope="col">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <label class="mb-0" for="駁回簽名">駁回</label
               ><Checkbox
                 id="駁回簽名"
@@ -598,13 +636,13 @@
                 v-model="駁回.簽名"
                 :binary="true"
               />
-            </h4>
+            </h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <td colspan="4">
-          <img style="width: 400px" :src="簽名" />
+          <img style="width: 300px" :src="ClientSignature.image" />
         </td>
         <td width="20%">
           <textarea
@@ -613,7 +651,7 @@
             style="width: 100%"
             placeholder="請寫駁回理由"
             rows="10"
-            v-model="signature_remark"
+            v-model="ClientSignature.remark"
           ></textarea>
         </td>
       </tbody>
@@ -621,11 +659,85 @@
     <table class="table table-bordered">
       <tbody>
         <th width="17%">
-          <h4 class="mb-0">直接促銷</h4>
+          <h5 class="mb-0">直接促銷</h5>
         </th>
         <td>
-          <h4 class="mb-0">{{ 直接促銷 }}</h4>
+          <h5 class="mb-0">{{ ClientBusinessType.direct_promotion }}</h5>
         </td>
+      </tbody>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="4" scope="col">
+            <h5 class="mb-0">存款證明</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <label class="mb-0" for="駁回存款證明">駁回</label
+              ><Checkbox
+                id="駁回存款證明"
+                class="ml-2"
+                v-model="駁回.存款證明"
+                :binary="true"
+              />
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">
+            <div class="mb-0">入金帳戶</div>
+          </th>
+          <td>
+            {{ ClientDepositProof.deposit_account }}
+          </td>
+          <th scope="row">
+            <div class="mb-0">入金金額</div>
+          </th>
+          <td>HK${{ ClientDepositProof.deposit_amount }}</td>
+          <td width="20%" rowspan="3">
+            <textarea
+              v-if="駁回.存款證明"
+              name="駁回存款證明"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="10"
+              v-model="ClientDepositProof.remark"
+            ></textarea>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <div class="mb-0">入金銀行</div>
+          </th>
+          <td>
+            {{ ClientDepositProof.deposit_bank }}
+          </td>
+          <th scope="row">
+            <div class="mb-0">入金方法</div>
+          </th>
+          <td>
+            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
+              {{ ClientDepositProof.other_deposit_method }}
+            </div>
+            <div v-else class="mb-0">
+              {{ ClientDepositProof.deposit_method }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <img style="width: 400px" :src="deposit_proof" />
+          </td>
+          <th scope="row">
+            <div class="mb-0">轉帳時間</div>
+          </th>
+          <td>
+            {{ ClientDepositProof.transfer_time }}
+          </td>
+        </tr>
       </tbody>
     </table>
     <Button type="submit" label="提交審核" icon="pi pi-check" iconPos="right" />
@@ -644,122 +756,106 @@ export default {
       data: null,
       selectedClients: null,
       地區map: new Map(),
-      評估結果: 0,
       駁回: {
         身份證信息: false,
-        銀行卡信息: false,
+        "zh-hk銀行卡信息": false,
+        "zh-cn銀行卡信息": false,
         客戶補充資料: false,
         工作狀態: false,
         財政狀況: false,
         投資經驗及衍生產品認識: false,
         問卷調查: false,
         簽名: false,
+        住址證明: false,
+        存款證明: false,
       },
+      Client: null,
+      ClientIDCard: null,
+      ClientAddressProof: null,
+      ClientWorkingStatus: null,
+      ClientFinancialStatus: null,
+      ClientInvestmentExperience: null,
+      ClientScore: {},
+      ClientEvaluationResults: null,
+      ClientSignature: null,
+      ClientBusinessType: null,
+      ClientDepositProof: null,
+      Introducer: null,
     };
   },
   components: { Button, InputSwitch, Checkbox },
   props: {
-    uuid: String,
-    地區: String,
-    介紹人: String,
-    姓名: String,
-    英文名: String,
-    性別: String,
-    手機號碼: String,
-    出生日期: String,
-    住址: String,
-    證件號碼: String,
+    client: String,
+    client_id_card: String,
+    client_address_proof: String,
     idcard_face: String,
     idcard_back: String,
-    銀行: String,
-    銀行卡號: String,
-    backcard_face: String,
-    教育程度: String,
-    工作狀態: String,
-    雇主名稱: String,
-    公司電話: String,
-    公司地址: String,
-    業務性質: String,
-    服務年資: String,
-    職位: String,
+    銀行卡s: Array,
+    hk_backcard_face: String,
+    cn_backcard_face: String,
+    client_working_status: String,
     name_card_face: String,
-    資金來源: String,
-    其他資金來源: String,
-    每年收入: String,
-    資產項目: String,
-    其他資產: String,
-    資產淨值: String,
-    投資目標: String,
-    股票: String,
-    衍生認股證: String,
-    牛熊證: String,
-    期貨及期權: String,
-    債券基金: String,
-    其他投資經驗: String,
-    是否有意進行衍生產品投資: String,
-    問卷調查: Array,
-    用戶是否同意: Number,
-    簽名: String,
-    直接促銷: String,
+    client_financial_status: String,
+    client_investment_experience: String,
+    client_score: Array,
+    client_evaluation_results: String,
+    client_signature: String,
+    client_business_type: String,
+    client_deposit_proof: String,
+    address_proof: String,
+    deposit_proof: String,
+    introducer: String,
     action: String,
     redirect_route: String,
     next_status: String,
-    Client_remark: String,
-    idcard_remark: String,
-    bankcard_remark: String,
-    working_status_remark: String,
-    financial_status_remark: String,
-    investment_experience_remark: String,
-    evaluation_results_remark: String,
-    signature_remark: String,
   },
   created() {
-    this.地區map.set("zh-hk", "香港");
-    this.地區map.set("zh-cn", "中國");
-    this.問卷調查.forEach((問卷) => {
-      if (問卷.question_text != "沒有任何衍生産品知識及經驗") {
-        this.評估結果 += this.answerToScore(問卷.answer);
+    this.Client = JSON.parse(this.client);
+    this.ClientIDCard = JSON.parse(this.client_id_card);
+    this.ClientAddressProof = JSON.parse(this.client_address_proof);
+    this.ClientWorkingStatus = JSON.parse(this.client_working_status);
+    this.ClientFinancialStatus = JSON.parse(this.client_financial_status);
+    this.ClientInvestmentExperience = JSON.parse(
+      this.client_investment_experience
+    );
+    let self = this;
+    this.client_score.forEach((score) => {
+      let old_score = self.ClientScore[score.question_text];
+      if (old_score) {
+        if (score.score > old_score.score) {
+          self.ClientScore[score.question_text] = score;
+        }
+      } else {
+        self.ClientScore[score.question_text] = score;
       }
     });
-    this.評估結果 +=
-      this.score(this.你有多少年投資經驗) + this.score(this.教育程度);
-    this.駁回.身份證信息 = this.idcard_remark ? true : false;
-    this.駁回.銀行卡信息 = this.bankcard_remark ? true : false;
-    this.駁回.客戶補充資料 = this.Client_remark ? true : false;
-    this.駁回.工作狀態 = this.working_status_remark ? true : false;
-    this.駁回.財政狀況 = this.financial_status_remark ? true : false;
-    this.駁回.投資經驗及衍生產品認識 = this.investment_experience_remark
+    this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
+    this.ClientSignature = JSON.parse(this.client_signature);
+    this.ClientBusinessType = JSON.parse(this.client_business_type);
+    this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+    this.Introducer = JSON.parse(this.introducer);
+    this.地區map.set("zh-hk", "香港");
+    this.地區map.set("zh-cn", "中國");
+    this.駁回.身份證信息 = this.ClientIDCard.remark ? true : false;
+    this.銀行卡s.forEach((銀行卡) => {
+      this.駁回[銀行卡.lcid + "銀行卡信息"] = 銀行卡.remark ? true : false;
+    });
+    this.駁回.客戶補充資料 = this.Client.remark ? true : false;
+    this.駁回.工作狀態 = this.ClientWorkingStatus.remark ? true : false;
+    this.駁回.財政狀況 = this.ClientFinancialStatus.remark ? true : false;
+    this.駁回.投資經驗及衍生產品認識 = this.ClientInvestmentExperience.remark
       ? true
       : false;
-    this.駁回.問卷調查 = this.evaluation_results_remark ? true : false;
-    this.駁回.簽名 = this.signature_remark ? true : false;
+    this.駁回.問卷調查 = this.ClientEvaluationResults.remark ? true : false;
+    this.駁回.簽名 = this.ClientSignature.remark ? true : false;
+    this.駁回.住址證明 = this.ClientAddressProof.remark ? true : false;
+    this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
   },
   computed: {
-    age() {
-      let date1 = new Date(this.出生日期);
-      let date2 = new Date();
-      let Difference_In_Time = date2.getTime() - date1.getTime();
-      let Difference_In_Years = Difference_In_Time / (1000 * 3600 * 24) / 365;
-      return Math.floor(Difference_In_Years);
-    },
-    你有多少年投資經驗() {
-      let score = 0;
-      let result = null;
-      if (this.score(this.股票) > score) {
-        score = this.score(this.股票);
-        result = this.股票;
-      } else if (this.score(this.衍生認股證) > score) {
-        score = this.score(this.衍生認股證);
-        result = this.衍生認股證;
-      } else if (this.score(this.牛熊證) > score) {
-        score = this.score(this.牛熊證);
-        result = this.牛熊證;
-      } else if (this.score(this.期貨及期權) > score) {
-        score = this.score(this.期貨及期權);
-        result = this.期貨及期權;
-      } else if (this.score(this.債券基金) > score) {
-        score = this.score(this.債券基金);
-        result = this.債券基金;
+    評估結果() {
+      let result = 0;
+      for (const [key, value] of Object.entries(this.ClientScore)) {
+        result += value.score;
       }
       return result;
     },
@@ -789,72 +885,10 @@ export default {
         return "高";
       }
     },
-    computed用戶是否同意() {
-      return this.用戶是否同意 ? "是" : "否";
+    用戶是否同意() {
+      return this.ClientEvaluationResults.agree ? "是" : "否";
     },
   },
-  methods: {
-    score(answer) {
-      let A = /^A/i;
-      let B = /^B/i;
-      let C = /^C/i;
-      let D = /^D/i;
-      let E = /^E/i;
-      let 是 = /是/i;
-      let 否 = /否/i;
-      if (A.test(answer)) {
-        return 5;
-      } else if (B.test(answer)) {
-        return 4;
-      } else if (C.test(answer)) {
-        return 3;
-      } else if (D.test(answer)) {
-        return 2;
-      } else if (E.test(answer)) {
-        return 1;
-      } else if (是.test(answer)) {
-        return 1;
-      } else if (否.test(answer)) {
-        return 0;
-      }
-    },
-    ageToScore(age) {
-      if (age >= 18 && age <= 25) {
-        return 5;
-      } else if (age >= 26 && age <= 35) {
-        return 4;
-      } else if (age >= 36 && age <= 50) {
-        return 3;
-      } else if (age >= 51 && age <= 65) {
-        return 2;
-      } else if (age > 65) {
-        return 1;
-      }
-    },
-    answerToScore(answer) {
-      if (this.isJson(answer)) {
-        let E = /^E/i;
-        answer = JSON.parse(answer);
-        let score = 0;
-        answer.forEach((element) => {
-          if (!E.test(element)) {
-            score += 2;
-          }
-        });
-        return score;
-      } else {
-        let score = this.score(answer);
-        return score;
-      }
-    },
-    isJson(str) {
-      try {
-        JSON.parse(str);
-      } catch (e) {
-        return false;
-      }
-      return true;
-    },
-  },
+  methods: {},
 };
 </script>

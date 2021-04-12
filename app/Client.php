@@ -25,6 +25,21 @@ class Client extends Model
         'editable',
     ];
 
+    public function EditableSteps()
+    {
+        return $this->hasMany('App\EditableSteps', 'uuid', 'uuid')->orderBy('step', 'asc');
+    }
+
+    public function ViewIntroducer()
+    {
+        return $this->hasOne('App\ViewIntroducer', 'uuid', 'introducer_uuid');
+    }
+
+    public function ViewClientScore()
+    {
+        return $this->hasMany('App\ViewClientScore', 'uuid', 'uuid')->orderBy('order', 'asc');
+    }
+
     public function ViewClientIDCard()
     {
         return $this->hasOne('App\ViewClientIDCard', 'uuid', 'uuid');
@@ -35,22 +50,22 @@ class Client extends Model
         return $this->hasOne('App\ViewClientQuestionnaire', 'uuid', 'uuid');
     }
 
-    public function clientHKIDCard()
+    public function ClientHKIDCard()
     {
         return $this->hasOne('App\ClientHKIDCard', 'uuid', 'uuid');
     }
 
-    public function clientDepositProof()
+    public function ClientDepositProof()
     {
         return $this->hasOne('App\ClientDepositProof', 'uuid', 'uuid');
     }
 
-    public function clientAddressProof()
+    public function ClientAddressProof()
     {
         return $this->hasOne('App\ClientAddressProof', 'uuid', 'uuid');
     }
 
-    public function clientCNIDCard()
+    public function ClientCNIDCard()
     {
         return $this->hasOne('App\ClientCNIDCard', 'uuid', 'uuid');
     }
@@ -60,42 +75,42 @@ class Client extends Model
         return $this->morphTo(__FUNCTION__, 'idcard_type', 'uuid', 'uuid');
     }
 
-    public function clientBankCard()
+    public function ClientBankCards()
     {
-        return $this->hasOne('App\ClientBankCard', 'uuid', 'uuid');
+        return $this->hasMany('App\ClientBankCard', 'uuid', 'uuid');
     }
 
-    public function clientWorkingStatus()
+    public function ClientWorkingStatus()
     {
         return $this->hasOne('App\ClientWorkingStatus', 'uuid', 'uuid');
     }
 
-    public function clientFinancialStatus()
+    public function ClientFinancialStatus()
     {
         return $this->hasOne('App\ClientFinancialStatus', 'uuid', 'uuid');
     }
 
-    public function clientInvestmentExperience()
+    public function ClientInvestmentExperience()
     {
         return $this->hasOne('App\ClientInvestmentExperience', 'uuid', 'uuid');
     }
 
-    public function clientInvestmentOrientation()
+    public function ClientInvestmentOrientation()
     {
         return $this->hasMany('App\ClientInvestmentOrientation', 'uuid', 'uuid')->orderBy('id', 'asc');
     }
 
-    public function clientEvaluationResults()
+    public function ClientEvaluationResults()
     {
         return $this->hasOne('App\ClientEvaluationResults', 'uuid', 'uuid');
     }
 
-    public function clientSignature()
+    public function ClientSignature()
     {
         return $this->hasOne('App\ClientSignature', 'uuid', 'uuid');
     }
 
-    public function clientBusinessType()
+    public function ClientBusinessType()
     {
         return $this->hasOne('App\ClientBusinessType', 'uuid', 'uuid');
     }

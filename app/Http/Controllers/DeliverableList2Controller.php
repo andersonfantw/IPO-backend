@@ -65,15 +65,15 @@ class DeliverableList2Controller extends HomeController
             $query->where('status', 'audited2');
         })->whereHas('clientBankCard', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('clientWorkingStatus', function (Builder $query) {
+        })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('clientFinancialStatus', function (Builder $query) {
+        })->whereHas('ClientFinancialStatus', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('clientInvestmentExperience', function (Builder $query) {
+        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('clientEvaluationResults', function (Builder $query) {
+        })->whereHas('ClientEvaluationResults', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('clientSignature', function (Builder $query) {
+        })->whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'audited2');
         })->where('status', 'audited2')->orderBy('created_at', 'desc')->get();
         $rows = [];

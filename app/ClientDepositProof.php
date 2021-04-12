@@ -17,6 +17,9 @@ class ClientDepositProof extends Model
         'other_deposit_method',
         'transfer_time',
         'timezone',
+        'status',
+        'remark',
+        'count_of_audits',
         'editable',
     ];
 }

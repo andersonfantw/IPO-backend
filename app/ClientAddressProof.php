@@ -12,6 +12,9 @@ class ClientAddressProof extends Model
         'image',
         'detailed_address',
         'address_text',
+        'status',
+        'remark',
+        'count_of_audits',
         'editable',
     ];
 }

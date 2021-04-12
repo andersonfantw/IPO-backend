@@ -50,29 +50,29 @@ class UnauditedList2Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('clientBusinessType')->whereHasMorph('IDCard', [
+        $Clients = Client::has('ClientBusinessType')->whereHasMorph('IDCard', [
             ClientCNIDCard::class,
             ClientHKIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'audited1');
         })->whereHas('clientBankCard', function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('clientWorkingStatus', function (Builder $query) {
+        })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('clientFinancialStatus', function (Builder $query) {
+        })->whereHas('ClientFinancialStatus', function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('clientInvestmentExperience', function (Builder $query) {
+        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('clientEvaluationResults', function (Builder $query) {
+        })->whereHas('ClientEvaluationResults', function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('clientSignature', function (Builder $query) {
+        })->whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'audited1');
         })->where('status', 'audited1')->orderBy('created_at', 'desc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
             foreach ($this->columnNames as $columnKey => $columnName) {
-                $row['是否上传收据'] = $Client->clientDepositProof ? '已上传收据' : '未上传收据';
+                $row['是否上传收据'] = $Client->ClientDepositProof ? '已上传收据' : '未上传收据';
                 if ($Client->idcard_type == ClientHKIDCard::class) {
                     $row['客户姓名'] = $Client->IDCard->name_c;
                     $row['证件号码'] = $Client->IDCard->idcard_no;
@@ -82,8 +82,8 @@ class UnauditedList2Controller extends HomeController
                     $row['所在地'] = $Client->IDCard->idcard_address;
                 }
                 $row['手机号码'] = $Client->mobile;
-                if ($Client->clientAddressProof) {
-                    $row['所在地'] = $Client->clientAddressProof->address_text;
+                if ($Client->ClientAddressProof) {
+                    $row['所在地'] = $Client->ClientAddressProof->address_text;
                 }
                 $row['邮箱'] = $Client->email;
                 $row['提交时间'] = date_format($Client->created_at, "Y-m-d H:i:s");

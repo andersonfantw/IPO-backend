@@ -44,7 +44,7 @@
     <br />(中央編號 CE No. : ADJ147)
 </p>
 <p class="normal-font">
-    (如適用請加"✔＂Please"✔" as appropriate)
+    (如適用請加"✔" Please"✔" as appropriate)
 </p>
 <table class="border normal-font">
     <tr>

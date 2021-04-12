@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class RejectedList1Controller extends HomeController
@@ -50,29 +49,12 @@ class RejectedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhereHas('clientBankCard', function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhereHas('clientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhereHas('clientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhereHas('clientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhereHas('clientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhereHas('clientSignature', function (Builder $query) {
-            $query->where('status', 'rejected');
-        })->orWhere('status', 'rejected')->orderBy('created_at', 'desc')->get();
+        $Clients = Client::has('EditableSteps')->orderBy('created_at', 'desc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
             foreach ($this->columnNames as $columnKey => $columnName) {
-                $row['是否上传收据'] = $Client->clientDepositProof ? '已上传收据' : '未上传收据';
+                $row['是否上传收据'] = $Client->ClientDepositProof ? '已上传收据' : '未上传收据';
                 if ($Client->idcard_type == ClientHKIDCard::class) {
                     $row['客户姓名'] = $Client->IDCard->name_c;
                     $row['证件号码'] = $Client->IDCard->idcard_no;
@@ -82,8 +64,8 @@ class RejectedList1Controller extends HomeController
                     $row['所在地'] = $Client->IDCard->idcard_address;
                 }
                 $row['手机号码'] = $Client->mobile;
-                if ($Client->clientAddressProof) {
-                    $row['所在地'] = $Client->clientAddressProof->address_text;
+                if ($Client->ClientAddressProof) {
+                    $row['所在地'] = $Client->ClientAddressProof->address_text;
                 }
                 $row['邮箱'] = $Client->email;
                 $row['提交时间'] = date_format($Client->created_at, "Y-m-d H:i:s");

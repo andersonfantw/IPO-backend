@@ -1,7 +1,7 @@
 <?php return [
     'MaxProgress' => [
         'zh-hk' => 15,
-        'zh-cn' => 17,
+        'zh-cn' => 18,
     ],
     'Progress' => [
         'zh-hk' => [
@@ -19,7 +19,6 @@
             12 => 'zh-hk.BusinessType',
             13 => 'zh-hk.DepositMethods',
             14 => 'zh-hk.DepositProof',
-            // 15 => 'zh-hk.RemindCheckingEmail',
             15 => 'zh-hk.FinishOpeningAccount',
         ],
         'zh-cn' => [
@@ -36,11 +35,11 @@
             11 => 'zh-cn.LiveDetection',
             12 => 'zh-cn.LiveDetectionResult',
             13 => 'zh-cn.Signature',
-            14 => 'zh-cn.BusinessType',
-            15 => 'zh-cn.DepositMethods',
-            16 => 'zh-cn.DepositProof',
-            // 17 => 'zh-cn.RemindCheckingEmail',
-            17 => 'zh-cn.FinishOpeningAccount',
+            14 => 'zh-cn.CACert',
+            15 => 'zh-cn.BusinessType',
+            16 => 'zh-cn.DepositMethods',
+            17 => 'zh-cn.DepositProof',
+            18 => 'zh-cn.FinishOpeningAccount',
         ],
         'Agreement' => [
             'zh-hk' => 1,
@@ -94,25 +93,24 @@
             'zh-hk' => 11,
             'zh-cn' => 13,
         ],
+        'CACert' => [
+            'zh-cn' => 14,
+        ],
         'BusinessType' => [
             'zh-hk' => 12,
-            'zh-cn' => 14,
+            'zh-cn' => 15,
         ],
         'DepositMethods' => [
             'zh-hk' => 13,
-            'zh-cn' => 15,
+            'zh-cn' => 16,
         ],
         'DepositProof' => [
             'zh-hk' => 14,
-            'zh-cn' => 16,
+            'zh-cn' => 17,
         ],
-        // 'RemindCheckingEmail' => [
-        //     'zh-hk' => 15,
-        //     'zh-cn' => 17,
-        // ],
         'FinishOpeningAccount' => [
             'zh-hk' => 15,
-            'zh-cn' => 17,
+            'zh-cn' => 18,
         ],
     ],
 ];

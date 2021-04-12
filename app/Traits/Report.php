@@ -31,8 +31,8 @@ trait Report
     public function AccountOpeningForm(Client $Client)
     {
         $logo = $this->imagePathToBase64(public_path('images/logo.png'));
-        $fund_source = json_decode($Client->clientFinancialStatus->fund_source, true);
-        $direct_promotion = json_decode($Client->clientBusinessType->direct_promotion, true);
+        $fund_source = json_decode($Client->ClientFinancialStatus->fund_source, true);
+        $direct_promotion = json_decode($Client->ClientBusinessType->direct_promotion, true);
         $ClientSignature = $this->imagePathToBase64(storage_path("app/upload/$Client->uuid/signature.jpg"));
         $Nationality = [
             'zh-hk' => '中國香港',
@@ -56,13 +56,13 @@ trait Report
             'Mobile' => [$Client->mobile, null],
             'Fax' => [null, null],
             'Email' => [$Client->email, null],
-            'EmploymentStatus' => [$Client->clientWorkingStatus->working_status, null],
-            'EmployerName' => [$Client->clientWorkingStatus->company_name, null],
+            'EmploymentStatus' => [$Client->ClientWorkingStatus->working_status, null],
+            'EmployerName' => [$Client->ClientWorkingStatus->company_name, null],
             'OfficeTel' => [null, null],
             'OfficeAddress' => [null, null],
-            'BusinessNature' => [$Client->clientWorkingStatus->industry, null],
+            'BusinessNature' => [$Client->ClientWorkingStatus->industry, null],
             'ServiceYears' => [null, null],
-            'Position' => [$Client->clientWorkingStatus->position, null],
+            'Position' => [$Client->ClientWorkingStatus->position, null],
             'FundingSource' => [
                 [
                     '薪金' => in_array("薪金", $fund_source),
@@ -75,7 +75,7 @@ trait Report
                     '投資收入' => in_array("投資收入", $fund_source) || in_array("投资收入", $fund_source),
                     '佣金' => in_array("佣金", $fund_source),
                     '其他' => in_array("其他", $fund_source),
-                    '其他收入來源' => in_array("其他", $fund_source) ? $Client->clientFinancialStatus->other_fund_source : null,
+                    '其他收入來源' => in_array("其他", $fund_source) ? $Client->ClientFinancialStatus->other_fund_source : null,
                 ],
                 [
                     '薪金' => null,
@@ -91,18 +91,18 @@ trait Report
                     '其他收入來源' => null,
                 ],
             ],
-            'AnnualIncome' => [$Client->clientFinancialStatus->annual_income, null],
-            'NetAsset' => [$Client->clientFinancialStatus->net_assets, null],
-            'InvestmentObjective' => [$Client->clientInvestmentExperience->investment_objective, null],
-            'InvestmentObjectiveOther' => [$Client->clientInvestmentExperience->other_investment_objective, null],
+            'AnnualIncome' => [$Client->ClientFinancialStatus->annual_income, null],
+            'NetAsset' => [$Client->ClientFinancialStatus->net_assets, null],
+            'InvestmentObjective' => [$Client->ClientInvestmentExperience->investment_objective, null],
+            'InvestmentObjectiveOther' => [$Client->ClientInvestmentExperience->other_investment_objective, null],
             'InvestmentExperience' => [
                 [
-                    '股票' => substr($Client->clientInvestmentExperience->stock, 0, 1),
-                    '衍生認股證' => substr($Client->clientInvestmentExperience->derivative_warrants, 0, 1),
-                    '牛熊證' => substr($Client->clientInvestmentExperience->cbbc, 0, 1),
-                    '期貨及期權' => substr($Client->clientInvestmentExperience->futures_and_options, 0, 1),
-                    '債券/基金' => substr($Client->clientInvestmentExperience->bonds_funds, 0, 1),
-                    '其他' => $Client->clientInvestmentExperience->other_investment_experience,
+                    '股票' => substr($Client->ClientInvestmentExperience->stock, 0, 1),
+                    '衍生認股證' => substr($Client->ClientInvestmentExperience->derivative_warrants, 0, 1),
+                    '牛熊證' => substr($Client->ClientInvestmentExperience->cbbc, 0, 1),
+                    '期貨及期權' => substr($Client->ClientInvestmentExperience->futures_and_options, 0, 1),
+                    '債券/基金' => substr($Client->ClientInvestmentExperience->bonds_funds, 0, 1),
+                    '其他' => $Client->ClientInvestmentExperience->other_investment_experience,
                 ],
                 [
                     '股票' => null,
@@ -208,7 +208,7 @@ trait Report
                 '備註' => null,
             ],
             'F' => [
-                '直接促銷' => $Client->clientBusinessType->agree_direct_promotion,
+                '直接促銷' => $Client->ClientBusinessType->agree_direct_promotion,
                 '任何途徑' => false,
                 '快遞' => in_array('快遞', $direct_promotion) || in_array('快递', $direct_promotion),
                 '郵件' => in_array('郵件', $direct_promotion) || in_array('邮件', $direct_promotion),
