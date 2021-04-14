@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
+use App\Traits\Excel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class DeliverableList2Controller extends HomeController
 {
+
+    use Excel;
+
     protected $name = 'DeliverableList2';
     private $columnNames;
 

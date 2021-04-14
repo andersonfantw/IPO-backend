@@ -56,3 +56,4 @@ Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
 Route::any('/TestReport', 'UnauditedList1Controller@test')->name('TestReport');
 Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
+Route::any('/ExportAyersImportData', 'DeliverableList2Controller@exportAyersImportData')->name('ExportAyersImportData');
