@@ -1,6 +1,56 @@
 <template>
   <div>
-    <SearchBar :store-name-spaced="'DeliverableList2'"></SearchBar>
+    <div class="row no-gutters">
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'帳戶號碼'"
+          :store-name-spaced="'DeliverableList2'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchSelectOptions
+          :name="'開通賬戶類型'"
+          :store-name-spaced="'DeliverableList2'"
+        >
+          <option value="">全部</option>
+          <option value="現金賬戶">現金賬戶</option>
+          <option value="全權委託賬戶">全權委託賬戶</option>
+        </SearchSelectOptions>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'客户姓名'"
+          :store-name-spaced="'DeliverableList2'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'證件號碼'"
+          :store-name-spaced="'DeliverableList2'"
+        ></SearchBox>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'手機號碼'"
+          :store-name-spaced="'DeliverableList2'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'email'"
+          :name="'郵箱'"
+          :store-name-spaced="'DeliverableList2'"
+        ></SearchBox>
+      </div>
+      <div class="col"></div>
+      <div class="col"></div>
+    </div>
     <button type="button" class="btn btn-success btn-lg">
       <h5 class="m-0"><i class="fas fa-download"></i> 協議及開戶資料下載</h5>
     </button>
@@ -9,7 +59,7 @@
       @click="generateAccounts"
       class="btn btn-primary btn-lg"
     >
-      <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers賬號</h5>
+      <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers帳號</h5>
     </button>
     <DataTable
       :value="data"
@@ -37,39 +87,35 @@
           </p>
         </template>
       </Column>
-      <!-- <Column
+      <Column
         headerStyle="width: 8rem; text-align: center"
         bodyStyle="text-align: center; overflow: visible"
       >
         <template #body="slotProps">
-          <form
-            v-if="!slotProps.data.Ayers帳戶號碼"
-            :action="generate_ayers_account_url"
-            method="post"
-          >
+          <form :action="view_client_url" method="post">
             <input
               type="hidden"
               name="redirect_route"
               value="DeliverableList2"
             />
-            <input type="hidden" name="next_status" value="" />
             <Button
               name="uuid"
               :value="slotProps.data.uuid"
               type="submit"
               icon="pi pi-user-edit"
-              label="生成Ayers帳戶"
+              label="查看"
               class="p-button-secondary"
             ></Button>
           </form>
         </template>
-      </Column> -->
+      </Column>
       <template #empty>沒有找到記錄</template>
     </DataTable>
   </div>
 </template>
 <script>
-import SearchBar from "./SearchBar";
+import SearchBox from "./SearchBox";
+import SearchSelectOptions from "./SearchSelectOptions";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -89,6 +135,10 @@ export default {
   },
   mixins: [DecryptionMixin],
   props: {
+    view_client_url: {
+      type: String,
+      required: true,
+    },
     p_columns: {
       type: String,
       required: true,
@@ -99,7 +149,14 @@ export default {
     },
     generate_ayers_account_url: String,
   },
-  components: { SearchBar, DataTable, Column, Button, Checkbox },
+  components: {
+    SearchBox,
+    DataTable,
+    Column,
+    Button,
+    Checkbox,
+    SearchSelectOptions,
+  },
   created() {
     this.columns = JSON.parse(this.p_columns);
     this.filterMatchMode = JSON.parse(this.p_filterMatchMode);

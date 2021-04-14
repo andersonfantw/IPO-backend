@@ -17,15 +17,15 @@ class DeliverableList2Controller extends HomeController
     {
         parent::__construct();
         $this->columnNames = [
-            'account_type' => '开通账户类型',
-            'idCard' => '证件号码',
-            'mobile' => '手机号码',
-            'email' => '邮箱',
-            'lastTime' => '开户时间',
-            'created_at' => '賬戶生成时间',
+            'account_type' => '開通賬戶類型',
+            'idCard' => '證件號碼',
+            'mobile' => '手機號碼',
+            'email' => '郵箱',
+            'lastTime' => '開戶時間',
+            'created_at' => '帳戶生成時間',
             'relation' => '客户姓名',
             'uuid' => '唯一编码',
-            'ayers_account_no' => 'Ayers帳戶號碼',
+            'ayers_account_no' => '帳戶號碼',
         ];
     }
 
@@ -33,24 +33,24 @@ class DeliverableList2Controller extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $columns = [
-            ['field' => 'Ayers帳戶號碼', 'header' => 'Ayers帳戶號碼'],
-            ['field' => '开通账户类型', 'header' => '开通账户类型'],
+            ['field' => '帳戶號碼', 'header' => '帳戶號碼'],
+            ['field' => '開通賬戶類型', 'header' => '開通賬戶類型'],
             ['field' => '客户姓名', 'header' => '客户姓名'],
-            ['field' => '证件号码', 'header' => '证件号码'],
-            ['field' => '手机号码', 'header' => '手机号码'],
-            ['field' => '邮箱', 'header' => '邮箱'],
-            ['field' => '开户时间', 'header' => '开户时间'],
-            ['field' => '賬戶生成时间', 'header' => '賬戶生成时间'],
+            ['field' => '證件號碼', 'header' => '證件號碼'],
+            ['field' => '手機號碼', 'header' => '手機號碼'],
+            ['field' => '郵箱', 'header' => '郵箱'],
+            ['field' => '開戶時間', 'header' => '開戶時間'],
+            ['field' => '帳戶生成時間', 'header' => '帳戶生成時間'],
         ];
         $filterMatchMode = [
-            'Ayers帳戶號碼' => 'startsWith',
-            '开通账户类型' => 'equals',
+            '帳戶號碼' => 'startsWith',
+            '開通賬戶類型' => 'equals',
             '客户姓名' => 'startsWith',
-            '证件号码' => 'startsWith',
-            '手机号码' => 'startsWith',
-            '邮箱' => 'equals',
-            '开户时间' => 'equals',
-            '賬戶生成时间' => 'equals',
+            '證件號碼' => 'startsWith',
+            '手機號碼' => 'startsWith',
+            '郵箱' => 'startsWith',
+            '開戶時間' => 'equals',
+            '帳戶生成時間' => 'equals',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['filterMatchMode'] = json_encode($filterMatchMode);
@@ -86,42 +86,38 @@ class DeliverableList2Controller extends HomeController
             if ($Client->AyersAccounts->isNotEmpty()) {
                 foreach ($Client->AyersAccounts as $AyersAccount) {
                     $row = [];
-                    foreach ($this->columnNames as $columnKey => $columnName) {
-                        $row['Ayers帳戶號碼'] = $AyersAccount->account_no;
-                        $row['开通账户类型'] = $AyersAccount->type;
-                        if ($Client->idcard_type == ClientHKIDCard::class) {
-                            $row['客户姓名'] = $Client->IDCard->name_c;
-                            $row['证件号码'] = $Client->IDCard->idcard_no;
-                        } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                            $row['客户姓名'] = $Client->IDCard->name_c;
-                            $row['证件号码'] = $Client->IDCard->idcard_no;
-                        }
-                        $row['手机号码'] = $Client->mobile;
-                        $row['邮箱'] = $Client->email;
-                        $row['开户时间'] = date_format($Client->created_at, "Y-m-d H:i:s");
-                        $row['賬戶生成时间'] = date_format($AyersAccount->created_at, "Y-m-d H:i:s");
-                        $row['uuid'] = $Client->uuid;
+                    $row['帳戶號碼'] = $AyersAccount->account_no;
+                    $row['開通賬戶類型'] = $AyersAccount->type;
+                    if ($Client->idcard_type == ClientHKIDCard::class) {
+                        $row['客户姓名'] = $Client->IDCard->name_c;
+                        $row['證件號碼'] = $Client->IDCard->idcard_no;
+                    } elseif ($Client->idcard_type == ClientCNIDCard::class) {
+                        $row['客户姓名'] = $Client->IDCard->name_c;
+                        $row['證件號碼'] = $Client->IDCard->idcard_no;
                     }
+                    $row['手機號碼'] = $Client->mobile;
+                    $row['郵箱'] = $Client->email;
+                    $row['開戶時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+                    $row['帳戶生成時間'] = date_format($AyersAccount->created_at, "Y-m-d H:i:s");
+                    $row['uuid'] = $Client->uuid;
                     $rows[] = $row;
                 }
             } else {
                 $row = [];
-                foreach ($this->columnNames as $columnKey => $columnName) {
-                    $row['Ayers帳戶號碼'] = null;
-                    $row['开通账户类型'] = null;
-                    if ($Client->idcard_type == ClientHKIDCard::class) {
-                        $row['客户姓名'] = $Client->IDCard->name_c;
-                        $row['证件号码'] = $Client->IDCard->idcard_no;
-                    } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                        $row['客户姓名'] = $Client->IDCard->name_c;
-                        $row['证件号码'] = $Client->IDCard->idcard_no;
-                    }
-                    $row['手机号码'] = $Client->mobile;
-                    $row['邮箱'] = $Client->email;
-                    $row['开户时间'] = date_format($Client->created_at, "Y-m-d H:i:s");
-                    $row['賬戶生成时间'] = null;
-                    $row['uuid'] = $Client->uuid;
+                $row['帳戶號碼'] = null;
+                $row['開通賬戶類型'] = null;
+                if ($Client->idcard_type == ClientHKIDCard::class) {
+                    $row['客户姓名'] = $Client->IDCard->name_c;
+                    $row['證件號碼'] = $Client->IDCard->idcard_no;
+                } elseif ($Client->idcard_type == ClientCNIDCard::class) {
+                    $row['客户姓名'] = $Client->IDCard->name_c;
+                    $row['證件號碼'] = $Client->IDCard->idcard_no;
                 }
+                $row['手機號碼'] = $Client->mobile;
+                $row['郵箱'] = $Client->email;
+                $row['開戶時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+                $row['帳戶生成時間'] = null;
+                $row['uuid'] = $Client->uuid;
                 $rows[] = $row;
             }
         }

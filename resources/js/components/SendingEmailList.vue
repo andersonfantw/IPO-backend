@@ -22,8 +22,6 @@
           :store-name-spaced="'SendingEmailList'"
         ></SearchBox>
       </div>
-    </div>
-    <div class="row no-gutters">
       <div class="col">
         <SearchBox
           :type="'email'"
@@ -31,6 +29,8 @@
           :store-name-spaced="'SendingEmailList'"
         ></SearchBox>
       </div>
+    </div>
+    <div class="row no-gutters">
       <div class="col">
         <SearchBox
           :type="'date'"
@@ -48,6 +48,14 @@
           <option value="已發送">已發送</option>
         </SearchSelectOptions>
       </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'電郵發送者'"
+          :store-name-spaced="'SendingEmailList'"
+        ></SearchBox>
+      </div>
+      <div class="col"></div>
     </div>
     <button type="button" @click="sendEmails" class="btn btn-success btn-lg">
       <h5 class="m-0"><i class="far fa-envelope"></i> 一鍵發送</h5>

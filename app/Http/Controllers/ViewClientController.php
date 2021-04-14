@@ -95,7 +95,11 @@ class ViewClientController extends HomeController
         $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
         $parameters['ClientBusinessType'] = $Client->ClientBusinessType->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientBusinessType->direct_promotion = stripslashes($Client->ClientBusinessType->direct_promotion);
-        $parameters['ClientDepositProof'] = $Client->ClientDepositProof->toJson(JSON_UNESCAPED_UNICODE);
+        if (is_object($Client->ClientDepositProof)) {
+            $parameters['ClientDepositProof'] = $Client->ClientDepositProof->toJson(JSON_UNESCAPED_UNICODE);
+        } else {
+            $parameters['ClientDepositProof'] = null;
+        }
         $parameters['Introducer'] = $Client->ViewIntroducer->toJson(JSON_UNESCAPED_UNICODE);
         return $parameters;
     }

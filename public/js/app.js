@@ -8214,7 +8214,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
-    this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+
+    try {
+      this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+      this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
+    } catch (e) {}
+
     this.Introducer = JSON.parse(this.introducer);
     this.地區map.set("zh-hk", "香港");
     this.地區map.set("zh-cn", "中國");
@@ -8228,7 +8233,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.駁回.投資經驗及衍生產品認識 = this.ClientInvestmentExperience.remark ? true : false;
     this.駁回.問卷調查 = this.ClientEvaluationResults.remark ? true : false;
     this.駁回.簽名 = this.ClientSignature.remark ? true : false;
-    this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
   },
   computed: {
     評估結果: function _() {
@@ -8288,19 +8292,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _SearchBar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchBar */ "./resources/js/components/SearchBar.vue");
-/* harmony import */ var primevue_datatable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! primevue/datatable */ "./node_modules/primevue/datatable/index.js");
-/* harmony import */ var primevue_datatable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_datatable__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var primevue_column__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/column */ "./node_modules/primevue/column/index.js");
-/* harmony import */ var primevue_column__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_column__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var primevue_button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primevue/button */ "./node_modules/primevue/button/index.js");
-/* harmony import */ var primevue_button__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primevue_button__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! primevue/checkbox */ "./node_modules/primevue/checkbox/index.js");
-/* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(primevue_checkbox__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _mixins_DecryptionMixin__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/DecryptionMixin */ "./resources/js/mixins/DecryptionMixin.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _SearchBox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchBox */ "./resources/js/components/SearchBox.vue");
+/* harmony import */ var _SearchSelectOptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchSelectOptions */ "./resources/js/components/SearchSelectOptions.vue");
+/* harmony import */ var primevue_datatable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/datatable */ "./node_modules/primevue/datatable/index.js");
+/* harmony import */ var primevue_datatable__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_datatable__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var primevue_column__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primevue/column */ "./node_modules/primevue/column/index.js");
+/* harmony import */ var primevue_column__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primevue_column__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var primevue_button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! primevue/button */ "./node_modules/primevue/button/index.js");
+/* harmony import */ var primevue_button__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(primevue_button__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! primevue/checkbox */ "./node_modules/primevue/checkbox/index.js");
+/* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(primevue_checkbox__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _mixins_DecryptionMixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/DecryptionMixin */ "./resources/js/mixins/DecryptionMixin.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -8377,6 +8382,52 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -8395,8 +8446,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       selectedClients: null
     };
   },
-  mixins: [_mixins_DecryptionMixin__WEBPACK_IMPORTED_MODULE_6__["DecryptionMixin"]],
+  mixins: [_mixins_DecryptionMixin__WEBPACK_IMPORTED_MODULE_7__["DecryptionMixin"]],
   props: {
+    view_client_url: {
+      type: String,
+      required: true
+    },
     p_columns: {
       type: String,
       required: true
@@ -8408,11 +8463,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     generate_ayers_account_url: String
   },
   components: {
-    SearchBar: _SearchBar__WEBPACK_IMPORTED_MODULE_0__["default"],
-    DataTable: primevue_datatable__WEBPACK_IMPORTED_MODULE_1___default.a,
-    Column: primevue_column__WEBPACK_IMPORTED_MODULE_2___default.a,
-    Button: primevue_button__WEBPACK_IMPORTED_MODULE_3___default.a,
-    Checkbox: primevue_checkbox__WEBPACK_IMPORTED_MODULE_4___default.a
+    SearchBox: _SearchBox__WEBPACK_IMPORTED_MODULE_0__["default"],
+    DataTable: primevue_datatable__WEBPACK_IMPORTED_MODULE_2___default.a,
+    Column: primevue_column__WEBPACK_IMPORTED_MODULE_3___default.a,
+    Button: primevue_button__WEBPACK_IMPORTED_MODULE_4___default.a,
+    Checkbox: primevue_checkbox__WEBPACK_IMPORTED_MODULE_5___default.a,
+    SearchSelectOptions: _SearchSelectOptions__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function created() {
     this.columns = JSON.parse(this.p_columns);
@@ -8426,7 +8482,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.loading = true;
-        axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("api/AyersAccount/generate", {
+        axios__WEBPACK_IMPORTED_MODULE_6___default.a.post("api/AyersAccount/generate", {
           clients: self.selectedClients
         }).then(function (response) {
           console.log(response);
@@ -8440,7 +8496,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     loadData: function loadData() {
       var self = this;
-      axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("api/DeliverableList2/all_data").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_6___default.a.post("api/DeliverableList2/all_data").then(function (res) {
         var json = self.getDecryptedJsonObject(res.data);
         self.data = json.data; // self.$store.commit("IPOTable/ipos", json.data);
 
@@ -8448,7 +8504,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapState"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_8__["mapState"])({
     filters: function filters(state) {
       return state.DeliverableList2.filters;
     }
@@ -8865,10 +8921,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -8977,6 +9029,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -111393,144 +111453,148 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("table", { staticClass: "table table-bordered" }, [
-        _c("thead", [
-          _c("tr", [
-            _vm._m(49),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [
-              _c(
-                "h5",
-                { staticClass: "mb-0" },
-                [
+      _vm.ClientDepositProof
+        ? _c("table", { staticClass: "table table-bordered" }, [
+            _c("thead", [
+              _c("tr", [
+                _vm._m(49),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
                   _c(
-                    "label",
-                    { staticClass: "mb-0", attrs: { for: "駁回存款證明" } },
-                    [_vm._v("駁回")]
-                  ),
-                  _c("Checkbox", {
-                    staticClass: "ml-2",
-                    attrs: { id: "駁回存款證明", binary: true },
-                    model: {
-                      value: _vm.駁回.存款證明,
-                      callback: function($$v) {
-                        _vm.$set(_vm.駁回, "存款證明", $$v)
-                      },
-                      expression: "駁回.存款證明"
-                    }
-                  })
-                ],
-                1
-              )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _vm._m(50),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "\n          " +
-                  _vm._s(_vm.ClientDepositProof.deposit_account) +
-                  "\n        "
-              )
-            ]),
-            _vm._v(" "),
-            _vm._m(51),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v("HK$" + _vm._s(_vm.ClientDepositProof.deposit_amount))
-            ]),
-            _vm._v(" "),
-            _c("td", { attrs: { width: "20%", rowspan: "3" } }, [
-              _vm.駁回.存款證明
-                ? _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.ClientDepositProof.remark,
-                        expression: "ClientDepositProof.remark"
-                      }
-                    ],
-                    staticStyle: { width: "100%" },
-                    attrs: {
-                      name: "駁回存款證明",
-                      placeholder: "請寫駁回理由",
-                      rows: "10"
-                    },
-                    domProps: { value: _vm.ClientDepositProof.remark },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                    "h5",
+                    { staticClass: "mb-0" },
+                    [
+                      _c(
+                        "label",
+                        { staticClass: "mb-0", attrs: { for: "駁回存款證明" } },
+                        [_vm._v("駁回")]
+                      ),
+                      _c("Checkbox", {
+                        staticClass: "ml-2",
+                        attrs: { id: "駁回存款證明", binary: true },
+                        model: {
+                          value: _vm.駁回.存款證明,
+                          callback: function($$v) {
+                            _vm.$set(_vm.駁回, "存款證明", $$v)
+                          },
+                          expression: "駁回.存款證明"
                         }
-                        _vm.$set(
-                          _vm.ClientDepositProof,
-                          "remark",
-                          $event.target.value
+                      })
+                    ],
+                    1
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _vm._m(50),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n          " +
+                      _vm._s(_vm.ClientDepositProof.deposit_account) +
+                      "\n        "
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(51),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v("HK$" + _vm._s(_vm.ClientDepositProof.deposit_amount))
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { width: "20%", rowspan: "3" } }, [
+                  _vm.駁回.存款證明
+                    ? _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.ClientDepositProof.remark,
+                            expression: "ClientDepositProof.remark"
+                          }
+                        ],
+                        staticStyle: { width: "100%" },
+                        attrs: {
+                          name: "駁回存款證明",
+                          placeholder: "請寫駁回理由",
+                          rows: "10"
+                        },
+                        domProps: { value: _vm.ClientDepositProof.remark },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.ClientDepositProof,
+                              "remark",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _vm._m(52),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n          " +
+                      _vm._s(_vm.ClientDepositProof.deposit_bank) +
+                      "\n        "
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(53),
+                _vm._v(" "),
+                _c("td", [
+                  _vm.ClientDepositProof.other_deposit_method
+                    ? _c("div", { staticClass: "mb-0" }, [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(
+                              _vm.ClientDepositProof.other_deposit_method
+                            ) +
+                            "\n          "
                         )
-                      }
-                    }
+                      ])
+                    : _c("div", { staticClass: "mb-0" }, [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(_vm.ClientDepositProof.deposit_method) +
+                            "\n          "
+                        )
+                      ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("img", {
+                    staticStyle: { width: "400px" },
+                    attrs: { src: _vm.deposit_proof }
                   })
-                : _vm._e()
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(52),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "\n          " +
-                  _vm._s(_vm.ClientDepositProof.deposit_bank) +
-                  "\n        "
-              )
-            ]),
-            _vm._v(" "),
-            _vm._m(53),
-            _vm._v(" "),
-            _c("td", [
-              _vm.ClientDepositProof.other_deposit_method
-                ? _c("div", { staticClass: "mb-0" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.ClientDepositProof.other_deposit_method) +
-                        "\n          "
-                    )
-                  ])
-                : _c("div", { staticClass: "mb-0" }, [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.ClientDepositProof.deposit_method) +
-                        "\n          "
-                    )
-                  ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", { attrs: { colspan: "2" } }, [
-              _c("img", {
-                staticStyle: { width: "400px" },
-                attrs: { src: _vm.deposit_proof }
-              })
-            ]),
-            _vm._v(" "),
-            _vm._m(54),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "\n          " +
-                  _vm._s(_vm.ClientDepositProof.transfer_time) +
-                  "\n        "
-              )
+                ]),
+                _vm._v(" "),
+                _vm._m(54),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n          " +
+                      _vm._s(_vm.ClientDepositProof.transfer_time) +
+                      "\n        "
+                  )
+                ])
+              ])
             ])
           ])
-        ])
-      ]),
+        : _vm._e(),
       _vm._v(" "),
       _c("Button", {
         attrs: {
@@ -112020,7 +112084,116 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("SearchBar", { attrs: { "store-name-spaced": "DeliverableList2" } }),
+      _c("div", { staticClass: "row no-gutters" }, [
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("SearchBox", {
+              attrs: {
+                type: "text",
+                name: "帳戶號碼",
+                "store-name-spaced": "DeliverableList2"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c(
+              "SearchSelectOptions",
+              {
+                attrs: {
+                  name: "開通賬戶類型",
+                  "store-name-spaced": "DeliverableList2"
+                }
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [_vm._v("全部")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "現金賬戶" } }, [
+                  _vm._v("現金賬戶")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "全權委託賬戶" } }, [
+                  _vm._v("全權委託賬戶")
+                ])
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("SearchBox", {
+              attrs: {
+                type: "text",
+                name: "客户姓名",
+                "store-name-spaced": "DeliverableList2"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("SearchBox", {
+              attrs: {
+                type: "text",
+                name: "證件號碼",
+                "store-name-spaced": "DeliverableList2"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row no-gutters" }, [
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("SearchBox", {
+              attrs: {
+                type: "text",
+                name: "手機號碼",
+                "store-name-spaced": "DeliverableList2"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("SearchBox", {
+              attrs: {
+                type: "email",
+                name: "郵箱",
+                "store-name-spaced": "DeliverableList2"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "col" })
+      ]),
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
@@ -112098,6 +112271,49 @@ var render = function() {
                 true
               )
             })
+          }),
+          _vm._v(" "),
+          _c("Column", {
+            attrs: {
+              headerStyle: "width: 8rem; text-align: center",
+              bodyStyle: "text-align: center; overflow: visible"
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "body",
+                fn: function(slotProps) {
+                  return [
+                    _c(
+                      "form",
+                      {
+                        attrs: { action: _vm.view_client_url, method: "post" }
+                      },
+                      [
+                        _c("input", {
+                          attrs: {
+                            type: "hidden",
+                            name: "redirect_route",
+                            value: "DeliverableList2"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("Button", {
+                          staticClass: "p-button-secondary",
+                          attrs: {
+                            name: "uuid",
+                            value: slotProps.data.uuid,
+                            type: "submit",
+                            icon: "pi pi-user-edit",
+                            label: "查看"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                }
+              }
+            ])
           })
         ],
         2
@@ -112128,7 +112344,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("h5", { staticClass: "m-0" }, [
       _c("i", { staticClass: "far fa-user" }),
-      _vm._v(" 產生Ayers賬號")
+      _vm._v(" 產生Ayers帳號")
     ])
   }
 ]
@@ -112737,11 +112953,20 @@ var render = function() {
           }
         }
       },
-      [_c("i", { staticClass: "fas fa-times" })]
+      [_vm._m(0)]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h5", { staticClass: "m-0" }, [
+      _c("i", { staticClass: "fas fa-times" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -112874,10 +113099,8 @@ var render = function() {
             })
           ],
           1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row no-gutters" }, [
+        ),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "col" },
@@ -112891,8 +113114,10 @@ var render = function() {
             })
           ],
           1
-        ),
-        _vm._v(" "),
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row no-gutters" }, [
         _c(
           "div",
           { staticClass: "col" },
@@ -112929,7 +113154,24 @@ var render = function() {
             )
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col" },
+          [
+            _c("SearchBox", {
+              attrs: {
+                type: "text",
+                name: "電郵發送者",
+                "store-name-spaced": "SendingEmailList"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col" })
       ]),
       _vm._v(" "),
       _c(

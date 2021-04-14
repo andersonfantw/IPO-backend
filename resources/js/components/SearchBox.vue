@@ -4,12 +4,8 @@
       <span class="input-group-text" :id="name">{{ name }}</span>
     </div>
     <input :type="type" v-model="filters[name]" class="form-control" />
-    <button
-      type="button"
-      @click="filters[name] = null"
-      class="btn btn-danger"
-    >
-      <i class="fas fa-times"></i>
+    <button type="button" @click="filters[name] = null" class="btn btn-danger">
+      <h5 class="m-0"><i class="fas fa-times"></i></h5>
     </button>
   </div>
 </template>
