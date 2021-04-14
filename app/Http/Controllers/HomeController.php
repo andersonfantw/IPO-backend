@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    protected $name = 'home';
+    protected $name = 'Home';
     private $menu;
     /**
      * Create a new controller instance.
