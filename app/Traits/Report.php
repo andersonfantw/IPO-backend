@@ -33,7 +33,7 @@ trait Report
         $logo = $this->imagePathToBase64(public_path('images/logo.png'));
         $fund_source = json_decode($Client->ClientFinancialStatus->fund_source, true);
         $direct_promotion = json_decode($Client->ClientBusinessType->direct_promotion, true);
-        $ClientSignature = $this->imagePathToBase64(storage_path("app/upload/$Client->uuid/signature.jpg"));
+        $ClientSignature = $this->imagePathToBase64(storage_path("app/upload/$Client->uuid/signature.png"));
         $Nationality = [
             'zh-hk' => '中國香港',
             'zh-cn' => '中國',

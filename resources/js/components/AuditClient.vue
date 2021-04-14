@@ -812,7 +812,10 @@ export default {
   created() {
     this.Client = JSON.parse(this.client);
     this.ClientIDCard = JSON.parse(this.client_id_card);
-    this.ClientAddressProof = JSON.parse(this.client_address_proof);
+    try {
+      this.ClientAddressProof = JSON.parse(this.client_address_proof);
+      this.駁回.住址證明 = this.ClientAddressProof.remark ? true : false;
+    } catch (e) {}
     this.ClientWorkingStatus = JSON.parse(this.client_working_status);
     this.ClientFinancialStatus = JSON.parse(this.client_financial_status);
     this.ClientInvestmentExperience = JSON.parse(
@@ -848,7 +851,6 @@ export default {
       : false;
     this.駁回.問卷調查 = this.ClientEvaluationResults.remark ? true : false;
     this.駁回.簽名 = this.ClientSignature.remark ? true : false;
-    this.駁回.住址證明 = this.ClientAddressProof.remark ? true : false;
     this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
   },
   computed: {

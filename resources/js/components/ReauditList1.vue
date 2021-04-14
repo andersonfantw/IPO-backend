@@ -1,7 +1,6 @@
 <template>
   <div>
     <SearchBar :store-name-spaced="'ReauditList1'"></SearchBar>
-    <button type="button" class="btn btn-success">協議及開戶資料下載</button>
     <DataTable
       :value="data"
       :filters="filters"

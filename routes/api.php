@@ -51,3 +51,11 @@ Route::prefix('DeliverableList2')->group(function () {
 Route::prefix('AyersAccount')->group(function () {
     Route::any('/generate', 'AyersAccountController@generate');
 });
+
+Route::prefix('SendingEmailList')->group(function () {
+    Route::any('/all_data', 'SendingEmailListController@getData');
+});
+
+Route::prefix('OpenAccountEmail')->group(function () {
+    Route::any('/send', 'EmailController@sendOpenAccountEmail');
+});

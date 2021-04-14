@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\ClientRejectionLog;
 use App\EditableSteps;
 use Illuminate\Http\Request;
 
@@ -30,6 +31,11 @@ class AuditClientController extends ViewClientController
             $Client->IDCard->status = 'rejected';
             $Client->IDCard->remark = $input['駁回身份證信息'];
             $this->addEditableSteps($Client, 'ClientIDCard');
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->IDCard),
+                'remark' => $input['駁回身份證信息'],
+            ]);
         } else {
             $Client->IDCard->status = $input['next_status'];
             $Client->IDCard->remark = null;
@@ -38,17 +44,24 @@ class AuditClientController extends ViewClientController
         $Client->IDCard->count_of_audits++;
         $Client->IDCard->save();
 
-        if ($request->has(['駁回住址證明']) && $request->filled(['駁回住址證明'])) {
-            $Client->ClientAddressProof->status = 'rejected';
-            $Client->ClientAddressProof->remark = $input['駁回住址證明'];
-            $this->addEditableSteps($Client, 'AddressProof');
-        } else {
-            $Client->ClientAddressProof->status = $input['next_status'];
-            $Client->ClientAddressProof->remark = null;
-            $this->deleteEditableSteps($Client, 'AddressProof');
+        if (is_object($Client->ClientAddressProof)) {
+            if ($request->has(['駁回住址證明']) && $request->filled(['駁回住址證明'])) {
+                $Client->ClientAddressProof->status = 'rejected';
+                $Client->ClientAddressProof->remark = $input['駁回住址證明'];
+                $this->addEditableSteps($Client, 'AddressProof');
+                ClientRejectionLog::create([
+                    'uuid' => $Client->uuid,
+                    'rejected_section' => get_class($Client->ClientAddressProof),
+                    'remark' => $input['駁回住址證明'],
+                ]);
+            } else {
+                $Client->ClientAddressProof->status = $input['next_status'];
+                $Client->ClientAddressProof->remark = null;
+                $this->deleteEditableSteps($Client, 'AddressProof');
+            }
+            $Client->ClientAddressProof->count_of_audits++;
+            $Client->ClientAddressProof->save();
         }
-        $Client->ClientAddressProof->count_of_audits++;
-        $Client->ClientAddressProof->save();
 
         foreach ($Client->ClientBankCards as $ClientBankCard) {
             if ($request->has(["駁回{$ClientBankCard->lcid}銀行卡信息"]) && $request->filled(["駁回{$ClientBankCard->lcid}銀行卡信息"])) {
@@ -59,6 +72,11 @@ class AuditClientController extends ViewClientController
                 } elseif ($ClientBankCard->lcid == 'zh-cn') {
                     $this->addEditableSteps($Client, 'ClientMainlandBankCard');
                 }
+                ClientRejectionLog::create([
+                    'uuid' => $Client->uuid,
+                    'rejected_section' => get_class($ClientBankCard),
+                    'remark' => $input["駁回{$ClientBankCard->lcid}銀行卡信息"],
+                ]);
             } else {
                 $ClientBankCard->status = $input['next_status'];
                 $ClientBankCard->remark = null;
@@ -77,6 +95,11 @@ class AuditClientController extends ViewClientController
             $Client->status = 'rejected';
             $Client->remark = $input['駁回客戶補充資料'];
             $add = true;
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client),
+                'remark' => $input["駁回客戶補充資料"],
+            ]);
         } else {
             $Client->status = $input['next_status'];
             $Client->remark = null;
@@ -88,6 +111,11 @@ class AuditClientController extends ViewClientController
             $Client->ClientWorkingStatus->status = 'rejected';
             $Client->ClientWorkingStatus->remark = $input['駁回工作狀態'];
             $add = true;
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->ClientWorkingStatus),
+                'remark' => $input["駁回工作狀態"],
+            ]);
         } else {
             $Client->ClientWorkingStatus->status = $input['next_status'];
             $Client->ClientWorkingStatus->remark = null;
@@ -104,6 +132,11 @@ class AuditClientController extends ViewClientController
             $Client->ClientFinancialStatus->status = 'rejected';
             $Client->ClientFinancialStatus->remark = $input['駁回財政狀況'];
             $add = true;
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->ClientFinancialStatus),
+                'remark' => $input["駁回財政狀況"],
+            ]);
         } else {
             $Client->ClientFinancialStatus->status = $input['next_status'];
             $Client->ClientFinancialStatus->remark = null;
@@ -115,6 +148,11 @@ class AuditClientController extends ViewClientController
             $Client->ClientInvestmentExperience->status = 'rejected';
             $Client->ClientInvestmentExperience->remark = $input['駁回投資經驗及衍生產品認識'];
             $add = true;
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->ClientInvestmentExperience),
+                'remark' => $input["駁回投資經驗及衍生產品認識"],
+            ]);
         } else {
             $Client->ClientInvestmentExperience->status = $input['next_status'];
             $Client->ClientInvestmentExperience->remark = null;
@@ -132,6 +170,11 @@ class AuditClientController extends ViewClientController
             $Client->ClientEvaluationResults->remark = $input['駁回問卷調查'];
             $this->addEditableSteps($Client, 'ClientInvestmentOrientation');
             $this->addEditableSteps($Client, 'ClientEvaluationResults');
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->ClientEvaluationResults),
+                'remark' => $input["駁回問卷調查"],
+            ]);
         } else {
             $Client->ClientEvaluationResults->status = $input['next_status'];
             $Client->ClientEvaluationResults->remark = null;
@@ -144,6 +187,11 @@ class AuditClientController extends ViewClientController
             $Client->ClientSignature->status = 'rejected';
             $Client->ClientSignature->remark = $input['駁回簽名'];
             $this->addEditableSteps($Client, 'Signature');
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->ClientSignature),
+                'remark' => $input["駁回簽名"],
+            ]);
         } else {
             $Client->ClientSignature->status = $input['next_status'];
             $Client->ClientSignature->remark = null;
@@ -156,6 +204,11 @@ class AuditClientController extends ViewClientController
             $Client->ClientDepositProof->status = 'rejected';
             $Client->ClientDepositProof->remark = $input['駁回存款證明'];
             $this->addEditableSteps($Client, 'DepositProof');
+            ClientRejectionLog::create([
+                'uuid' => $Client->uuid,
+                'rejected_section' => get_class($Client->ClientDepositProof),
+                'remark' => $input["駁回存款證明"],
+            ]);
         } else {
             $Client->ClientDepositProof->status = $input['next_status'];
             $Client->ClientDepositProof->remark = null;

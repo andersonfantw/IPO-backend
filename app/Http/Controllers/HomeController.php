@@ -49,8 +49,9 @@ class HomeController extends Controller
                         'url' => route('DeliverableList2'),
                     ],
                     [
-                        'label' => "开户信发送清单",
+                        'label' => "開戶信發送清單",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('SendingEmailList'),
                     ],
                     [
                         'label' => "年度通知书发送清单",

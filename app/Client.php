@@ -25,6 +25,11 @@ class Client extends Model
         'editable',
     ];
 
+    public function SentEmailRecords()
+    {
+        return $this->hasMany('App\SentEmailRecord', 'uuid', 'uuid')->orderBy('created_at', 'desc');
+    }
+
     public function EditableSteps()
     {
         return $this->hasMany('App\EditableSteps', 'uuid', 'uuid')->orderBy('step', 'asc');
@@ -37,7 +42,7 @@ class Client extends Model
 
     public function ViewClientScore()
     {
-        return $this->hasMany('App\ViewClientScore', 'uuid', 'uuid')->orderBy('order', 'asc');
+        return $this->hasMany('App\ViewClientScore', 'uuid', 'uuid');
     }
 
     public function ViewClientIDCard()

@@ -46,7 +46,8 @@ class DeliverableList2Controller extends HomeController
             'Ayers帳戶號碼' => 'startsWith',
             '开通账户类型' => 'equals',
             '客户姓名' => 'startsWith',
-            '证件号码' => 'startsWith', '手机号码' => 'startsWith',
+            '证件号码' => 'startsWith',
+            '手机号码' => 'startsWith',
             '邮箱' => 'equals',
             '开户时间' => 'equals',
             '賬戶生成时间' => 'equals',
@@ -63,7 +64,7 @@ class DeliverableList2Controller extends HomeController
             ClientHKIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('clientBankCard', function (Builder $query) {
+        })->whereHas('ClientBankCards', function (Builder $query) {
             $query->where('status', 'audited2');
         })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited2');
@@ -75,7 +76,11 @@ class DeliverableList2Controller extends HomeController
             $query->where('status', 'audited2');
         })->whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->where('status', 'audited2')->orderBy('created_at', 'desc')->get();
+        })->orWhereHas('ClientAddressProof', function (Builder $query) {
+            $query->where('status', 'audited2');
+        })->whereHas('ClientDepositProof', function (Builder $query) {
+            $query->where('status', 'audited2');
+        })->where('status', 'audited2')->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             if ($Client->AyersAccounts->isNotEmpty()) {

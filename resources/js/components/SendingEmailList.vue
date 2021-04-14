@@ -1,15 +1,56 @@
 <template>
   <div>
-    <SearchBar :store-name-spaced="'DeliverableList2'"></SearchBar>
-    <button type="button" class="btn btn-success btn-lg">
-      <h5 class="m-0"><i class="fas fa-download"></i> 協議及開戶資料下載</h5>
-    </button>
-    <button
-      type="button"
-      @click="generateAccounts"
-      class="btn btn-primary btn-lg"
-    >
-      <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers賬號</h5>
+    <div class="row no-gutters">
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'帳戶號碼'"
+          :store-name-spaced="'SendingEmailList'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'客户姓名'"
+          :store-name-spaced="'SendingEmailList'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'證件號碼'"
+          :store-name-spaced="'SendingEmailList'"
+        ></SearchBox>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col">
+        <SearchBox
+          :type="'email'"
+          :name="'電郵'"
+          :store-name-spaced="'SendingEmailList'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'date'"
+          :name="'投遞日期'"
+          :store-name-spaced="'SendingEmailList'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchSelectOptions
+          :name="'狀態'"
+          :store-name-spaced="'SendingEmailList'"
+        >
+          <option value="">全部</option>
+          <option value="未發送">未發送</option>
+          <option value="已發送">已發送</option>
+        </SearchSelectOptions>
+      </div>
+    </div>
+    <button type="button" @click="sendEmails" class="btn btn-success btn-lg">
+      <h5 class="m-0"><i class="far fa-envelope"></i> 一鍵發送</h5>
     </button>
     <DataTable
       :value="data"
@@ -43,14 +84,14 @@
       >
         <template #body="slotProps">
           <form
-            v-if="!slotProps.data.Ayers帳戶號碼"
+            v-if="!slotProps.data.帳戶號碼"
             :action="generate_ayers_account_url"
             method="post"
           >
             <input
               type="hidden"
               name="redirect_route"
-              value="DeliverableList2"
+              value="SendingEmailList"
             />
             <input type="hidden" name="next_status" value="" />
             <Button
@@ -69,11 +110,11 @@
   </div>
 </template>
 <script>
-import SearchBar from "./SearchBar";
+import SearchBox from "./SearchBox";
+import SearchSelectOptions from "./SearchSelectOptions";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { mapState } from "vuex";
@@ -85,6 +126,7 @@ export default {
       loading: false,
       data: null,
       selectedClients: null,
+      User: null,
     };
   },
   mixins: [DecryptionMixin],
@@ -98,21 +140,32 @@ export default {
       required: true,
     },
     generate_ayers_account_url: String,
+    user: String,
   },
-  components: { SearchBar, DataTable, Column, Button, Checkbox },
+  components: {
+    DataTable,
+    Column,
+    Button,
+    SearchBox,
+    SearchSelectOptions,
+  },
   created() {
     this.columns = JSON.parse(this.p_columns);
     this.filterMatchMode = JSON.parse(this.p_filterMatchMode);
+    this.User = JSON.parse(this.user);
     this.loading = true;
     this.loadData();
   },
   methods: {
-    generateAccounts() {
+    sendEmails() {
       let self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.loading = true;
         axios
-          .post("api/AyersAccount/generate", { clients: self.selectedClients })
+          .post("api/OpenAccountEmail/send", {
+            clients: self.selectedClients,
+            User: self.User,
+          })
           .then(function (response) {
             console.log(response);
             self.loadData();
@@ -126,7 +179,7 @@ export default {
     },
     loadData() {
       let self = this;
-      axios.post("api/DeliverableList2/all_data").then(function (res) {
+      axios.post("api/SendingEmailList/all_data").then(function (res) {
         let json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         // self.$store.commit("IPOTable/ipos", json.data);
@@ -136,7 +189,7 @@ export default {
   },
   computed: {
     ...mapState({
-      filters: (state) => state.DeliverableList2.filters,
+      filters: (state) => state.SendingEmailList.filters,
     }),
   },
   watch: {},

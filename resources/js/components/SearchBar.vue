@@ -3,7 +3,7 @@
     <div class="col">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="客户名称">客户名称</span>
+          <span class="input-group-text" id="客户姓名">客户姓名</span>
         </div>
         <input type="text" v-model="filters.客户姓名" class="form-control" />
       </div>
@@ -11,17 +11,17 @@
     <div class="col">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="证件号码">证件号码</span>
+          <span class="input-group-text" id="證件號碼">證件號碼</span>
         </div>
-        <input type="text" v-model="filters.证件号码" class="form-control" />
+        <input type="text" v-model="filters.證件號碼" class="form-control" />
       </div>
     </div>
     <div class="col">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="手机号码">手机号码</span>
+          <span class="input-group-text" id="手機號碼">手機號碼</span>
         </div>
-        <input type="text" v-model="filters.手机号码" class="form-control" />
+        <input type="text" v-model="filters.手機號碼" class="form-control" />
       </div>
     </div>
   </div>

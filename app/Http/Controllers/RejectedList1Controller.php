@@ -17,7 +17,7 @@ class RejectedList1Controller extends HomeController
         parent::__construct();
         $this->columnNames = [
             // 'userCount' => '是否已有账户',
-            'chequeReceipt' => '是否上传收据',
+            // 'chequeReceipt' => '是否上传收据',
             'idCard' => '证件号码',
             'mobile' => '手机号码',
             'residenceAddr' => '所在地',
@@ -30,18 +30,22 @@ class RejectedList1Controller extends HomeController
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
-        $columns = [['field' => '客户姓名', 'header' => '客户姓名'],
-            ['field' => '是否上传收据', 'header' => '是否上传收据'],
+        $columns = [
+            ['field' => '客户姓名', 'header' => '客户姓名'],
+            // ['field' => '是否上传收据', 'header' => '是否上传收据'],
             ['field' => '证件号码', 'header' => '证件号码'],
             ['field' => '手机号码', 'header' => '手机号码'],
             ['field' => '所在地', 'header' => '所在地'],
             ['field' => '邮箱', 'header' => '邮箱'],
-            ['field' => '提交时间', 'header' => '提交时间']];
-        $filterMatchMode = ['客户姓名' => 'startsWith',
-            '是否已有账户' => 'equals', '是否上传收据' => 'equals',
+            ['field' => '提交时间', 'header' => '提交时间'],
+        ];
+        $filterMatchMode = [
+            '客户姓名' => 'startsWith',
+            // '是否已有账户' => 'equals', '是否上传收据' => 'equals',
             '证件号码' => 'startsWith', '手机号码' => 'startsWith',
             '所在地' => 'equals', '邮箱' => 'equals',
-            '认领时间' => 'equals', '提交时间' => 'equals'];
+            '认领时间' => 'equals', '提交时间' => 'equals',
+        ];
         $parameters['columns'] = json_encode($columns);
         $parameters['filterMatchMode'] = json_encode($filterMatchMode);
         return $parameters;
@@ -54,7 +58,7 @@ class RejectedList1Controller extends HomeController
         foreach ($Clients as $Client) {
             $row = [];
             foreach ($this->columnNames as $columnKey => $columnName) {
-                $row['是否上传收据'] = $Client->ClientDepositProof ? '已上传收据' : '未上传收据';
+                // $row['是否上传收据'] = $Client->ClientDepositProof ? '已上传收据' : '未上传收据';
                 if ($Client->idcard_type == ClientHKIDCard::class) {
                     $row['客户姓名'] = $Client->IDCard->name_c;
                     $row['证件号码'] = $Client->IDCard->idcard_no;
