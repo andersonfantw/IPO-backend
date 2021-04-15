@@ -58,9 +58,6 @@
     >
       <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers帳號</h5>
     </button>
-    <!-- <a class="btn btn-success btn-lg" :href="download_excel_url" role="button">
-      <h5 class="m-0"><i class="fas fa-download"></i> 開戶Excel下載</h5>
-    </a> -->
     <button type="button" @click="downloadExcel" class="btn btn-success btn-lg">
       <h5 class="m-0">
         <i class="fas fa-download"></i> 開戶Excel下載<span
@@ -161,7 +158,6 @@ export default {
       required: true,
     },
     generate_ayers_account_url: String,
-    download_excel_url: String,
   },
   components: {
     SearchBox,

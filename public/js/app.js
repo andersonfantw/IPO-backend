@@ -8436,9 +8436,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 
 
@@ -8473,8 +8470,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: String,
       required: true
     },
-    generate_ayers_account_url: String,
-    download_excel_url: String
+    generate_ayers_account_url: String
   },
   components: {
     SearchBox: _SearchBox__WEBPACK_IMPORTED_MODULE_0__["default"],
