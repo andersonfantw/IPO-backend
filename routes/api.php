@@ -46,6 +46,7 @@ Route::prefix('ReauditList1')->group(function () {
 
 Route::prefix('DeliverableList2')->group(function () {
     Route::any('/all_data', 'DeliverableList2Controller@getData');
+    Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
 });
 
 Route::prefix('AyersAccount')->group(function () {

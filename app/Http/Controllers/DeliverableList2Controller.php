@@ -92,13 +92,8 @@ class DeliverableList2Controller extends HomeController
                     $row = [];
                     $row['帳戶號碼'] = $AyersAccount->account_no;
                     $row['開通賬戶類型'] = $AyersAccount->type;
-                    if ($Client->idcard_type == ClientHKIDCard::class) {
-                        $row['客户姓名'] = $Client->IDCard->name_c;
-                        $row['證件號碼'] = $Client->IDCard->idcard_no;
-                    } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                        $row['客户姓名'] = $Client->IDCard->name_c;
-                        $row['證件號碼'] = $Client->IDCard->idcard_no;
-                    }
+                    $row['客户姓名'] = $Client->IDCard->name_c;
+                    $row['證件號碼'] = $Client->IDCard->idcard_no;
                     $row['手機號碼'] = $Client->mobile;
                     $row['郵箱'] = $Client->email;
                     $row['開戶時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
@@ -110,13 +105,8 @@ class DeliverableList2Controller extends HomeController
                 $row = [];
                 $row['帳戶號碼'] = null;
                 $row['開通賬戶類型'] = null;
-                if ($Client->idcard_type == ClientHKIDCard::class) {
-                    $row['客户姓名'] = $Client->IDCard->name_c;
-                    $row['證件號碼'] = $Client->IDCard->idcard_no;
-                } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                    $row['客户姓名'] = $Client->IDCard->name_c;
-                    $row['證件號碼'] = $Client->IDCard->idcard_no;
-                }
+                $row['客户姓名'] = $Client->IDCard->name_c;
+                $row['證件號碼'] = $Client->IDCard->idcard_no;
                 $row['手機號碼'] = $Client->mobile;
                 $row['郵箱'] = $Client->email;
                 $row['開戶時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
@@ -131,5 +121,11 @@ class DeliverableList2Controller extends HomeController
         // return json_encode([
         //     'data' => $rs,
         // ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadAyersImportData(Request $request)
+    {
+        $clients = $request->input('clients');
+        return $this->exportAyersImportData($clients);
     }
 }

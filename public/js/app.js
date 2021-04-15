@@ -8427,6 +8427,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8443,7 +8455,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       filterMatchMode: {},
       loading: false,
       data: null,
-      selectedClients: null
+      selectedClients: null,
+      DownloadingExcel: false
     };
   },
   mixins: [_mixins_DecryptionMixin__WEBPACK_IMPORTED_MODULE_7__["DecryptionMixin"]],
@@ -8460,7 +8473,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: String,
       required: true
     },
-    generate_ayers_account_url: String
+    generate_ayers_account_url: String,
+    download_excel_url: String
   },
   components: {
     SearchBox: _SearchBox__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -8477,6 +8491,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.loadData();
   },
   methods: {
+    downloadExcel: function downloadExcel() {
+      var self = this;
+
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.DownloadingExcel = true;
+        axios__WEBPACK_IMPORTED_MODULE_6___default.a.post("api/DeliverableList2/DownloadAyersImportData", {
+          clients: self.selectedClients
+        }, {
+          responseType: "arraybuffer"
+        }).then(function (response) {
+          console.log(response);
+          var url = window.URL.createObjectURL(new Blob([response.data]));
+          var link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "AyersImportData.xlsx");
+          link.click();
+          self.DownloadingExcel = false;
+        })["catch"](function (error) {
+          console.log(error);
+          self.DownloadingExcel = false;
+        });
+      } else {
+        alert("請先選中客戶！");
+      }
+    },
     generateAccounts: function generateAccounts() {
       var self = this;
 
@@ -112195,8 +112234,6 @@ var render = function() {
         _c("div", { staticClass: "col" })
       ]),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
       _c(
         "button",
         {
@@ -112204,8 +112241,31 @@ var render = function() {
           attrs: { type: "button" },
           on: { click: _vm.generateAccounts }
         },
-        [_vm._m(1)]
+        [_vm._m(0)]
       ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success btn-lg",
+          attrs: { type: "button" },
+          on: { click: _vm.downloadExcel }
+        },
+        [
+          _c("h5", { staticClass: "m-0" }, [
+            _c("i", { staticClass: "fas fa-download" }),
+            _vm._v(" 開戶Excel下載"),
+            _vm.DownloadingExcel
+              ? _c("span", {
+                  staticClass: "spinner-border spinner-border-sm",
+                  attrs: { role: "status" }
+                })
+              : _vm._e()
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(1),
       _vm._v(" "),
       _c(
         "DataTable",
@@ -112327,9 +112387,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("h5", { staticClass: "m-0" }, [
+      _c("i", { staticClass: "far fa-user" }),
+      _vm._v(" 產生Ayers帳號")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "button",
-      { staticClass: "btn btn-success btn-lg", attrs: { type: "button" } },
+      { staticClass: "btn btn-warning btn-lg", attrs: { type: "button" } },
       [
         _c("h5", { staticClass: "m-0" }, [
           _c("i", { staticClass: "fas fa-download" }),
@@ -112337,15 +112406,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h5", { staticClass: "m-0" }, [
-      _c("i", { staticClass: "far fa-user" }),
-      _vm._v(" 產生Ayers帳號")
-    ])
   }
 ]
 render._withStripped = true

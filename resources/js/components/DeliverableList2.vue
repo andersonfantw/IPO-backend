@@ -51,15 +51,27 @@
       <div class="col"></div>
       <div class="col"></div>
     </div>
-    <button type="button" class="btn btn-success btn-lg">
-      <h5 class="m-0"><i class="fas fa-download"></i> 協議及開戶資料下載</h5>
-    </button>
     <button
       type="button"
       @click="generateAccounts"
       class="btn btn-primary btn-lg"
     >
       <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers帳號</h5>
+    </button>
+    <!-- <a class="btn btn-success btn-lg" :href="download_excel_url" role="button">
+      <h5 class="m-0"><i class="fas fa-download"></i> 開戶Excel下載</h5>
+    </a> -->
+    <button type="button" @click="downloadExcel" class="btn btn-success btn-lg">
+      <h5 class="m-0">
+        <i class="fas fa-download"></i> 開戶Excel下載<span
+          v-if="DownloadingExcel"
+          class="spinner-border spinner-border-sm"
+          role="status"
+        ></span>
+      </h5>
+    </button>
+    <button type="button" class="btn btn-warning btn-lg">
+      <h5 class="m-0"><i class="fas fa-download"></i> 協議及開戶資料下載</h5>
     </button>
     <DataTable
       :value="data"
@@ -131,6 +143,7 @@ export default {
       loading: false,
       data: null,
       selectedClients: null,
+      DownloadingExcel: false,
     };
   },
   mixins: [DecryptionMixin],
@@ -148,6 +161,7 @@ export default {
       required: true,
     },
     generate_ayers_account_url: String,
+    download_excel_url: String,
   },
   components: {
     SearchBox,
@@ -164,17 +178,48 @@ export default {
     this.loadData();
   },
   methods: {
+    downloadExcel() {
+      const self = this;
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.DownloadingExcel = true;
+        axios
+          .post(
+            "api/DeliverableList2/DownloadAyersImportData",
+            {
+              clients: self.selectedClients,
+            },
+            {
+              responseType: "arraybuffer",
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "AyersImportData.xlsx");
+            link.click();
+            self.DownloadingExcel = false;
+          })
+          .catch((error) => {
+            console.log(error);
+            self.DownloadingExcel = false;
+          });
+      } else {
+        alert("請先選中客戶！");
+      }
+    },
     generateAccounts() {
-      let self = this;
+      const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.loading = true;
         axios
           .post("api/AyersAccount/generate", { clients: self.selectedClients })
-          .then(function (response) {
+          .then((response) => {
             console.log(response);
             self.loadData();
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
           });
       } else {
@@ -182,9 +227,9 @@ export default {
       }
     },
     loadData() {
-      let self = this;
-      axios.post("api/DeliverableList2/all_data").then(function (res) {
-        let json = self.getDecryptedJsonObject(res.data);
+      const self = this;
+      axios.post("api/DeliverableList2/all_data").then((res) => {
+        const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         // self.$store.commit("IPOTable/ipos", json.data);
         self.loading = false;

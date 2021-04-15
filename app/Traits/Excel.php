@@ -6,9 +6,9 @@ use Excel as _Excel;
 
 trait Excel
 {
-    public function exportAyersImportData()
+    public function exportAyersImportData(array $clients)
     {
-        return _Excel::download(new AyersDataExport, 'AyersImportData.xlsx');
+        return _Excel::download(new AyersDataExport($clients), 'AyersImportData.xlsx');
     }
 
 }
