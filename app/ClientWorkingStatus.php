@@ -19,6 +19,5 @@ class ClientWorkingStatus extends Model
         'status',
         'remark',
         'count_of_audits',
-        'editable',
     ];
 }

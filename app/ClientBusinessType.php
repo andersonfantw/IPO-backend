@@ -12,6 +12,5 @@ class ClientBusinessType extends Model
         'business_type',
         'agree_direct_promotion',
         'direct_promotion',
-        'editable',
     ];
 }

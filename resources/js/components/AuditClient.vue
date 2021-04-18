@@ -17,7 +17,7 @@
             <div class="mb-0">地區</div>
           </th>
           <td width="17%">
-            <div class="mb-0">{{ 地區map.get(Client.nationality) }}</div>
+            <div class="mb-0">{{ 地區map[Client.nationality] }}</div>
           </td>
           <th width="17%">
             <div class="mb-0">開通賬戶</div>
@@ -156,7 +156,7 @@
             <div class="mb-0">住址</div>
           </th>
           <td>
-            <div class="mb-0">{{ ClientIDCard.address_line1 }}</div>
+            <div class="mb-0">{{ ClientIDCard.address }}</div>
           </td>
           <th>
             <div class="mb-0">證件號碼</div>
@@ -187,6 +187,7 @@
             <h5 v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行卡信息
             </h5>
+            <h5 v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡信息</h5>
           </th>
           <th scope="col">
             <h5 class="mb-0">
@@ -210,6 +211,7 @@
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行名
             </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行名</div>
           </th>
           <td width="20%">
             <div class="mb-0">
@@ -221,6 +223,7 @@
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行卡號
             </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
           </th>
           <td width="20%">
             <div class="mb-0">{{ 銀行卡.account_no }}</div>
@@ -247,6 +250,11 @@
               v-else-if="銀行卡.lcid == 'zh-cn'"
               style="width: 300px"
               :src="cn_backcard_face"
+            />
+            <img
+              v-else-if="銀行卡.lcid == 'others'"
+              style="width: 300px"
+              :src="other_backcard_face"
             />
           </td>
         </tr>
@@ -539,13 +547,13 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th colspan="2" scope="col">
+          <th colspan="3" scope="col">
             <h5 class="mb-0">問題</h5>
           </th>
-          <th colspan="2" scope="col">
+          <th colspan="3" scope="col">
             <h5 class="mb-0">答案</h5>
           </th>
-          <th colspan="2" scope="col">
+          <th colspan="1" scope="col">
             <h5 class="mb-0">分數</h5>
           </th>
         </tr>
@@ -755,11 +763,12 @@ export default {
       loading: false,
       data: null,
       selectedClients: null,
-      地區map: new Map(),
+      地區map: {},
       駁回: {
         身份證信息: false,
         "zh-hk銀行卡信息": false,
         "zh-cn銀行卡信息": false,
+        others銀行卡信息: false,
         客戶補充資料: false,
         工作狀態: false,
         財政狀況: false,
@@ -793,6 +802,7 @@ export default {
     銀行卡s: Array,
     hk_backcard_face: String,
     cn_backcard_face: String,
+    other_backcard_face: String,
     client_working_status: String,
     name_card_face: String,
     client_financial_status: String,
@@ -840,8 +850,9 @@ export default {
       this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
     } catch (e) {}
     this.Introducer = JSON.parse(this.introducer);
-    this.地區map.set("zh-hk", "香港");
-    this.地區map.set("zh-cn", "中國");
+    this.地區map["zh-hk"] = "香港";
+    this.地區map["zh-cn"] = "中國";
+    this.地區map["others"] = "台灣";
     this.駁回.身份證信息 = this.ClientIDCard.remark ? true : false;
     this.銀行卡s.forEach((銀行卡) => {
       this.駁回[銀行卡.lcid + "銀行卡信息"] = 銀行卡.remark ? true : false;

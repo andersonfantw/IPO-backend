@@ -10,5 +10,7 @@ class AE extends Model
     protected $fillable = [
         'uuid',
         'name',
+        'account_type',
+        'code',
     ];
 }

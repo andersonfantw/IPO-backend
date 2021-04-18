@@ -16,10 +16,8 @@ class ClientInvestmentExperience extends Model
         'futures_and_options',
         'bonds_funds',
         'other_investment_experience',
-        'intend_to_invest_in_derivatives',
         'status',
         'remark',
         'count_of_audits',
-        'editable',
     ];
 }

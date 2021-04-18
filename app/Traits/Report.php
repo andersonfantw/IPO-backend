@@ -51,7 +51,7 @@ trait Report
             'IDNo' => [$Client->IDCard->idcard_no, null],
             'Nationality' => [$Nationality[$Client->nationality], null],
             'EducationLevel' => [substr($Client->education_level, 0, 1), null],
-            'FullResidentialAddress' => [$Client->ViewClientIDCard->address_line1, null],
+            'FullResidentialAddress' => [$Client->ViewClientIDCard->address, null],
             'Tel' => [null, null],
             'Mobile' => [$Client->mobile, null],
             'Fax' => [null, null],

@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
     Route::any('/LoadHKBankCard', 'AuditClientController@loadHKBankCard')->name('LoadHKBankCard');
     Route::any('/LoadCNBankCard', 'AuditClientController@loadCNBankCard')->name('LoadCNBankCard');
+    Route::any('/LoadOtherBankCard', 'AuditClientController@loadOtherBankCard')->name('LoadOtherBankCard');
     Route::any('/LoadNameCard', 'AuditClientController@loadNameCard')->name('LoadNameCard');
     Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
     Route::any('/LoadDepositProof', 'AuditClientController@loadDepositProof')->name('LoadDepositProof');

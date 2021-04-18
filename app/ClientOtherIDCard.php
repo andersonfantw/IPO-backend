@@ -4,24 +4,22 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientCNIDCard extends Model
+class ClientOtherIDCard extends Model
 {
-    protected $table = 'client_cn_idcard';
+    protected $table = 'client_other_idcard';
     protected $fillable = [
         'uuid',
         'idcard_face',
         'idcard_back',
-        'gender',
         'name_c',
-        'surname',
-        'given_name',
+        'name_en',
+        'gender',
+        'birthday',
         'idcard_no',
-        'idcard_address',
         'status',
         'remark',
         'count_of_audits',
     ];
-
     public function client()
     {
         return $this->morphOne('App\Client', 'IDCard');

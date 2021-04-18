@@ -2,6 +2,7 @@
     'MaxProgress' => [
         'zh-hk' => 15,
         'zh-cn' => 18,
+        'others' => 15,
     ],
     'Progress' => [
         'zh-hk' => [
@@ -41,16 +42,36 @@
             17 => 'zh-cn.DepositProof',
             18 => 'zh-cn.FinishOpeningAccount',
         ],
+        'others' => [
+            1 => 'others.Agreement',
+            2 => 'others.ClientIDCard',
+            3 => 'others.AddressProof',
+            4 => 'others.ClientOtherBankCard',
+            5 => 'others.ClientWorkingStatus',
+            6 => 'others.ClientFinancialStatus',
+            7 => 'others.ClientInvestmentOrientation',
+            8 => 'others.ClientEvaluationResults',
+            9 => 'others.OtherDeclarations',
+            10 => 'others.RiskDisclosure',
+            11 => 'others.Signature',
+            12 => 'others.BusinessType',
+            13 => 'others.DepositMethods',
+            14 => 'others.DepositProof',
+            15 => 'others.FinishOpeningAccount',
+        ],
         'Agreement' => [
             'zh-hk' => 1,
             'zh-cn' => 1,
+            'others' => 1,
         ],
         'ClientIDCard' => [
             'zh-hk' => 2,
             'zh-cn' => 2,
+            'others' => 2,
         ],
         'AddressProof' => [
             'zh-hk' => 3,
+            'others' => 3,
         ],
         'ClientMainlandBankCard' => [
             'zh-cn' => 3,
@@ -59,29 +80,38 @@
             'zh-hk' => 4,
             'zh-cn' => 4,
         ],
+        'ClientOtherBankCard' => [
+            'others' => 4,
+        ],
         'ClientWorkingStatus' => [
             'zh-hk' => 5,
             'zh-cn' => 5,
+            'others' => 5,
         ],
         'ClientFinancialStatus' => [
             'zh-hk' => 6,
             'zh-cn' => 6,
+            'others' => 6,
         ],
         'ClientInvestmentOrientation' => [
             'zh-hk' => 7,
             'zh-cn' => 7,
+            'others' => 7,
         ],
         'ClientEvaluationResults' => [
             'zh-hk' => 8,
             'zh-cn' => 8,
+            'others' => 8,
         ],
         'OtherDeclarations' => [
             'zh-hk' => 9,
             'zh-cn' => 9,
+            'others' => 9,
         ],
         'RiskDisclosure' => [
             'zh-hk' => 10,
             'zh-cn' => 10,
+            'others' => 10,
         ],
         'LiveDetection' => [
             'zh-cn' => 11,
@@ -92,6 +122,7 @@
         'Signature' => [
             'zh-hk' => 11,
             'zh-cn' => 13,
+            'others' => 11,
         ],
         'CACert' => [
             'zh-cn' => 14,
@@ -99,18 +130,22 @@
         'BusinessType' => [
             'zh-hk' => 12,
             'zh-cn' => 15,
+            'others' => 12,
         ],
         'DepositMethods' => [
             'zh-hk' => 13,
             'zh-cn' => 16,
+            'others' => 13,
         ],
         'DepositProof' => [
             'zh-hk' => 14,
             'zh-cn' => 17,
+            'others' => 14,
         ],
         'FinishOpeningAccount' => [
             'zh-hk' => 15,
             'zh-cn' => 18,
+            'others' => 15,
         ],
     ],
 ];

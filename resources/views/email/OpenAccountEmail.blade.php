@@ -39,63 +39,63 @@
         <strong>{{ __('Email.6') }}</strong>{{ $account_type }}<br>
     </p>
     <p>{{ __('Email.7') }}</p>
-    <table>
+    <table border="1">
         <thead>
             <tr>
-                <th class="border">
+                <th>
                     {{ __('Email.8') }}<br>{{ __('Email.9') }}
                 </th>
-                <th class="border">
+                <th>
                     {{ __('Email.10') }}<br>{{ __('Email.11') }}
                 </th>
-                <th class="border">
+                <th>
                     {{ __('Email.12') }}<br>{{ __('Email.13') }}
                 </th>
-                <th class="border">
+                <th>
                     {{ __('Email.14') }}<br>{{ __('Email.15') }}
                 </th>
-                <th class="border">
+                <th>
                     {{ __('Email.16') }}<br>{{ __('Email.17') }}
                 </th>
-                <th class="border">
+                <th>
                     {{ __('Email.18') }}<br>{{ __('Email.19') }}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="border" rowspan="3">
+                <td rowspan="3">
                     {{ __('Email.20') }}
                 </td>
-                <td class="border" rowspan="3">
+                <td rowspan="3">
                     {{ __('Email.21') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.22') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.25') }}
                 </td>
-                <td class="border" rowspan="3">
+                <td rowspan="3">
                     {{ __('Email.28') }}<br>{{ __('Email.29') }}
                 </td>
-                <td class="border" rowspan="3">
+                <td rowspan="3">
                     {{ __('Email.30') }}
                 </td>
             </tr>
             <tr>
-                <td class="border">
+                <td>
                     {{ __('Email.23') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.26') }}
                 </td>
             </tr>
             <tr>
-                <td class="border">
+                <td>
                     {{ __('Email.24') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.27') }}
                 </td>
             </tr>
@@ -106,24 +106,24 @@
                 <td rowspan="2">
                     {{ __('Email.32') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.33') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.35') }}
                 </td>
-                <td class="border" rowspan="2">
+                <td rowspan="2">
                     {{ __('Email.37') }}<br>{{ __('Email.38') }}
                 </td>
-                <td class="border" rowspan="2">
+                <td rowspan="2">
                     {{ __('Email.39') }}
                 </td>
             </tr>
             <tr>
-                <td class="border">
+                <td>
                     {{ __('Email.34') }}
                 </td>
-                <td class="border">
+                <td>
                     {{ __('Email.36') }}
                 </td>
             </tr>

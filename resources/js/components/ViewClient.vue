@@ -17,7 +17,7 @@
             <div class="mb-0">地區</div>
           </th>
           <td width="17%">
-            <div class="mb-0">{{ 地區map.get(Client.nationality) }}</div>
+            <div class="mb-0">{{ 地區map[Client.nationality] }}</div>
           </td>
           <th width="17%">
             <div class="mb-0">開通賬戶</div>
@@ -141,7 +141,7 @@
           </th>
           <td>
             <div class="mb-0">
-              {{ ClientIDCard.address_line1 }}
+              {{ ClientIDCard.address }}
             </div>
           </td>
           <th>
@@ -173,6 +173,7 @@
             <h5 v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行卡信息
             </h5>
+            <h5 v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡信息</h5>
           </th>
           <th scope="col"></th>
         </tr>
@@ -184,6 +185,7 @@
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行名
             </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行名</div>
           </th>
           <td width="20%">
             <div class="mb-0">
@@ -195,6 +197,7 @@
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行卡號
             </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
           </th>
           <td width="20%">
             <div class="mb-0">{{ 銀行卡.account_no }}</div>
@@ -222,6 +225,11 @@
               v-else-if="銀行卡.lcid == 'zh-cn'"
               style="width: 300px"
               :src="cn_backcard_face"
+            />
+            <img
+              v-else-if="銀行卡.lcid == 'others'"
+              style="width: 300px"
+              :src="other_backcard_face"
             />
           </td>
         </tr>
@@ -490,15 +498,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="[key, value] of Object.entries(ClientScore)" :key="key">
+        <tr v-for="(score, index) of client_score" :key="index">
           <th colspan="3" width="40%" scope="row">
-            <div class="mb-0">{{ value.question_text }}?</div>
+            <div class="mb-0">{{ score.question_text }}?</div>
           </th>
           <td colspan="3" width="40%">
-            <div class="mb-0">{{ value.answer }}</div>
+            <div class="mb-0">{{ score.answer }}</div>
           </td>
           <td colspan="3" width="20%">
-            <div class="mb-0">{{ value.score }}</div>
+            <div class="mb-0">{{ score.score }}</div>
           </td>
         </tr>
         <tr>
@@ -668,7 +676,7 @@ export default {
       loading: false,
       data: null,
       selectedClients: null,
-      地區map: new Map(),
+      地區map: {},
       駁回: {
         身份證信息: false,
         "zh-hk銀行卡信息": false,
@@ -688,7 +696,6 @@ export default {
       ClientWorkingStatus: null,
       ClientFinancialStatus: null,
       ClientInvestmentExperience: null,
-      ClientScore: {},
       ClientEvaluationResults: null,
       ClientSignature: null,
       ClientBusinessType: null,
@@ -706,6 +713,7 @@ export default {
     銀行卡s: Array,
     hk_backcard_face: String,
     cn_backcard_face: String,
+    other_backcard_face: String,
     client_working_status: String,
     name_card_face: String,
     client_financial_status: String,
@@ -734,24 +742,14 @@ export default {
     this.ClientInvestmentExperience = JSON.parse(
       this.client_investment_experience
     );
-    let self = this;
-    this.client_score.forEach((score) => {
-      let old_score = self.ClientScore[score.question_text];
-      if (old_score) {
-        if (score.score > old_score.score) {
-          self.ClientScore[score.question_text] = score;
-        }
-      } else {
-        self.ClientScore[score.question_text] = score;
-      }
-    });
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
     this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
     this.Introducer = JSON.parse(this.introducer);
-    this.地區map.set("zh-hk", "香港");
-    this.地區map.set("zh-cn", "中國");
+    this.地區map["zh-hk"] = "香港";
+    this.地區map["zh-cn"] = "中國";
+    this.地區map["others"] = "台灣";
     this.駁回.身份證信息 = this.ClientIDCard.remark ? true : false;
     this.銀行卡s.forEach((銀行卡) => {
       this.駁回[銀行卡.lcid + "銀行卡信息"] = 銀行卡.remark ? true : false;
@@ -769,9 +767,9 @@ export default {
   computed: {
     評估結果() {
       let result = 0;
-      for (const [key, value] of Object.entries(this.ClientScore)) {
-        result += value.score;
-      }
+      this.client_score.forEach((score) => {
+        result += score.score;
+      });
       return result;
     },
     投資者特徵() {

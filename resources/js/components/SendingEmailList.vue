@@ -166,7 +166,7 @@ export default {
   },
   methods: {
     sendEmails() {
-      let self = this;
+      const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.loading = true;
         axios
@@ -186,9 +186,9 @@ export default {
       }
     },
     loadData() {
-      let self = this;
+      const self = this;
       axios.post("api/SendingEmailList/all_data").then(function (res) {
-        let json = self.getDecryptedJsonObject(res.data);
+        const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         // self.$store.commit("IPOTable/ipos", json.data);
         self.loading = false;

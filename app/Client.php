@@ -22,7 +22,6 @@ class Client extends Model
         'status',
         'remark',
         'count_of_audits',
-        'editable',
     ];
 
     public function SentEmailRecords()
@@ -60,6 +59,16 @@ class Client extends Model
         return $this->hasOne('App\ClientHKIDCard', 'uuid', 'uuid');
     }
 
+    public function ClientCNIDCard()
+    {
+        return $this->hasOne('App\ClientCNIDCard', 'uuid', 'uuid');
+    }
+
+    public function ClientOtherIDCard()
+    {
+        return $this->hasOne('App\ClientOtherIDCard', 'uuid', 'uuid');
+    }
+
     public function ClientDepositProof()
     {
         return $this->hasOne('App\ClientDepositProof', 'uuid', 'uuid');
@@ -68,11 +77,6 @@ class Client extends Model
     public function ClientAddressProof()
     {
         return $this->hasOne('App\ClientAddressProof', 'uuid', 'uuid');
-    }
-
-    public function ClientCNIDCard()
-    {
-        return $this->hasOne('App\ClientCNIDCard', 'uuid', 'uuid');
     }
 
     public function IDCard()

@@ -5,6 +5,7 @@
         :idcard_back="'{{ route('LoadIDCardBack', ['uuid' => $uuid]) }}'" :銀行卡s="{{ $ClientBankCards }}"
         :hk_backcard_face="'{{ route('LoadHKBankCard', ['uuid' => $uuid]) }}'"
         :cn_backcard_face="'{{ route('LoadCNBankCard', ['uuid' => $uuid]) }}'"
+        :other_backcard_face="'{{ route('LoadOtherBankCard', ['uuid' => $uuid]) }}'"
         :name_card_face="'{{ route('LoadNameCard', ['uuid' => $uuid]) }}'"
         :deposit_proof="'{{ route('LoadDepositProof', ['uuid' => $uuid]) }}'"
         :address_proof="'{{ route('LoadAddressProof', ['uuid' => $uuid]) }}'" :action="'{{ route('audit1') }}'"

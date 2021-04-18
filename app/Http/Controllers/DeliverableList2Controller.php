@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
+use App\ClientOtherIDCard;
 use App\Traits\Excel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class DeliverableList2Controller extends HomeController
         $Clients = Client::whereHasMorph('IDCard', [
             ClientCNIDCard::class,
             ClientHKIDCard::class,
+            ClientOtherIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'audited2');
         })->whereHas('ClientBankCards', function (Builder $query) {

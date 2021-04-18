@@ -24,19 +24,26 @@ class ViewClientController extends HomeController
     public function loadHKBankCard(Request $request)
     {
         $Client = Client::where('uuid', $request->input('uuid'))->first();
-        $clientBankCard = $Client->ClientBankCards()->where('lcid', 'zh-hk')->first();
-        return response()->file(storage_path("app/upload/$Client->uuid/{$clientBankCard->backcard_face}"));
+        $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'zh-hk')->first();
+        return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
     }
 
     public function loadCNBankCard(Request $request)
     {
         $Client = Client::where('uuid', $request->input('uuid'))->first();
-        $clientBankCard = $Client->ClientBankCards()->where('lcid', 'zh-cn')->first();
-        if (is_object($clientBankCard)) {
-            return response()->file(storage_path("app/upload/$Client->uuid/{$clientBankCard->backcard_face}"));
+        $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'zh-cn')->first();
+        if (is_object($ClientBankCard)) {
+            return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
         } else {
             return null;
         }
+    }
+
+    public function loadOtherBankCard(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->first();
+        $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'others')->first();
+        return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
     }
 
     public function loadNameCard(Request $request)

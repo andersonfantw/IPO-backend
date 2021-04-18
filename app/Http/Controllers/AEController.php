@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AE;
+use App\Salesman;
 use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,12 +14,22 @@ class AEController extends Controller
     public function create(Request $request)
     {
         $uuid = Str::uuid();
-        $ae = AE::updateOrCreate(
+        AE::updateOrCreate(
             ['uuid' => $uuid],
             [
-                'name' => '王浩進',
+                'name' => 'Rebecca',
+                'account_type' => '08',
+                'code' => 'AELSH',
             ]
         );
+        // AE::updateOrCreate(
+        //     ['uuid' => $uuid],
+        //     [
+        //         'name' => 'Rebecca',
+        //         'account_type' => '13',
+        //         'code' => 'LSH01',
+        //     ]
+        // );
     }
 
     public function createStaff(Request $request)
@@ -32,9 +43,23 @@ class AEController extends Controller
         );
     }
 
+    public function createSalesman(Request $request)
+    {
+        $uuid = Str::uuid();
+        Salesman::updateOrCreate(
+            ['uuid' => $uuid],
+            [
+                'name' => '濤哥',
+                'ae_uuid' => 'e550be72-fcb1-4779-980f-f255ff6eb041',
+            ]
+        );
+    }
+
     public function generateQRCode(Request $request)
     {
-        $introducer = Staff::where('name', '王浩進')->first();
+        // $introducer = Staff::where('name', '王浩進')->first();
+        // $introducer = Salesman::where('name', '濤哥')->first();
+        $introducer = AE::where('name', 'Rebecca')->first();
         return QrCode::format('png')->merge(public_path('images/ccyss-removebg-preview.png'), .3, true)->size(250)->generate("https://pys.chinayss.hk?introducer_uuid=$introducer->uuid");
     }
 

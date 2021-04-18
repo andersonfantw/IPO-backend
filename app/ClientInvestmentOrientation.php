@@ -11,6 +11,5 @@ class ClientInvestmentOrientation extends Model
         'uuid',
         'question_text',
         'answer',
-        'editable',
     ];
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
+use App\ClientOtherIDCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -59,6 +60,7 @@ class UnauditedList2Controller extends HomeController
         $Clients = Client::whereHasMorph('IDCard', [
             ClientCNIDCard::class,
             ClientHKIDCard::class,
+            ClientOtherIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'audited1');
         })->whereHas('ClientBankCards', function (Builder $query) {
@@ -81,24 +83,13 @@ class UnauditedList2Controller extends HomeController
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
-            foreach ($this->columnNames as $columnKey => $columnName) {
-                // $row['是否上传收据'] = $Client->ClientDepositProof ? '已上传收据' : '未上传收据';
-                if ($Client->idcard_type == ClientHKIDCard::class) {
-                    $row['客户姓名'] = $Client->IDCard->name_c;
-                    $row['證件號碼'] = $Client->IDCard->idcard_no;
-                } elseif ($Client->idcard_type == ClientCNIDCard::class) {
-                    $row['客户姓名'] = $Client->IDCard->name_c;
-                    $row['證件號碼'] = $Client->IDCard->idcard_no;
-                    $row['所在地'] = $Client->IDCard->idcard_address;
-                }
-                $row['手機號碼'] = $Client->mobile;
-                if ($Client->ClientAddressProof) {
-                    $row['所在地'] = $Client->ClientAddressProof->address_text;
-                }
-                $row['郵箱'] = $Client->email;
-                $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
-                $row['uuid'] = $Client->uuid;
-            }
+            $row['客户姓名'] = $Client->ViewClientIDCard->name_c;
+            $row['證件號碼'] = $Client->ViewClientIDCard->idcard_no;
+            $row['所在地'] = $Client->ViewClientIDCard->address;
+            $row['手機號碼'] = $Client->mobile;
+            $row['郵箱'] = $Client->email;
+            $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
         return encrypt(json_encode([

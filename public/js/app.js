@@ -8116,6 +8116,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8127,11 +8135,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       loading: false,
       data: null,
       selectedClients: null,
-      地區map: new Map(),
+      地區map: {},
       駁回: {
         身份證信息: false,
         "zh-hk銀行卡信息": false,
         "zh-cn銀行卡信息": false,
+        others銀行卡信息: false,
         客戶補充資料: false,
         工作狀態: false,
         財政狀況: false,
@@ -8169,6 +8178,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     銀行卡s: Array,
     hk_backcard_face: String,
     cn_backcard_face: String,
+    other_backcard_face: String,
     client_working_status: String,
     name_card_face: String,
     client_financial_status: String,
@@ -8221,8 +8231,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     } catch (e) {}
 
     this.Introducer = JSON.parse(this.introducer);
-    this.地區map.set("zh-hk", "香港");
-    this.地區map.set("zh-cn", "中國");
+    this.地區map["zh-hk"] = "香港";
+    this.地區map["zh-cn"] = "中國";
+    this.地區map["others"] = "台灣";
     this.駁回.身份證信息 = this.ClientIDCard.remark ? true : false;
     this.銀行卡s.forEach(function (銀行卡) {
       _this.駁回[銀行卡.lcid + "銀行卡信息"] = 銀行卡.remark ? true : false;
@@ -9605,18 +9616,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/checkbox */ "./node_modules/primevue/checkbox/index.js");
 /* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_checkbox__WEBPACK_IMPORTED_MODULE_2__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10286,7 +10293,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       loading: false,
       data: null,
       selectedClients: null,
-      地區map: new Map(),
+      地區map: {},
       駁回: {
         身份證信息: false,
         "zh-hk銀行卡信息": false,
@@ -10306,7 +10313,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       ClientWorkingStatus: null,
       ClientFinancialStatus: null,
       ClientInvestmentExperience: null,
-      ClientScore: {},
       ClientEvaluationResults: null,
       ClientSignature: null,
       ClientBusinessType: null,
@@ -10328,6 +10334,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     銀行卡s: Array,
     hk_backcard_face: String,
     cn_backcard_face: String,
+    other_backcard_face: String,
     client_working_status: String,
     name_card_face: String,
     client_financial_status: String,
@@ -10358,25 +10365,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.ClientWorkingStatus = JSON.parse(this.client_working_status);
     this.ClientFinancialStatus = JSON.parse(this.client_financial_status);
     this.ClientInvestmentExperience = JSON.parse(this.client_investment_experience);
-    var self = this;
-    this.client_score.forEach(function (score) {
-      var old_score = self.ClientScore[score.question_text];
-
-      if (old_score) {
-        if (score.score > old_score.score) {
-          self.ClientScore[score.question_text] = score;
-        }
-      } else {
-        self.ClientScore[score.question_text] = score;
-      }
-    });
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
     this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
     this.Introducer = JSON.parse(this.introducer);
-    this.地區map.set("zh-hk", "香港");
-    this.地區map.set("zh-cn", "中國");
+    this.地區map["zh-hk"] = "香港";
+    this.地區map["zh-cn"] = "中國";
+    this.地區map["others"] = "台灣";
     this.駁回.身份證信息 = this.ClientIDCard.remark ? true : false;
     this.銀行卡s.forEach(function (銀行卡) {
       _this.駁回[銀行卡.lcid + "銀行卡信息"] = 銀行卡.remark ? true : false;
@@ -10392,15 +10388,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   computed: {
     評估結果: function _() {
       var result = 0;
-
-      for (var _i = 0, _Object$entries = Object.entries(this.ClientScore); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
-
-        result += value.score;
-      }
-
+      this.client_score.forEach(function (score) {
+        result += score.score;
+      });
       return result;
     },
     投資者特徵: function _() {
@@ -110344,7 +110334,7 @@ var render = function() {
             _vm._v(" "),
             _c("td", { attrs: { width: "17%" } }, [
               _c("div", { staticClass: "mb-0" }, [
-                _vm._v(_vm._s(_vm.地區map.get(_vm.Client.nationality)))
+                _vm._v(_vm._s(_vm.地區map[_vm.Client.nationality]))
               ])
             ]),
             _vm._v(" "),
@@ -110585,7 +110575,7 @@ var render = function() {
             _vm._v(" "),
             _c("td", [
               _c("div", { staticClass: "mb-0" }, [
-                _vm._v(_vm._s(_vm.ClientIDCard.address_line1))
+                _vm._v(_vm._s(_vm.ClientIDCard.address))
               ])
             ]),
             _vm._v(" "),
@@ -110632,6 +110622,8 @@ var render = function() {
                     ? _c("h5", { staticClass: "mb-0" }, [
                         _vm._v("\n            大陸銀行卡信息\n          ")
                       ])
+                    : 銀行卡.lcid == "others"
+                    ? _c("h5", { staticClass: "mb-0" }, [_vm._v("銀行卡信息")])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -110679,6 +110671,8 @@ var render = function() {
                     ? _c("div", { staticClass: "mb-0" }, [
                         _vm._v("\n            大陸銀行名\n          ")
                       ])
+                    : 銀行卡.lcid == "others"
+                    ? _c("div", { staticClass: "mb-0" }, [_vm._v("銀行名")])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -110703,6 +110697,8 @@ var render = function() {
                     ? _c("div", { staticClass: "mb-0" }, [
                         _vm._v("\n            大陸銀行卡號\n          ")
                       ])
+                    : 銀行卡.lcid == "others"
+                    ? _c("div", { staticClass: "mb-0" }, [_vm._v("銀行卡號")])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -110754,6 +110750,11 @@ var render = function() {
                     ? _c("img", {
                         staticStyle: { width: "300px" },
                         attrs: { src: _vm.cn_backcard_face }
+                      })
+                    : 銀行卡.lcid == "others"
+                    ? _c("img", {
+                        staticStyle: { width: "300px" },
+                        attrs: { src: _vm.other_backcard_face }
                       })
                     : _vm._e()
                 ])
@@ -111976,15 +111977,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { attrs: { colspan: "2", scope: "col" } }, [
+        _c("th", { attrs: { colspan: "3", scope: "col" } }, [
           _c("h5", { staticClass: "mb-0" }, [_vm._v("問題")])
         ]),
         _vm._v(" "),
-        _c("th", { attrs: { colspan: "2", scope: "col" } }, [
+        _c("th", { attrs: { colspan: "3", scope: "col" } }, [
           _c("h5", { staticClass: "mb-0" }, [_vm._v("答案")])
         ]),
         _vm._v(" "),
-        _c("th", { attrs: { colspan: "2", scope: "col" } }, [
+        _c("th", { attrs: { colspan: "1", scope: "col" } }, [
           _c("h5", { staticClass: "mb-0" }, [_vm._v("分數")])
         ])
       ])
@@ -113747,7 +113748,7 @@ var render = function() {
             _vm._v(" "),
             _c("td", { attrs: { width: "17%" } }, [
               _c("div", { staticClass: "mb-0" }, [
-                _vm._v(_vm._s(_vm.地區map.get(_vm.Client.nationality)))
+                _vm._v(_vm._s(_vm.地區map[_vm.Client.nationality]))
               ])
             ]),
             _vm._v(" "),
@@ -113936,7 +113937,7 @@ var render = function() {
               _c("div", { staticClass: "mb-0" }, [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.ClientIDCard.address_line1) +
+                    _vm._s(_vm.ClientIDCard.address) +
                     "\n          "
                 )
               ])
@@ -113985,6 +113986,8 @@ var render = function() {
                     ? _c("h5", { staticClass: "mb-0" }, [
                         _vm._v("\n            大陸銀行卡信息\n          ")
                       ])
+                    : 銀行卡.lcid == "others"
+                    ? _c("h5", { staticClass: "mb-0" }, [_vm._v("銀行卡信息")])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -114001,6 +114004,8 @@ var render = function() {
                     ? _c("div", { staticClass: "mb-0" }, [
                         _vm._v("\n            大陸銀行名\n          ")
                       ])
+                    : 銀行卡.lcid == "others"
+                    ? _c("div", { staticClass: "mb-0" }, [_vm._v("銀行名")])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -114025,6 +114030,8 @@ var render = function() {
                     ? _c("div", { staticClass: "mb-0" }, [
                         _vm._v("\n            大陸銀行卡號\n          ")
                       ])
+                    : 銀行卡.lcid == "others"
+                    ? _c("div", { staticClass: "mb-0" }, [_vm._v("銀行卡號")])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -114077,6 +114084,11 @@ var render = function() {
                     ? _c("img", {
                         staticStyle: { width: "300px" },
                         attrs: { src: _vm.cn_backcard_face }
+                      })
+                    : 銀行卡.lcid == "others"
+                    ? _c("img", {
+                        staticStyle: { width: "300px" },
+                        attrs: { src: _vm.other_backcard_face }
                       })
                     : _vm._e()
                 ])
@@ -114461,29 +114473,27 @@ var render = function() {
         _c(
           "tbody",
           [
-            _vm._l(Object.entries(_vm.ClientScore), function(ref) {
-              var key = ref[0]
-              var value = ref[1]
-              return _c("tr", { key: key }, [
+            _vm._l(_vm.client_score, function(score, index) {
+              return _c("tr", { key: index }, [
                 _c(
                   "th",
                   { attrs: { colspan: "3", width: "40%", scope: "row" } },
                   [
                     _c("div", { staticClass: "mb-0" }, [
-                      _vm._v(_vm._s(value.question_text) + "?")
+                      _vm._v(_vm._s(score.question_text) + "?")
                     ])
                   ]
                 ),
                 _vm._v(" "),
                 _c("td", { attrs: { colspan: "3", width: "40%" } }, [
                   _c("div", { staticClass: "mb-0" }, [
-                    _vm._v(_vm._s(value.answer))
+                    _vm._v(_vm._s(score.answer))
                   ])
                 ]),
                 _vm._v(" "),
                 _c("td", { attrs: { colspan: "3", width: "20%" } }, [
                   _c("div", { staticClass: "mb-0" }, [
-                    _vm._v(_vm._s(value.score))
+                    _vm._v(_vm._s(score.score))
                   ])
                 ])
               ])

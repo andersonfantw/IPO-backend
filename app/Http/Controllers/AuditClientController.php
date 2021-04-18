@@ -77,6 +77,8 @@ class AuditClientController extends ViewClientController
                     $this->addEditableSteps($Client, 'ClientHKBankCard');
                 } elseif ($ClientBankCard->lcid == 'zh-cn') {
                     $this->addEditableSteps($Client, 'ClientMainlandBankCard');
+                } elseif ($ClientBankCard->lcid == 'others') {
+                    $this->addEditableSteps($Client, 'ClientOtherBankCard');
                 }
                 ClientRejectionLog::create([
                     'uuid' => $Client->uuid,
@@ -91,6 +93,8 @@ class AuditClientController extends ViewClientController
                     $this->deleteEditableSteps($Client, 'ClientHKBankCard');
                 } elseif ($ClientBankCard->lcid == 'zh-cn') {
                     $this->deleteEditableSteps($Client, 'ClientMainlandBankCard');
+                } elseif ($ClientBankCard->lcid == 'others') {
+                    $this->deleteEditableSteps($Client, 'ClientOtherBankCard');
                 }
             }
             $ClientBankCard->count_of_audits++;
@@ -230,7 +234,7 @@ class AuditClientController extends ViewClientController
         }
         $Client->ClientDepositProof->count_of_audits++;
         $Client->ClientDepositProof->save();
-        if ($rejected) {
+        if (env('IS_PRODUCTION') && $rejected) {
             return $this->sendRejectionSMS($Client);
         }
         return redirect()->route($input['redirect_route']);
