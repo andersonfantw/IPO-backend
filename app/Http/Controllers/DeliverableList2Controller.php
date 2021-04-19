@@ -82,8 +82,6 @@ class DeliverableList2Controller extends HomeController
             $query->where('status', 'audited2');
         })->whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->orWhereHas('ClientAddressProof', function (Builder $query) {
-            $query->where('status', 'audited2');
         })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'audited2');
         })->where('status', 'audited2')->orderBy('created_at', 'asc')->get();

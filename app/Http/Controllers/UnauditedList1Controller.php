@@ -73,8 +73,6 @@ class UnauditedList1Controller extends HomeController
             $query->where('status', 'unaudited');
         })->whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->orWhereHas('ClientAddressProof', function (Builder $query) {
-            $query->where('status', 'unaudited');
         })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'unaudited');
         })->where('status', 'unaudited')->orderBy('created_at', 'desc')->get();
