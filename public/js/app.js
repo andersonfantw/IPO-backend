@@ -7359,18 +7359,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_inputswitch__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/checkbox */ "./node_modules/primevue/checkbox/index.js");
 /* harmony import */ var primevue_checkbox__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_checkbox__WEBPACK_IMPORTED_MODULE_2__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 //
 //
 //
@@ -8156,7 +8144,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       ClientWorkingStatus: null,
       ClientFinancialStatus: null,
       ClientInvestmentExperience: null,
-      ClientScore: {},
       ClientEvaluationResults: null,
       ClientSignature: null,
       ClientBusinessType: null,
@@ -8209,18 +8196,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.ClientWorkingStatus = JSON.parse(this.client_working_status);
     this.ClientFinancialStatus = JSON.parse(this.client_financial_status);
     this.ClientInvestmentExperience = JSON.parse(this.client_investment_experience);
-    var self = this;
-    this.client_score.forEach(function (score) {
-      var old_score = self.ClientScore[score.question_text];
-
-      if (old_score) {
-        if (score.score > old_score.score) {
-          self.ClientScore[score.question_text] = score;
-        }
-      } else {
-        self.ClientScore[score.question_text] = score;
-      }
-    });
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
@@ -8248,15 +8223,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   computed: {
     評估結果: function _() {
       var result = 0;
-
-      for (var _i = 0, _Object$entries = Object.entries(this.ClientScore); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
-
-        result += value.score;
-      }
-
+      this.client_score.forEach(function (score) {
+        result += score.score;
+      });
       return result;
     },
     投資者特徵: function _() {
@@ -10298,6 +10267,7 @@ __webpack_require__.r(__webpack_exports__);
         身份證信息: false,
         "zh-hk銀行卡信息": false,
         "zh-cn銀行卡信息": false,
+        others銀行卡信息: false,
         客戶補充資料: false,
         工作狀態: false,
         財政狀況: false,
@@ -10368,7 +10338,12 @@ __webpack_require__.r(__webpack_exports__);
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
-    this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+
+    try {
+      this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+      this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
+    } catch (e) {}
+
     this.Introducer = JSON.parse(this.introducer);
     this.地區map["zh-hk"] = "香港";
     this.地區map["zh-cn"] = "中國";
@@ -10383,7 +10358,6 @@ __webpack_require__.r(__webpack_exports__);
     this.駁回.投資經驗及衍生產品認識 = this.ClientInvestmentExperience.remark ? true : false;
     this.駁回.問卷調查 = this.ClientEvaluationResults.remark ? true : false;
     this.駁回.簽名 = this.ClientSignature.remark ? true : false;
-    this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
   },
   computed: {
     評估結果: function _() {
@@ -111258,29 +111232,27 @@ var render = function() {
         _c(
           "tbody",
           [
-            _vm._l(Object.entries(_vm.ClientScore), function(ref) {
-              var key = ref[0]
-              var value = ref[1]
-              return _c("tr", { key: key }, [
+            _vm._l(_vm.client_score, function(score, index) {
+              return _c("tr", { key: index }, [
                 _c(
                   "th",
                   { attrs: { colspan: "3", width: "40%", scope: "row" } },
                   [
                     _c("div", { staticClass: "mb-0" }, [
-                      _vm._v(_vm._s(value.question_text) + "?")
+                      _vm._v(_vm._s(score.question_text) + "?")
                     ])
                   ]
                 ),
                 _vm._v(" "),
                 _c("td", { attrs: { colspan: "3", width: "40%" } }, [
                   _c("div", { staticClass: "mb-0" }, [
-                    _vm._v(_vm._s(value.answer))
+                    _vm._v(_vm._s(score.answer))
                   ])
                 ]),
                 _vm._v(" "),
                 _c("td", { attrs: { colspan: "3", width: "20%" } }, [
                   _c("div", { staticClass: "mb-0" }, [
-                    _vm._v(_vm._s(value.score))
+                    _vm._v(_vm._s(score.score))
                   ])
                 ])
               ])

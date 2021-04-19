@@ -681,6 +681,7 @@ export default {
         身份證信息: false,
         "zh-hk銀行卡信息": false,
         "zh-cn銀行卡信息": false,
+        others銀行卡信息: false,
         客戶補充資料: false,
         工作狀態: false,
         財政狀況: false,
@@ -745,7 +746,10 @@ export default {
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
-    this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+    try {
+      this.ClientDepositProof = JSON.parse(this.client_deposit_proof);
+      this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
+    } catch (e) {}
     this.Introducer = JSON.parse(this.introducer);
     this.地區map["zh-hk"] = "香港";
     this.地區map["zh-cn"] = "中國";
@@ -762,7 +766,6 @@ export default {
       : false;
     this.駁回.問卷調查 = this.ClientEvaluationResults.remark ? true : false;
     this.駁回.簽名 = this.ClientSignature.remark ? true : false;
-    this.駁回.存款證明 = this.ClientDepositProof.remark ? true : false;
   },
   computed: {
     評估結果() {

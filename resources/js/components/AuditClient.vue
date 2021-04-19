@@ -559,15 +559,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="[key, value] of Object.entries(ClientScore)" :key="key">
+        <tr v-for="(score, index) of client_score" :key="index">
           <th colspan="3" width="40%" scope="row">
-            <div class="mb-0">{{ value.question_text }}?</div>
+            <div class="mb-0">{{ score.question_text }}?</div>
           </th>
           <td colspan="3" width="40%">
-            <div class="mb-0">{{ value.answer }}</div>
+            <div class="mb-0">{{ score.answer }}</div>
           </td>
           <td colspan="3" width="20%">
-            <div class="mb-0">{{ value.score }}</div>
+            <div class="mb-0">{{ score.score }}</div>
           </td>
         </tr>
         <tr>
@@ -784,7 +784,6 @@ export default {
       ClientWorkingStatus: null,
       ClientFinancialStatus: null,
       ClientInvestmentExperience: null,
-      ClientScore: {},
       ClientEvaluationResults: null,
       ClientSignature: null,
       ClientBusinessType: null,
@@ -831,17 +830,6 @@ export default {
     this.ClientInvestmentExperience = JSON.parse(
       this.client_investment_experience
     );
-    let self = this;
-    this.client_score.forEach((score) => {
-      let old_score = self.ClientScore[score.question_text];
-      if (old_score) {
-        if (score.score > old_score.score) {
-          self.ClientScore[score.question_text] = score;
-        }
-      } else {
-        self.ClientScore[score.question_text] = score;
-      }
-    });
     this.ClientEvaluationResults = JSON.parse(this.client_evaluation_results);
     this.ClientSignature = JSON.parse(this.client_signature);
     this.ClientBusinessType = JSON.parse(this.client_business_type);
@@ -869,9 +857,9 @@ export default {
   computed: {
     評估結果() {
       let result = 0;
-      for (const [key, value] of Object.entries(this.ClientScore)) {
-        result += value.score;
-      }
+      this.client_score.forEach((score) => {
+        result += score.score;
+      });
       return result;
     },
     投資者特徵() {
