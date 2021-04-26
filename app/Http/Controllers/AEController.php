@@ -38,7 +38,7 @@ class AEController extends Controller
         Staff::updateOrCreate(
             ['uuid' => $uuid],
             [
-                'name' => '张冬梅',
+                'name' => '范焜華',
             ]
         );
     }
@@ -49,7 +49,7 @@ class AEController extends Controller
         Salesman::updateOrCreate(
             ['uuid' => $uuid],
             [
-                'name' => '濤哥',
+                'name' => '量化簡財',
                 'ae_uuid' => 'e550be72-fcb1-4779-980f-f255ff6eb041',
             ]
         );
@@ -57,9 +57,9 @@ class AEController extends Controller
 
     public function generateQRCode(Request $request)
     {
-        // $introducer = Staff::where('name', '王浩進')->first();
-        // $introducer = Salesman::where('name', '濤哥')->first();
-        $introducer = AE::where('name', 'Rebecca')->first();
+        $introducer = Staff::where('name', '范焜華')->first();
+        // $introducer = Salesman::where('name', '量化簡財')->first();
+        // $introducer = AE::where('name', 'Rebecca')->first();
         return QrCode::format('png')->merge(public_path('images/ccyss-removebg-preview.png'), .3, true)->size(250)->generate("https://pys.chinayss.hk?introducer_uuid=$introducer->uuid");
     }
 

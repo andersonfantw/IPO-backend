@@ -27,7 +27,7 @@ class UnauditedList1Controller extends HomeController
             'email' => '郵箱',
             'lastTime' => '提交時間',
             'relation' => '客户姓名',
-            'uuid' => '唯一编码',
+            'uuid' => '唯一編碼',
         ];
     }
 
@@ -44,10 +44,12 @@ class UnauditedList1Controller extends HomeController
         ];
         $filterMatchMode = [
             '客户姓名' => 'startsWith',
-            '是否已有账户' => 'equals',
-            '證件號碼' => 'startsWith', '手機號碼' => 'startsWith',
-            '所在地' => 'equals', '郵箱' => 'equals',
-            '认领时间' => 'equals', '提交時間' => 'equals'];
+            '證件號碼' => 'startsWith',
+            '手機號碼' => 'startsWith',
+            '所在地' => 'equals',
+            '郵箱' => 'startsWith',
+            '提交時間' => 'equals',
+        ];
         $parameters['columns'] = json_encode($columns);
         $parameters['filterMatchMode'] = json_encode($filterMatchMode);
         return $parameters;

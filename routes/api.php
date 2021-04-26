@@ -50,6 +50,10 @@ Route::prefix('DeliverableList2')->group(function () {
     Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
 });
 
+Route::prefix('Ayers')->group(function () {
+    Route::any('/testCSVImport', 'HomeController@testCSVImport');
+});
+
 Route::prefix('AyersAccount')->group(function () {
     Route::any('/generate', 'AyersAccountController@generate');
 });

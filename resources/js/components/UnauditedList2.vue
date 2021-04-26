@@ -1,6 +1,35 @@
 <template>
   <div>
-    <SearchBar :store-name-spaced="'UnauditedList2'"></SearchBar>
+    <div class="row no-gutters">
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'客户姓名'"
+          :store-name-spaced="'UnauditedList2'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'證件號碼'"
+          :store-name-spaced="'UnauditedList2'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'手機號碼'"
+          :store-name-spaced="'UnauditedList2'"
+        ></SearchBox>
+      </div>
+      <div class="col">
+        <SearchBox
+          :type="'text'"
+          :name="'郵箱'"
+          :store-name-spaced="'UnauditedList2'"
+        ></SearchBox>
+      </div>
+    </div>
     <DataTable
       :value="data"
       :filters="filters"
@@ -51,7 +80,7 @@
   </div>
 </template>
 <script>
-import SearchBar from "./SearchBar";
+import SearchBox from "./SearchBox";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -81,7 +110,13 @@ export default {
     },
     audit_client_url: String,
   },
-  components: { SearchBar, DataTable, Column, Button, Checkbox },
+  components: {
+    SearchBox,
+    DataTable,
+    Column,
+    Button,
+    Checkbox,
+  },
   created() {
     this.columns = JSON.parse(this.p_columns);
     this.filterMatchMode = JSON.parse(this.p_filterMatchMode);

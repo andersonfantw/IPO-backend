@@ -18,8 +18,6 @@ class UnauditedList2Controller extends HomeController
     {
         parent::__construct();
         $this->columnNames = [
-            // 'userCount' => '是否已有账户',
-            // 'chequeReceipt' => '是否上传收据',
             'idCard' => '證件號碼',
             'mobile' => '手機號碼',
             'residenceAddr' => '所在地',
@@ -35,7 +33,6 @@ class UnauditedList2Controller extends HomeController
         $parameters = parent::setViewParameters($request);
         $columns = [
             ['field' => '客户姓名', 'header' => '客户姓名'],
-            // ['field' => '是否上传收据', 'header' => '是否上传收据'],
             ['field' => '證件號碼', 'header' => '證件號碼'],
             ['field' => '手機號碼', 'header' => '手機號碼'],
             ['field' => '所在地', 'header' => '所在地'],
@@ -44,11 +41,11 @@ class UnauditedList2Controller extends HomeController
         ];
         $filterMatchMode = [
             '客户姓名' => 'startsWith',
-            // '是否已有账户' => 'equals',
-            // '是否上传收据' => 'equals',
-            '證件號碼' => 'startsWith', '手機號碼' => 'startsWith',
-            '所在地' => 'equals', '郵箱' => 'equals',
-            '认领时间' => 'equals', '提交時間' => 'equals',
+            '證件號碼' => 'startsWith',
+            '手機號碼' => 'startsWith',
+            '所在地' => 'equals',
+            '郵箱' => 'startsWith',
+            '提交時間' => 'equals',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['filterMatchMode'] = json_encode($filterMatchMode);

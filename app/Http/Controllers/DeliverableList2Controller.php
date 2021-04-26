@@ -29,7 +29,7 @@ class DeliverableList2Controller extends HomeController
             'lastTime' => '開戶時間',
             'created_at' => '帳戶生成時間',
             'relation' => '客户姓名',
-            'uuid' => '唯一编码',
+            'uuid' => '唯一編碼',
             'ayers_account_no' => '帳戶號碼',
         ];
     }

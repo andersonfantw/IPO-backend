@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\A07Import;
+use Excel;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -118,6 +120,11 @@ class HomeController extends Controller
     protected function setViewParameters(Request $request)
     {
         return ['menu' => json_encode($this->getMenu())];
+    }
+
+    public function testCSVImport(Request $request)
+    {
+        Excel::import(new A07Import, 'D:\银盛证券\Ayers\202104\20210422\Client_Interest_Statement_CSV07_20210422.csv');
     }
 
 }
