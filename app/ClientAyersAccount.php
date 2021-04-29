@@ -11,6 +11,7 @@ class ClientAyersAccount extends Model
         'uuid',
         'account_no',
         'type',
+        'client_type',
         'status',
     ];
 
