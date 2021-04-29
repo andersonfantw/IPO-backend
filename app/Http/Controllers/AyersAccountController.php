@@ -19,7 +19,7 @@ class AyersAccountController extends Controller
             try {
                 $ClientAyersAccount = ClientAyersAccount::where('uuid', $client['uuid'])->firstOrFail();
             } catch (ModelNotFoundException $e) {
-                $account_no = ClientAyersAccount::max('account_no');
+                $account_no = ClientAyersAccount::whereRaw('LENGTH(account_no) > ?', [8])->max('account_no');
                 if ($account_no) {
                     $account_no = preg_replace('/\d\d$/i', '', $account_no);
                     $account_no = intval($account_no) + 1;
