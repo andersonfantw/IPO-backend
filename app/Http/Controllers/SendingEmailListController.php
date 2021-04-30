@@ -42,7 +42,7 @@ class SendingEmailListController extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('AyersAccounts')->orderBy('created_at', 'asc')->get();
+        $Clients = Client::has('AyersAccounts')->where('type', '拼一手')->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
