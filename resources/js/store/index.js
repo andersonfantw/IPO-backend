@@ -7,6 +7,7 @@ import RejectedList1 from "./modules/RejectedList1";
 import ReauditList1 from "./modules/ReauditList1";
 import DeliverableList2 from "./modules/DeliverableList2";
 import SendingEmailList from "./modules/SendingEmailList";
+import ClientFundInRequests from "./modules/ClientFundInRequests";
 
 export default new Vuex.Store({
 	strict: false,
@@ -17,5 +18,6 @@ export default new Vuex.Store({
 		UnauditedList2: UnauditedList2,
 		DeliverableList2: DeliverableList2,
 		SendingEmailList: SendingEmailList,
+		ClientFundInRequests: ClientFundInRequests,
 	}
 });

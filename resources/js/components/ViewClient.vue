@@ -661,21 +661,12 @@
         </tr>
       </tbody>
     </table>
-    <!-- <Button type="submit" label="提交審核" icon="pi pi-check" iconPos="right" /> -->
   </form>
 </template>
 <script>
-import Button from "primevue/button";
-import InputSwitch from "primevue/inputswitch";
-import Checkbox from "primevue/checkbox";
 export default {
   data() {
     return {
-      columns: [],
-      filterMatchMode: {},
-      loading: false,
-      data: null,
-      selectedClients: null,
       地區map: {},
       駁回: {
         身份證信息: false,
@@ -704,7 +695,7 @@ export default {
       Introducer: null,
     };
   },
-  components: { Button, InputSwitch, Checkbox },
+  components: {},
   props: {
     client: String,
     client_id_card: String,

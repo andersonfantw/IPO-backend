@@ -65,3 +65,11 @@ Route::prefix('SendingEmailList')->group(function () {
 Route::prefix('OpenAccountEmail')->group(function () {
     Route::any('/send', 'EmailController@sendOpenAccountEmail');
 });
+
+Route::prefix('ClientFundInRequests')->group(function () {
+    Route::any('/all_data', 'ClientFundInRequestsController@getData');
+});
+
+Route::prefix('ClientHKFundOutRequests')->group(function () {
+    Route::any('/all_data', 'ClientHKFundOutRequestsController@getData');
+});

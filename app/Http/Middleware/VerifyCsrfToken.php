@@ -17,5 +17,8 @@ class VerifyCsrfToken extends Middleware
         'audit1',
         'GenerateAyersAccount',
         'login',
+        'AuditClientFundInRequest',
+        'DoAuditClientFundInRequest',
+        'ViewClientFundInRequest',
     ];
 }

@@ -11,9 +11,9 @@ trait Report
 
     public function test()
     {
-        // $Client = Client::where('uuid', '8c0dba01-9340-4690-971d-3659c6cbde0e')->first();
-        // $this->AccountOpeningForm($Client);
-        return $this->CyssDmaAgreement();
+        $Client = Client::where('uuid', 'bb4b9191-9076-46ac-bb14-218bf11b9251')->first();
+        $this->AccountOpeningForm($Client);
+        // return $this->CyssDmaAgreement();
     }
 
     public function CyssDmaAgreement()

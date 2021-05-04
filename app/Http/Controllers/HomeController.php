@@ -75,23 +75,33 @@ class HomeController extends Controller
                 ],
             ],
             [
-                'label' => "賬戶總覽",
+                'label' => "帳戶總覽",
                 'icon' => "pi pi-fw pi-user",
                 'items' => [
                     [
-                        'label' => "賬戶資料修改申請",
+                        'label' => "帳戶資料修改申請",
                         'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [
-                        'label' => "客戶存款信息",
+                        'label' => "客戶存款申請",
+                        'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('ClientFundInRequests'),
+                    ],
+                    [
+                        'label' => "客戶香港出款申請",
+                        'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('ClientHKFundOutRequests'),
+                    ],
+                    [
+                        'label' => "客戶海外出款申請",
                         'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [
-                        'label' => "客戶出款申請",
+                        'label' => "客戶內部轉帳申請",
                         'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [
-                        'label' => "帳戶銷戶審核",
+                        'label' => "帳戶銷戶申請",
                         'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [

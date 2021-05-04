@@ -38,6 +38,31 @@ Vue.component('view-client', require('./components/ViewClient.vue').default);
 Vue.component('deliverable-list2', require('./components/DeliverableList2.vue').default);
 
 Vue.component('sending-email-list', require('./components/SendingEmailList.vue').default);
+
+Vue.component('client-fund-in-requests', require('./components/ClientFundInRequests.vue').default);
+
+Vue.component('view-client-fund-in-request', require('./components/ViewClientFundInRequest.vue').default);
+
+Vue.component('audit-client-fund-in-request', require('./components/AuditClientFundInRequest.vue').default);
+
+Vue.component('client-hk-fund-out-requests', require('./components/ClientHKFundOutRequests.vue').default);
+
+Vue.component('view-client-hk-fund-out-request', require('./components/ViewClientHKFundOutRequest.vue').default);
+
+Vue.component('audit-client-hk-fund-out-request', require('./components/AuditClientHKFundOutRequest.vue').default);
+
+Vue.component('client-overseas-fund-out-requests', require('./components/ClientOverseasFundOutRequests.vue').default);
+
+Vue.component('view-client-overseas-fund-out-request', require('./components/ViewClientOverseasFundOutRequest.vue').default);
+
+Vue.component('audit-client-overseas-fund-out-request', require('./components/AuditClientOverseasFundOutRequest.vue').default);
+
+Vue.component('client-fund-internal-transfer-requests', require('./components/ClientFundInternalTransferRequests.vue').default);
+
+Vue.component('view-client-fund-internal-transfer-request', require('./components/ViewClientFundInternalTransferRequest.vue').default);
+
+Vue.component('audit-client-fund-internal-transfer-request', require('./components/AuditClientFundInternalTransferRequest.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -25,6 +25,11 @@ class Client extends Model
         'count_of_audits',
     ];
 
+    public function ClientFundInRequests()
+    {
+        return $this->hasMany('App\ClientFundInRequest', 'uuid', 'uuid')->orderBy('created_at', 'asc');
+    }
+
     public function SentEmailRecords()
     {
         return $this->hasMany('App\SentEmailRecord', 'uuid', 'uuid')->orderBy('created_at', 'desc');

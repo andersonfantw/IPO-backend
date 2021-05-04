@@ -32,7 +32,25 @@ Route::middleware(['auth'])->group(function () {
 
     Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient');
 
+    Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest');
+
+    Route::any('/DoAuditClientFundInRequest', 'AuditClientFundInRequestController@audit')->name('DoAuditClientFundInRequest');
+
+    Route::any('/AuditClientFundInternalTransferRequest', 'AuditClientFundInternalTransferRequestController@index')->name('AuditClientFundInternalTransferRequest');
+
+    Route::any('/AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@index')->name('AuditClientHKFundOutRequest');
+
+    Route::any('/AuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@index')->name('AuditClientOverseasFundOutRequest');
+
     Route::any('/ViewClient', 'ViewClientController@index')->name('ViewClient');
+
+    Route::any('/ViewClientFundInRequest', 'ViewClientFundInRequestController@index')->name('ViewClientFundInRequest');
+
+    Route::any('/ViewClientFundInternalTransferRequest', 'ViewClientFundInternalTransferRequestController@index')->name('ViewClientFundInternalTransferRequest');
+
+    Route::any('/ViewClientHKFundOutRequest', 'ViewClientHKFundOutRequestController@index')->name('ViewClientHKFundOutRequest');
+
+    Route::any('/ViewClientOverseasFundOutRequest', 'ViewClientOverseasFundOutRequestController@index')->name('ViewClientOverseasFundOutRequest');
 
     Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
 
@@ -41,6 +59,14 @@ Route::middleware(['auth'])->group(function () {
     Route::any('/SendingEmailList', 'SendingEmailListController@index')->name('SendingEmailList');
 
     Route::any('/GenerateAyersAccount', 'AyersAccountController@generate')->name('GenerateAyersAccount');
+
+    Route::any('/ClientFundInRequests', 'ClientFundInRequestsController@index')->name('ClientFundInRequests');
+
+    Route::any('/ClientHKFundOutRequests', 'ClientHKFundOutRequestsController@index')->name('ClientHKFundOutRequests');
+
+    Route::any('/ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController@index')->name('ClientOverseasFundOutRequests');
+
+    Route::any('/ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController@index')->name('ClientFundInternalTransferRequests');
 
     Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
     Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
