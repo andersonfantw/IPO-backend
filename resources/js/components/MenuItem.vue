@@ -24,12 +24,17 @@ export default {
     getNoOfNews() {
       const self = this;
       if (self.menu_item.api) {
-        axios.post(self.menu_item.api).then((res) => {
-          // let json = self.getDecryptedJsonObject(res.data);
-          if (res.data.NoOfNews > 0) {
-            self.NoOfNews = res.data.NoOfNews;
-          }
-        });
+        axios
+          .post(self.menu_item.api)
+          .then((res) => {
+            // let json = self.getDecryptedJsonObject(res.data);
+            if (res.data.NoOfNews > 0) {
+              self.NoOfNews = res.data.NoOfNews;
+            }
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
       }
     },
   },
