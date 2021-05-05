@@ -51,9 +51,9 @@ class ClientOverseasFundOutRequestsController extends HomeController
             $row['客户姓名'] = $Client->IDCard->name_c;
             $row['手機號碼'] = $Client->mobile;
             $row['狀態'] = $ClientOverseasFundOutRequest->status;
-            $row['發送時間'] = $ClientOverseasFundOutRequest->created_at;
+            $row['發送時間'] = date_format($ClientOverseasFundOutRequest->created_at, "Y-m-d H:i:s");
             $row['經手人'] = $ClientOverseasFundOutRequest->issued_by;
-            $row['審批時間'] = $row['狀態'] == 'pending' ? null : $ClientOverseasFundOutRequest->updated_at;
+            $row['審批時間'] = $row['狀態'] == 'pending' ? null : date_format($ClientOverseasFundOutRequest->updated_at, "Y-m-d H:i:s");
             $row['id'] = $ClientOverseasFundOutRequest->id;
             $rows[] = $row;
         }

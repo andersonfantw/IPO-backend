@@ -54,9 +54,9 @@ class ClientFundInternalTransferRequestsController extends HomeController
             $row['銀行'] = $ClientFundInternalTransferRequest->bank;
             $row['方法'] = $ClientFundInternalTransferRequest->method;
             $row['狀態'] = $ClientFundInternalTransferRequest->status;
-            $row['發送時間'] = $ClientFundInternalTransferRequest->created_at;
+            $row['發送時間'] = date_format($ClientFundInternalTransferRequest->created_at, "Y-m-d H:i:s");
             $row['經手人'] = $ClientFundInternalTransferRequest->issued_by;
-            $row['審批時間'] = $row['狀態'] == 'pending' ? null : $ClientFundInternalTransferRequest->updated_at;
+            $row['審批時間'] = $row['狀態'] == 'pending' ? null : date_format($ClientFundInternalTransferRequest->updated_at, "Y-m-d H:i:s");
             $row['id'] = $ClientFundInternalTransferRequest->id;
             $rows[] = $row;
         }

@@ -28,31 +28,37 @@ class HomeController extends Controller
                         'label' => "一審資料未審核清單",
                         'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('UnauditedList1'),
+                        'api' => secure_url('api/UnauditedList1/NoOfNews'),
                     ],
                     [
                         'label' => "一審資料再審核清單",
                         'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('ReauditList1'),
+                        'api' => secure_url('api/ReauditList1/NoOfNews'),
                     ],
                     [
                         'label' => "資料駁回清單",
                         'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('RejectedList1'),
+                        'api' => secure_url('api/RejectedList1/NoOfNews'),
                     ],
                     [
                         'label' => "二審資料未審核清單",
                         'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('UnauditedList2'),
+                        'api' => secure_url('api/UnauditedList2/NoOfNews'),
                     ],
                     [
                         'label' => "二審資料可投遞清單",
                         'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('DeliverableList2'),
+                        'api' => secure_url('api/DeliverableList2/NoOfNews'),
                     ],
                     [
                         'label' => "開戶信發送清單",
                         'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('SendingEmailList'),
+                        'api' => secure_url('api/SendingEmailList/NoOfNews'),
                     ],
                     [
                         'label' => "年度通知書發送清單",
@@ -95,10 +101,12 @@ class HomeController extends Controller
                     [
                         'label' => "客戶海外出款申請",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('ClientOverseasFundOutRequests'),
                     ],
                     [
                         'label' => "客戶內部轉帳申請",
                         'icon' => "pi pi-fw pi-caret-right",
+                        'url' => route('ClientFundInternalTransferRequests'),
                     ],
                     [
                         'label' => "帳戶銷戶申請",
@@ -129,7 +137,9 @@ class HomeController extends Controller
 
     protected function setViewParameters(Request $request)
     {
-        return ['menu' => json_encode($this->getMenu())];
+        return [
+            'menu' => json_encode($this->getMenu(), JSON_UNESCAPED_UNICODE),
+        ];
     }
 
     public function testCSVImport(Request $request)

@@ -1,5 +1,5 @@
 <template>
-  <form :action="action" method="POST">
+  <form method="POST">
     <input type="hidden" name="id" v-model="Request.id" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
     <table class="table table-bordered">
@@ -108,39 +108,61 @@
             <div class="mb-0">{{ Request.status }}</div>
           </td>
           <th width="17%" scope="row">
-            <div class="mb-0">備註</div>
-          </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.remark }}</div>
-          </td>
-          <th width="17%" scope="row">
             <div class="mb-0">經手人</div>
           </th>
           <td width="17%" scope="row">
             <div class="mb-0">{{ Request.issued_by }}</div>
           </td>
+          <th width="17%" scope="row"></th>
+          <td width="17%" scope="row"></td>
         </tr>
         <tr>
           <th width="17%" scope="row">
             <div class="mb-0">轉帳時間</div>
           </th>
           <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.transfer_time }}</div>
+            <div class="mb-0">{{ formateDateTime(Request.transfer_time) }}</div>
           </td>
           <th width="17%" scope="row">
             <div class="mb-0">申請發送時間</div>
           </th>
           <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.created_at }}</div>
+            <div class="mb-0">{{ formateDateTime(Request.created_at) }}</div>
           </td>
           <th width="17%" scope="row"></th>
           <td width="17%" scope="row"></td>
         </tr>
       </tbody>
     </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">
+            <h5 class="mb-0">
+              <label class="mb-0" for="駁回">駁回</label>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <textarea
+              name="駁回信息"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="7"
+              v-model="Request.remark"
+              :readonly="true"
+            ></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </form>
 </template>
 <script>
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
@@ -150,6 +172,7 @@ export default {
       ClientIDCard: null,
     };
   },
+  mixins: [CommonFunctionMixin],
   components: {},
   props: {
     request: String,

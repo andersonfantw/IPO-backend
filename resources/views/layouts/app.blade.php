@@ -80,7 +80,7 @@
             <div class="container-fluid px-0">
                 <div class="row justify-content-center no-gutters">
                     <div class="col-2">
-                        <Side-Menu :p_menu="'{{ $menu }}'"></Side-Menu>
+                        <Side-Menu :menus="{{ $menu }}" :current_url="'{{ url()->current() }}'"></Side-Menu>
                     </div>
                     <div class="col-10">
                         @yield('content')

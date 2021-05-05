@@ -20,7 +20,7 @@ class ViewClientHKFundOutRequestController extends HomeController
             }
         }
         $parameters['Request'] = $ClientHKFundOutRequest->toJson(JSON_UNESCAPED_UNICODE);
-        
+
         $Client = $ClientHKFundOutRequest->Client;
         if (is_object($Client)) {
             foreach ($Client->getAttributes() as $key => $value) {

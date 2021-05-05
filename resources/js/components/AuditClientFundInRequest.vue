@@ -97,7 +97,7 @@
             <div class="mb-0">轉帳時間</div>
           </th>
           <td width="20%" scope="row">
-            <div class="mb-0">{{ Request.transfer_time }}</div>
+            <div class="mb-0">{{ formateDateTime(Request.transfer_time) }}</div>
           </td>
           <th width="20%" scope="row">
             <div class="mb-0">申請發送時間</div>
@@ -142,12 +142,20 @@
         </tr>
       </tbody>
     </table>
-    <Button type="submit" label="提交審核" icon="pi pi-check" iconPos="right" />
+    <div class="text-center mb-5">
+      <Button
+        type="submit"
+        label="提交審核"
+        icon="pi pi-check"
+        iconPos="right"
+      />
+    </div>
   </form>
 </template>
 <script>
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
@@ -158,6 +166,7 @@ export default {
       ClientIDCard: null,
     };
   },
+  mixins: [CommonFunctionMixin],
   components: {
     Button,
     Checkbox,
@@ -176,25 +185,6 @@ export default {
     this.Request = JSON.parse(this.request);
     this.AyersAccounts = this.ayers_accounts;
   },
-  methods: {
-    formateDateTime(datetime) {
-      let dt = new Date(datetime);
-      let dformat = `${dt.getFullYear().toString().padStart(4, "0")}-${(
-        dt.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${dt
-        .getDate()
-        .toString()
-        .padStart(2, "0")} ${dt
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${dt
-        .getMinutes()
-        .toString()
-        .padStart(2, "0")}:${dt.getSeconds().toString().padStart(2, "0")}`;
-      return dformat;
-    },
-  },
+  methods: {},
 };
 </script>

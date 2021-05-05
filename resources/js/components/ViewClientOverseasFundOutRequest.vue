@@ -1,5 +1,5 @@
 <template>
-  <form :action="action" method="POST">
+  <form method="POST">
     <input type="hidden" name="id" v-model="Request.id" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
     <table class="table table-bordered">
@@ -65,96 +65,108 @@
       </thead>
       <tbody>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">出金帳戶</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.account_out }}</div>
           </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">金額</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.amount }}</div>
           </td>
-          <th width="17%" scope="row"></th>
-          <td width="17%" scope="row"></td>
         </tr>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">入金帳戶</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.account_in }}</div>
           </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">入金銀行</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.bank }}</div>
           </td>
-          <th width="17%" scope="row">
+        </tr>
+
+        <tr>
+          <th width="25%" scope="row">
+            <div class="mb-0">銀行地址</div>
+          </th>
+          <td width="25%" scope="row">
+            <div class="mb-0">{{ Request.bank_address_text }}</div>
+          </td>
+          <th width="25%" scope="row">
             <div class="mb-0">SWIFT代碼</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.swift_code }}</div>
           </td>
         </tr>
 
         <tr>
-          <th width="17%" scope="row">
-            <div class="mb-0">銀行地址</div>
-          </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.bank_address_text }}</div>
-          </td>
-          <th width="17%" scope="row"></th>
-          <td width="17%" scope="row"></td>
-          <th width="17%" scope="row"></th>
-          <td width="17%" scope="row"></td>
-        </tr>
-
-        <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">狀態</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.status }}</div>
           </td>
-          <th width="17%" scope="row">
-            <div class="mb-0">備註</div>
-          </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.remark }}</div>
-          </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">經手人</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.issued_by }}</div>
           </td>
         </tr>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">轉帳時間</div>
           </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.transfer_time }}</div>
+          <td width="25%" scope="row">
+            <div class="mb-0">{{ formateDateTime(Request.transfer_time) }}</div>
           </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">申請發送時間</div>
           </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.created_at }}</div>
+          <td width="25%" scope="row">
+            <div class="mb-0">{{ formateDateTime(Request.created_at) }}</div>
           </td>
-          <th width="17%" scope="row"></th>
-          <td width="17%" scope="row"></td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">
+            <h5 class="mb-0">
+              <label class="mb-0" for="駁回">駁回</label>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <textarea
+              name="駁回信息"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="7"
+              v-model="Request.remark"
+              :readonly="true"
+            ></textarea>
+          </td>
         </tr>
       </tbody>
     </table>
   </form>
 </template>
 <script>
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
@@ -164,6 +176,7 @@ export default {
       ClientIDCard: null,
     };
   },
+  mixins: [CommonFunctionMixin],
   components: {},
   props: {
     request: String,

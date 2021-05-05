@@ -24,6 +24,6 @@ class AuditClientFundInRequestController extends ViewClientFundInRequestControll
         }
         $ClientFundInRequest->issued_by = auth()->user()->name;
         $ClientFundInRequest->save();
-        return redirect()->route($input['redirect_route']);
+        return redirect()->route('ClientFundInRequests');
     }
 }

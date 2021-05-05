@@ -32,7 +32,7 @@
       >
         <template #body="slotProps">
           <form
-            v-if="slotProps.data.status == 'pending'"
+            v-if="slotProps.data.狀態 == 'pending'"
             :action="audit_request_url"
             method="post"
           >

@@ -24,5 +24,6 @@ class AuditClientOverseasFundOutRequestController extends ViewClientOverseasFund
         }
         $ClientOverseasFundOutRequest->issued_by = auth()->user()->name;
         $ClientOverseasFundOutRequest->save();
+        return redirect()->route('ClientOverseasFundOutRequests');
     }
 }

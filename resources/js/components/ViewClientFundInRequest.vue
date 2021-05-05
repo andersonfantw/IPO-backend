@@ -65,59 +65,49 @@
       </thead>
       <tbody>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">銀行</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.bank }}</div>
           </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">入金方法</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.method }}</div>
           </td>
-          <th width="17%" scope="row"></th>
-          <td width="17%" scope="row"></td>
         </tr>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">狀態</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.status }}</div>
           </td>
-          <th width="17%" scope="row">
-            <div class="mb-0">備註</div>
-          </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.remark }}</div>
-          </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">經手人</div>
           </th>
-          <td width="17%" scope="row">
+          <td width="25%" scope="row">
             <div class="mb-0">{{ Request.issued_by }}</div>
           </td>
         </tr>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">轉帳時間</div>
           </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.transfer_time }}</div>
+          <td width="25%" scope="row">
+            <div class="mb-0">{{ formateDateTime(Request.transfer_time) }}</div>
           </td>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">申請發送時間</div>
           </th>
-          <td width="17%" scope="row">
-            <div class="mb-0">{{ Request.created_at }}</div>
+          <td width="25%" scope="row">
+            <div class="mb-0">{{ formateDateTime(Request.created_at) }}</div>
           </td>
-          <th width="17%" scope="row"></th>
-          <td width="17%" scope="row"></td>
         </tr>
         <tr>
-          <th width="17%" scope="row">
+          <th width="25%" scope="row">
             <div class="mb-0">入金證明</div>
           </th>
           <td colspan="5">
@@ -154,6 +144,7 @@
   </form>
 </template>
 <script>
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
@@ -163,6 +154,7 @@ export default {
       ClientIDCard: null,
     };
   },
+  mixins: [CommonFunctionMixin],
   components: {},
   props: {
     request: String,
@@ -177,5 +169,6 @@ export default {
     this.Request = JSON.parse(this.request);
     this.AyersAccounts = this.ayers_accounts;
   },
+  methods: {},
 };
 </script>

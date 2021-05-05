@@ -48,6 +48,14 @@ class RejectedList1Controller extends HomeController
         return $parameters;
     }
 
+    public function getNoOfNews(Request $request)
+    {
+        $NoOfNews = Client::has('EditableSteps')->count();
+        return json_encode([
+            'NoOfNews' => $NoOfNews,
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
     public function getData(Request $request)
     {
         $Clients = Client::has('EditableSteps')->orderBy('created_at', 'desc')->get();

@@ -31,22 +31,27 @@ Route::prefix('Email')->group(function () {
 
 Route::prefix('UnauditedList1')->group(function () {
     Route::any('/all_data', 'UnauditedList1Controller@getData');
+    Route::any('/NoOfNews', 'UnauditedList1Controller@getNoOfNews');
 });
 
 Route::prefix('UnauditedList2')->group(function () {
     Route::any('/all_data', 'UnauditedList2Controller@getData');
+    Route::any('/NoOfNews', 'UnauditedList2Controller@getNoOfNews');
 });
 
 Route::prefix('RejectedList1')->group(function () {
     Route::any('/all_data', 'RejectedList1Controller@getData');
+    Route::any('/NoOfNews', 'RejectedList1Controller@getNoOfNews');
 });
 
 Route::prefix('ReauditList1')->group(function () {
     Route::any('/all_data', 'ReauditList1Controller@getData');
+    Route::any('/NoOfNews', 'ReauditList1Controller@getNoOfNews');
 });
 
 Route::prefix('DeliverableList2')->group(function () {
     Route::any('/all_data', 'DeliverableList2Controller@getData');
+    Route::any('/NoOfNews', 'DeliverableList2Controller@getNoOfNews');
     Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
 });
 
@@ -60,6 +65,7 @@ Route::prefix('AyersAccount')->group(function () {
 
 Route::prefix('SendingEmailList')->group(function () {
     Route::any('/all_data', 'SendingEmailListController@getData');
+    Route::any('/NoOfNews', 'SendingEmailListController@getNoOfNews');
 });
 
 Route::prefix('OpenAccountEmail')->group(function () {
@@ -72,4 +78,12 @@ Route::prefix('ClientFundInRequests')->group(function () {
 
 Route::prefix('ClientHKFundOutRequests')->group(function () {
     Route::any('/all_data', 'ClientHKFundOutRequestsController@getData');
+});
+
+Route::prefix('ClientFundInternalTransferRequests')->group(function () {
+    Route::any('/all_data', 'ClientFundInternalTransferRequestsController@getData');
+});
+
+Route::prefix('ClientOverseasFundOutRequests')->group(function () {
+    Route::any('/all_data', 'ClientOverseasFundOutRequestsController@getData');
 });

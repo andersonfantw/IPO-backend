@@ -8,6 +8,9 @@ import ReauditList1 from "./modules/ReauditList1";
 import DeliverableList2 from "./modules/DeliverableList2";
 import SendingEmailList from "./modules/SendingEmailList";
 import ClientFundInRequests from "./modules/ClientFundInRequests";
+import ClientFundInternalTransferRequests from "./modules/ClientFundInternalTransferRequests";
+import ClientHKFundOutRequests from "./modules/ClientHKFundOutRequests";
+import ClientOverseasFundOutRequests from "./modules/ClientOverseasFundOutRequests";
 
 export default new Vuex.Store({
 	strict: false,
@@ -19,5 +22,8 @@ export default new Vuex.Store({
 		DeliverableList2: DeliverableList2,
 		SendingEmailList: SendingEmailList,
 		ClientFundInRequests: ClientFundInRequests,
+		ClientFundInternalTransferRequests: ClientFundInternalTransferRequests,
+		ClientHKFundOutRequests: ClientHKFundOutRequests,
+		ClientOverseasFundOutRequests: ClientOverseasFundOutRequests,
 	}
 });

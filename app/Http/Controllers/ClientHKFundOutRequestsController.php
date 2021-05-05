@@ -51,9 +51,9 @@ class ClientHKFundOutRequestsController extends HomeController
             $row['客户姓名'] = $Client->IDCard->name_c;
             $row['手機號碼'] = $Client->mobile;
             $row['狀態'] = $ClientHKFundOutRequest->status;
-            $row['發送時間'] = $ClientHKFundOutRequest->created_at;
+            $row['發送時間'] = date_format($ClientHKFundOutRequest->created_at, "Y-m-d H:i:s");
             $row['經手人'] = $ClientHKFundOutRequest->issued_by;
-            $row['審批時間'] = $row['狀態'] == 'pending' ? null : $ClientHKFundOutRequest->updated_at;
+            $row['審批時間'] = $row['狀態'] == 'pending' ? null : date_format($ClientHKFundOutRequest->updated_at, "Y-m-d H:i:s");
             $row['id'] = $ClientHKFundOutRequest->id;
             $rows[] = $row;
         }

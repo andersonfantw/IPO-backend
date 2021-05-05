@@ -38,9 +38,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::any('/AuditClientFundInternalTransferRequest', 'AuditClientFundInternalTransferRequestController@index')->name('AuditClientFundInternalTransferRequest');
 
+    Route::any('/DoAuditClientFundInternalTransferRequest', 'AuditClientFundInternalTransferRequestController@audit')->name('DoAuditClientFundInternalTransferRequest');
+
     Route::any('/AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@index')->name('AuditClientHKFundOutRequest');
 
+    Route::any('/DoAuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@audit')->name('DoAuditClientHKFundOutRequest');
+
     Route::any('/AuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@index')->name('AuditClientOverseasFundOutRequest');
+
+    Route::any('/DoAuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@audit')->name('DoAuditClientOverseasFundOutRequest');
 
     Route::any('/ViewClient', 'ViewClientController@index')->name('ViewClient');
 

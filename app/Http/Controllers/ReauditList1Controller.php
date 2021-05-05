@@ -51,6 +51,36 @@ class ReauditList1Controller extends HomeController
         return $parameters;
     }
 
+    public function getNoOfNews(Request $request)
+    {
+        $NoOfNews = Client::whereHasMorph('IDCard', [
+            ClientCNIDCard::class,
+            ClientHKIDCard::class,
+            ClientOtherIDCard::class,
+        ], function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientAddressProof', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientBankCards', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientWorkingStatus', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientFinancialStatus', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientInvestmentExperience', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientEvaluationResults', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientSignature', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhereHas('ClientDepositProof', function (Builder $query) {
+            $query->where('status', 'reaudit');
+        })->orWhere('status', 'reaudit')->count();
+        return json_encode([
+            'NoOfNews' => $NoOfNews,
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
     public function getData(Request $request)
     {
         $Clients = Client::whereHasMorph('IDCard', [

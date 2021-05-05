@@ -24,5 +24,6 @@ class AuditClientHKFundOutRequestController extends ViewClientHKFundOutRequestCo
         }
         $ClientHKFundOutRequest->issued_by = auth()->user()->name;
         $ClientHKFundOutRequest->save();
+        return redirect()->route('ClientHKFundOutRequests');
     }
 }

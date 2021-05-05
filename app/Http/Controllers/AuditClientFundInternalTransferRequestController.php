@@ -24,5 +24,6 @@ class AuditClientFundInternalTransferRequestController extends ViewClientFundInt
         }
         $ClientFundInternalTransferRequest->issued_by = auth()->user()->name;
         $ClientFundInternalTransferRequest->save();
+        return redirect()->route('ClientFundInternalTransferRequests');
     }
 }
