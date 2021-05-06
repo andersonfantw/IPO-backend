@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Imports\A07Import;
+use App\Traits\CountRecords;
 use Excel;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    use CountRecords;
+
     protected $name = 'Home';
     private $menu;
     /**
@@ -20,101 +23,83 @@ class HomeController extends Controller
         // $this->middleware('auth');
         $this->menu = [
             [
-                'key' => "開戶處理",
                 'label' => "開戶處理",
-                'icon' => "pi pi-fw pi-file",
                 'items' => [
                     [
                         'label' => "一審資料未審核清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('UnauditedList1'),
-                        'api' => secure_url('api/UnauditedList1/NoOfNews'),
+                        'no_of_news' => $this->countNewUnauditedClients1(),
                     ],
                     [
                         'label' => "一審資料再審核清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('ReauditList1'),
-                        'api' => secure_url('api/ReauditList1/NoOfNews'),
+                        'no_of_news' => $this->countNewReauditClients(),
                     ],
                     [
                         'label' => "資料駁回清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('RejectedList1'),
-                        'api' => secure_url('api/RejectedList1/NoOfNews'),
+                        'no_of_news' => $this->countNewRejectedClients1(),
                     ],
                     [
                         'label' => "二審資料未審核清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('UnauditedList2'),
-                        'api' => secure_url('api/UnauditedList2/NoOfNews'),
+                        'no_of_news' => $this->countNewUnauditedClients2(),
                     ],
                     [
                         'label' => "二審資料可投遞清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('DeliverableList2'),
-                        'api' => secure_url('api/DeliverableList2/NoOfNews'),
+                        'no_of_news' => $this->countNewDeliverableClients(),
                     ],
                     [
                         'label' => "開戶信發送清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('SendingEmailList'),
-                        'api' => secure_url('api/SendingEmailList/NoOfNews'),
+                        'no_of_news' => $this->countNewSendingEmailClients(),
                     ],
                     [
                         'label' => "年度通知書發送清單",
-                        'icon' => "pi pi-fw pi-caret-right",
                     ],
                 ],
             ],
             [
                 'label' => "帳戶查詢",
-                'icon' => "pi pi-fw pi-search",
                 'items' => [
                     [
                         'label' => "駁回帳戶列表",
-                        'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [
                         'label' => "失效帳戶列表",
-                        'icon' => "pi pi-fw pi-caret-right",
                     ],
                 ],
             ],
             [
                 'label' => "帳戶總覽",
-                'icon' => "pi pi-fw pi-user",
                 'items' => [
                     [
                         'label' => "帳戶資料修改申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [
                         'label' => "客戶存款申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('ClientFundInRequests'),
+                        'no_of_news' => $this->countNewClientFundInRequests(),
                     ],
                     [
                         'label' => "客戶香港出款申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('ClientHKFundOutRequests'),
+                        'no_of_news' => $this->countNewClientHKFundOutRequests(),
                     ],
                     [
                         'label' => "客戶海外出款申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('ClientOverseasFundOutRequests'),
                     ],
                     [
                         'label' => "客戶內部轉帳申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                         'url' => route('ClientFundInternalTransferRequests'),
                     ],
                     [
                         'label' => "帳戶銷戶申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                     ],
                     [
                         'label' => "銀盛信用卡出款申請",
-                        'icon' => "pi pi-fw pi-caret-right",
                     ],
                 ],
             ],

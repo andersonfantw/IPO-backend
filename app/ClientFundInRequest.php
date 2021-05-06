@@ -17,8 +17,10 @@ class ClientFundInRequest extends Model
         'issued_by',
         'remark',
         'receipt',
+        'bankcard',
         'transfer_time',
         'timezone',
+        'previewing',
     ];
 
     public function Client()

@@ -57,7 +57,11 @@
       </div>
       <div class="col"></div>
     </div>
-    <button type="button" @click="sendEmails" class="btn btn-success btn-lg">
+    <button
+      type="button"
+      @click="sendEmails"
+      class="btn btn-success btn-lg rounded-0"
+    >
       <h5 class="m-0"><i class="far fa-envelope"></i> 一鍵發送</h5>
     </button>
     <DataTable

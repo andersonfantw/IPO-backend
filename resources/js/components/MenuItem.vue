@@ -1,9 +1,12 @@
 <template>
-  <a class="list-group-item list-group-item-action" :href="menu_item.url">
+  <a
+    class="list-group-item list-group-item-action list-group-item-dark d-flex w-100 justify-content-between"
+    :href="menu_item.url"
+  >
     <h5 class="mb-0">
       <i class="fas fa-caret-right"></i> {{ menu_item.label }}
-      <span class="badge badge-danger badge-pill">{{ NoOfNews }}</span>
     </h5>
+    <span class="badge badge-danger badge-pill">{{ NoOfNews }}</span>
   </a>
 </template>
 <script>
@@ -16,9 +19,11 @@ export default {
   },
   props: {
     menu_item: Object,
+    no_of_news: Number,
   },
   created() {
-    this.getNoOfNews();
+    this.NoOfNews = this.no_of_news;
+    // this.getNoOfNews();
   },
   methods: {
     getNoOfNews() {
@@ -27,7 +32,6 @@ export default {
         axios
           .post(self.menu_item.api)
           .then((res) => {
-            // let json = self.getDecryptedJsonObject(res.data);
             if (res.data.NoOfNews > 0) {
               self.NoOfNews = res.data.NoOfNews;
             }

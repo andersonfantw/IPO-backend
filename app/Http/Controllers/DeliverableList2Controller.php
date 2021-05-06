@@ -62,34 +62,6 @@ class DeliverableList2Controller extends HomeController
         return $parameters;
     }
 
-    public function getNoOfNews(Request $request)
-    {
-        $NoOfNews = Client::doesntHave('AyersAccounts')->whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->where('status', 'audited2')->count();
-        return json_encode([
-            'NoOfNews' => $NoOfNews,
-        ], JSON_UNESCAPED_UNICODE);
-    }
-
     public function getData(Request $request)
     {
         $Clients = Client::whereHasMorph('IDCard', [

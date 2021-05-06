@@ -41,7 +41,7 @@
       columnResizeMode="fit"
       class="p-datatable-gridlines"
     >
-      <Column selectionMode="multiple" headerStyle="width: 3.5em"></Column>
+      <!-- <Column selectionMode="multiple" headerStyle="width: 3.5em"></Column> -->
       <Column
         v-for="col of columns"
         :field="col.field"
@@ -64,14 +64,14 @@
           <form :action="audit_client_url" method="post">
             <input type="hidden" name="redirect_route" value="UnauditedList1" />
             <input type="hidden" name="next_status" value="audited1" />
-            <Button
+            <button
               name="uuid"
               :value="slotProps.data.uuid"
               type="submit"
-              icon="pi pi-user-edit"
-              label="審核"
-              class="p-button-secondary"
-            ></Button>
+              class="btn btn-warning"
+            >
+              <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
+            </button>
           </form>
         </template>
       </Column>
@@ -83,7 +83,7 @@
 import SearchBox from "./SearchBox";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import Button from "primevue/button";
+// import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
@@ -114,7 +114,7 @@ export default {
     SearchBox,
     DataTable,
     Column,
-    Button,
+    // Button,
     Checkbox,
   },
   created() {

@@ -17,6 +17,7 @@ class ClientHKFundOutRequest extends Model
         'status',
         'transfer_time',
         'timezone',
+        'previewing',
     ];
 
     public function Client()

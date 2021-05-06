@@ -7,7 +7,7 @@ use PDF;
 
 trait Report
 {
-    use ImageToBase64;
+    use Image;
 
     public function test()
     {

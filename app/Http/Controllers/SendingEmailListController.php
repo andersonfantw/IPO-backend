@@ -40,14 +40,6 @@ class SendingEmailListController extends HomeController
         return $parameters;
     }
 
-    public function getNoOfNews(Request $request)
-    {
-        $NoOfNews = Client::has('AyersAccounts')->doesntHave('SentEmailRecords')->where('type', '拼一手')->count();
-        return json_encode([
-            'NoOfNews' => $NoOfNews,
-        ], JSON_UNESCAPED_UNICODE);
-    }
-
     public function getData(Request $request)
     {
         $Clients = Client::has('AyersAccounts')->where('type', '拼一手')->orderBy('created_at', 'asc')->get();

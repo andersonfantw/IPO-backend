@@ -52,34 +52,6 @@ class UnauditedList2Controller extends HomeController
         return $parameters;
     }
 
-    public function getNoOfNews(Request $request)
-    {
-        $NoOfNews = Client::whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->where('status', 'audited1')->count();
-        return json_encode([
-            'NoOfNews' => $NoOfNews,
-        ], JSON_UNESCAPED_UNICODE);
-    }
-
     public function getData(Request $request)
     {
         $Clients = Client::whereHasMorph('IDCard', [

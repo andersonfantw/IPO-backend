@@ -1,9 +1,9 @@
 <template>
-  <form :action="action" method="POST">
+  <form class="" :action="action" method="POST">
     <input type="hidden" name="uuid" v-model="Client.uuid" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
     <input type="hidden" name="next_status" v-model="next_status" />
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -36,7 +36,7 @@
         </tr>
       </tbody>
     </table>
-    <table v-if="ClientAddressProof" class="table table-bordered">
+    <table v-if="ClientAddressProof" class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="3">
@@ -68,6 +68,7 @@
           </td>
           <td width="20%" rowspan="6">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.住址證明"
               name="駁回住址證明"
               style="width: 100%"
@@ -79,7 +80,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
@@ -114,6 +115,7 @@
           </td>
           <td width="20%" rowspan="6">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.身份證信息"
               name="駁回身份證信息"
               style="width: 100%"
@@ -178,7 +180,7 @@
     <table
       v-for="銀行卡 in 銀行卡s"
       :key="銀行卡.id"
-      class="table table-bordered"
+      class="table table-bordered text-light"
     >
       <thead>
         <tr>
@@ -230,6 +232,7 @@
           </td>
           <td width="20%" rowspan="2">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回[銀行卡.lcid + '銀行卡信息']"
               :name="'駁回' + 銀行卡.lcid + '銀行卡信息'"
               style="width: 100%"
@@ -260,7 +263,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
@@ -289,6 +292,7 @@
           </td>
           <td width="20%" rowspan="2">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.客戶補充資料"
               name="駁回客戶補充資料"
               style="width: 100%"
@@ -300,7 +304,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
@@ -335,6 +339,7 @@
           </td>
           <td width="20%" rowspan="4">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.工作狀態"
               name="駁回工作狀態"
               style="width: 100%"
@@ -380,7 +385,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
@@ -417,6 +422,7 @@
           </td>
           <td width="20%" rowspan="3">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.財政狀況"
               name="駁回財政狀況"
               style="width: 100%"
@@ -452,7 +458,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
@@ -489,6 +495,7 @@
           </td>
           <td width="20%" rowspan="4">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.投資經驗及衍生產品認識"
               name="駁回投資經驗及衍生產品認識"
               style="width: 100%"
@@ -544,7 +551,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th colspan="3" scope="col">
@@ -602,6 +609,7 @@
               />
             </h5>
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.問卷調查"
               name="駁回問卷調查"
               style="width: 100%"
@@ -629,7 +637,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th colspan="4" scope="col">
@@ -654,6 +662,7 @@
         </td>
         <td width="20%">
           <textarea
+            class="bg-secondary text-white"
             v-if="駁回.簽名"
             name="駁回簽名"
             style="width: 100%"
@@ -664,7 +673,7 @@
         </td>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <tbody>
         <th width="17%">
           <h5 class="mb-0">直接促銷</h5>
@@ -674,7 +683,7 @@
         </td>
       </tbody>
     </table>
-    <table v-if="ClientDepositProof" class="table table-bordered">
+    <table v-if="ClientDepositProof" class="table table-bordered text-light">
       <thead>
         <tr>
           <th colspan="4" scope="col">
@@ -707,6 +716,7 @@
           <td>HK${{ ClientDepositProof.deposit_amount }}</td>
           <td width="20%" rowspan="3">
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回.存款證明"
               name="駁回存款證明"
               style="width: 100%"
@@ -748,12 +758,14 @@
         </tr>
       </tbody>
     </table>
-    <Button type="submit" label="提交審核" icon="pi pi-check" iconPos="right" />
+    <div class="text-center mb-5">
+      <button type="submit" class="btn btn-success">
+        <h5 class="mb-0"><i class="far fa-paper-plane"></i> 提交審核</h5>
+      </button>
+    </div>
   </form>
 </template>
 <script>
-import Button from "primevue/button";
-import InputSwitch from "primevue/inputswitch";
 import Checkbox from "primevue/checkbox";
 export default {
   data() {
@@ -791,7 +803,9 @@ export default {
       Introducer: null,
     };
   },
-  components: { Button, InputSwitch, Checkbox },
+  components: {
+    Checkbox,
+  },
   props: {
     client: String,
     client_id_card: String,

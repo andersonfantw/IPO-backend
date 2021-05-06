@@ -54,11 +54,15 @@
     <button
       type="button"
       @click="generateAccounts"
-      class="btn btn-primary btn-lg"
+      class="btn btn-primary btn-lg rounded-0"
     >
       <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers帳號</h5>
     </button>
-    <button type="button" @click="downloadExcel" class="btn btn-success btn-lg">
+    <button
+      type="button"
+      @click="downloadExcel"
+      class="btn btn-success btn-lg rounded-0"
+    >
       <h5 class="m-0">
         <i class="fas fa-download"></i> 開戶Excel下載<span
           v-if="DownloadingExcel"
@@ -67,7 +71,7 @@
         ></span>
       </h5>
     </button>
-    <button type="button" class="btn btn-warning btn-lg">
+    <button type="button" class="btn btn-warning btn-lg rounded-0">
       <h5 class="m-0"><i class="fas fa-download"></i> 協議及開戶資料下載</h5>
     </button>
     <DataTable
@@ -107,14 +111,14 @@
               name="redirect_route"
               value="DeliverableList2"
             />
-            <Button
+            <button
               name="uuid"
               :value="slotProps.data.uuid"
               type="submit"
-              icon="pi pi-user-edit"
-              label="查看"
-              class="p-button-secondary"
-            ></Button>
+              class="btn btn-success"
+            >
+              <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+            </button>
           </form>
         </template>
       </Column>
@@ -127,7 +131,7 @@ import SearchBox from "./SearchBox";
 import SearchSelectOptions from "./SearchSelectOptions";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import Button from "primevue/button";
+// import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
@@ -163,7 +167,7 @@ export default {
     SearchBox,
     DataTable,
     Column,
-    Button,
+    // Button,
     Checkbox,
     SearchSelectOptions,
   },

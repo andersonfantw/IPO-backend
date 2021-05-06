@@ -17,6 +17,7 @@ class ClientFundInternalTransferRequest extends Model
         'remark',
         'transfer_time',
         'timezone',
+        'previewing',
     ];
 
     public function Client()
