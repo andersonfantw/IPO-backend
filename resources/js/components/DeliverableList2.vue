@@ -1,153 +1,146 @@
 <template>
-  <div>
-    <div class="row no-gutters">
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'帳戶號碼'"
-          :store-name-spaced="'DeliverableList2'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchSelectOptions
-          :name="'開通賬戶類型'"
-          :store-name-spaced="'DeliverableList2'"
-        >
-          <option value="">全部</option>
-          <option value="現金賬戶">現金賬戶</option>
-          <option value="全權委託賬戶">全權委託賬戶</option>
-        </SearchSelectOptions>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'客户姓名'"
-          :store-name-spaced="'DeliverableList2'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'證件號碼'"
-          :store-name-spaced="'DeliverableList2'"
-        ></SearchBox>
-      </div>
-    </div>
-    <div class="row no-gutters">
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'手機號碼'"
-          :store-name-spaced="'DeliverableList2'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'email'"
-          :name="'郵箱'"
-          :store-name-spaced="'DeliverableList2'"
-        ></SearchBox>
-      </div>
-      <div class="col"></div>
-      <div class="col"></div>
-    </div>
-    <button
-      type="button"
-      @click="generateAccounts"
-      class="btn btn-primary btn-lg rounded-0"
+  <b-container fluid class="p-0">
+    <b-row no-gutters>
+      <b-col>
+        <b-input-group prepend="帳戶號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['帳戶號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="開通賬戶類型">
+          <b-form-select v-model="filters['開通賬戶類型']" :options="options">
+          </b-form-select>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="客户姓名">
+          <b-form-input
+            type="search"
+            v-model="filters['客户姓名']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="證件號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['證件號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row no-gutters>
+      <b-col>
+        <b-input-group prepend="手機號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['手機號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="郵箱">
+          <b-form-input type="search" v-model="filters['郵箱']"></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col cols="6">
+        <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" />
+      </b-col>
+    </b-row>
+    <b-row no-gutters>
+      <b-col cols="6">
+        <DateRange :name="'帳戶生成時間'" v-model="filters['帳戶生成時間']" />
+      </b-col>
+      <b-col></b-col>
+      <b-col></b-col>
+    </b-row>
+    <b-button variant="primary" @click="generateAccounts"
+      ><i class="far fa-user"></i> 產生Ayers帳號</b-button
     >
-      <h5 class="m-0"><i class="far fa-user"></i> 產生Ayers帳號</h5>
-    </button>
-    <button
-      type="button"
-      @click="downloadExcel"
-      class="btn btn-success btn-lg rounded-0"
+    <b-button variant="success" @click="downloadExcel">
+      <i class="fas fa-download"></i> 開戶Excel下載<b-spinner
+        v-if="DownloadingExcel"
+        label="Spinning"
+        small
+      />
+    </b-button>
+    <b-button variant="warning">
+      <i class="fas fa-download"></i> 協議及開戶資料下載
+    </b-button>
+
+    <b-table
+      hover
+      bordered
+      dark
+      :items="data"
+      :fields="columns"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :filter="filters"
+      :filter-function="filter"
+      show-empty
+      empty-filtered-text="沒有找到記錄"
+      empty-text="沒有找到記錄"
+      :busy="loading"
+      @filtered="onFiltered"
     >
-      <h5 class="m-0">
-        <i class="fas fa-download"></i> 開戶Excel下載<span
-          v-if="DownloadingExcel"
-          class="spinner-border spinner-border-sm"
-          role="status"
-        ></span>
-      </h5>
-    </button>
-    <button type="button" class="btn btn-warning btn-lg rounded-0">
-      <h5 class="m-0"><i class="fas fa-download"></i> 協議及開戶資料下載</h5>
-    </button>
-    <DataTable
-      :value="data"
-      :filters="filters"
-      :selection.sync="selectedClients"
-      :paginator="true"
-      :rows="10"
-      :loading="loading"
-      :resizableColumns="true"
-      columnResizeMode="fit"
-      class="p-datatable-gridlines"
+      <template #head(操作)>
+        <b-form-checkbox v-model="checked" @change="selectAll" />
+      </template>
+      <template #cell(操作)="data">
+        <b-form-checkbox v-model="selectedClients" :value="data.item" />
+      </template>
+      <template #empty="scope">
+        {{ scope.emptyText }}
+      </template>
+      <template #emptyfiltered="scope">
+        {{ scope.emptyFilteredText }}
+      </template>
+      <template #table-busy>
+        <div class="text-center text-warning">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
+    </b-table>
+    <b-pagination
+      v-if="totalRows > 0"
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="center"
     >
-      <Column selectionMode="multiple" headerStyle="width: 3.5em"></Column>
-      <Column
-        v-for="col of columns"
-        :field="col.field"
-        :header="col.header"
-        :key="col.field"
-        :sortable="true"
-        :filterMatchMode="filterMatchMode[col.field]"
-      >
-        <template #body="slotProps">
-          <p class="text-break">
-            {{ slotProps.data[slotProps.column.field] }}
-          </p>
-        </template>
-      </Column>
-      <Column
-        headerStyle="width: 8rem; text-align: center"
-        bodyStyle="text-align: center; overflow: visible"
-      >
-        <template #body="slotProps">
-          <form :action="view_client_url" method="post">
-            <input
-              type="hidden"
-              name="redirect_route"
-              value="DeliverableList2"
-            />
-            <button
-              name="uuid"
-              :value="slotProps.data.uuid"
-              type="submit"
-              class="btn btn-success"
-            >
-              <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
-            </button>
-          </form>
-        </template>
-      </Column>
-      <template #empty>沒有找到記錄</template>
-    </DataTable>
-  </div>
+    </b-pagination>
+  </b-container>
 </template>
 <script>
-import SearchBox from "./SearchBox";
-import SearchSelectOptions from "./SearchSelectOptions";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-// import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
+import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
-import { mapState } from "vuex";
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
       columns: [],
-      filterMatchMode: {},
       loading: false,
       data: null,
-      selectedClients: null,
+      selectedClients: [],
+      filteredClients: [],
       DownloadingExcel: false,
+      currentPage: 1,
+      perPage: 10,
+      FilterType: {},
+      totalRows: 0,
+      options: [
+        { value: null, text: "全部" },
+        { value: "現金賬戶", text: "現金賬戶" },
+        { value: "全權委託賬戶", text: "全權委託賬戶" },
+      ],
     };
   },
-  mixins: [DecryptionMixin],
+  mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
     view_client_url: {
       type: String,
@@ -157,27 +150,29 @@ export default {
       type: String,
       required: true,
     },
-    p_filterMatchMode: {
+    filter_type: {
       type: String,
       required: true,
     },
     generate_ayers_account_url: String,
   },
   components: {
-    SearchBox,
-    DataTable,
-    Column,
-    // Button,
-    Checkbox,
-    SearchSelectOptions,
+    DateRange,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);
-    this.filterMatchMode = JSON.parse(this.p_filterMatchMode);
+    this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
     this.loadData();
   },
   methods: {
+    selectAll(e) {
+      if (e) {
+        this.selectedClients = this.filteredClients;
+      } else {
+        this.selectedClients = [];
+      }
+    },
     downloadExcel() {
       const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
@@ -231,23 +226,36 @@ export default {
       axios.post("api/DeliverableList2/all_data").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
-        // self.$store.commit("IPOTable/ipos", json.data);
+        self.filteredClients = self.data;
+        self.totalRows = self.data.length;
         self.loading = false;
       });
     },
+    onFiltered(filteredItems) {
+      this.selectedClients = [];
+      this.filteredClients = filteredItems;
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
   },
   computed: {
-    ...mapState({
-      filters: (state) => state.DeliverableList2.filters,
-    }),
+    filters: {
+      get() {
+        return this.$store.state.DeliverableList2.filters;
+      },
+      set(value) {
+        this.$store.commit("DeliverableList2/filters", value);
+      },
+    },
+    checked: {
+      get() {
+        return this.selectedClients.length == this.filteredClients.length;
+      },
+      set(value) {},
+    },
   },
   watch: {},
 };
 </script>
 <style>
-.p-datatable-resizable .p-datatable-thead > tr > th,
-.p-datatable-resizable .p-datatable-tfoot > tr > td,
-.p-datatable-resizable .p-datatable-tbody > tr > td {
-  white-space: normal;
-}
 </style>

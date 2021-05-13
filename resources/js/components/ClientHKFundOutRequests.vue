@@ -73,10 +73,6 @@
 </template>
 <script>
 import SearchBox from "./SearchBox";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-// import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { mapState } from "vuex";
@@ -105,10 +101,6 @@ export default {
   },
   components: {
     SearchBox,
-    DataTable,
-    Column,
-    // Button,
-    Checkbox,
   },
   created() {
     this.Columns = JSON.parse(this.columns);

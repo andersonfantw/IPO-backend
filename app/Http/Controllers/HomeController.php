@@ -90,6 +90,7 @@ class HomeController extends Controller
                     [
                         'label' => "客戶海外出款申請",
                         'url' => route('ClientOverseasFundOutRequests'),
+                        'no_of_news' => $this->countNewClientOverseasFundOutRequests(),
                     ],
                     [
                         'label' => "客戶內部轉帳申請",

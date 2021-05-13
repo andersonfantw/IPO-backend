@@ -173,8 +173,6 @@
   </form>
 </template>
 <script>
-import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
@@ -187,10 +185,7 @@ export default {
     };
   },
   mixins: [CommonFunctionMixin],
-  components: {
-    Button,
-    Checkbox,
-  },
+  components: {},
   props: {
     request: String,
     client: String,

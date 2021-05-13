@@ -7,12 +7,9 @@
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
 
-@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~bootstrap-vue";
 
-@import "~primevue/resources/themes/vela-green/theme.css";
-// @import "~primevue/resources/themes/saga-blue/theme.css";
-@import "~primevue/resources/primevue.min.css";
-@import "~primeicons/primeicons.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
 
 .green {
     color: $green;

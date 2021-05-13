@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');
 
     Route::get('/UnauditedList2', 'UnauditedList2Controller@index')->name('UnauditedList2');
@@ -32,7 +32,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient');
 
-    Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest');
+    Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest')->middleware([
+        'PreviewClientFundInRequest',
+    ]);
 
     Route::any('/DoAuditClientFundInRequest', 'AuditClientFundInRequestController@audit')->name('DoAuditClientFundInRequest');
 
@@ -40,11 +42,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::any('/DoAuditClientFundInternalTransferRequest', 'AuditClientFundInternalTransferRequestController@audit')->name('DoAuditClientFundInternalTransferRequest');
 
-    Route::any('/AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@index')->name('AuditClientHKFundOutRequest');
+    Route::any('/AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@index')->name('AuditClientHKFundOutRequest')->middleware([
+        'PreviewClientHKFundOutRequest',
+    ]);
 
     Route::any('/DoAuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@audit')->name('DoAuditClientHKFundOutRequest');
 
-    Route::any('/AuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@index')->name('AuditClientOverseasFundOutRequest');
+    Route::any('/AuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@index')->name('AuditClientOverseasFundOutRequest')->middleware([
+        'PreviewClientOverseasFundOutRequest',
+    ]);
 
     Route::any('/DoAuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@audit')->name('DoAuditClientOverseasFundOutRequest');
 

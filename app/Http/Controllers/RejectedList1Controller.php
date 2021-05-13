@@ -8,43 +8,34 @@ use Illuminate\Http\Request;
 class RejectedList1Controller extends HomeController
 {
     protected $name = 'RejectedList1';
-    private $columnNames;
 
     public function __construct()
     {
         parent::__construct();
-        $this->columnNames = [
-            'idCard' => '證件號碼',
-            'mobile' => '手機號碼',
-            'residenceAddr' => '所在地',
-            'email' => '郵箱',
-            'lastTime' => '提交時間',
-            'relation' => '客户姓名',
-            'uuid' => '唯一編碼',
-        ];
     }
 
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
         $columns = [
-            ['field' => '客户姓名', 'header' => '客户姓名'],
-            ['field' => '證件號碼', 'header' => '證件號碼'],
-            ['field' => '手機號碼', 'header' => '手機號碼'],
-            ['field' => '所在地', 'header' => '所在地'],
-            ['field' => '郵箱', 'header' => '郵箱'],
-            ['field' => '提交時間', 'header' => '提交時間'],
+            ['key' => '客户姓名', 'sortable' => true],
+            ['key' => '證件號碼', 'sortable' => true],
+            ['key' => '手機號碼', 'sortable' => true],
+            ['key' => '所在地', 'sortable' => true],
+            ['key' => '郵箱', 'sortable' => true],
+            ['key' => '提交時間', 'sortable' => true],
+            ['key' => '操作'],
         ];
-        $filterMatchMode = [
+        $FilterType = [
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
             '手機號碼' => 'startsWith',
             '所在地' => 'equals',
             '郵箱' => 'startsWith',
-            '提交時間' => 'equals',
+            '提交時間' => 'between',
         ];
         $parameters['columns'] = json_encode($columns);
-        $parameters['filterMatchMode'] = json_encode($filterMatchMode);
+        $parameters['FilterType'] = json_encode($FilterType);
         return $parameters;
     }
 

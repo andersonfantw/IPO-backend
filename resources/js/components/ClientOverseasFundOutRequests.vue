@@ -41,14 +41,14 @@
               name="redirect_route"
               value="ClientOverseasFundOutRequests"
             />
-            <Button
+            <button
               name="id"
               :value="slotProps.data.id"
               type="submit"
-              icon="pi pi-user-edit"
-              label="審核"
-              class="p-button-secondary"
-            ></Button>
+              class="btn btn-warning"
+            >
+              <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
+            </button>
           </form>
           <form v-else :action="view_request_url" method="post">
             <input
@@ -56,14 +56,14 @@
               name="redirect_route"
               value="ClientOverseasFundOutRequests"
             />
-            <Button
+            <button
               name="id"
               :value="slotProps.data.id"
               type="submit"
-              icon="pi pi-user-edit"
-              label="查閱"
-              class="p-button-secondary"
-            ></Button>
+              class="btn btn-success"
+            >
+              <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+            </button>
           </form>
         </template>
       </Column>
@@ -73,10 +73,6 @@
 </template>
 <script>
 import SearchBox from "./SearchBox";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { mapState } from "vuex";
@@ -105,10 +101,6 @@ export default {
   },
   components: {
     SearchBox,
-    DataTable,
-    Column,
-    Button,
-    Checkbox,
   },
   created() {
     this.Columns = JSON.parse(this.columns);

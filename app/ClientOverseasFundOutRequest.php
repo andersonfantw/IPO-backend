@@ -21,7 +21,7 @@ class ClientOverseasFundOutRequest extends Model
         'remark',
         'transfer_time',
         'timezone',
-        'previewing',
+        'previewing_by',
     ];
 
     public function Client()

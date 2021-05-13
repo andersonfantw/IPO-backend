@@ -2,7 +2,7 @@
   <form :action="action" method="POST">
     <input type="hidden" name="id" v-model="Request.id" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -27,7 +27,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -55,7 +55,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -116,7 +116,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col">
@@ -131,6 +131,7 @@
         <tr>
           <td>
             <textarea
+              class="bg-secondary text-white"
               v-if="駁回"
               name="駁回信息"
               style="width: 100%"
@@ -143,18 +144,13 @@
       </tbody>
     </table>
     <div class="text-center mb-5">
-      <Button
-        type="submit"
-        label="提交審核"
-        icon="pi pi-check"
-        iconPos="right"
-      />
+      <button type="submit" class="btn btn-success">
+        <h5 class="mb-0"><i class="far fa-paper-plane"></i> 提交審核</h5>
+      </button>
     </div>
   </form>
 </template>
 <script>
-import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
@@ -167,10 +163,7 @@ export default {
     };
   },
   mixins: [CommonFunctionMixin],
-  components: {
-    Button,
-    Checkbox,
-  },
+  components: {},
   props: {
     request: String,
     client: String,

@@ -20,7 +20,7 @@ class ClientFundInRequest extends Model
         'bankcard',
         'transfer_time',
         'timezone',
-        'previewing',
+        'previewing_by',
     ];
 
     public function Client()

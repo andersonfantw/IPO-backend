@@ -13,29 +13,28 @@ class SendingEmailListController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $columns = [
-            ['field' => '帳戶號碼', 'header' => '帳戶號碼'],
-            ['field' => '客户姓名', 'header' => '客户姓名'],
-            ['field' => '證件號碼', 'header' => '證件號碼'],
-            // ['field' => '手機號碼', 'header' => '手機號碼'],
-            ['field' => '電郵', 'header' => '電郵'],
-            ['field' => '投遞日期', 'header' => '投遞日期'],
-            ['field' => '狀態', 'header' => '狀態'],
-            ['field' => '電郵發送者', 'header' => '電郵發送者'],
-            ['field' => '電郵發送時間', 'header' => '電郵發送時間'],
+            ['key' => '操作'],
+            ['key' => '帳戶號碼', 'sortable' => true],
+            ['key' => '客户姓名', 'sortable' => true],
+            ['key' => '證件號碼', 'sortable' => true],
+            ['key' => '電郵', 'sortable' => true],
+            ['key' => '投遞日期', 'sortable' => true],
+            ['key' => '狀態', 'sortable' => true],
+            ['key' => '電郵發送者', 'sortable' => true],
+            ['key' => '電郵發送時間', 'sortable' => true],
         ];
-        $filterMatchMode = [
+        $FilterType = [
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
-            // '手機號碼' => 'startsWith',
             '電郵' => 'startsWith',
-            '投遞日期' => 'equals',
+            '投遞日期' => 'between',
             '狀態' => 'equals',
             '電郵發送者' => 'startsWith',
-            '電郵發送時間' => 'equals',
+            '電郵發送時間' => 'between',
         ];
         $parameters['columns'] = json_encode($columns);
-        $parameters['filterMatchMode'] = json_encode($filterMatchMode);
+        $parameters['FilterType'] = json_encode($FilterType);
         $parameters['User'] = auth()->user()->toJson(JSON_UNESCAPED_UNICODE);
         return $parameters;
     }

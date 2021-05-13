@@ -1,27 +1,30 @@
 <template>
-  <div>
-    <div class="row no-gutters">
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'帳戶號碼'"
-          :store-name-spaced="'ClientFundInRequests'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'客户姓名'"
-          :store-name-spaced="'ClientFundInRequests'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'手機號碼'"
-          :store-name-spaced="'ClientFundInRequests'"
-        ></SearchBox>
-      </div>
+  <b-container fluid class="p-0">
+    <b-row no-gutters>
+      <b-col>
+        <b-input-group prepend="帳戶號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['帳戶號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="客户姓名">
+          <b-form-input
+            type="search"
+            v-model="filters['客户姓名']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="手機號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['手機號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
       <div class="col">
         <SearchSelectOptions
           :name="'狀態'"
@@ -32,7 +35,7 @@
           <option value="rejected">rejected</option>
         </SearchSelectOptions>
       </div>
-    </div>
+    </b-row>
     <DataTable
       :value="data"
       :filters="filters"
@@ -102,18 +105,14 @@
       </Column>
       <template #empty>沒有找到記錄</template>
     </DataTable>
-  </div>
+  </b-container>
 </template>
 <script>
 import SearchBox from "./SearchBox";
 import SearchSelectOptions from "./SearchSelectOptions";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-// import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
-import { mapState } from "vuex";
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
@@ -121,10 +120,15 @@ export default {
       FilterMatchMode: {},
       Loading: false,
       data: null,
-      SelectedRequests: null,
+      SelectedRequests: [],
+      FilteredRequests: [],
+      currentPage: 1,
+      perPage: 10,
+      FilterType: {},
+      totalRows: 0,
     };
   },
-  mixins: [DecryptionMixin],
+  mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
     columns: {
       type: String,
@@ -139,10 +143,7 @@ export default {
   },
   components: {
     SearchBox,
-    DataTable,
-    Column,
     SearchSelectOptions,
-    Checkbox,
   },
   created() {
     this.Columns = JSON.parse(this.columns);

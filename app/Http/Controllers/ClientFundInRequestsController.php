@@ -13,32 +13,32 @@ class ClientFundInRequestsController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $columns = [
-            ['field' => '帳戶號碼', 'header' => '帳戶號碼'],
-            ['field' => '客户姓名', 'header' => '客户姓名'],
-            ['field' => '手機號碼', 'header' => '手機號碼'],
-            ['field' => '狀態', 'header' => '狀態'],
-            ['field' => '發送時間', 'header' => '發送時間'],
-            ['field' => '經手人', 'header' => '經手人'],
-            ['field' => '審批時間', 'header' => '審批時間'],
+            ['key' => '操作'],
+            ['key' => '帳戶號碼', 'sortable' => true],
+            ['key' => '客户姓名', 'sortable' => true],
+            ['key' => '手機號碼', 'sortable' => true],
+            ['key' => '狀態', 'sortable' => true],
+            ['key' => '發送時間', 'sortable' => true],
+            ['key' => '經手人', 'sortable' => true],
+            ['key' => '審批時間', 'sortable' => true],
         ];
-        $filterMatchMode = [
+        $FilterType = [
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '手機號碼' => 'startsWith',
             '狀態' => 'equals',
+            '發送時間' => 'between',
             '經手人' => 'startsWith',
-            '發送時間' => 'equals',
-            '審批時間' => 'equals',
+            '審批時間' => 'between',
         ];
         $parameters['columns'] = json_encode($columns);
-        $parameters['filterMatchMode'] = json_encode($filterMatchMode);
+        $parameters['FilterType'] = json_encode($FilterType);
         $parameters['User'] = auth()->user()->toJson(JSON_UNESCAPED_UNICODE);
         return $parameters;
     }
 
     public function getData(Request $request)
     {
-        // $Clients = Client::has('ClientFundInRequests')->orderBy('created_at', 'asc')->get();
         $ClientFundInRequests = ClientFundInRequest::orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {

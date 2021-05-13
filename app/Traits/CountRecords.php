@@ -7,6 +7,7 @@ use App\ClientFundInRequest;
 use App\ClientHKFundOutRequest;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
+use App\ClientOverseasFundOutRequest;
 use Illuminate\Database\Eloquent\Builder;
 
 trait CountRecords
@@ -138,6 +139,12 @@ trait CountRecords
     public function countNewClientHKFundOutRequests()
     {
         $NoOfNews = ClientHKFundOutRequest::where('status', 'pending')->count();
+        return $NoOfNews > 0 ? $NoOfNews : null;
+    }
+
+    public function countNewClientOverseasFundOutRequests()
+    {
+        $NoOfNews = ClientOverseasFundOutRequest::where('status', 'pending')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 }

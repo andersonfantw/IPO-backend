@@ -16,49 +16,38 @@ class DeliverableList2Controller extends HomeController
     use Excel;
 
     protected $name = 'DeliverableList2';
-    private $columnNames;
 
     public function __construct()
     {
         parent::__construct();
-        $this->columnNames = [
-            'account_type' => '開通賬戶類型',
-            'idCard' => '證件號碼',
-            'mobile' => '手機號碼',
-            'email' => '郵箱',
-            'lastTime' => '開戶時間',
-            'created_at' => '帳戶生成時間',
-            'relation' => '客户姓名',
-            'uuid' => '唯一編碼',
-            'ayers_account_no' => '帳戶號碼',
-        ];
     }
 
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
         $columns = [
-            ['field' => '帳戶號碼', 'header' => '帳戶號碼'],
-            ['field' => '開通賬戶類型', 'header' => '開通賬戶類型'],
-            ['field' => '客户姓名', 'header' => '客户姓名'],
-            ['field' => '證件號碼', 'header' => '證件號碼'],
-            ['field' => '手機號碼', 'header' => '手機號碼'],
-            ['field' => '郵箱', 'header' => '郵箱'],
-            ['field' => '開戶時間', 'header' => '開戶時間'],
-            ['field' => '帳戶生成時間', 'header' => '帳戶生成時間'],
+            ['key' => '操作'],
+            ['key' => '帳戶號碼', 'sortable' => true],
+            ['key' => '開通賬戶類型', 'sortable' => true],
+            ['key' => '客户姓名', 'sortable' => true],
+            ['key' => '證件號碼', 'sortable' => true],
+            ['key' => '手機號碼', 'sortable' => true],
+            ['key' => '郵箱', 'sortable' => true],
+            ['key' => '開戶時間', 'sortable' => true],
+            ['key' => '帳戶生成時間', 'sortable' => true],
         ];
-        $filterMatchMode = [
+        $FilterType = [
             '帳戶號碼' => 'startsWith',
             '開通賬戶類型' => 'equals',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
             '手機號碼' => 'startsWith',
             '郵箱' => 'startsWith',
-            '開戶時間' => 'equals',
-            '帳戶生成時間' => 'equals',
+            '開戶時間' => 'between',
+            '帳戶生成時間' => 'between',
         ];
         $parameters['columns'] = json_encode($columns);
-        $parameters['filterMatchMode'] = json_encode($filterMatchMode);
+        $parameters['FilterType'] = json_encode($FilterType);
         return $parameters;
     }
 

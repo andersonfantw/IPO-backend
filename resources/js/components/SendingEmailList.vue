@@ -1,153 +1,139 @@
 <template>
-  <div>
-    <div class="row no-gutters">
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'帳戶號碼'"
-          :store-name-spaced="'SendingEmailList'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'客户姓名'"
-          :store-name-spaced="'SendingEmailList'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'證件號碼'"
-          :store-name-spaced="'SendingEmailList'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'email'"
-          :name="'電郵'"
-          :store-name-spaced="'SendingEmailList'"
-        ></SearchBox>
-      </div>
-    </div>
-    <div class="row no-gutters">
-      <div class="col">
-        <SearchBox
-          :type="'date'"
-          :name="'投遞日期'"
-          :store-name-spaced="'SendingEmailList'"
-        ></SearchBox>
-      </div>
-      <div class="col">
-        <SearchSelectOptions
-          :name="'狀態'"
-          :store-name-spaced="'SendingEmailList'"
-        >
-          <option value="">全部</option>
-          <option value="未發送">未發送</option>
-          <option value="已發送">已發送</option>
-        </SearchSelectOptions>
-      </div>
-      <div class="col">
-        <SearchBox
-          :type="'text'"
-          :name="'電郵發送者'"
-          :store-name-spaced="'SendingEmailList'"
-        ></SearchBox>
-      </div>
-      <div class="col"></div>
-    </div>
-    <button
-      type="button"
-      @click="sendEmails"
-      class="btn btn-success btn-lg rounded-0"
+  <b-container fluid class="p-0">
+    <b-row no-gutters>
+      <b-col>
+        <b-input-group prepend="帳戶號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['帳戶號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="客户姓名">
+          <b-form-input
+            type="search"
+            v-model="filters['客户姓名']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="證件號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['證件號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="電郵">
+          <b-form-input type="search" v-model="filters['電郵']"></b-form-input>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row no-gutters>
+      <b-col cols="6">
+        <DateRange :name="'投遞日期'" v-model="filters['投遞日期']" />
+      </b-col>
+      <b-col>
+        <b-input-group prepend="狀態">
+          <b-form-select v-model="filters['狀態']" :options="options">
+          </b-form-select>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="電郵發送者">
+          <b-form-input
+            type="search"
+            v-model="filters['電郵發送者']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row no-gutters>
+      <b-col cols="6">
+        <DateRange :name="'電郵發送時間'" v-model="filters['電郵發送時間']" />
+      </b-col>
+    </b-row>
+    <b-button variant="success" @click="sendEmails"
+      ><i class="far fa-envelope"></i> 一鍵發送</b-button
     >
-      <h5 class="m-0"><i class="far fa-envelope"></i> 一鍵發送</h5>
-    </button>
-    <DataTable
-      :value="data"
-      :filters="filters"
-      :selection.sync="selectedClients"
-      :paginator="true"
-      :rows="10"
-      :loading="loading"
-      :resizableColumns="true"
-      columnResizeMode="fit"
-      class="p-datatable-gridlines"
+    <b-table
+      hover
+      bordered
+      dark
+      :items="data"
+      :fields="columns"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :filter="filters"
+      :filter-function="filter"
+      show-empty
+      empty-filtered-text="沒有找到記錄"
+      empty-text="沒有找到記錄"
+      :busy="loading"
+      @filtered="onFiltered"
     >
-      <Column selectionMode="multiple" headerStyle="width: 3.5em"></Column>
-      <Column
-        v-for="col of columns"
-        :field="col.field"
-        :header="col.header"
-        :key="col.field"
-        :sortable="true"
-        :filterMatchMode="filterMatchMode[col.field]"
-      >
-        <template #body="slotProps">
-          <p class="text-break">
-            {{ slotProps.data[slotProps.column.field] }}
-          </p>
-        </template>
-      </Column>
-      <!-- <Column
-        headerStyle="width: 8rem; text-align: center"
-        bodyStyle="text-align: center; overflow: visible"
-      >
-        <template #body="slotProps">
-          <form
-            v-if="!slotProps.data.帳戶號碼"
-            :action="generate_ayers_account_url"
-            method="post"
-          >
-            <input
-              type="hidden"
-              name="redirect_route"
-              value="SendingEmailList"
-            />
-            <input type="hidden" name="next_status" value="" />
-            <Button
-              name="uuid"
-              :value="slotProps.data.uuid"
-              type="submit"
-              icon="pi pi-user-edit"
-              label="生成Ayers帳戶"
-              class="p-button-secondary"
-            ></Button>
-          </form>
-        </template>
-      </Column> -->
-      <template #empty>沒有找到記錄</template>
-    </DataTable>
-  </div>
+      <template #head(操作)>
+        <b-form-checkbox v-model="checked" @change="selectAll" />
+      </template>
+      <template #cell(操作)="data">
+        <b-form-checkbox v-model="selectedClients" :value="data.item" />
+      </template>
+      <template #empty="scope">
+        {{ scope.emptyText }}
+      </template>
+      <template #emptyfiltered="scope">
+        {{ scope.emptyFilteredText }}
+      </template>
+      <template #table-busy>
+        <div class="text-center text-warning">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
+    </b-table>
+    <b-pagination
+      v-if="totalRows > 0"
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="center"
+    >
+    </b-pagination>
+  </b-container>
 </template>
 <script>
-import SearchBox from "./SearchBox";
-import SearchSelectOptions from "./SearchSelectOptions";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Button from "primevue/button";
+import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
-import { mapState } from "vuex";
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
       columns: [],
-      filterMatchMode: {},
       loading: false,
       data: null,
-      selectedClients: null,
+      selectedClients: [],
+      filteredClients: [],
       User: null,
+      currentPage: 1,
+      perPage: 10,
+      FilterType: {},
+      totalRows: 0,
+      options: [
+        { value: null, text: "全部" },
+        { value: "未發送", text: "未發送" },
+        { value: "已發送", text: "已發送" },
+      ],
     };
   },
-  mixins: [DecryptionMixin],
+  mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
     p_columns: {
       type: String,
       required: true,
     },
-    p_filterMatchMode: {
+    filter_type: {
       type: String,
       required: true,
     },
@@ -155,20 +141,23 @@ export default {
     user: String,
   },
   components: {
-    DataTable,
-    Column,
-    Button,
-    SearchBox,
-    SearchSelectOptions,
+    DateRange,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);
-    this.filterMatchMode = JSON.parse(this.p_filterMatchMode);
+    this.FilterType = JSON.parse(this.filter_type);
     this.User = JSON.parse(this.user);
     this.loading = true;
     this.loadData();
   },
   methods: {
+    selectAll(e) {
+      if (e) {
+        this.selectedClients = this.filteredClients;
+      } else {
+        this.selectedClients = [];
+      }
+    },
     sendEmails() {
       const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
@@ -178,11 +167,11 @@ export default {
             clients: self.selectedClients,
             User: self.User,
           })
-          .then(function (response) {
+          .then((response) => {
             console.log(response);
             self.loadData();
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
           });
       } else {
@@ -191,26 +180,39 @@ export default {
     },
     loadData() {
       const self = this;
-      axios.post("api/SendingEmailList/all_data").then(function (res) {
+      axios.post("api/SendingEmailList/all_data").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
-        // self.$store.commit("IPOTable/ipos", json.data);
+        self.filteredClients = self.data;
+        self.totalRows = self.data.length;
         self.loading = false;
       });
     },
+    onFiltered(filteredItems) {
+      this.selectedClients = [];
+      this.filteredClients = filteredItems;
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
   },
   computed: {
-    ...mapState({
-      filters: (state) => state.SendingEmailList.filters,
-    }),
+    filters: {
+      get() {
+        return this.$store.state.SendingEmailList.filters;
+      },
+      set(value) {
+        this.$store.commit("SendingEmailList/filters", value);
+      },
+    },
+    checked: {
+      get() {
+        return this.selectedClients.length == this.filteredClients.length;
+      },
+      set(value) {},
+    },
   },
   watch: {},
 };
 </script>
 <style>
-.p-datatable-resizable .p-datatable-thead > tr > th,
-.p-datatable-resizable .p-datatable-tfoot > tr > td,
-.p-datatable-resizable .p-datatable-tbody > tr > td {
-  white-space: normal;
-}
 </style>

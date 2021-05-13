@@ -766,7 +766,6 @@
   </form>
 </template>
 <script>
-import Checkbox from "primevue/checkbox";
 export default {
   data() {
     return {
@@ -803,9 +802,7 @@ export default {
       Introducer: null,
     };
   },
-  components: {
-    Checkbox,
-  },
+  components: {},
   props: {
     client: String,
     client_id_card: String,
