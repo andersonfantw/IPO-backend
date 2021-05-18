@@ -4,6 +4,7 @@ namespace App\Traits;
 use App\Client;
 use App\ClientCNIDCard;
 use App\ClientFundInRequest;
+use App\ClientFundInternalTransferRequest;
 use App\ClientHKFundOutRequest;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
@@ -145,6 +146,12 @@ trait CountRecords
     public function countNewClientOverseasFundOutRequests()
     {
         $NoOfNews = ClientOverseasFundOutRequest::where('status', 'pending')->count();
+        return $NoOfNews > 0 ? $NoOfNews : null;
+    }
+
+    public function countNewClientFundInternalTransferRequests()
+    {
+        $NoOfNews = ClientFundInternalTransferRequest::where('status', 'pending')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 }

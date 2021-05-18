@@ -95,6 +95,7 @@ class HomeController extends Controller
                     [
                         'label' => "客戶內部轉帳申請",
                         'url' => route('ClientFundInternalTransferRequests'),
+                        'no_of_news' => $this->countNewClientFundInternalTransferRequests(),
                     ],
                     [
                         'label' => "帳戶銷戶申請",

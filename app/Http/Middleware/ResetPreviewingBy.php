@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\ClientFundInRequest;
+use App\ClientFundInternalTransferRequest;
 use App\ClientHKFundOutRequest;
 use App\ClientOverseasFundOutRequest;
 use Closure;
@@ -23,6 +24,8 @@ class ResetPreviewingBy
         ClientHKFundOutRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
         ClientOverseasFundOutRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
+            update(['previewing_by' => null]);
+        ClientFundInternalTransferRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
         return $next($request);
     }

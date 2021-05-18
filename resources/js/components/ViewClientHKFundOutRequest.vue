@@ -1,8 +1,6 @@
 <template>
-  <form method="POST">
-    <input type="hidden" name="id" v-model="Request.id" />
-    <input type="hidden" name="redirect_route" v-model="redirect_route" />
-    <table class="table table-bordered">
+  <div>
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -27,7 +25,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -55,7 +53,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -134,7 +132,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col">
@@ -147,19 +145,20 @@
       <tbody>
         <tr>
           <td>
-            <textarea
+            <b-form-textarea
               name="駁回信息"
-              style="width: 100%"
+              size="lg"
+              class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
               rows="7"
               v-model="Request.remark"
               :readonly="true"
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
-  </form>
+  </div>
 </template>
 <script>
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";

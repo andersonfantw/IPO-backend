@@ -121,8 +121,13 @@
         <tr>
           <th scope="col">
             <h5 class="mb-0">
-              <label class="mb-0" for="駁回">駁回</label
-              ><Checkbox id="駁回" class="ml-2" v-model="駁回" :binary="true" />
+              <b-form-checkbox
+                id="駁回"
+                v-model="駁回"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
             </h5>
           </th>
         </tr>
@@ -130,15 +135,15 @@
       <tbody>
         <tr>
           <td>
-            <textarea
-              class="bg-secondary text-white"
+            <b-form-textarea
               v-if="駁回"
               name="駁回信息"
-              style="width: 100%"
+              size="lg"
+              class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
               rows="7"
               v-model="Request.remark"
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
       </tbody>

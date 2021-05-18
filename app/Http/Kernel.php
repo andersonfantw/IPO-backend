@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'PreviewClientFundInRequest' => \App\Http\Middleware\PreviewClientFundInRequest::class,
         'PreviewClientHKFundOutRequest' => \App\Http\Middleware\PreviewClientHKFundOutRequest::class,
         'PreviewClientOverseasFundOutRequest' => \App\Http\Middleware\PreviewClientOverseasFundOutRequest::class,
+        'PreviewClientFundInternalTransferRequest' => \App\Http\Middleware\PreviewClientFundInternalTransferRequest::class,
         'ResetPreviewingBy' => \App\Http\Middleware\ResetPreviewingBy::class,
     ];
 }

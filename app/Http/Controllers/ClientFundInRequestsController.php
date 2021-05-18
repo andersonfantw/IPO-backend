@@ -13,7 +13,6 @@ class ClientFundInRequestsController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $columns = [
-            ['key' => '操作'],
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '手機號碼', 'sortable' => true],
@@ -21,6 +20,7 @@ class ClientFundInRequestsController extends HomeController
             ['key' => '發送時間', 'sortable' => true],
             ['key' => '經手人', 'sortable' => true],
             ['key' => '審批時間', 'sortable' => true],
+            ['key' => '操作'],
         ];
         $FilterType = [
             '帳戶號碼' => 'contains',

@@ -2,7 +2,7 @@
   <form :action="action" method="POST">
     <input type="hidden" name="id" v-model="Request.id" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -27,7 +27,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -55,7 +55,7 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -136,13 +136,18 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col">
             <h5 class="mb-0">
-              <label class="mb-0" for="駁回">駁回</label
-              ><Checkbox id="駁回" class="ml-2" v-model="駁回" :binary="true" />
+              <b-form-checkbox
+                id="駁回"
+                v-model="駁回"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
             </h5>
           </th>
         </tr>
@@ -150,25 +155,23 @@
       <tbody>
         <tr>
           <td>
-            <textarea
+            <b-form-textarea
               v-if="駁回"
               name="駁回信息"
-              style="width: 100%"
+              size="lg"
+              class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
               rows="7"
               v-model="Request.remark"
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
     <div class="text-center mb-5">
-      <Button
-        type="submit"
-        label="提交審核"
-        icon="pi pi-check"
-        iconPos="right"
-      />
+      <button type="submit" class="btn btn-success">
+        <h5 class="mb-0"><i class="far fa-paper-plane"></i> 提交審核</h5>
+      </button>
     </div>
   </form>
 </template>
