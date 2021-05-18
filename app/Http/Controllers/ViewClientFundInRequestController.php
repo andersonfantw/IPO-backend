@@ -19,7 +19,7 @@ class ViewClientFundInRequestController extends HomeController
                 $ClientFundInRequest->{$key} = $value;
             }
         }
-        $parameters['Request'] = $ClientFundInRequest->toJson(JSON_UNESCAPED_UNICODE);
+        $parameters['Request'] = json_encode($ClientFundInRequest, JSON_UNESCAPED_UNICODE);
 
         $Client = $ClientFundInRequest->Client;
         if (is_object($Client)) {
