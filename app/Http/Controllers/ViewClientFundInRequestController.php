@@ -16,7 +16,7 @@ class ViewClientFundInRequestController extends HomeController
         $ClientFundInRequest = ClientFundInRequest::find($input['id']);
         if (is_object($ClientFundInRequest)) {
             foreach ($ClientFundInRequest->getAttributes() as $key => $value) {
-                $ClientFundInRequest->{$key} = $value;
+                $ClientFundInRequest->{$key} = addslashes($value);
             }
         }
         $parameters['Request'] = json_encode($ClientFundInRequest, JSON_UNESCAPED_UNICODE);
