@@ -17,7 +17,9 @@ class ViewClientFundInRequestController extends HomeController
         if (is_object($ClientFundInRequest)) {
             foreach ($ClientFundInRequest->getAttributes() as $key => $value) {
                 // $ClientFundInRequest->{$key} = addslashes($value);
-                $parameters['Request'][$key] = $value;
+                if ($key != 'receipt' && $key != 'bankcard') {
+                    $parameters['Request'][$key] = addslashes($value);
+                }
             }
         }
         $parameters['Request'] = json_encode($parameters['Request'], JSON_UNESCAPED_UNICODE);
