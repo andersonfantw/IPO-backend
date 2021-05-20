@@ -16,6 +16,8 @@ class ClientFundInRequest extends Model
         'status',
         'issued_by',
         'remark',
+        'receipt',
+        'bankcard',
         'transfer_time',
         'timezone',
         'previewing_by',

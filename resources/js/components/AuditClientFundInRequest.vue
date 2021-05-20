@@ -80,6 +80,14 @@
         </tr>
         <tr>
           <th width="20%" scope="row">
+            <div class="mb-0">銀行卡</div>
+          </th>
+          <td colspan="3">
+            <img :src="bank_card" />
+          </td>
+        </tr>
+        <tr>
+          <th width="20%" scope="row">
             <div class="mb-0">狀態</div>
           </th>
           <td width="20%" scope="row">
@@ -111,7 +119,7 @@
             <div class="mb-0">入金證明</div>
           </th>
           <td colspan="3">
-            <img :src="Request.receipt" />
+            <img :src="receipt" />
           </td>
         </tr>
       </tbody>
@@ -176,6 +184,8 @@ export default {
     ayers_accounts: Array,
     redirect_route: String,
     action: String,
+    receipt: String,
+    bank_card: String,
   },
   created() {
     this.Client = JSON.parse(this.client);

@@ -91,6 +91,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
     Route::any('/LoadDepositProof', 'AuditClientController@loadDepositProof')->name('LoadDepositProof');
     Route::any('/LoadAddressProof', 'AuditClientController@loadAddressProof')->name('LoadAddressProof');
+    Route::any('/LoadReceipt', 'ViewClientFundInRequestController@loadReceipt')->name('LoadReceipt');
+    Route::any('/LoadBankcard', 'ViewClientFundInRequestController@loadBankcard')->name('LoadBankcard');
 });
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');

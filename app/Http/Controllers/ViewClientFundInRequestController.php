@@ -9,6 +9,18 @@ class ViewClientFundInRequestController extends HomeController
 {
     protected $name = 'ViewClientFundInRequest';
 
+    public function loadReceipt(Request $request)
+    {
+        $ClientFundInRequest = ClientFundInRequest::where('id', $request->input('id'))->first();
+        return response($ClientFundInRequest->receipt)->header('Content-Type', 'image/png');
+    }
+
+    public function loadBankcard(Request $request)
+    {
+        $ClientFundInRequest = ClientFundInRequest::where('id', $request->input('id'))->first();
+        return response($ClientFundInRequest->bankcard)->header('Content-Type', 'image/png');
+    }
+
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
@@ -16,13 +28,15 @@ class ViewClientFundInRequestController extends HomeController
         $ClientFundInRequest = ClientFundInRequest::find($input['id']);
         if (is_object($ClientFundInRequest)) {
             foreach ($ClientFundInRequest->getAttributes() as $key => $value) {
-                // $ClientFundInRequest->{$key} = addslashes($value);
-                if ($key != 'receipt' && $key != 'bankcard') {
-                    $parameters['Request'][$key] = addslashes($value);
+                if ($key == 'receipt' || $key == 'bankcard') {
+                    $ClientFundInRequest->{$key} = null;
+                } else {
+                    $ClientFundInRequest->{$key} = addslashes($value);
                 }
             }
         }
-        $parameters['Request'] = json_encode($parameters['Request'], JSON_UNESCAPED_UNICODE);
+        $parameters['Request_ID'] = $ClientFundInRequest->id;
+        $parameters['Request'] = $ClientFundInRequest->toJson(JSON_UNESCAPED_UNICODE);
 
         $Client = $ClientFundInRequest->Client;
         if (is_object($Client)) {
