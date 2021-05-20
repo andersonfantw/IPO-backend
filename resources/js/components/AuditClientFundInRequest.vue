@@ -83,7 +83,7 @@
             <div class="mb-0">銀行卡</div>
           </th>
           <td colspan="3">
-            <img :src="bank_card" />
+            <img style="width: 300px" :src="bank_card" />
           </td>
         </tr>
         <tr>
@@ -119,7 +119,7 @@
             <div class="mb-0">入金證明</div>
           </th>
           <td colspan="3">
-            <img :src="receipt" />
+            <img style="width: 500px" :src="receipt" />
           </td>
         </tr>
       </tbody>
