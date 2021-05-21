@@ -77,9 +77,11 @@ class ViewClientController extends HomeController
         $Client = Client::where('uuid', $input['uuid'])->first();
         $Client->idcard_type = addslashes($Client->idcard_type);
         $Client->education_level = addslashes($Client->education_level);
+        $Client->selected_flow = addslashes($Client->selected_flow);
         $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
         $Client->idcard_type = stripslashes($Client->idcard_type);
         $Client->education_level = stripslashes($Client->education_level);
+        $Client->selected_flow = stripslashes($Client->selected_flow);
         $parameters['uuid'] = $Client->uuid;
         $parameters['redirect_route'] = $input['redirect_route'];
         $parameters['ClientIDCard'] = $Client->ViewClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
