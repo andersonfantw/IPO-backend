@@ -11,6 +11,7 @@ import ClientFundInRequests from "./modules/ClientFundInRequests";
 import ClientFundInternalTransferRequests from "./modules/ClientFundInternalTransferRequests";
 import ClientHKFundOutRequests from "./modules/ClientHKFundOutRequests";
 import ClientOverseasFundOutRequests from "./modules/ClientOverseasFundOutRequests";
+import ClientCreditCardFundOutRequests from "./modules/ClientCreditCardFundOutRequests";
 
 export default new Vuex.Store({
 	strict: false,
@@ -25,5 +26,6 @@ export default new Vuex.Store({
 		ClientFundInternalTransferRequests: ClientFundInternalTransferRequests,
 		ClientHKFundOutRequests: ClientHKFundOutRequests,
 		ClientOverseasFundOutRequests: ClientOverseasFundOutRequests,
+		ClientCreditCardFundOutRequests: ClientCreditCardFundOutRequests,
 	}
 });

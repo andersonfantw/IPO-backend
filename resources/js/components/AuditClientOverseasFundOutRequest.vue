@@ -101,14 +101,12 @@
           </td>
         </tr>
         <tr>
-          <th width="25%" scope="row">轉帳時間</th>
-          <td width="25%" class="text-warning">
-            {{ formateDateTime(Request.transfer_time) }}
-          </td>
           <th width="25%" scope="row">申請發送時間</th>
           <td width="25%" class="text-warning">
             {{ formateDateTime(Request.created_at) }}
           </td>
+          <th width="25%"></th>
+          <td width="25%"></td>
         </tr>
       </tbody>
     </table>

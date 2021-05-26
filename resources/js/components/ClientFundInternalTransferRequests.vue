@@ -38,6 +38,13 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
+    <b-button variant="success" @click="downloadExcel"
+      ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
+        v-if="DownloadingExcel"
+        label="Spinning"
+        small
+      />
+    </b-button>
     <b-table
       hover
       bordered
@@ -108,75 +115,6 @@
       align="center"
     >
     </b-pagination>
-    <!-- <DataTable
-      :value="data"
-      :filters="filters"
-      :selection.sync="SelectedRequests"
-      :paginator="true"
-      :rows="10"
-      :loading="Loading"
-      :resizableColumns="true"
-      columnResizeMode="fit"
-      class="p-datatable-gridlines"
-    >
-      <Column selectionMode="multiple" headerStyle="width: 3.5em"></Column>
-      <Column
-        v-for="col of Columns"
-        :field="col.field"
-        :header="col.header"
-        :key="col.field"
-        :sortable="true"
-        :filterMatchMode="FilterMatchMode[col.field]"
-      >
-        <template #body="slotProps">
-          <p class="text-break">
-            {{ slotProps.data[slotProps.column.field] }}
-          </p>
-        </template>
-      </Column>
-      <Column
-        headerStyle="width: 8rem; text-align: center"
-        bodyStyle="text-align: center; overflow: visible"
-      >
-        <template #body="slotProps">
-          <form
-            v-if="slotProps.data.狀態 == 'pending'"
-            :action="audit_request_url"
-            method="post"
-          >
-            <input
-              type="hidden"
-              name="redirect_route"
-              value="ClientFundInternalTransferRequests"
-            />
-            <Button
-              name="id"
-              :value="slotProps.data.id"
-              type="submit"
-              icon="pi pi-user-edit"
-              label="審核"
-              class="p-button-secondary"
-            ></Button>
-          </form>
-          <form v-else :action="view_request_url" method="post">
-            <input
-              type="hidden"
-              name="redirect_route"
-              value="ClientFundInternalTransferRequests"
-            />
-            <Button
-              name="id"
-              :value="slotProps.data.id"
-              type="submit"
-              icon="pi pi-user-edit"
-              label="查閱"
-              class="p-button-secondary"
-            ></Button>
-          </form>
-        </template>
-      </Column>
-      <template #empty>沒有找到記錄</template>
-    </DataTable> -->
   </b-container>
 </template>
 <script>
@@ -197,6 +135,7 @@ export default {
       perPage: 10,
       FilterType: {},
       totalRows: 0,
+      DownloadingExcel: false,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -239,6 +178,31 @@ export default {
       this.FilteredRequests = filteredItems;
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    downloadExcel(e) {
+      const self = this;
+      self.DownloadingExcel = true;
+      axios
+        .post(
+          "api/ClientFundInternalTransferRequests/DownloadAyersImportData",
+          {},
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "FundInternalTransferRequests.xlsx");
+          link.click();
+          self.DownloadingExcel = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          self.DownloadingExcel = false;
+        });
     },
   },
   computed: {

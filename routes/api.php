@@ -74,16 +74,24 @@ Route::prefix('OpenAccountEmail')->group(function () {
 
 Route::prefix('ClientFundInRequests')->group(function () {
     Route::any('/all_data', 'ClientFundInRequestsController@getData');
+    Route::any('/DownloadAyersImportData', 'ClientFundInRequestsController@downloadAyersImportData');
 });
 
 Route::prefix('ClientHKFundOutRequests')->group(function () {
     Route::any('/all_data', 'ClientHKFundOutRequestsController@getData');
+    Route::any('/DownloadAyersImportData', 'ClientHKFundOutRequestsController@downloadAyersImportData');
 });
 
 Route::prefix('ClientFundInternalTransferRequests')->group(function () {
     Route::any('/all_data', 'ClientFundInternalTransferRequestsController@getData');
+    Route::any('/DownloadAyersImportData', 'ClientFundInternalTransferRequestsController@downloadAyersImportData');
 });
 
 Route::prefix('ClientOverseasFundOutRequests')->group(function () {
     Route::any('/all_data', 'ClientOverseasFundOutRequestsController@getData');
+    Route::any('/DownloadAyersImportData', 'ClientOverseasFundOutRequestsController@downloadAyersImportData');
+});
+
+Route::prefix('ClientCreditCardFundOutRequests')->group(function () {
+    Route::any('/all_data', 'ClientCreditCardFundOutRequestsController@getData');
 });

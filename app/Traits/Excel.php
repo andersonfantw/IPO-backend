@@ -2,6 +2,9 @@
 namespace App\Traits;
 
 use App\Exports\AyersDataExport;
+use App\Exports\ClientFundInRequestsExport;
+use App\Exports\ClientHKFundOutRequestsExport;
+use App\Exports\ClientOverseasFundOutRequestsExport;
 use Excel as _Excel;
 use Storage;
 
@@ -10,5 +13,20 @@ trait Excel
     public function exportAyersImportData(array $clients)
     {
         return _Excel::download(new AyersDataExport($clients), 'AyersImportData.xlsx');
+    }
+
+    public function exportClientFundInRequests()
+    {
+        return _Excel::download(new ClientFundInRequestsExport(), 'FundInRequests.xlsx');
+    }
+
+    public function exportClientHKFundOutRequests()
+    {
+        return _Excel::download(new ClientHKFundOutRequestsExport(), 'HKFundOutRequests.xlsx');
+    }
+
+    public function exportClientOverseasFundOutRequests()
+    {
+        return _Excel::download(new ClientOverseasFundOutRequestsExport(), 'OverseasFundOutRequests.xlsx');
     }
 }

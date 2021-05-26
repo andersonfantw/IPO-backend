@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\ClientHKFundOutRequest;
+use App\Traits\Excel;
 use Illuminate\Http\Request;
 
 class ClientHKFundOutRequestsController extends HomeController
 {
+    use Excel;
+
     protected $name = 'ClientHKFundOutRequests';
 
     protected function setViewParameters(Request $request)
@@ -64,5 +67,10 @@ class ClientHKFundOutRequestsController extends HomeController
         // return json_encode([
         //     'data' => $rows,
         // ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadAyersImportData(Request $request)
+    {
+        return $this->exportClientHKFundOutRequests();
     }
 }

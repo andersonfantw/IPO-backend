@@ -78,30 +78,37 @@ class HomeController extends Controller
                         'label' => "帳戶資料修改申請",
                     ],
                     [
-                        'label' => "客戶存款申請",
+                        'label' => "帳戶銷戶申請",
+                    ],
+                ],
+            ],
+            [
+                'label' => " 客戶出入金申請",
+                'items' => [
+                    [
+                        'label' => "存款申請",
                         'url' => route('ClientFundInRequests'),
                         'no_of_news' => $this->countNewClientFundInRequests(),
                     ],
                     [
-                        'label' => "客戶香港出款申請",
+                        'label' => "香港出款申請",
                         'url' => route('ClientHKFundOutRequests'),
                         'no_of_news' => $this->countNewClientHKFundOutRequests(),
                     ],
                     [
-                        'label' => "客戶海外出款申請",
+                        'label' => "海外出款申請",
                         'url' => route('ClientOverseasFundOutRequests'),
                         'no_of_news' => $this->countNewClientOverseasFundOutRequests(),
                     ],
                     [
-                        'label' => "客戶內部轉帳申請",
+                        'label' => "內部轉帳申請",
                         'url' => route('ClientFundInternalTransferRequests'),
                         'no_of_news' => $this->countNewClientFundInternalTransferRequests(),
                     ],
                     [
-                        'label' => "帳戶銷戶申請",
-                    ],
-                    [
                         'label' => "銀盛信用卡出款申請",
+                        'url' => route('ClientCreditCardFundOutRequests'),
+                        'no_of_news' => $this->countNewClientCreditCardFundOutRequests(),
                     ],
                 ],
             ],

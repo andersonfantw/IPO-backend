@@ -38,6 +38,13 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
+    <b-button variant="success" @click="downloadExcel"
+      ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
+        v-if="DownloadingExcel"
+        label="Spinning"
+        small
+      />
+    </b-button>
     <b-table
       hover
       bordered
@@ -128,6 +135,7 @@ export default {
       perPage: 10,
       FilterType: {},
       totalRows: 0,
+      DownloadingExcel: false,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -168,6 +176,31 @@ export default {
       this.FilteredRequests = filteredItems;
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    downloadExcel(e) {
+      const self = this;
+      self.DownloadingExcel = true;
+      axios
+        .post(
+          "api/ClientOverseasFundOutRequests/DownloadAyersImportData",
+          {},
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "OverseasFundOutRequests.xlsx");
+          link.click();
+          self.DownloadingExcel = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          self.DownloadingExcel = false;
+        });
     },
   },
   computed: {

@@ -9,8 +9,9 @@ class ClientFundInRequest extends Model
     protected $table = 'client_fund_in_requests';
     protected $fillable = [
         'uuid',
-        'account_no',
         'bank',
+        'bank_account',
+        'account_in',
         'amount',
         'method',
         'status',

@@ -57,6 +57,12 @@ Vue.component('view-client-hk-fund-out-request', require('./components/ViewClien
 
 Vue.component('audit-client-hk-fund-out-request', require('./components/AuditClientHKFundOutRequest.vue').default);
 
+Vue.component('client-credit-card-fund-out-requests', require('./components/ClientCreditCardFundOutRequests.vue').default);
+
+Vue.component('view-client-credit-card-fund-out-requests', require('./components/ViewClientCreditCardFundOutRequest.vue').default);
+
+Vue.component('audit-client-credit-card-fund-out-requests', require('./components/AuditClientCreditCardFundOutRequest.vue').default);
+
 Vue.component('client-overseas-fund-out-requests', require('./components/ClientOverseasFundOutRequests.vue').default);
 
 Vue.component('view-client-overseas-fund-out-request', require('./components/ViewClientOverseasFundOutRequest.vue').default);

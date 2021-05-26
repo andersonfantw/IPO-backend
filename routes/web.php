@@ -50,6 +50,12 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::any('/DoAuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@audit')->name('DoAuditClientHKFundOutRequest');
 
+    Route::any('/AuditClientCreditCardFundOutRequest', 'AuditClientCreditCardFundOutRequestController@index')->name('AuditClientCreditCardFundOutRequest')->middleware([
+        'PreviewClientCreditCardFundOutRequest',
+    ]);
+
+    Route::any('/DoAuditClientCreditCardFundOutRequest', 'AuditClientCreditCardFundOutRequestController@audit')->name('DoAuditClientCreditCardFundOutRequest');
+
     Route::any('/AuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@index')->name('AuditClientOverseasFundOutRequest')->middleware([
         'PreviewClientOverseasFundOutRequest',
     ]);
@@ -63,6 +69,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/ViewClientFundInternalTransferRequest', 'ViewClientFundInternalTransferRequestController@index')->name('ViewClientFundInternalTransferRequest');
 
     Route::any('/ViewClientHKFundOutRequest', 'ViewClientHKFundOutRequestController@index')->name('ViewClientHKFundOutRequest');
+
+    Route::any('/ViewClientCreditCardFundOutRequest', 'ViewClientCreditCardFundOutRequestController@index')->name('ViewClientCreditCardFundOutRequest');
 
     Route::any('/ViewClientOverseasFundOutRequest', 'ViewClientOverseasFundOutRequestController@index')->name('ViewClientOverseasFundOutRequest');
 
@@ -81,6 +89,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController@index')->name('ClientOverseasFundOutRequests');
 
     Route::any('/ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController@index')->name('ClientFundInternalTransferRequests');
+
+    Route::any('/ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController@index')->name('ClientCreditCardFundOutRequests');
 
     Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
     Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');

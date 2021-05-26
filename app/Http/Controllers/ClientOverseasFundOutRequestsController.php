@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\ClientOverseasFundOutRequest;
+use App\Traits\Excel;
 use Illuminate\Http\Request;
 
 class ClientOverseasFundOutRequestsController extends HomeController
 {
+    use Excel;
+
     protected $name = 'ClientOverseasFundOutRequests';
 
     protected function setViewParameters(Request $request)
@@ -64,5 +67,10 @@ class ClientOverseasFundOutRequestsController extends HomeController
         // return json_encode([
         //     'data' => $rows,
         // ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadAyersImportData(Request $request)
+    {
+        return $this->exportClientOverseasFundOutRequests();
     }
 }

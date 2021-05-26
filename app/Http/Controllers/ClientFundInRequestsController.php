@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\ClientFundInRequest;
+use App\Traits\Excel;
 use Illuminate\Http\Request;
 
 class ClientFundInRequestsController extends HomeController
 {
+    use Excel;
+
     protected $name = 'ClientFundInRequests';
 
     protected function setViewParameters(Request $request)
@@ -66,5 +69,11 @@ class ClientFundInRequestsController extends HomeController
         // return json_encode([
         //     'data' => $rows,
         // ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadAyersImportData(Request $request)
+    {
+        // $clients = $request->input('clients');
+        return $this->exportClientFundInRequests();
     }
 }
