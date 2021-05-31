@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\ClientFundInternalTransferRequest;
+use App\Traits\Excel;
 use Illuminate\Http\Request;
 
 class ClientFundInternalTransferRequestsController extends HomeController
 {
+    use Excel;
+
     protected $name = 'ClientFundInternalTransferRequests';
 
     protected function setViewParameters(Request $request)
@@ -67,5 +70,15 @@ class ClientFundInternalTransferRequestsController extends HomeController
         // return json_encode([
         //     'data' => $rows,
         // ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadClientFundInternalTransferFundOutRequests(Request $request)
+    {
+        return $this->exportClientFundInternalTransferFundOutRequests();
+    }
+
+    public function downloadClientFundInternalTransferFundInRequests(Request $request)
+    {
+        return $this->exportClientFundInternalTransferFundInRequests();
     }
 }

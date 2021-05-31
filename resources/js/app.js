@@ -75,6 +75,8 @@ Vue.component('view-client-fund-internal-transfer-request', require('./component
 
 Vue.component('audit-client-fund-internal-transfer-request', require('./components/AuditClientFundInternalTransferRequest.vue').default);
 
+Vue.component('client-bank-cards', require('./components/ClientBankCards.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

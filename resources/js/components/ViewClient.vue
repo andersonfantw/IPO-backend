@@ -3,61 +3,50 @@
     <input type="hidden" name="uuid" v-model="Client.uuid" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
     <input type="hidden" name="next_status" v-model="next_status" />
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="6">
+          <th colspan="6">
             <h5 class="mb-0">基礎信息</h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="17%" scope="row">
-            <div class="mb-0">地區</div>
-          </th>
-          <td width="17%">
-            <div class="mb-0">{{ 地區map[Client.nationality] }}</div>
+          <th width="17%">地區</th>
+          <td width="17%" class="text-warning">
+            {{ 地區map[Client.nationality] }}
           </td>
-          <th width="17%">
-            <div class="mb-0">開通賬戶</div>
-          </th>
-          <td width="17%">
-            <div class="mb-0">證券（現金）賬戶</div>
-          </td>
-          <th width="17%">
-            <div class="mb-0">介紹人</div>
-          </th>
-          <td width="17%">
-            <div class="mb-0">
-              {{ Introducer.name }} ({{ Introducer.type }})
-            </div>
+          <th width="17%">開通賬戶</th>
+          <td width="17%" class="text-warning">證券（現金）賬戶</td>
+          <th width="17%">介紹人</th>
+          <td width="17%" class="text-warning">
+            {{ Introducer.name }} ({{ Introducer.type }})
           </td>
         </tr>
       </tbody>
     </table>
-    <table v-if="ClientAddressProof" class="table table-bordered">
+    <table v-if="ClientAddressProof" class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="3">
+          <th colspan="3">
             <h5 class="mb-0">住址證明</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
-            <div class="mb-0">地址</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">{{ ClientAddressProof.address_text }}</div>
+          <th width="20%">地址</th>
+          <td width="20%" class="text-warning">
+            {{ ClientAddressProof.address_text }}
           </td>
           <td width="40%">
-            <img style="width: 400px" :src="address_proof" />
+            <img style="width: 500px" :src="address_proof" />
           </td>
-          <td width="20%" rowspan="6">
-            <textarea
+          <td width="20%">
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientAddressProof.remark"
               name="駁回住址證明"
               style="width: 100%"
@@ -65,38 +54,33 @@
               rows="10"
               v-model="ClientAddressProof.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th colspan="4">
             <h5 class="mb-0">身份證信息</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
-            <div class="mb-0">姓名</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">{{ ClientIDCard.name_c }}</div>
+          <th width="20%">姓名</th>
+          <td width="20%" class="text-warning">
+            {{ ClientIDCard.name_c }}
           </td>
-          <th width="20%">
-            <div class="mb-0">英文名</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">
-              {{ ClientIDCard.name_en }}
-            </div>
+          <th width="20%">英文名</th>
+          <td width="20%" class="text-warning">
+            {{ ClientIDCard.name_en }}
           </td>
-          <td width="20%" rowspan="6">
-            <textarea
+          <td width="20%">
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientIDCard.remark"
               name="駁回身份證信息"
               style="width: 100%"
@@ -104,51 +88,37 @@
               rows="10"
               v-model="ClientIDCard.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">性別</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientIDCard.gender }}</div>
+          <th>性別</th>
+          <td class="text-warning">
+            {{ ClientIDCard.gender }}
           </td>
-          <th>
-            <div class="mb-0">手機號碼</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ Client.mobile }}</div>
+          <th>手機號碼</th>
+          <td class="text-warning">
+            {{ Client.mobile }}
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">出生日期</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientIDCard.birthday }}</div>
+          <th>出生日期</th>
+          <td class="text-warning">
+            {{ ClientIDCard.birthday }}
           </td>
-          <th>
-            <div class="mb-0">證件類型</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientIDCard.passport_type }}</div>
+          <th>證件類型</th>
+          <td class="text-warning">
+            {{ ClientIDCard.passport_type }}
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">住址</div>
-          </th>
-          <td>
-            <div class="mb-0">
-              {{ ClientIDCard.address }}
-            </div>
+          <th>住址</th>
+          <td class="text-warning">
+            {{ ClientIDCard.address }}
           </td>
-          <th>
-            <div class="mb-0">證件號碼</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientIDCard.idcard_no }}</div>
+          <th>證件號碼</th>
+          <td class="text-warning">
+            {{ ClientIDCard.idcard_no }}
           </td>
         </tr>
         <tr>
@@ -164,33 +134,31 @@
     <table
       v-for="銀行卡 in 銀行卡s"
       :key="銀行卡.id"
-      class="table table-bordered"
+      class="table table-bordered text-light"
     >
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th colspan="4">
             <h5 v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡信息</h5>
             <h5 v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行卡信息
             </h5>
             <h5 v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡信息</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
+          <th width="20%">
             <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行名</div>
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行名
             </div>
             <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行名</div>
           </th>
-          <td width="20%">
-            <div class="mb-0">
-              {{ 銀行卡.bank_name }} ({{ 銀行卡.bank_code }})
-            </div>
+          <td width="20%" class="text-warning">
+            {{ 銀行卡.bank_name }} ({{ 銀行卡.bank_code }})
           </td>
           <th width="20%">
             <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡號</div>
@@ -199,11 +167,12 @@
             </div>
             <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
           </th>
-          <td width="20%">
-            <div class="mb-0">{{ 銀行卡.account_no }}</div>
+          <td width="20%" class="text-warning">
+            {{ 銀行卡.account_no }}
           </td>
           <td width="20%" rowspan="2">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="銀行卡.remark"
               :name="'駁回' + 銀行卡.lcid + '銀行卡信息'"
               style="width: 100%"
@@ -211,7 +180,7 @@
               rows="10"
               v-model="銀行卡.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
@@ -235,25 +204,24 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th colspan="4">
             <h5 class="mb-0">客戶補充資料</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
-            <div class="mb-0">教育程度</div>
-          </th>
-          <td colspan="3">
-            <div class="mb-0">{{ Client.education_level }}</div>
+          <th width="20%">教育程度</th>
+          <td colspan="3" class="text-warning">
+            {{ Client.education_level }}
           </td>
           <td width="20%" rowspan="2">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="Client.remark"
               name="駁回客戶補充資料"
               style="width: 100%"
@@ -261,36 +229,33 @@
               rows="3"
               v-model="Client.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th colspan="4">
             <h5 class="mb-0">工作狀態</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
-            <div class="mb-0">工作狀態</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">{{ ClientWorkingStatus.working_status }}</div>
+          <th width="20%">工作狀態</th>
+          <td width="20%" class="text-warning">
+            {{ ClientWorkingStatus.working_status }}
           </td>
-          <th width="20%" scope="row">
-            <div class="mb-0">雇主名稱</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">{{ ClientWorkingStatus.company_name }}</div>
+          <th width="20%">雇主名稱</th>
+          <td width="20%" class="text-warning">
+            {{ ClientWorkingStatus.company_name }}
           </td>
           <td width="20%" rowspan="4">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientWorkingStatus.remark"
               name="駁回工作狀態"
               style="width: 100%"
@@ -298,72 +263,57 @@
               rows="10"
               v-model="ClientWorkingStatus.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">公司電話</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientWorkingStatus.company_tel }}</div>
+          <th>公司電話</th>
+          <td class="text-warning">
+            {{ ClientWorkingStatus.company_tel }}
           </td>
-          <th scope="row">
-            <div class="mb-0">公司地址</div>
-          </th>
+          <th>公司地址</th>
           <td></td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">業務性質</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientWorkingStatus.industry }}</div>
+          <th>業務性質</th>
+          <td class="text-warning">
+            {{ ClientWorkingStatus.industry }}
           </td>
-          <th scope="row">
-            <div class="mb-0">職位</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientWorkingStatus.position }}</div>
+          <th>職位</th>
+          <td class="text-warning">
+            {{ ClientWorkingStatus.position }}
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">名片</div>
-          </th>
+          <th>名片</th>
           <td colspan="3">
             <img style="width: 300px" :src="name_card_face" />
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th colspan="4">
             <h5 class="mb-0">財政狀況</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
-            <div class="mb-0">資金來源</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">{{ ClientFinancialStatus.fund_source }}</div>
+          <th width="20%">資金來源</th>
+          <td width="20%" class="text-warning">
+            {{ ClientFinancialStatus.fund_source }}
           </td>
-          <th width="20%" scope="row">
-            <div class="mb-0">其他資金來源</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">
-              {{ ClientFinancialStatus.other_fund_source }}
-            </div>
+          <th width="20%">其他資金來源</th>
+          <td width="20%" class="text-warning">
+            {{ ClientFinancialStatus.other_fund_source }}
           </td>
           <td width="20%" rowspan="3">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientFinancialStatus.remark"
               name="駁回財政狀況"
               style="width: 100%"
@@ -371,62 +321,49 @@
               rows="5"
               v-model="ClientFinancialStatus.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">每年收入(港元)</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientFinancialStatus.annual_income }}</div>
+          <th>每年收入(港元)</th>
+          <td class="text-warning">
+            {{ ClientFinancialStatus.annual_income }}
           </td>
-          <th scope="row">
-            <div class="mb-0">資產項目</div>
-          </th>
+          <th>資產項目</th>
           <td></td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">其他資產</div>
-          </th>
+          <th>其他資產</th>
           <td></td>
-          <th scope="row">
-            <div class="mb-0">資產淨值</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientFinancialStatus.net_assets }}</div>
+          <th>資產淨值</th>
+          <td class="text-warning">
+            {{ ClientFinancialStatus.net_assets }}
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th colspan="4">
             <h5 class="mb-0">投資經驗及衍生產品認識</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
-            <div class="mb-0">投資目標</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">
-              {{ ClientInvestmentExperience.investment_objective }}
-            </div>
+          <th width="20%">投資目標</th>
+          <td width="20%" class="text-warning">
+            {{ ClientInvestmentExperience.investment_objective }}
           </td>
-          <th width="20%" scope="row">
-            <div class="mb-0">股票</div>
-          </th>
-          <td width="20%">
-            <div class="mb-0">{{ ClientInvestmentExperience.stock }}</div>
+          <th width="20%">股票</th>
+          <td width="20%" class="text-warning">
+            {{ ClientInvestmentExperience.stock }}
           </td>
           <td width="20%" rowspan="4">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientInvestmentExperience.remark"
               name="駁回投資經驗及衍生產品認識"
               style="width: 100%"
@@ -434,104 +371,87 @@
               rows="5"
               v-model="ClientInvestmentExperience.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">衍生認股證</div>
-          </th>
-          <td>
-            <div class="mb-0">
-              {{ ClientInvestmentExperience.derivative_warrants }}
-            </div>
+          <th>衍生認股證</th>
+          <td class="text-warning">
+            {{ ClientInvestmentExperience.derivative_warrants }}
           </td>
-          <th scope="row">
-            <div class="mb-0">牛熊證</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientInvestmentExperience.cbbc }}</div>
+          <th>牛熊證</th>
+          <td class="text-warning">
+            {{ ClientInvestmentExperience.cbbc }}
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">期貨及期權</div>
-          </th>
-          <td>
-            <div class="mb-0">
-              {{ ClientInvestmentExperience.futures_and_options }}
-            </div>
+          <th>期貨及期權</th>
+          <td class="text-warning">
+            {{ ClientInvestmentExperience.futures_and_options }}
           </td>
-          <th scope="row">
-            <div class="mb-0">債券/基金</div>
-          </th>
-          <td>
-            <div class="mb-0">{{ ClientInvestmentExperience.bonds_funds }}</div>
+          <th>債券/基金</th>
+          <td class="text-warning">
+            {{ ClientInvestmentExperience.bonds_funds }}
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">其他投資經驗</div>
-          </th>
-          <td>
-            <div class="mb-0">
-              {{ ClientInvestmentExperience.other_investment_experience }}
-            </div>
+          <th>其他投資經驗</th>
+          <td class="text-warning">
+            {{ ClientInvestmentExperience.other_investment_experience }}
           </td>
-          <th scope="row"></th>
+          <th></th>
           <td></td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th colspan="3" scope="col">
+          <th colspan="3">
             <h5 class="mb-0">問題</h5>
           </th>
-          <th colspan="3" scope="col">
+          <th colspan="3">
             <h5 class="mb-0">答案</h5>
           </th>
-          <th colspan="3" scope="col">
+          <th colspan="3">
             <h5 class="mb-0">分數</h5>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(score, index) of client_score" :key="index">
-          <th colspan="3" width="40%" scope="row">
-            <div class="mb-0">{{ score.question_text }}?</div>
-          </th>
-          <td colspan="3" width="40%">
-            <div class="mb-0">{{ score.answer }}</div>
+          <th colspan="3" width="40%">{{ score.question_text }}?</th>
+          <td colspan="3" width="40%" class="text-warning">
+            {{ score.answer }}
           </td>
-          <td colspan="3" width="20%">
-            <div class="mb-0">{{ score.score }}</div>
+          <td colspan="3" width="20%" class="text-warning">
+            {{ score.score }}
           </td>
         </tr>
         <tr>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">評估結果</h5>
           </th>
           <td>
-            <h5 class="mb-0">
+            <h5 class="mb-0 text-warning">
               {{ 評估結果 }}
             </h5>
           </td>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">投資者特徵</h5>
           </th>
           <td>
-            <h5 class="mb-0">{{ 投資者特徵 }}</h5>
+            <h5 class="mb-0 text-warning">{{ 投資者特徵 }}</h5>
           </td>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">風險承受程度</h5>
           </th>
           <td>
-            <h5 class="mb-0">{{ 風險承受程度 }}</h5>
+            <h5 class="mb-0 text-warning">{{ 風險承受程度 }}</h5>
           </td>
           <td rowspan="2" width="20%">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientEvaluationResults.remark"
               name="駁回問卷調查"
               style="width: 100%"
@@ -539,34 +459,34 @@
               rows="3"
               v-model="ClientEvaluationResults.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">用戶是否同意</h5>
           </th>
           <td>
-            <h5 class="mb-0">{{ 用戶是否同意 }}</h5>
+            <h5 class="mb-0 text-warning">{{ 用戶是否同意 }}</h5>
           </td>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">投資者同意的特徵</h5>
           </th>
           <td>
-            <h5 class="mb-0">
+            <h5 class="mb-0 text-warning">
               {{ ClientEvaluationResults.investor_characteristics }}
             </h5>
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th colspan="4" scope="col">
+          <th colspan="4">
             <h5 class="mb-0">簽名</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -574,7 +494,8 @@
           <img style="width: 300px" :src="ClientSignature.image" />
         </td>
         <td width="20%">
-          <textarea
+          <b-form-textarea
+            class="bg-secondary text-white"
             v-if="ClientSignature.remark"
             name="駁回簽名"
             style="width: 100%"
@@ -582,43 +503,44 @@
             rows="10"
             v-model="ClientSignature.remark"
             readonly
-          ></textarea>
+          ></b-form-textarea>
         </td>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <tbody>
         <th width="17%">
           <h5 class="mb-0">直接促銷</h5>
         </th>
         <td>
-          <h5 class="mb-0">{{ ClientBusinessType.direct_promotion }}</h5>
+          <h5 class="mb-0 text-warning">
+            {{ ClientBusinessType.direct_promotion }}
+          </h5>
         </td>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
-          <th colspan="4" scope="col">
+          <th colspan="4">
             <h5 class="mb-0">存款證明</h5>
           </th>
-          <th scope="col"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th scope="row">
-            <div class="mb-0">入金帳戶</div>
-          </th>
-          <td>
+          <th>入金帳戶</th>
+          <td class="text-warning">
             {{ ClientDepositProof.deposit_account }}
           </td>
-          <th scope="row">
-            <div class="mb-0">入金金額</div>
-          </th>
-          <td>HK${{ ClientDepositProof.deposit_amount }}</td>
+          <th>入金金額</th>
+          <td class="text-warning">
+            HK${{ ClientDepositProof.deposit_amount }}
+          </td>
           <td width="20%" rowspan="3">
-            <textarea
+            <b-form-textarea
+              class="bg-secondary text-white"
               v-if="ClientDepositProof.remark"
               name="駁回存款證明"
               style="width: 100%"
@@ -626,36 +548,33 @@
               rows="10"
               v-model="ClientDepositProof.remark"
               readonly
-            ></textarea>
+            ></b-form-textarea>
           </td>
         </tr>
         <tr>
-          <th scope="row">
-            <div class="mb-0">入金銀行</div>
-          </th>
-          <td>
+          <th>入金銀行</th>
+          <td class="text-warning">
             {{ ClientDepositProof.deposit_bank }}
           </td>
-          <th scope="row">
-            <div class="mb-0">入金方法</div>
-          </th>
+          <th>入金方法</th>
           <td>
-            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
+            <div
+              v-if="ClientDepositProof.other_deposit_method"
+              class="mb-0 text-warning"
+            >
               {{ ClientDepositProof.other_deposit_method }}
             </div>
-            <div v-else class="mb-0">
+            <div v-else class="mb-0 text-warning">
               {{ ClientDepositProof.deposit_method }}
             </div>
           </td>
         </tr>
         <tr>
           <td colspan="2">
-            <img style="width: 400px" :src="deposit_proof" />
+            <img style="width: 500px" :src="deposit_proof" />
           </td>
-          <th scope="row">
-            <div class="mb-0">轉帳時間</div>
-          </th>
-          <td>
+          <th>轉帳時間</th>
+          <td class="text-warning">
             {{ ClientDepositProof.transfer_time }}
           </td>
         </tr>

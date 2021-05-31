@@ -92,6 +92,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::any('/ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController@index')->name('ClientCreditCardFundOutRequests');
 
+    Route::any('/ClientBankCards', 'ClientBankCardsController@index')->name('ClientBankCards');
+
     Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
     Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
     Route::any('/LoadHKBankCard', 'AuditClientController@loadHKBankCard')->name('LoadHKBankCard');

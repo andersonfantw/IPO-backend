@@ -4,7 +4,6 @@ namespace App\Exports;
 use App\ClientFundInternalTransferRequest;
 use App\Exports\AyersValueBinder;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class ClientFundInternalTransferRequestsExport extends AyersValueBinder implements FromView
@@ -15,6 +14,19 @@ class ClientFundInternalTransferRequestsExport extends AyersValueBinder implemen
         $ClientFundInternalTransferRequests = ClientFundInternalTransferRequest::where('status', 'approved')->get();
         $Requests = [];
         foreach ($ClientFundInternalTransferRequests as $ClientFundInternalTransferRequest) {
+            $Request['tran_date'] = $ClientFundInternalTransferRequest->created_at->format('d/m/Y');
+            $Request['ccclnId'] = $ClientFundInternalTransferRequest->account_out;
+            $Request['ccy'] = 'HKD';
+            $Request['amount'] = $ClientFundInternalTransferRequest->amount * -1;
+            $Request['remark'] = 'OUT_CASH WITHDRAWAL';
+            $Request['gl_mapping_item_id'] = null;
+            $Request['bank_acc_id'] = "ICBC:HKD:861-512-04226-1";
+            $Request['cheque'] = null;
+            $Requests[] = $Request;
         }
+        return view('excel.ClientFundInternalTransferRequests', [
+            'Headers' => $Headers,
+            'ClientFundInternalTransferRequests' => $Requests,
+        ]);
     }
 }

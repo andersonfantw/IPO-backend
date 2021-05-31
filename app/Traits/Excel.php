@@ -3,8 +3,10 @@ namespace App\Traits;
 
 use App\Exports\AyersDataExport;
 use App\Exports\ClientFundInRequestsExport;
+use App\Exports\ClientFundInternalTransferRequestsExport;
 use App\Exports\ClientHKFundOutRequestsExport;
 use App\Exports\ClientOverseasFundOutRequestsExport;
+use App\Imports\ClientFundInternalTransferRequestsImport;
 use Excel as _Excel;
 use Storage;
 
@@ -28,5 +30,15 @@ trait Excel
     public function exportClientOverseasFundOutRequests()
     {
         return _Excel::download(new ClientOverseasFundOutRequestsExport(), 'OverseasFundOutRequests.xlsx');
+    }
+
+    public function exportClientFundInternalTransferFundOutRequests()
+    {
+        return _Excel::download(new ClientFundInternalTransferRequestsExport(), 'FundInternalTransferFundOutRequests.xlsx');
+    }
+
+    public function exportClientFundInternalTransferFundInRequests()
+    {
+        return _Excel::download(new ClientFundInternalTransferRequestsImport(), 'FundInternalTransferFundInRequests.xlsx');
     }
 }

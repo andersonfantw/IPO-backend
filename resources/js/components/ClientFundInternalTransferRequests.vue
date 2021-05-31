@@ -38,7 +38,12 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
-    <b-button variant="success" @click="downloadExcel"
+    <b-button
+      variant="success"
+      @click="
+        downloadClientFundInternalTransferFundInRequests();
+        downloadClientFundInternalTransferFundOutRequests();
+      "
       ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
         v-if="DownloadingExcel"
         label="Spinning"
@@ -179,12 +184,12 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    downloadExcel(e) {
+    downloadClientFundInternalTransferFundInRequests() {
       const self = this;
       self.DownloadingExcel = true;
       axios
         .post(
-          "api/ClientFundInternalTransferRequests/DownloadAyersImportData",
+          "api/ClientFundInternalTransferRequests/DownloadClientFundInternalTransferFundInRequests",
           {},
           {
             responseType: "arraybuffer",
@@ -195,7 +200,38 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "FundInternalTransferRequests.xlsx");
+          link.setAttribute(
+            "download",
+            "FundInternalTransferFundInRequests.xlsx"
+          );
+          link.click();
+          self.DownloadingExcel = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          self.DownloadingExcel = false;
+        });
+    },
+    downloadClientFundInternalTransferFundOutRequests() {
+      const self = this;
+      self.DownloadingExcel = true;
+      axios
+        .post(
+          "api/ClientFundInternalTransferRequests/DownloadClientFundInternalTransferFundOutRequests",
+          {},
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute(
+            "download",
+            "FundInternalTransferFundOutRequests.xlsx"
+          );
           link.click();
           self.DownloadingExcel = false;
         })

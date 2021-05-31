@@ -17,7 +17,7 @@ class ClientOverseasFundOutRequestsExport extends AyersValueBinder implements Fr
             $Request['tran_date'] = $ClientOverseasFundOutRequest->created_at->format('d/m/Y');
             $Request['ccclnId'] = $ClientOverseasFundOutRequest->account_out;
             $Request['ccy'] = 'HKD';
-            $Request['amount'] = $ClientOverseasFundOutRequest->amount;
+            $Request['amount'] = $ClientOverseasFundOutRequest->amount * -1;
             $Request['remark'] = 'OUT_CASH WITHDRAWAL';
             $Request['gl_mapping_item_id'] = null;
             $Request['bank_acc_id'] = "ICBC:HKD:861-512-04226-1";

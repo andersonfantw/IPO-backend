@@ -80,6 +80,13 @@ class HomeController extends Controller
                     [
                         'label' => "帳戶銷戶申請",
                     ],
+                    [
+                        'label' => "添加銀行卡申請",
+                        'url' => route('ClientBankCards'),
+                    ],
+                    [
+                        'label' => "添加信用卡申請",
+                    ],
                 ],
             ],
             [

@@ -84,7 +84,8 @@ Route::prefix('ClientHKFundOutRequests')->group(function () {
 
 Route::prefix('ClientFundInternalTransferRequests')->group(function () {
     Route::any('/all_data', 'ClientFundInternalTransferRequestsController@getData');
-    Route::any('/DownloadAyersImportData', 'ClientFundInternalTransferRequestsController@downloadAyersImportData');
+    Route::any('/DownloadClientFundInternalTransferFundInRequests', 'ClientFundInternalTransferRequestsController@downloadClientFundInternalTransferFundInRequests');
+    Route::any('/DownloadClientFundInternalTransferFundOutRequests', 'ClientFundInternalTransferRequestsController@downloadClientFundInternalTransferFundOutRequests');
 });
 
 Route::prefix('ClientOverseasFundOutRequests')->group(function () {
@@ -94,4 +95,8 @@ Route::prefix('ClientOverseasFundOutRequests')->group(function () {
 
 Route::prefix('ClientCreditCardFundOutRequests')->group(function () {
     Route::any('/all_data', 'ClientCreditCardFundOutRequestsController@getData');
+});
+
+Route::prefix('ClientBankCards')->group(function () {
+    Route::any('/all_data', 'ClientBankCardsController@getData');
 });
