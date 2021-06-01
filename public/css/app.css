@@ -18966,3 +18966,15 @@ input[type=color].form-control:disabled {
   color: #3490dc;
 }
 
+.approved {
+  color: #38c172;
+}
+
+.rejected {
+  color: #e3342f;
+}
+
+.pending {
+  color: #ffed4a;
+}
+

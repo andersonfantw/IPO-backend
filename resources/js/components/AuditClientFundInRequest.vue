@@ -78,7 +78,7 @@
         </tr>
         <tr>
           <th width="20%" scope="row">狀態</th>
-          <td width="20%" class="text-warning">
+          <td width="20%" :class="Request.status">
             {{ Request.status }}
           </td>
           <th width="20%" scope="row">經手人</th>

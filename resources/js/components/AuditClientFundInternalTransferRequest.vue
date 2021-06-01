@@ -82,7 +82,7 @@
         </tr>
         <tr>
           <th width="25%" scope="row">狀態</th>
-          <td width="25%" class="text-warning">
+          <td width="25%" :class="Request.status">
             {{ Request.status }}
           </td>
           <th width="25%" scope="row"></th>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ClientHKFundOutRequest;
 use App\Traits\Excel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClientHKFundOutRequestsController extends HomeController
@@ -42,7 +43,9 @@ class ClientHKFundOutRequestsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientHKFundOutRequests = ClientHKFundOutRequest::orderBy('created_at', 'asc')->get();
+        $ClientHKFundOutRequests = ClientHKFundOutRequest::whereHas('ClientBankCard', function (Builder $query) {
+            $query->whereIn('status', ['audited2', 'approved']);
+        })->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
             $Client = $ClientHKFundOutRequest->Client;

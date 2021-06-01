@@ -100,3 +100,11 @@ Route::prefix('ClientCreditCardFundOutRequests')->group(function () {
 Route::prefix('ClientBankCards')->group(function () {
     Route::any('/all_data', 'ClientBankCardsController@getData');
 });
+
+// Anderson 2021-05-31 start
+Route::resources('/AccountReport', 'AccountReportController');
+Route::post('/AccountReport/SendAll', 'AccountReportController@sendAll');
+Route::post('/AccountReport/StopSending', 'AccountReportController@stopSending');
+Route::post('/AccountReport/ShowPdf', 'AccountReportController@showPdf');
+Route::post('/AccountReport/SendTestMail', 'AccountReportController@sendTestMail');
+// Anderson 2021-05-31 end

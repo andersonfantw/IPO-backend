@@ -23,4 +23,9 @@ class ClientBankCard extends Model
         'count_of_audits',
         'closed_at',
     ];
+
+    public function Client()
+    {
+        return $this->belongsTo('App\Client', 'uuid', 'uuid');
+    }
 }

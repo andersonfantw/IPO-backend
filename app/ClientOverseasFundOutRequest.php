@@ -28,4 +28,9 @@ class ClientOverseasFundOutRequest extends Model
     {
         return $this->belongsTo('App\Client', 'uuid', 'uuid');
     }
+
+    public function ClientBankCard()
+    {
+        return $this->belongsTo('App\ClientBankCard', 'account_in', 'account_no');
+    }
 }

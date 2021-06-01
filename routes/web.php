@@ -62,6 +62,12 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::any('/DoAuditClientOverseasFundOutRequest', 'AuditClientOverseasFundOutRequestController@audit')->name('DoAuditClientOverseasFundOutRequest');
 
+    Route::any('/AuditClientBankCard', 'AuditClientBankCardController@index')->name('AuditClientBankCard')->middleware([
+        'PreviewClientBankCard',
+    ]);
+
+    Route::any('/DoAuditClientBankCard', 'AuditClientBankCardController@audit')->name('DoAuditClientBankCard');
+
     Route::any('/ViewClient', 'ViewClientController@index')->name('ViewClient');
 
     Route::any('/ViewClientFundInRequest', 'ViewClientFundInRequestController@index')->name('ViewClientFundInRequest');
@@ -73,6 +79,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/ViewClientCreditCardFundOutRequest', 'ViewClientCreditCardFundOutRequestController@index')->name('ViewClientCreditCardFundOutRequest');
 
     Route::any('/ViewClientOverseasFundOutRequest', 'ViewClientOverseasFundOutRequestController@index')->name('ViewClientOverseasFundOutRequest');
+
+    Route::any('/ViewClientBankCard', 'ViewClientBankCardController@index')->name('ViewClientBankCard');
 
     Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
 
@@ -111,3 +119,9 @@ Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
 Route::any('/TestReport', 'UnauditedList1Controller@test')->name('TestReport');
 Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
+
+// Anderson 2021-05-31 start
+Route::get('/AccountReportSummary', function () {return View('AccountReportSummary');});
+Route::get('/AccountReport', function () {return View('AccountReport');});
+Route::get('/AccountReport/ShowHtml', function () {return View('AccountReportHtml');});
+// Anderson 2021-05-31 end

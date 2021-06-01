@@ -42,7 +42,9 @@ class ClientOverseasFundOutRequestsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientOverseasFundOutRequests = ClientOverseasFundOutRequest::orderBy('created_at', 'asc')->get();
+        $ClientOverseasFundOutRequests = ClientOverseasFundOutRequest::whereHas('ClientBankCard', function (Builder $query) {
+            $query->whereIn('status', ['audited2', 'approved']);
+        })->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($ClientOverseasFundOutRequests as $ClientOverseasFundOutRequest) {
             $Client = $ClientOverseasFundOutRequest->Client;

@@ -14,7 +14,7 @@ class AuditClientCreditCardFundOutRequestController extends ViewClientCreditCard
         $input = $request->all();
         $ClientCreditCardFundOutRequest = ClientCreditCardFundOutRequest::find($input['id']);
         $rejected = false;
-        if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
+        if ($request->filled(['駁回信息'])) {
             $ClientCreditCardFundOutRequest->status = 'rejected';
             $ClientCreditCardFundOutRequest->remark = $input['駁回信息'];
             $rejected = true;

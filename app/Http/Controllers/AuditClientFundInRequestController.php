@@ -13,11 +13,9 @@ class AuditClientFundInRequestController extends ViewClientFundInRequestControll
     {
         $input = $request->all();
         $ClientFundInRequest = ClientFundInRequest::find($input['id']);
-        $rejected = false;
         if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
             $ClientFundInRequest->status = 'rejected';
             $ClientFundInRequest->remark = $input['駁回信息'];
-            $rejected = true;
         } else {
             $ClientFundInRequest->status = 'approved';
             $ClientFundInRequest->remark = null;
