@@ -123,4 +123,5 @@ Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCo
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary','AccountReportSendingSummaryController');
 Route::get('/AccountReportSendingSummary/{id}/ShowHtml/{account_no}', 'AccountReportController@showHtml')->where(['id'=>'[0-9]+','account_no'=>'[0-9]{7,8}']);
+Route::get('/AccountReportSendingSummary/{id}/ShowPdf/{account_no}', 'AccountReportController@showPdf')->where(['id'=>'[0-9]+','account_no'=>'[0-9]{7,8}']);
 // Anderson 2021-05-31 end
