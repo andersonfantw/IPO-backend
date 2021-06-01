@@ -57,6 +57,7 @@ class HomeController extends Controller
                     ],
                     [
                         'label' => "年度通知書發送清單",
+                        'url' => route('AccountReportSendingSummary.index'),
                     ],
                 ],
             ],

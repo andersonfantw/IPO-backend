@@ -18,6 +18,7 @@ class AccountReportController extends HomeController
             'logo' => $logo,
         ];
         $pdf = PDF::loadView('pdf.AnnualAccountReport',$data);
+        $pdf->setOptions(['isPhpEnabled' => true]);
         return $pdf->stream('AnnualAccountReport.pdf');
     }
 

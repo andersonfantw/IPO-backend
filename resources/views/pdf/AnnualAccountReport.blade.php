@@ -9,7 +9,7 @@
     <title>accountOpeningForm DOWNLOAD</title>
     <style>
         body{
-            padding: 0px;
+            padding: 120px 0 70px 0;
             font-size: 12px;
         }
         h1{
@@ -68,22 +68,47 @@
         .float-right{
             float: right;
         }
-        div.footer{
-            display: block;
-            border:solid 1px #000;
-            bottom: 0; 
+        header {
             position: fixed;
+            top: 0px;
+            height: 60px;
         }
-        @page {
-            @top-center { content: element(header) }
+        footer{
+            width: 100%;
+            display: block;
+            bottom: 0px;
+            height: 50px;
+            position: fixed;
+            text-align: center;
+            background-color: white;
+            color: #2e3f79;
         }
-        @page { 
-            @bottom-center { content: element(footer) }
-        }
-    </style>    
+    </style>
 </head>
 <body>
-    <img src="{{$logo}}" width="500px" />
+    <script type="text/php">
+        // OLD
+        // $font = Font_Metrics::get_font("helvetica", "bold");
+        // $pdf->page_text(72, 18, "{PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(255,0,0));
+        // v.0.7.0 and greater
+        $x = 510;
+        $y = 805;
+        $text = "page {PAGE_NUM} of {PAGE_COUNT}";
+        $font = $fontMetrics->get_font("helvetica", "bold");
+        $size = 10;
+        $color = array(0,0,0);
+        $word_space = 0.0;  //  default
+        $char_space = 0.0;  //  default
+        $angle = 0.0;   //  default
+        $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+    </script>
+    <header><img src="{{$logo}}" width="500px" /></header>
+    <footer>
+        <div>香港上環德輔道西 9 號 6 樓</div>
+        <div><small>6/F., 9 Des Voeux Road West, Sheung Wan, Hong Kong</small></div>
+        <div><span>Tel 電話: (852) 2626 0778</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>Fax 傳真: (852) 2111 1052 Website</span>&nbsp;&nbsp;&nbsp;<span>網址: www.chinayss.hk</span></div>
+    </footer>
+
     <div class="container">
         <h1>專戶投資人報告書</h1>
         <table class="info" width="100%" cellspacing="0">
@@ -264,6 +289,5 @@
             至 2,500 億港元<br />
         </div>
     </div>
-    <div class="footer">Footer</div>
 </body>
 </html>
