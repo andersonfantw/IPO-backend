@@ -121,7 +121,7 @@ Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
 
 // Anderson 2021-05-31 start
-Route::get('/AccountReportSummary', function () {return View('AccountReportSummary');});
-Route::get('/AccountReport', function () {return View('AccountReport');});
-Route::get('/AccountReport/ShowHtml', function () {return View('AccountReportHtml');});
+Route::get('/AccountReportSendingSummary',function(){ return View('AccountReportSendingSummary'); })->name('AccountReportSendingSummary');
+Route::get('/AccountReport',function(){ return View('AccountReport'); })->name('AccountReport');
+Route::get('/AccountReport/ShowHtml', function () {return View('AccountReportHtml');})->name('AccountReportHtml');
 // Anderson 2021-05-31 end
