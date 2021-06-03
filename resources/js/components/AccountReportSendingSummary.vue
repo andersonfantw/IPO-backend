@@ -13,9 +13,6 @@
                 <b-button size="sm" class="mr-1" @click="enter(row.item)">
                     進入
                 </b-button>
-                <b-button size="sm" class="mr-1" variant="success" @click="send(row.item)">
-                    發送
-                </b-button>
                 <b-button size="sm" class="mr-1" variant="danger" @click="del(row.item)">
                     刪除
                 </b-button>
@@ -56,6 +53,7 @@ export default {
       return {
           fields:[
             { key: 'data', label: '報告期間', sortable: true },
+            { key: 'total', label: '發送人數', sortable: true },
             { key: 'sending_progress', label: '發送進度', sortable: true },
             { key: 'success', label: '發送成功', sortable: true },
             { key: 'failure', label: '發送失敗', sortable: true },
@@ -71,7 +69,7 @@ export default {
                     report_date:'2021-06-15',
                     report:'持續酷熱的天氣，令大家切身感受到「氣候暖化」已迫在眉睫。世界各地不少機構積極以「碳中和」的方案應對氣候問題，所謂碳中和就是指以節能、植林、使用100%可再生能源等方式，來抵銷碳排放量，以達至淨零排放的效果。而作為駕駛者的你，有否想過你也可以透過選用碳中和汽車產品，節省燃油、減少廢氣排放，一同為保護地球出一分力？'
                 },
-                sending_progress:'750/5000封 15%', success:'700封 90%', failure:'50封 10%'
+                total:5000,sending_progress:'750封 15%', success:'700封 90%', failure:'50封 10%'
             },
             {
                 data:{
@@ -82,7 +80,7 @@ export default {
                     report_date:'2021-06-15',
                     report:'持續酷熱的天氣，令大家切身感受到「氣候暖化」已迫在眉睫。世界各地不少機構積極以「碳中和」的方案應對氣候問題，所謂碳中和就是指以節能、植林、使用100%可再生能源等方式，來抵銷碳排放量，以達至淨零排放的效果。而作為駕駛者的你，有否想過你也可以透過選用碳中和汽車產品，節省燃油、減少廢氣排放，一同為保護地球出一分力？'
                 },
-                sending_progress:'750/5000封 15%', success:'700封 90%', failure:'50封 10%'
+                total:5000,sending_progress:'750封 15%', success:'700封 90%', failure:'50封 10%'
             }
           ],
 
@@ -112,9 +110,6 @@ export default {
         },
         enter(item){
             document.location.href='/AccountReportSendingSummary/'+item.data.id
-        },
-        send(item){
-
         },
         del(item){
 
