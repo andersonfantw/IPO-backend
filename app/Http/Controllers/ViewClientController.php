@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Traits\Image;
 use Illuminate\Http\Request;
 
 class ViewClientController extends HomeController
 {
+    use Image;
+
     protected $name = 'ViewClient';
 
     public function loadIDCardFace(Request $request)
@@ -25,7 +28,8 @@ class ViewClientController extends HomeController
     {
         $Client = Client::where('uuid', $request->input('uuid'))->first();
         $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'zh-hk')->first();
-        return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
+        // return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
+        return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/png');
     }
 
     public function loadCNBankCard(Request $request)
@@ -33,7 +37,8 @@ class ViewClientController extends HomeController
         $Client = Client::where('uuid', $request->input('uuid'))->first();
         $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'zh-cn')->first();
         if (is_object($ClientBankCard)) {
-            return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
+            // return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
+            return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/png');
         } else {
             return null;
         }
@@ -43,7 +48,8 @@ class ViewClientController extends HomeController
     {
         $Client = Client::where('uuid', $request->input('uuid'))->first();
         $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'others')->first();
-        return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
+        // return response()->file(storage_path("app/upload/$Client->uuid/$ClientBankCard->backcard_face"));
+        return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/png');
     }
 
     public function loadNameCard(Request $request)
@@ -92,11 +98,10 @@ class ViewClientController extends HomeController
         } else {
             $parameters['ClientAddressProof'] = null;
         }
-        if ($Client->ClientBankCards) {
-            $parameters['ClientBankCards'] = $Client->ClientBankCards->toJson(JSON_UNESCAPED_UNICODE);
-        } else {
-            $parameters['ClientBankCards'] = '[]';
+        foreach ($Client->ClientBankCards as $ClientBankCard) {
+            $ClientBankCard->bankcard_blob = $this->blobToBase64($ClientBankCard->bankcard_blob);
         }
+        $parameters['ClientBankCards'] = $Client->ClientBankCards->toJson(JSON_UNESCAPED_UNICODE);
         $parameters['ClientWorkingStatus'] = $Client->ClientWorkingStatus->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientFinancialStatus->fund_source = addslashes($Client->ClientFinancialStatus->fund_source);
         $parameters['ClientFinancialStatus'] = $Client->ClientFinancialStatus->toJson(JSON_UNESCAPED_UNICODE);
