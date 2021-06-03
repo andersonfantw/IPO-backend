@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ClientOverseasFundOutRequest;
 use App\Traits\Excel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClientOverseasFundOutRequestsController extends HomeController

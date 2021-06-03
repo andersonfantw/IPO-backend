@@ -140,13 +140,17 @@ trait CountRecords
 
     public function countNewClientHKFundOutRequests()
     {
-        $NoOfNews = ClientHKFundOutRequest::where('status', 'pending')->count();
+        $NoOfNews = ClientHKFundOutRequest::whereHas('ClientBankCard', function (Builder $query) {
+            $query->whereIn('status', ['audited2', 'approved']);
+        })->where('status', 'pending')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 
     public function countNewClientOverseasFundOutRequests()
     {
-        $NoOfNews = ClientOverseasFundOutRequest::where('status', 'pending')->count();
+        $NoOfNews = ClientOverseasFundOutRequest::whereHas('ClientBankCard', function (Builder $query) {
+            $query->whereIn('status', ['audited2', 'approved']);
+        })->where('status', 'pending')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 
