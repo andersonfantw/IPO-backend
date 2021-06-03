@@ -7,7 +7,7 @@ import axios from 'axios'
 export default {
   data () {
       return {
-        api_prefix: 'api/v1/',
+        api_prefix: 'api/',
         alert:{
             message:'',
             variant:'info'
@@ -23,33 +23,35 @@ export default {
     isAbsolutePath (url) {
       return url?(url.substr(0,1)==='/'):false
     },
-    url(name){
+    url(name,id=0,method=''){
+        let u = id?id+'/':''
+        u += method?method+'/':''
         return (name)?this.isAbsolutePath(name)
-            ?this.api_prefix+name+'/'
-            :this.api_prefix+this.$options.name+'/'+name
-            :this.api_prefix+this.$options.name+'/'
+            ?this.api_prefix+name+'/'+u
+            :this.api_prefix+this.$options.name+'/'+name+u
+            :this.api_prefix+this.$options.name+'/'+u
     },
     // action of CRUD
     crudIndex(successCallback, name, formdata, failCallback){
-        this.myGet(successCallback, formdata, name, failCallback)
+        this.myGet(successCallback, formdata, this.url(name), failCallback)
     },
     crudCreate(successCallback, name, failCallback){
-        this.myGet(successCallback, {}, name+'/create', failCallback)
+        this.myGet(successCallback, {}, this.url(name,0,'create'), failCallback)
     },
     crudStore(successCallback, formdata, name, failCallback){
-        this.myPost(successCallback, formdata, name, failCallback)
+        this.myPost(successCallback, formdata, this.url(name), failCallback)
     },
     crudShow(id, successCallback, name, failCallback){
-        this.myGet(successCallback, {}, name+'/'+id, failCallback)
+        this.myGet(successCallback, {}, this.url(name,id), failCallback)
     },
     crudEdit(id, successCallback, name, failCallback){
-        this.myGet(successCallback, {}, name+'/'+id+'/edit', failCallback)
+        this.myGet(successCallback, {}, this.url(name,id,'edit'), failCallback)
     },
     crudUpdate(id, successCallback, formdata, name, failCallback){
-        this.myPut(successCallback, formdata, name+'/'+id, failCallback)
+        this.myPut(successCallback, formdata, this.url(name,id), failCallback)
     },
     crudDestroy(id, successCallback, name, failCallback){
-        this.myDelete(successCallback, name+'/'+id, failCallback)
+        this.myDelete(successCallback, this.url(name,id), failCallback)
     },
     // default post to vue name
     myPost (successCallback, formdata, url, failCallback) {
@@ -68,8 +70,8 @@ export default {
     },
     // default get from vue name
     myGet (successCallback, formdata, url, failCallback) {
-        url = url??''
-        axios.get(this.isAbsolutePath(url)?this.api_prefix+url.substr(1):this.url(name)+url,
+        url = url??this.url('')
+        axios.get(url,
             {params: formdata}
         ).then( (response) => {
             successCallback(response.data)
@@ -79,8 +81,10 @@ export default {
         });
     },
     myPut (successCallback, formdata, url, failCallback){
-        url = url??''
-        axios.put(this.isAbsolutePath(url)?this.api_prefix+url.substr(1):this.url(name)+url,formdata,{
+        url = url??this.url('')
+        // formdata.append('_method','PUT')
+        // axios.put, laravel can't retrieve formdata. use post work around
+        axios.post(url,formdata,{
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
@@ -92,8 +96,8 @@ export default {
         });
     },
     myDelete (successCallback, url, failCallback){
-        url = url??''
-        axios.delete(this.isAbsolutePath(url)?this.api_prefix+url.substr(1):this.url(name)+url,{
+        url = url??this.url('')
+        axios.delete(url,{
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }

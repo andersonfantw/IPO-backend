@@ -1,5 +1,5 @@
 <template>
-    <b-container class="m-4">
+    <b-container class="m-4" fluid>
         <h1 class="text-warning text-center">年度通知書發送清單</h1>
         <hr />
         <b-row class="filter text-white">
@@ -22,19 +22,19 @@
             <b-col cols="3">
                 <b-button-group class="mb-3">
                     <span id="send" tabindex="0">
-                    <b-button size="sm" variant="success" :disabled="!(all_selected || indeterminate)" @click="send">
-                        <i class="far fa-envelope"></i> &nbsp;發&nbsp;&nbsp;&nbsp;&nbsp;送
-                    </b-button>
+                        <b-button size="sm" variant="success" :disabled="!(all_selected || indeterminate)" @click="send">
+                            <i class="far fa-envelope"></i> &nbsp;發&nbsp;&nbsp;&nbsp;&nbsp;送
+                        </b-button>
                     </span>
-                    <span id="send_test_mail" tabindex="0">
-                    <b-button size="sm" :disabled="!(all_selected || indeterminate)" @click="send_test_mail">
-                        <i class="fas fa-envelope-square"></i> &nbsp;發送測試
-                    </b-button>
+                        <span id="send_test_mail" tabindex="0">
+                        <b-button size="sm" :disabled="!(all_selected || indeterminate)" @click="send_test_mail">
+                            <i class="fas fa-envelope-square"></i> &nbsp;發送測試
+                        </b-button>
                     </span>
                     <span id="del" tabindex="0">
-                    <b-button size="sm" variant="danger" :disabled="!(all_selected || indeterminate)" @click="del">
-                        <i class="fas fa-trash"></i> &nbsp;刪&nbsp;&nbsp;&nbsp;&nbsp;除
-                    </b-button>
+                        <b-button v-b-modal.del size="sm" variant="danger" :disabled="!(all_selected || indeterminate)">
+                            <i class="fas fa-trash"></i> &nbsp;刪&nbsp;&nbsp;&nbsp;&nbsp;除
+                        </b-button>
                     </span>
                 </b-button-group>
                 <b-tooltip target="send" placement="bottom">
@@ -47,7 +47,7 @@
                     只可刪除未發送過信件的人員
                 </b-tooltip>
             </b-col>
-            <b-col cols="3">
+            <b-col cols="2">
                 <b-button-group class="mb-3">
                     <span id="create_pdf" tabindex="0">
                     <b-button size="sm" variant="success" :disabled="button_status.create_pdf.status=='done'" @click="create_pdf">
@@ -71,13 +71,13 @@
                     為已產生年報的人寄送報告。完成製作年報後，才可寄送報告
                 </b-tooltip>
             </b-col>
-            <b-col cols="1">
-                <p>共 {{count}} 人</p>
+            <b-col cols="2">
+                <p class="text-white">共 {{count}} 人、已選取 {{list.length}} 人</p>
             </b-col>
             <b-col cols="5">
                 <b-input-group size="sm">
-                    <b-input size="sm"></b-input>
-                    <b-input size="sm"></b-input>
+                    <b-input size="sm" v-model="search.account_no"></b-input>
+                    <b-input size="sm" disabled></b-input>
                     <b-input-group-append>
                         <b-button size="sm" class="w-100" @click="add_people" variant="primary">
                             <i class="fas fa-user-plus" variant="secondary"></i> &nbsp;新增人員
@@ -92,22 +92,29 @@
                 <b-form-checkbox name="selected_all" v-model="all_selected" :indeterminate="indeterminate" @change="select_all"></b-form-checkbox>
             </template>
             <template #cell(select)="row">
-                <b-form-checkbox name="select" v-model="list" :value="row.item.id"></b-form-checkbox>
+                <b-form-checkbox name="select" v-model="list" :value="row.item.account_no"></b-form-checkbox>
             </template>
             <template #cell(actions)="row">
                 <b-button size="sm" class="mr-1" @click="show_html(row.item)">
                     查看報告書
                 </b-button>
-                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)">
+                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="row.item.make_report_time==''">
                     查看寄出的報告書
                 </b-button>
             </template>
         </b-table>
+
+        <b-modal id="del" title="BootstrapVue" @ok="del">
+            <p class="my-4">您確定要刪除{{selected_list_client_name}}嗎?</p>
+        </b-modal>
     </b-container>
 </template>
 
 <script>
+import axios from "../mixins/mixin_post"
+import validator from "../mixins/mixin_validators";
 export default {
+    mixins:[axios,validator],
     props:['ipo_activity_period_id'],
     data() {
       return {
@@ -124,14 +131,18 @@ export default {
               { key: 'name', label: '客戶姓名', sortable: true },
               { key: 'email', label: 'Email', sortable: true },
               { key: 'status', label: '發送狀態', sortable: true },
+              { key: 'make_report_time', label: '文件製作時間', sortable: true },
               { key: 'sending_time', label: '寄出時間', sortable: true },
               { key: 'actions', label: '操作' }
           ],
           items:[
-              { id:'1', account_no:'12345678',name:'FAN KUN HUA 1', email:'andersonfantw1@gmail.com', status:'pending', sending_time:'' },
-              { id:'2', account_no:'12345678',name:'FAN KUN HUA 2', email:'andersonfantw2@gmail.com', status:'pending', sending_time:'' },
-              { id:'3', account_no:'12345678',name:'FAN KUN HUA 3', email:'andersonfantw3@gmail.com', status:'pending', sending_time:'' },
+              { id:'1', account_no:'12345678',name:'FAN KUN HUA 1', email:'andersonfantw1@gmail.com', status:'pending', make_report_time:'2021-06-02 09:26:15', sending_time:'' },
+              { id:'2', account_no:'12345670',name:'FAN KUN HUA 2', email:'andersonfantw2@gmail.com', status:'pending', make_report_time:'', sending_time:'' },
+              { id:'3', account_no:'12345671',name:'FAN KUN HUA 3', email:'andersonfantw3@gmail.com', status:'pending', make_report_time:'', sending_time:'' },
           ],
+          search:{
+              account_no: ''
+          },
           // button status: '' -> process -> done
           button_status:{
               create_pdf: {status:'', progress: ''},
@@ -157,6 +168,17 @@ export default {
     computed:{
         count(){
             return this.items.length
+        },
+        selected_list_client_name(){
+            let n = (this.list.length>3)?3:this.list.length
+            let s=''
+            for(let i=0;i<n;i++){
+                let o = this.getObjectByValue(this.items,'account_no',this.list[i])
+                s += o[0].name + ','
+            }
+            if(n>3) s += '...等'+n+'人'
+            else s += '共'+n+'人'
+            return s
         }
     },
     methods: {
@@ -164,7 +186,7 @@ export default {
             if(checked){
                 let _this = this
                 this.items.forEach(function(i){
-                    _this.list.push(i.id)
+                    _this.list.push(i.account_no)
                 })
             }else{
                 this.list = []
@@ -194,7 +216,6 @@ export default {
 
         },
         del() {
-
         },
 
         show_html(item) {
@@ -202,6 +223,12 @@ export default {
         },
         show_pdf(item) {
             window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowPdf/'+item.account_no)
+        },
+
+        getObjectByValue(array, key, value){
+            return array.filter(function (o) {
+                return o[key] === value;
+            });
         }
     }
 }

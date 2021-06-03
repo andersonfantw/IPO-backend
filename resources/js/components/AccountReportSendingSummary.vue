@@ -13,13 +13,13 @@
                 <b-button size="sm" class="mr-1" @click="enter(row.item)">
                     進入
                 </b-button>
-                <b-button size="sm" class="mr-1" variant="danger" @click="del(row.item)">
+                <b-button size="sm" class="mr-1" variant="danger" v-b-modal.del="del" @click="form.id=row.item.id">
                     刪除
                 </b-button>
             </template>
         </b-table>
         <!-- Add panel -->
-        <b-modal id="modify" title="建立帳戶報告" size="lg" centered>
+        <b-modal id="modify" title="建立帳戶報告" size="lg" centered @ok="update">
             <p class="my-4">Hello from modal!</p>
             <b-row>
                 <b-col cols="12" class="my-2">
@@ -36,7 +36,7 @@
                 </b-col>
                 <b-col cols="12" class="my-2">
                     <label for="reportdate">編制日期</label>
-                    <b-form-datepicker id="repor_tdate" v-model="form.report_date" locale="zh"></b-form-datepicker>
+                    <b-form-datepicker id="repor_tdate" v-model="form.report_make_date" locale="zh"></b-form-datepicker>
                 </b-col>
                 <b-col cols="12" class="my-2">
                     <label for="report">投資人報告書</label>
@@ -44,14 +44,23 @@
                 </b-col>
             </b-row>
         </b-modal>
+        <!-- Del panel -->
+        <b-modal id="del" title="BootstrapVue" @ok="del">
+            <p class="my-4">您確定要刪除 序號為{{form.id}} 的任務嗎?</p>
+        </b-modal>
     </div>
 </template>
 
 <script>
+import axios from "../mixins/mixin_post"
+import validator from "../mixins/mixin_validators";
 export default {
+    mixins:[axios,validator],
+    name: 'AccountReportSendingSummary',
     data() {
       return {
           fields:[
+            { key: 'id', label: '序號', sortable: true },
             { key: 'data', label: '報告期間', sortable: true },
             { key: 'total', label: '發送人數', sortable: true },
             { key: 'sending_progress', label: '發送進度', sortable: true },
@@ -61,23 +70,25 @@ export default {
           ],
           items:[
             {
+                id: 1,
                 data:{
                     id:1,
                     ipo_activity_period_id:3,
                     start_date:'2020-09-01',
                     end_date:'2021-06-30',
-                    report_date:'2021-06-15',
+                    report_make_date:'2021-06-15',
                     report:'持續酷熱的天氣，令大家切身感受到「氣候暖化」已迫在眉睫。世界各地不少機構積極以「碳中和」的方案應對氣候問題，所謂碳中和就是指以節能、植林、使用100%可再生能源等方式，來抵銷碳排放量，以達至淨零排放的效果。而作為駕駛者的你，有否想過你也可以透過選用碳中和汽車產品，節省燃油、減少廢氣排放，一同為保護地球出一分力？'
                 },
                 total:5000,sending_progress:'750封 15%', success:'700封 90%', failure:'50封 10%'
             },
             {
+                id: 2,
                 data:{
-                    id:1,
+                    id:2,
                     ipo_activity_period_id:3,
                     start_date:'2020-09-01',
                     end_date:'2021-06-30',
-                    report_date:'2021-06-15',
+                    report_make_date:'2021-06-15',
                     report:'持續酷熱的天氣，令大家切身感受到「氣候暖化」已迫在眉睫。世界各地不少機構積極以「碳中和」的方案應對氣候問題，所謂碳中和就是指以節能、植林、使用100%可再生能源等方式，來抵銷碳排放量，以達至淨零排放的效果。而作為駕駛者的你，有否想過你也可以透過選用碳中和汽車產品，節省燃油、減少廢氣排放，一同為保護地球出一分力？'
                 },
                 total:5000,sending_progress:'750封 15%', success:'700封 90%', failure:'50封 10%'
@@ -94,25 +105,46 @@ export default {
               ipo_activity_period_id:0,
               start_date: '',
               end_date: '',
-              report_date: '',
+              report_make_date: '',
               report: ''
           }
       }
     },
+    created() {
+        this.index();
+    },
     methods: {
         info(item, index, button) {
-            this.form.title = 'Row index: ${index}'
             for ( let k in this.form ) this.form[k] = item.data[k]
             this.$root.$emit('bv::show::modal', 'modify', button)
         },
         resetForm(){
-            for ( let k in this.form ) this.form[k]=''
+            for ( let k in this.form ) this.form[k]=(['id','ipo_activity_period_id'].indexOf(k)===-1)?'':0
         },
         enter(item){
             document.location.href='/AccountReportSendingSummary/'+item.data.id
         },
-        del(item){
+        index(){
+            this.crudIndex(function(response){
 
+            });
+        },
+        store(){
+            let formdata = this.getFormData();
+            this.crudStore(function(response){
+
+            }, formdata);
+        },
+        update(){
+            let formdata = this.getFormData();
+            this.crudUpdate(this.form.id, function(response){
+
+            }, formdata);
+        },
+        del(){
+            this.crudDestroy(this.form.id,function(response){
+
+            });
         },
     }
 }

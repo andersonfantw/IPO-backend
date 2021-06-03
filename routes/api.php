@@ -102,6 +102,7 @@ Route::prefix('ClientBankCards')->group(function () {
 });
 
 // Anderson 2021-05-31 start
+Route::resource('/AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('/AccountReport', 'AccountReportController');
 Route::post('/AccountReport/SendAll', 'AccountReportController@sendAll');
 Route::post('/AccountReport/StopSending', 'AccountReportController@stopSending');
