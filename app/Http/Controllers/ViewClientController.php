@@ -92,7 +92,11 @@ class ViewClientController extends HomeController
         } else {
             $parameters['ClientAddressProof'] = null;
         }
-        $parameters['ClientBankCards'] = $Client->ClientBankCards->toJson(JSON_UNESCAPED_UNICODE);
+        if ($Client->ClientBankCards) {
+            $parameters['ClientBankCards'] = $Client->ClientBankCards->toJson(JSON_UNESCAPED_UNICODE);
+        } else {
+            $parameters['ClientBankCards'] = '[]';
+        }
         $parameters['ClientWorkingStatus'] = $Client->ClientWorkingStatus->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientFinancialStatus->fund_source = addslashes($Client->ClientFinancialStatus->fund_source);
         $parameters['ClientFinancialStatus'] = $Client->ClientFinancialStatus->toJson(JSON_UNESCAPED_UNICODE);
