@@ -117,4 +117,10 @@ class DeliverableList2Controller extends HomeController
         $clients = $request->input('clients');
         return $this->exportAyersImportData($clients);
     }
+
+    public function downloadFilesForOpeningAccount(Request $request)
+    {
+        $clients = $request->input('clients');
+        $data['backcard_face'] = $this->saveBase64Image($request->input('hk_bank_card'), "upload/$client->uuid", 'hk_bank_card');
+    }
 }
