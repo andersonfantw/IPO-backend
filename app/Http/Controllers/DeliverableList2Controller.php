@@ -121,5 +121,6 @@ class DeliverableList2Controller extends HomeController
     public function downloadFilesForOpeningAccount(Request $request)
     {
         $clients = $request->input('clients');
+        $data['backcard_face'] = $this->saveBase64Image($request->input('hk_bank_card'), "upload/$client->uuid", 'hk_bank_card');
     }
 }
