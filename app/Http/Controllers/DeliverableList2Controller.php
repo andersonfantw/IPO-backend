@@ -117,4 +117,9 @@ class DeliverableList2Controller extends HomeController
         $clients = $request->input('clients');
         return $this->exportAyersImportData($clients);
     }
+
+    public function downloadFilesForOpeningAccount(Request $request)
+    {
+        $clients = $request->input('clients');
+    }
 }

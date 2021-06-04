@@ -67,10 +67,9 @@
         small
       />
     </b-button>
-    <b-button variant="warning">
+    <b-button variant="warning" @click="downloadFilesForOpeningAccount">
       <i class="fas fa-download"></i> 協議及開戶資料下載
     </b-button>
-
     <b-table
       hover
       bordered
@@ -129,6 +128,7 @@ export default {
       selectedClients: [],
       filteredClients: [],
       DownloadingExcel: false,
+      DownloadFilesForOpeningAccount: false,
       currentPage: 1,
       perPage: 10,
       FilterType: {},
@@ -171,6 +171,37 @@ export default {
         this.selectedClients = this.filteredClients;
       } else {
         this.selectedClients = [];
+      }
+    },
+    downloadFilesForOpeningAccount() {
+      const self = this;
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.DownloadFilesForOpeningAccount = true;
+        axios
+          .post(
+            "api/DeliverableList2/DownloadFilesForOpeningAccount",
+            {
+              clients: self.selectedClients,
+            },
+            {
+              responseType: "arraybuffer",
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "協議及開戶資料.zip");
+            link.click();
+            self.DownloadFilesForOpeningAccount = false;
+          })
+          .catch((error) => {
+            console.log(error);
+            self.DownloadFilesForOpeningAccount = false;
+          });
+      } else {
+        alert("請先選中客戶！");
       }
     },
     downloadExcel() {

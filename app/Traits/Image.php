@@ -26,4 +26,13 @@ trait Image
         // return base64_decode($base64);
         return $base64;
     }
+
+    public function saveBase64Image(String $base64, String $file_path, String $file_name)
+    {
+        $extension = explode(";base64,", $base64);
+        $type_aux = explode("image/", $extension[0]);
+        // $extension = $type_aux[1];
+        Storage::putFileAs($file_path, $base64, "$file_name.$type_aux[1]");
+        return "$file_name.$type_aux[1]";
+    }
 }
