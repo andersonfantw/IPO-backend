@@ -18,6 +18,7 @@ trait Image
         $base64 = $this->filePathToBase64($file_path);
         return "data:image/$filetype;base64,$base64";
     }
+<<<<<<< HEAD
 
     public function blobToBase64(String $blob)
     {
@@ -35,4 +36,6 @@ trait Image
         Storage::putFileAs($file_path, $base64, "$file_name.$type_aux[1]");
         return "$file_name.$type_aux[1]";
     }
+=======
+>>>>>>> 2cb57d4bbe407af907e485fa5d37266a07660504
 }
