@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Banks;
+use App\Banks;
 
 class BankSeeder extends Seeder
 {

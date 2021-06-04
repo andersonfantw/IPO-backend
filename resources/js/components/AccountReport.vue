@@ -8,14 +8,21 @@
                 <b-form-select id="sending_status" :options="status_options"></b-form-select>
             </b-col>
             <b-col cols="4">
-                <label for="account_no">帳戶號碼</label>
-                <b-input id="account_no"></b-input>
+                <label for="client_acc_id">帳戶號碼</label>
+                <b-input id="client_acc_id"></b-input>
             </b-col>
             <b-col cols="4">
                 <label for="client_name">客戶姓名</label>
                 <b-input id="client_name"></b-input>
             </b-col>
         </b-row>
+
+        <b-pagination-nav
+            v-model="pagination.current_page"
+            :number-of-pages="pagination.last_page"
+            base-url="#"
+            use-router align="center"
+        ></b-pagination-nav>
         <hr />
 
         <b-row no-gutters>
@@ -76,8 +83,10 @@
             </b-col>
             <b-col cols="5">
                 <b-input-group size="sm">
-                    <b-input size="sm" v-model="search.account_no"></b-input>
-                    <b-input size="sm" disabled></b-input>
+                    <b-input size="sm" list="client_list" v-model="search_client.client_acc_id" @keyup="find_client"></b-input>
+                    <datalist id="client_list">
+                        <option v-for="client in search_client.list" v-bind:key="client['client_acc_id']">{{ client['client_acc_id'] }} {{ client['name'] }}</option>
+                    </datalist>
                     <b-input-group-append>
                         <b-button size="sm" class="w-100" @click="add_people" variant="primary">
                             <i class="fas fa-user-plus" variant="secondary"></i> &nbsp;新增人員
@@ -92,7 +101,7 @@
                 <b-form-checkbox name="selected_all" v-model="all_selected" :indeterminate="indeterminate" @change="select_all"></b-form-checkbox>
             </template>
             <template #cell(select)="row">
-                <b-form-checkbox name="select" v-model="list" :value="row.item.account_no"></b-form-checkbox>
+                <b-form-checkbox name="select" v-model="list" :value="row.item.client_acc_id"></b-form-checkbox>
             </template>
             <template #cell(actions)="row">
                 <b-button size="sm" class="mr-1" @click="show_html(row.item)">
@@ -115,9 +124,11 @@ import axios from "../mixins/mixin_post"
 import validator from "../mixins/mixin_validators";
 export default {
     mixins:[axios,validator],
+    name: 'AccountReport',
     props:['ipo_activity_period_id'],
     data() {
       return {
+          id:0,
           all_selected: false,
           indeterminate: false,
           status_options:[
@@ -128,20 +139,29 @@ export default {
           ],
           fields:[
               { key: 'select', label: '' },
-              { key: 'name', label: '客戶姓名', sortable: true },
-              { key: 'email', label: 'Email', sortable: true },
+              { key: 'client_info.name', label: '客戶姓名', sortable: true },
+              { key: 'client_info.email', label: 'Email', sortable: true },
               { key: 'status', label: '發送狀態', sortable: true },
               { key: 'make_report_time', label: '文件製作時間', sortable: true },
               { key: 'sending_time', label: '寄出時間', sortable: true },
               { key: 'actions', label: '操作' }
           ],
+          pagination:{
+              current_page: 1,
+              last_page: 1,
+              path: ''
+          },
+          search_client:{
+            client_acc_id: '',
+            list: []
+          },
           items:[
-              { id:'1', account_no:'12345678',name:'FAN KUN HUA 1', email:'andersonfantw1@gmail.com', status:'pending', make_report_time:'2021-06-02 09:26:15', sending_time:'' },
-              { id:'2', account_no:'12345670',name:'FAN KUN HUA 2', email:'andersonfantw2@gmail.com', status:'pending', make_report_time:'', sending_time:'' },
-              { id:'3', account_no:'12345671',name:'FAN KUN HUA 3', email:'andersonfantw3@gmail.com', status:'pending', make_report_time:'', sending_time:'' },
+              { id:'1', client_acc_id:'12345678', client_info:{name:'FAN KUN HUA 1', email:'andersonfantw1@gmail.com'}, status:'pending', make_report_time:'2021-06-02 09:26:15', sending_time:'' },
+              { id:'2', client_acc_id:'12345670', client_info:{name:'FAN KUN HUA 2', email:'andersonfantw2@gmail.com'}, status:'pending', make_report_time:'', sending_time:'' },
+              { id:'3', client_acc_id:'12345671', client_info:{name:'FAN KUN HUA 3', email:'andersonfantw3@gmail.com'}, status:'pending', make_report_time:'', sending_time:'' },
           ],
           search:{
-              account_no: ''
+              client_acc_id: ''
           },
           // button status: '' -> process -> done
           button_status:{
@@ -150,6 +170,10 @@ export default {
           },
           list:[]
       }
+    },
+    created(){
+        this.id = document.getElementById('ar_id').value
+        this.index();
     },
     watch: {
         list(n,o) {
@@ -163,6 +187,9 @@ export default {
                 this.indeterminate = true
                 this.all_selected = false
             }
+        },
+        'pagination.current_page': function(n){
+            this.index()
         }
     },
     computed:{
@@ -173,8 +200,8 @@ export default {
             let n = (this.list.length>3)?3:this.list.length
             let s=''
             for(let i=0;i<n;i++){
-                let o = this.getObjectByValue(this.items,'account_no',this.list[i])
-                s += o[0].name + ','
+                let o = this.getObjectByValue(this.items,'client_acc_id',this.list[i])
+                if(o.length) s += o[0]['client_info']['name'] + ','
             }
             if(n>3) s += '...等'+n+'人'
             else s += '共'+n+'人'
@@ -186,10 +213,29 @@ export default {
             if(checked){
                 let _this = this
                 this.items.forEach(function(i){
-                    _this.list.push(i.account_no)
+                    _this.list.push(i.client_acc_id)
                 })
             }else{
                 this.list = []
+            }
+        },
+        linkGen(pageNum) {
+            return pageNum === 1 ? '?' : `?page=${pageNum}`
+        },
+        index(event){
+            let _this = this
+            this.crudIndex(function(response){
+                _this.items = response.data
+                _this.pagination.last_page = response.last_page
+                _this.pagination.base_url = response.path + '?page='
+            },'/AccountReportSendingSummary/'+this.id+'/'+this.$options.name+'?page='+this.pagination.current_page);
+        },
+        find_client(){
+            let _this = this
+            if(this.search_client.client_acc_id.length>3){
+                _this.myPost(function(response){
+                    _this.search_client.list = response
+                },{acc_no:_this.search_client.client_acc_id},'/find/client');
             }
         },
         add_people(){
@@ -219,10 +265,10 @@ export default {
         },
 
         show_html(item) {
-            window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowHtml/'+item.account_no)
+            window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowHtml/'+item.client_acc_id)
         },
         show_pdf(item) {
-            window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowPdf/'+item.account_no)
+            window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowPdf/'+item.client_acc_id)
         },
 
         getObjectByValue(array, key, value){

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccountReportTable extends Migration
+class CreateAccountReportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateAccountReportTable extends Migration
      */
     public function up()
     {
-        $table_name = 'account_report';
+        $table_name = 'account_reports';
         if(Schema::hasTable($table_name)){
             echo $table_name . " table already exist!\n";
         }else {
             Schema::create($table_name, function (Blueprint $table) {
                 $table->id();
+                $table->foreignId('account_report_sending_summary_id')->constrained('account_report_sending_summary');
                 $table->integer('client_acc_id')->nullable(false);
                 $table->string('status',50)->nullable(false);
                 $table->datetime('make_report_time')->nullable();
@@ -42,6 +43,6 @@ class CreateAccountReportTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('account_report');
+        // Schema::dropIfExists('account_reports');
     }
 }

@@ -13,4 +13,8 @@ class AccountReportSendingSummary extends Model
         'end_date' => 'datetime:Y-m-d H:i:s',
         'report_make_date' => 'datetime:Y-m-d H:i:s',
     ];
+
+    public function AccountReport(){
+        return $this->hasMany('APP\AccountReport');
+    }
 }

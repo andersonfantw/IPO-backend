@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AuthorizedUserRequest;
 use App\Http\Requests\AccountReportSendingSummaryFormRequest;
 use App\AccountReportSendingSummary;
+use App\AccountReport;
+use App\CysislbGtsClientAcc;
 
 class AccountReportSendingSummaryController extends HomeController
 {
@@ -19,7 +21,7 @@ class AccountReportSendingSummaryController extends HomeController
             return [
                 'id' => $row['id'],
                 'data' => $row,
-                'total' => '',
+                'total' => AccountReport::where('account_report_sending_summary_id','=',$row['id'])->count(),
                 'sending_progress' => '',
                 'success' => '',
                 'failure' => '',
@@ -27,10 +29,18 @@ class AccountReportSendingSummaryController extends HomeController
         },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','report')->get()->toArray());
     }
     public function store(AccountReportSendingSummaryFormRequest $request){
-        AccountReportSendingSummary::create(
+        $AccountReportSendingSummary = AccountReportSendingSummary::create(
             $request->only(AccountReportSendingSummaryFormRequest::field_names)
         );
-        AccountReport::Upsert();
+        CysislbGtsClientAcc::active()->chunk(500, function($rows) use($AccountReportSendingSummary){
+            AccountReport::Upsert(array_map(function($row) use($AccountReportSendingSummary){
+                return [
+                    'account_report_sending_summary_id' => $AccountReportSendingSummary->id,
+                    'client_acc_id' => $row['client_acc_id'],
+                    'status' => 'pending'
+                ];
+            },$rows->toArray()),['account_report_sending_summary_id','client_acc_id'],['status']);
+        });
         return ['ok'=>true];
     }
     public function update(AccountReportSendingSummaryFormRequest $request){
@@ -46,8 +56,8 @@ class AccountReportSendingSummaryController extends HomeController
     }
 
     // for /AccountReportSendingSummary/{id}
-    public function show(Request $request)
+    public function show($id)
     {
-        return view('AccountReport', $this->setViewParameters($request));
+        return view('AccountReport', array_merge($this->setViewParameters(new Request),['id'=>$id]));
     }
 }

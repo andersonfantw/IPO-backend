@@ -4,14 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AccountReportFormRequest;
+use App\AccountReport;
+use App\CysislbGtsClientAcc;
 use App\Traits\Image;
 use PDF;
 
-class AccountReportController extends HomeController
+class AccountReportController extends Controller
 {
     use Image;
 
     protected $name = 'AccountReport';
+
+    public function findClient(Request $request){
+        $input = $request->only('acc_no');
+        return CysislbGtsClientAcc::select('client_acc_id','name')->where('client_acc_id','like',$input['acc_no'].'%')->get();
+    }
+
+    public function index(Request $request, $id){
+        //var_dump($request->all());
+        return AccountReport::with('ClientInfo:client_acc_id,name,email')->ofParentID($id)->paginate(100);
+    }
 
     public function showPdf(){
         $section3 =<<<TEXT

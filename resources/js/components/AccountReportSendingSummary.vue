@@ -125,8 +125,9 @@ export default {
             document.location.href='/AccountReportSendingSummary/'+item.data.id
         },
         index(){
+            let _this = this
             this.crudIndex(function(response){
-
+                _this.items = response
             });
         },
         store(){

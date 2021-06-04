@@ -7,7 +7,7 @@ import axios from 'axios'
 export default {
   data () {
       return {
-        api_prefix: 'api/',
+        api_prefix: process.env.MIX_BASE_PATH+'/api/',
         alert:{
             message:'',
             variant:'info'
@@ -24,12 +24,13 @@ export default {
       return url?(url.substr(0,1)==='/'):false
     },
     url(name,id=0,method=''){
-        let u = id?id+'/':''
-        u += method?method+'/':''
+        let u = id?id:''
+        u += method?method:''
+        u = u?'/'+u:u
         return (name)?this.isAbsolutePath(name)
-            ?this.api_prefix+name+'/'+u
-            :this.api_prefix+this.$options.name+'/'+name+u
-            :this.api_prefix+this.$options.name+'/'+u
+            ?this.api_prefix+name.substr(1)+u
+            :this.api_prefix+this.$options.name+(name?'/'+name:'')+u
+            :this.api_prefix+this.$options.name+u
     },
     // action of CRUD
     crudIndex(successCallback, name, formdata, failCallback){
