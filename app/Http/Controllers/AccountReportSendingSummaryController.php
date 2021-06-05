@@ -37,7 +37,6 @@ class AccountReportSendingSummaryController extends HomeController
                 return [
                     'account_report_sending_summary_id' => $AccountReportSendingSummary->id,
                     'client_acc_id' => $row['client_acc_id'],
-                    'status' => 'pending'
                 ];
             },$rows->toArray()),['account_report_sending_summary_id','client_acc_id'],['status']);
         });

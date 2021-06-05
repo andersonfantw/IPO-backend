@@ -34,6 +34,7 @@ export default {
     },
     // action of CRUD
     crudIndex(successCallback, name, formdata, failCallback){
+        console.log(formdata)
         this.myGet(successCallback, formdata, this.url(name), failCallback)
     },
     crudCreate(successCallback, name, failCallback){
@@ -57,8 +58,8 @@ export default {
     // default post to vue name
     myPost (successCallback, formdata, url, failCallback) {
       let _this = this
-      url = url??''
-      axios.post(this.isAbsolutePath(url)?this.api_prefix+url.substr(1):this.url(name)+url,formdata,{
+        url = url??this.url('')
+      axios.post(url,formdata,{
         headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         }
@@ -70,10 +71,9 @@ export default {
       });
     },
     // default get from vue name
-    myGet (successCallback, formdata, url, failCallback) {
+    myGet (successCallback, data, url, failCallback) {
         url = url??this.url('')
-        axios.get(url,
-            {params: formdata}
+        axios.get(url, {params: data}
         ).then( (response) => {
             successCallback(response.data)
         }).catch( (err) => {
@@ -110,10 +110,11 @@ export default {
         });
     },
     // formData
-    getFormData(){
+    getFormData(form){
         let formData = new FormData()
-        for ( let k in this.form ) {
-            formData.append(k, this.form[k]);
+        let f = form?form:this.form
+        for ( let k in f ) {
+            formData.append(k, f[k]);
         }
         return formData
     },
@@ -124,8 +125,8 @@ export default {
         alert(this.alert.message)
     },
     alertFail(msg){
-        _this.alert.message = msg
-        _this.alert.variant = 'danger'
+        this.alert.message = msg
+        this.alert.variant = 'danger'
     }
   }
 }

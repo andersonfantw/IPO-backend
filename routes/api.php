@@ -105,8 +105,12 @@ Route::prefix('ClientBankCards')->group(function () {
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
 Route::post('/find/client','AccountReportController@findClient');
-Route::post('/AccountReport/SendAll', 'AccountReportController@sendAll');
-Route::post('/AccountReport/StopSending', 'AccountReportController@stopSending');
-Route::post('/AccountReport/ShowPdf', 'AccountReportController@showPdf');
+
+Route::post('/AccountReport/MakePdf', 'AccountReportController@makePdf');
 Route::post('/AccountReport/SendTestMail', 'AccountReportController@sendTestMail');
+Route::post('/AccountReport/SendMail', 'AccountReportController@sendMail');
+Route::post('/AccountReport/RemoveClient', 'AccountReportController@removeClient');
+
+Route::post('/AccountReport/MakeAll', 'AccountReportController@makeAll');
+Route::post('/AccountReport/SendAll', 'AccountReportController@sendAll');
 // Anderson 2021-05-31 end

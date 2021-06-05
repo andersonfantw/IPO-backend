@@ -150,9 +150,9 @@
         <h1>專戶投資人報告書</h1>
         <table class="info" width="100%" cellspacing="0">
             <tbody>
-                <tr><td>帳戶編號(Account No) : <u>3888838</u></td></tr>
-                <tr><td>帳戶名稱(Account Name) : <u>LIN ZHONGSHENG JACKY -DS</u></td></tr>
-                <tr><td>報告期間: 2019/6/30 至 2020/8/31 止 <div class="float-right">報告編制日期: 2020/9/1</div></td></tr>
+                <tr><td>帳戶編號(Account No) : <u>{{$data['User']['client_acc_id']}}</u></td></tr>
+                <tr><td>帳戶名稱(Account Name) : <u>{{$data['User']['name']}}</u></td></tr>
+                <tr><td>報告期間: {{$data['AccountReportSendingSummary']['start_date']->format('d/m/Y')}} 至 {{$data['AccountReportSendingSummary']['end_date']->format('d/m/Y')}} 止 <div class="float-right">報告編制日期: {{$data['AccountReportSendingSummary']['report_make_date']->format('d/m/Y')}}</div></td></tr>
             </tbody>
         </table>
         <br />

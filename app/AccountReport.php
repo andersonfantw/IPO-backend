@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AccountReport extends Model
 {
-    protected $fillable = ['account_report_sending_summary_id','client_acc_id','status','make_report_time','sending_time','issued_by','remark'];
+    protected $fillable = ['account_report_sending_summary_id','client_acc_id','status','report_queue_time','make_report_time','make_report_status','sending_queue_time','sending_time','sending_status','issued_by','remark'];
     protected $casts = [
         'make_report_time' => 'datetime:Y-m-d H:i:s',
         'sending_time' => 'datetime:Y-m-d H:i:s',
@@ -19,10 +19,6 @@ class AccountReport extends Model
 
     public function ClientInfo(){
         return $this->hasOne('App\CysislbGtsClientAcc','client_acc_id','client_acc_id');
-    }
-
-    public function scopeActive(Builder $query){
-        return $query->where('status','=','A');
     }
 
     public function scopeOfParentID(Builder $query, $id){

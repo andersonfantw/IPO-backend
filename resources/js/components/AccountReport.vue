@@ -1,19 +1,24 @@
 <template>
     <b-container class="m-4" fluid>
+        <b-alert :show="alert.message!==''" :variant="alert.variant" dismissible>{{alert.message}}</b-alert>
         <h1 class="text-warning text-center">年度通知書發送清單</h1>
         <hr />
         <b-row class="filter text-white">
-            <b-col cols="4" class="mb-3">
+            <b-col cols="3" class="mb-3">
+                <label for="sending_status">文件狀態</label>
+                <b-form-select id="sending_status" :options="status_options" v-model="filter.make_report_status" @change="index"></b-form-select>
+            </b-col>
+            <b-col cols="3" class="mb-3">
                 <label for="sending_status">發送狀態</label>
-                <b-form-select id="sending_status" :options="status_options"></b-form-select>
+                <b-form-select id="sending_status" :options="status_options" v-model="filter.sending_status" @change="index"></b-form-select>
             </b-col>
-            <b-col cols="4">
+            <b-col cols="3">
                 <label for="client_acc_id">帳戶號碼</label>
-                <b-input id="client_acc_id"></b-input>
+                <b-input id="client_acc_id" v-model="filter.client_acc_id" @keyup="index"></b-input>
             </b-col>
-            <b-col cols="4">
+            <b-col cols="3">
                 <label for="client_name">客戶姓名</label>
-                <b-input id="client_name"></b-input>
+                <b-input id="client_name" v-model="filter.name" @keyup="index"></b-input>
             </b-col>
         </b-row>
 
@@ -28,14 +33,19 @@
         <b-row no-gutters>
             <b-col cols="3">
                 <b-button-group class="mb-3">
+                    <span id="create_selected_pdf" tabindex="0">
+                        <b-button size="sm" variant="warning" :disabled="!(all_selected || indeterminate)" @click="create_selected_pdf">
+                            <i class="fas fa-file-pdf"></i> &nbsp;製作文件
+                        </b-button>
+                    </span>
+                    <span id="send_test_mail" tabindex="0">
+                        <b-button size="sm" :disabled="!(all_selected || indeterminate) && list.length<=5" @click="send_test_mail">
+                            <i class="fas fa-envelope-square"></i> &nbsp;發送測試
+                        </b-button>
+                    </span>
                     <span id="send" tabindex="0">
                         <b-button size="sm" variant="success" :disabled="!(all_selected || indeterminate)" @click="send">
                             <i class="far fa-envelope"></i> &nbsp;發&nbsp;&nbsp;&nbsp;&nbsp;送
-                        </b-button>
-                    </span>
-                        <span id="send_test_mail" tabindex="0">
-                        <b-button size="sm" :disabled="!(all_selected || indeterminate)" @click="send_test_mail">
-                            <i class="fas fa-envelope-square"></i> &nbsp;發送測試
                         </b-button>
                     </span>
                     <span id="del" tabindex="0">
@@ -44,11 +54,14 @@
                         </b-button>
                     </span>
                 </b-button-group>
-                <b-tooltip target="send" placement="bottom">
-                    為選取的人員重新寄送報告
+                <b-tooltip target="create_selected_pdf" placement="bottom">
+                    製作選取的人員的報告
                 </b-tooltip>
                 <b-tooltip target="send_test_mail" placement="bottom">
-                    將選取的人員的報告寄送到測試信箱。測試信箱須由工程師設定
+                    將選取的人員的報告寄送到測試信箱，發送前必須先完成文件製作。測試信箱須由工程師設定。一次寄送最多5位客戶的測試信。
+                </b-tooltip>
+                <b-tooltip target="send" placement="bottom">
+                    為選取的人員重新寄送報告，發送前必須先完成文件製作。
                 </b-tooltip>
                 <b-tooltip target="del" placement="bottom">
                     只可刪除未發送過信件的人員
@@ -57,22 +70,24 @@
             <b-col cols="2">
                 <b-button-group class="mb-3">
                     <span id="create_pdf" tabindex="0">
-                    <b-button size="sm" variant="success" :disabled="button_status.create_pdf.status=='done'" @click="create_pdf">
-                        <i class="far fa-file-pdf" v-if="['','done'].indexOf(button_status.create_pdf.status)>=0"></i>
-                        <b-spinner small label="Loading..."  v-else></b-spinner>
-                        &nbsp;製作年報 <span v-if="button_status.create_pdf.progress">{{button_status.create_pdf.progress}}</span>
+                    <b-button size="sm" variant="warning"  @click="create_pdf"
+                        :disabled="buttons.pdf.null===0 && buttons.pdf.pending===0 && (buttons.total === buttons.pdf.success+buttons.pdf.fail)">
+                        <b-spinner small label="Loading..." v-if="buttons.pdf.pending>0"></b-spinner>
+                        <i class="far fa-file-pdf" v-else></i>
+                        &nbsp;製作文件 <span v-if="(buttons.pdf.success+buttons.pdf.fail)">{{ (buttons.pdf.success+buttons.pdf.fail) }}</span>
                     </b-button>
                     </span>
                     <span id="send_all" tabindex="0">
-                    <b-button size="sm" variant="success" :disabled="button_status.create_pdf.status!='done'" @click="send_all">
-                        <i class="far fa-envelope" v-if="['','done'].indexOf(button_status.send_all.status)>=0"></i>
-                        <b-spinner small label="Loading..."  v-else></b-spinner>
+                    <b-button size="sm" variant="success" @click="send_all"
+                        :disabled="buttons.email.null===0 && buttons.email.pending===0 && (buttons.total === buttons.email.success+buttons.email.fail)">
+                        <b-spinner small label="Loading..." v-if="buttons.email.pending>0"></b-spinner>
+                        <i class="far fa-envelope" v-else></i>
                         &nbsp;全部發送
                     </b-button>
                     </span>
                 </b-button-group>
                 <b-tooltip target="create_pdf" placement="bottom">
-                    為選取名單內的每一個人製作年報
+                    為名單內的每一個人製作年報
                 </b-tooltip>
                 <b-tooltip target="send_all" placement="bottom">
                     為已產生年報的人寄送報告。完成製作年報後，才可寄送報告
@@ -83,12 +98,13 @@
             </b-col>
             <b-col cols="5">
                 <b-input-group size="sm">
-                    <b-input size="sm" list="client_list" v-model="search_client.client_acc_id" @keyup="find_client"></b-input>
+                    <b-input size="sm" list="client_list" v-model="search.client_acc_id" @keyup="find_client" placeholder="輸入四位數字後自動檢索"></b-input>
+                    <b-input size="sm" v-model="search.client_name" disabled></b-input>
                     <datalist id="client_list">
-                        <option v-for="client in search_client.list" v-bind:key="client['client_acc_id']">{{ client['client_acc_id'] }} {{ client['name'] }}</option>
+                        <option v-for="client in find_client_list" :key="client['client_acc_id']" :value="client['client_acc_id']">{{ client['name'] }}</option>
                     </datalist>
                     <b-input-group-append>
-                        <b-button size="sm" class="w-100" @click="add_people" variant="primary">
+                        <b-button size="sm" class="w-100" @click="add_to_list" variant="primary">
                             <i class="fas fa-user-plus" variant="secondary"></i> &nbsp;新增人員
                         </b-button>
                     </b-input-group-append>
@@ -103,11 +119,23 @@
             <template #cell(select)="row">
                 <b-form-checkbox name="select" v-model="list" :value="row.item.client_acc_id"></b-form-checkbox>
             </template>
+            <template #cell(make_report_status)="row">
+                <div v-if="row.item.make_report_status==='pending'">排程中 queue</div>
+                <div v-else-if="row.item.make_report_status==='success'">成功 {{row.item.make_report_time}}</div>
+                <div v-else-if="row.item.make_report_status==='fail'">失敗 {{row.item.make_report_time}}</div>
+                <div v-else>{{row.item.make_report_status}}</div>
+            </template>
+            <template #cell(sending_status)="row">
+                <div v-if="row.item.sending_status==='pending'">排程中 queue</div>
+                <div v-else-if="row.item.sending_status==='success'">成功 {{row.item.sending_time}}</div>
+                <div v-else-if="row.item.sending_status==='fail'">失敗 {{row.item.sending_time}}</div>
+                <div v-else>{{row.item.sending_status}}</div>
+            </template>
             <template #cell(actions)="row">
                 <b-button size="sm" class="mr-1" @click="show_html(row.item)">
                     查看報告書
                 </b-button>
-                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="row.item.make_report_time==''">
+                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="!row.item.make_report_time">
                     查看寄出的報告書
                 </b-button>
             </template>
@@ -133,17 +161,18 @@ export default {
           indeterminate: false,
           status_options:[
               {value:'all', text:'全部'},
-              {value:'pending', text:'排程中'},
-              {value:'success', text:'發送成功'},
-              {value:'fail', text:'發送失敗'}
+              {value:'null', text:'無'},
+              {value:'pending', text:'排程中 queue'},
+              {value:'success', text:'成功 success'},
+              {value:'fail', text:'失敗 fail'}
           ],
           fields:[
               { key: 'select', label: '' },
+              { key: 'client_info.client_acc_id', label: '帳號', sortable: true },
               { key: 'client_info.name', label: '客戶姓名', sortable: true },
               { key: 'client_info.email', label: 'Email', sortable: true },
-              { key: 'status', label: '發送狀態', sortable: true },
-              { key: 'make_report_time', label: '文件製作時間', sortable: true },
-              { key: 'sending_time', label: '寄出時間', sortable: true },
+              { key: 'make_report_status', label: '文件狀態', sortable: true },
+              { key: 'sending_status', label: '發送狀態', sortable: true },
               { key: 'actions', label: '操作' }
           ],
           pagination:{
@@ -151,23 +180,31 @@ export default {
               last_page: 1,
               path: ''
           },
-          search_client:{
-            client_acc_id: '',
-            list: []
+          find_client_list:[],
+          search:{
+              client_acc_id: ''
           },
           items:[
               { id:'1', client_acc_id:'12345678', client_info:{name:'FAN KUN HUA 1', email:'andersonfantw1@gmail.com'}, status:'pending', make_report_time:'2021-06-02 09:26:15', sending_time:'' },
               { id:'2', client_acc_id:'12345670', client_info:{name:'FAN KUN HUA 2', email:'andersonfantw2@gmail.com'}, status:'pending', make_report_time:'', sending_time:'' },
               { id:'3', client_acc_id:'12345671', client_info:{name:'FAN KUN HUA 3', email:'andersonfantw3@gmail.com'}, status:'pending', make_report_time:'', sending_time:'' },
           ],
-          search:{
-              client_acc_id: ''
+          filter:{
+              make_report_status: 'all',
+              sending_status: 'all',
+              client_acc_id: '',
+              name: ''
           },
           // button status: '' -> process -> done
-          button_status:{
-              create_pdf: {status:'', progress: ''},
-              send_all: {status:'', progress: ''}
+          buttons: {
+              total: 0,
+              pdf: { pending:0, success:0, fail: 0 },
+              email: { pending:0, success:0, fail: 0 },
           },
+          // button_status:{
+          //     create_pdf: {status:'', progress: ''},
+          //     send_all: {status:'', progress: ''}
+          // },
           list:[]
       }
     },
@@ -190,6 +227,13 @@ export default {
         },
         'pagination.current_page': function(n){
             this.index()
+        },
+        'search.client_acc_id': function(n){
+            let arr = this.find_client_list.filter(function(i){
+                return i.client_acc_id==n
+            })
+            if(arr.length) this.search.client_name = arr[0].name
+            else this.search.client_name = ''
         }
     },
     computed:{
@@ -219,6 +263,7 @@ export default {
                 this.list = []
             }
         },
+        // pagination
         linkGen(pageNum) {
             return pageNum === 1 ? '?' : `?page=${pageNum}`
         },
@@ -226,42 +271,68 @@ export default {
             let _this = this
             this.crudIndex(function(response){
                 _this.items = response.data
+                _this.buttons = response.buttons
                 _this.pagination.last_page = response.last_page
                 _this.pagination.base_url = response.path + '?page='
-            },'/AccountReportSendingSummary/'+this.id+'/'+this.$options.name+'?page='+this.pagination.current_page);
+            },'/AccountReportSendingSummary/'+this.id+'/'+this.$options.name+'?page='+this.pagination.current_page, this.filter);
         },
         find_client(){
             let _this = this
-            if(this.search_client.client_acc_id.length>3){
-                _this.myPost(function(response){
-                    _this.search_client.list = response
-                },{acc_no:_this.search_client.client_acc_id},'/find/client');
+            if(this.search.client_acc_id.length>3){
+                this.myPost(function(response){
+                    _this.find_client_list = response
+                },{acc_no:_this.search.client_acc_id},'/api/find/client');
             }
         },
-        add_people(){
+        add_to_list(){
+            if(this.search.client_acc_id.length<7) return
+            if(this.search.client_acc_id.length>9) return
+            let _this = this
+            this.crudStore(function(response){
+                if(response.ok){
+                    console.log(response)
+                }else if(response.msg) _this.alertFail(response.msg)
+            },this.getFormData(this.search),'/AccountReportSendingSummary/'+this.id+'/'+this.$options.name)
+        },
 
-        },
-        send(){
-
-        },
-        create_pdf(){
-            let o = {
-                '': {status: 'process', progress: '50%'},
-                process: {status: 'done', progress: ''}
-            }
-            if(this.button_status.create_pdf.status!='done') this.button_status.create_pdf = o[this.button_status.create_pdf.status]
-        },
-        send_all(){
-            let o = {
-                '': {status: 'process', progress: '50%'},
-                process: {status: 'done', progress: ''}
-            }
-            if(this.button_status.send_all.status!='done') this.button_status.send_all = o[this.button_status.send_all.status]
+        // 選擇項目的功能
+        create_selected_pdf(){
+            let _this = this
+            this.myPost(function(response) {
+                console.log(response)
+            },this.getFormData({list:this.list}),'/api/AccountReport/MakePdf')
         },
         send_test_mail() {
-
+            let _this = this
+            this.myPost(function(response) {
+                console.log(response)
+            },this.getFormData({list:this.list}),'/api/AccountReport/SendTestMail')
+        },
+        send(){
+            let _this = this
+            this.myPost(function(response) {
+                console.log(response)
+            },this.getFormData({list:this.list}),'/api/AccountReport/SendMail')
         },
         del() {
+            let _this = this
+            this.myPost(function(response) {
+                console.log(response)
+            },this.getFormData({list:this.list}),'/api/AccountReport/RemoveClient')
+        },
+
+        // 全部清單的功能
+        create_pdf(){
+            let _this = this
+            this.myPost(function(response) {
+                console.log(response)
+            },this.getFormData({list:this.list}),'/api/AccountReport/SendAll')
+        },
+        send_all(){
+            let _this = this
+            this.myPost(function(response) {
+                console.log(response)
+            },this.getFormData({list:this.list}),'/api/AccountReport/MakeAll')
         },
 
         show_html(item) {

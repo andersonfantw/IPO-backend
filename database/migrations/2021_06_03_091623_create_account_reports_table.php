@@ -21,9 +21,13 @@ class CreateAccountReportsTable extends Migration
                 $table->id();
                 $table->foreignId('account_report_sending_summary_id')->constrained('account_report_sending_summary');
                 $table->integer('client_acc_id')->nullable(false);
-                $table->string('status',50)->nullable(false);
+                // $table->string('status',50)->nullable(false);
+                $table->datetime('report_queue_time')->nullable();
                 $table->datetime('make_report_time')->nullable();
+                $table->string('make_report_status',50)->nullable();
+                $table->datetime('sending_queue_time')->nullable();
                 $table->datetime('sending_time')->nullable();
+                $table->string('sending_status',50)->nullable();
                 $table->string('issued_by',50)->nullable();
                 $table->text('remark')->nullable();
                 $table->timestamps();
