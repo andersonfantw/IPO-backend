@@ -26,7 +26,7 @@ class AccountReportSendingSummaryController extends HomeController
                 'success' => '',
                 'failure' => '',
             ];
-        },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','report')->get()->toArray());
+        },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get()->toArray());
     }
     public function store(AccountReportSendingSummaryFormRequest $request){
         $AccountReportSendingSummary = AccountReportSendingSummary::create(
@@ -38,19 +38,19 @@ class AccountReportSendingSummaryController extends HomeController
                     'account_report_sending_summary_id' => $AccountReportSendingSummary->id,
                     'client_acc_id' => $row['client_acc_id'],
                 ];
-            },$rows->toArray()),['account_report_sending_summary_id','client_acc_id'],['status']);
+            },$rows->toArray()),['account_report_sending_summary_id','client_acc_id'],[]);
         });
         return ['ok'=>true];
     }
-    public function update(AccountReportSendingSummaryFormRequest $request){
-        if(!$request->filled('id')) abort('404');
-        $id = $request->input('id');
+    public function update(AccountReportSendingSummaryFormRequest $request, $id){
+        if(empty($id)) abort('404');
         $input = $request->only(AccountReportSendingSummaryFormRequest::field_names);
         AccountReportSendingSummary::findOrFail($id)->update($input);
+var_dump($id,$input);
         return ['ok'=>true];
     }
     public function destroy($id){
-        $AccountReportSendingSummary = AccountReportSendingSummary::find($id);
+        $AccountReportSendingSummary = AccountReportSendingSummary::destroy($id);
         return ['ok'=>true];
     }
 

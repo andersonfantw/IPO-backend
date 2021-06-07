@@ -23,6 +23,7 @@ class CreateAccountReportSendingSummaryTable extends Migration
                 $table->date('start_date')->nullable(false);
                 $table->date('end_date')->nullable(false);
                 $table->date('report_make_date')->nullable(false);
+                $table->date('performance_fee_date')->nullable(false);
                 $table->text('report')->nullable();
                 $table->string('issued_by',50)->nullable();
                 $table->text('remark')->nullable();

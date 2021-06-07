@@ -109,7 +109,7 @@ Route::post('/find/client','AccountReportController@findClient');
 Route::post('/AccountReport/MakePdf', 'AccountReportController@makePdf');
 Route::post('/AccountReport/SendTestMail', 'AccountReportController@sendTestMail');
 Route::post('/AccountReport/SendMail', 'AccountReportController@sendMail');
-Route::post('/AccountReport/RemoveClient', 'AccountReportController@removeClient');
+Route::post('/AccountReport/RemoveClient/{id}/', 'AccountReportController@removeClient')->where(['id'=>'[0-9]+']);
 
 Route::post('/AccountReport/MakeAll', 'AccountReportController@makeAll');
 Route::post('/AccountReport/SendAll', 'AccountReportController@sendAll');

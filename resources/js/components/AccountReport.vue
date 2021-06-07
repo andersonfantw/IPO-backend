@@ -55,7 +55,7 @@
                     </span>
                 </b-button-group>
                 <b-tooltip target="create_selected_pdf" placement="bottom">
-                    製作選取的人員的報告
+                    製作選取的人員的報告。如果已經製作過報告，則重新製作。
                 </b-tooltip>
                 <b-tooltip target="send_test_mail" placement="bottom">
                     將選取的人員的報告寄送到測試信箱，發送前必須先完成文件製作。測試信箱須由工程師設定。一次寄送最多5位客戶的測試信。
@@ -317,8 +317,9 @@ export default {
         del() {
             let _this = this
             this.myPost(function(response) {
-                console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/RemoveClient')
+                _this.list = []
+                _this.index()
+            },this.getFormData({ipo_activity_period_id:this.ipo_activity_period_id,list:this.list}),'/api/AccountReport/RemoveClient/'+this.ipo_activity_period_id+'/')
         },
 
         // 全部清單的功能

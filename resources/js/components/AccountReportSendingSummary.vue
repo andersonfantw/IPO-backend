@@ -19,7 +19,7 @@
             </template>
         </b-table>
         <!-- Add panel -->
-        <b-modal id="modify" title="建立帳戶報告" size="lg" centered @ok="update">
+        <b-modal id="modify" title="建立帳戶報告" size="lg" centered @ok="modify">
             <p class="my-4">Hello from modal!</p>
             <b-row>
                 <b-col cols="12" class="my-2">
@@ -37,6 +37,10 @@
                 <b-col cols="12" class="my-2">
                     <label for="reportdate">編制日期</label>
                     <b-form-datepicker id="repor_tdate" v-model="form.report_make_date" locale="zh"></b-form-datepicker>
+                </b-col>
+                <b-col cols="12" class="my-2">
+                    <label for="performance_fee_date">表現費扣款日期</label>
+                    <b-form-datepicker id="performance_fee_date" v-model="form.performance_fee_date" locale="zh"></b-form-datepicker>
                 </b-col>
                 <b-col cols="12" class="my-2">
                     <label for="report">投資人報告書</label>
@@ -77,6 +81,7 @@ export default {
                     start_date:'2020-09-01',
                     end_date:'2021-06-30',
                     report_make_date:'2021-06-15',
+                    performance_fee_date:'2020-09-01',
                     report:'持續酷熱的天氣，令大家切身感受到「氣候暖化」已迫在眉睫。世界各地不少機構積極以「碳中和」的方案應對氣候問題，所謂碳中和就是指以節能、植林、使用100%可再生能源等方式，來抵銷碳排放量，以達至淨零排放的效果。而作為駕駛者的你，有否想過你也可以透過選用碳中和汽車產品，節省燃油、減少廢氣排放，一同為保護地球出一分力？'
                 },
                 total:5000,sending_progress:'750封 15%', success:'700封 90%', failure:'50封 10%'
@@ -89,6 +94,7 @@ export default {
                     start_date:'2020-09-01',
                     end_date:'2021-06-30',
                     report_make_date:'2021-06-15',
+                    performance_fee_date:'2020-09-01',
                     report:'持續酷熱的天氣，令大家切身感受到「氣候暖化」已迫在眉睫。世界各地不少機構積極以「碳中和」的方案應對氣候問題，所謂碳中和就是指以節能、植林、使用100%可再生能源等方式，來抵銷碳排放量，以達至淨零排放的效果。而作為駕駛者的你，有否想過你也可以透過選用碳中和汽車產品，節省燃油、減少廢氣排放，一同為保護地球出一分力？'
                 },
                 total:5000,sending_progress:'750封 15%', success:'700封 90%', failure:'50封 10%'
@@ -124,6 +130,11 @@ export default {
         enter(item){
             document.location.href='/AccountReportSendingSummary/'+item.data.id
         },
+        modify(){
+            if(this.form.id===0) this.store()
+            else this.update()
+            this.index()
+        },
         index(){
             let _this = this
             this.crudIndex(function(response){
@@ -143,8 +154,9 @@ export default {
             }, formdata);
         },
         del(){
+            let _this = this
             this.crudDestroy(this.form.id,function(response){
-
+                _this.index()
             });
         },
     }

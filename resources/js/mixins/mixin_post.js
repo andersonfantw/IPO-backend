@@ -83,7 +83,7 @@ export default {
     },
     myPut (successCallback, formdata, url, failCallback){
         url = url??this.url('')
-        // formdata.append('_method','PUT')
+        formdata.append('_method','PUT')
         // axios.put, laravel can't retrieve formdata. use post work around
         axios.post(url,formdata,{
             headers: {

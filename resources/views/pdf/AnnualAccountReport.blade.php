@@ -152,7 +152,7 @@
             <tbody>
                 <tr><td>帳戶編號(Account No) : <u>{{$data['User']['client_acc_id']}}</u></td></tr>
                 <tr><td>帳戶名稱(Account Name) : <u>{{$data['User']['name']}}</u></td></tr>
-                <tr><td>報告期間: {{$data['AccountReportSendingSummary']['start_date']->format('d/m/Y')}} 至 {{$data['AccountReportSendingSummary']['end_date']->format('d/m/Y')}} 止 <div class="float-right">報告編制日期: {{$data['AccountReportSendingSummary']['report_make_date']->format('d/m/Y')}}</div></td></tr>
+                <tr><td>報告期間: {{$data['AccountReportSendingSummary']['start_date']->format('d-M-y')}} 至 {{$data['AccountReportSendingSummary']['end_date']->format('d-M-y')}} 止 <div class="float-right">報告編制日期: {{$data['AccountReportSendingSummary']['report_make_date']->format('d-M-y')}}</div></td></tr>
             </tbody>
         </table>
         <br />
@@ -168,42 +168,40 @@
                 </tr>
             </thead>
             <tbody>
+                @if ($data['TempIpoSummary']['prev_client']=='Y')
+                    @if (empty($data['Deposits']))
                 <tr>
-                    <td>30-Jun-19</td>
+                    @else
+                <tr class="dashed">
+                    @endif
+                    @if ($data['TempIpoSummary']['init_value_date'])
+                    <td>{{$data['TempIpoSummary']['init_value_date']->format('d-M-y')}}</td>
+                    @else
+                    <td>{{$data['TempIpoSummary']['ipo_activity_periods_start_date']->format('d-M-y')}}</td>
+                    @endif
                     <td>上期帳戶總值</td>
                     <td></td>
-                    <td>1,658,713.02</td>
+                    <td>{{number_format($data['TempIpoSummary']['init_value'],2)}}</td>
                 </tr>
+                @endif
+                @for ($i=0;$i<count($data['Deposits']);$i++)
+                    @if ($i==count($data['Deposits'])-1)
+                <tr class="dashed">
+                    @else
                 <tr>
-                    <td>15-Oct-19</td>
-                    <td>提款</td>
-                    <td>(1,400,000,00)</td>
+                    @endif
+                    <td>{{$data['Deposits'][$i]['buss_date']}}</td>
+                    <td>{{$data['Deposits'][$i]['method']}}</td>
+                    <td>{{$data['Deposits'][$i]['amount']}}</td>
                     <td>258,713.02</td>
                 </tr>
-                <tr>
-                    <td>24-Feb-20</td>
-                    <td>入金</td>
-                    <td>2,000,000,00</td>
-                    <td>2,258,713.02</td>
-                </tr>
-                <tr>
-                    <td>3-Aug-20</td>
-                    <td>入金</td>
-                    <td>2,000,000,00</td>
-                    <td>4,258,713.02</td>
-                </tr>
-                <tr class="dashed">
-                    <td>14-Aug-20</td>
-                    <td>入金</td>
-                    <td>1,000,000,00</td>
-                    <td>5,258,713.02</td>
-                </tr>
+                @endfor
 
                 <tr>
                     <td>31-Aug-20</td>
                     <td>本期帳戶總值</td>
                     <td></td>
-                    <td>6,094,406.49</td>
+                    <td>{{number_format ($data['TempIpoSummary']['avail_bal'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -214,13 +212,21 @@
                 <tr class="subitem">
                     <td></td>
                     <td>總結餘</td>
-                    <td>6,090,063.15</td>
+                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['Subscription'],2)}}</td>
+                    @else
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal'],2)}}</td>
+                    @endif
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>IPO 申請凍結資金 </td>
-                    <td>4,343.34</td>
+                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
+                    <td>{{number_format($data['Subscription'],2)}}</td>
+                    @else
+                    <td>0.00</td>
+                    @endif
                     <td></td>
                 </tr>
                 <tr class="subitem solid">
@@ -234,7 +240,7 @@
                     <td>31-Aug-20</td>
                     <td>帳戶變動</td>
                     <td></td>
-                    <td>835,693.47</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -245,31 +251,35 @@
                 <tr class="subitem">
                     <td></td>
                     <td>投資組合市值異動</td>
+                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
+                    <td>{{number_format($data['Alloted_amount'],2)}}</td>
+                    @else
                     <td>0.00</td>
+                    @endif
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>已實現損益</td>
-                    <td>835,693.47</td>
-                    <td></td>
-                </tr>
-                <tr class="subitem">
-                    <td></td>
-                    <td>表現費</td>
-                    <td>0.00</td>
+                    <td>{{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}</td>
                     <td></td>
                 </tr>
 
             </tbody>
         </table>
         <br />
+        @if ($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'] > 0)
         <div>
             <b>說明:</b>
             <ol>
-                <li>表現費: 167,138.69 (835,693.47*20%)將於 2020/9/1 扣除</li>
+                @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
+                <li>表現費: {{($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.2}} ({{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}*20%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
+                @else
+                <li>表現費: {{($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.8}} ({{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
+                @endif
             </ol>
         </div>
+        @endif
         <br />
         <br />
         <h4>二. 庫存資訊</h4>
@@ -283,9 +293,19 @@
                 </tr>
             </thead>
             <tbody>
+                @if(empty($data['Alloted']))
                 <tr>
                     <td colspan="4" class="text-center">無</td>
                 </tr>
+                @endif
+                @foreach($data['Alloted'] as $alloted)
+                <tr>
+                    <td>{{$alloted['product_name']}}</td>
+                    <td>{{$alloted['qty']}}</td>
+                    <td>{{$alloted['allot_price1']}}</td>
+                    <td>{{$alloted['amount']}}</td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
         <br />

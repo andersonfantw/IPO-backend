@@ -7,6 +7,7 @@ return [
         'start_date'=>'required|date|date_format:Y-m-d',
         'end_date'=>'required|date|date_format:Y-m-d',
         'report_make_date'=>'required|date|date_format:Y-m-d',
+        'performance_fee_date'=>'required|date|date_format:Y-m-d',
         'report' => '',
     ],
     'backend' => [
