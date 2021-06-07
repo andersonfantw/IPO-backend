@@ -411,4 +411,17 @@ trait Report
     // {
     //     return substr($answer, 0, 1);
     // }
+
+    /**
+     * Author: Anderson
+     * @param $str
+     * @return string|string[]
+     */
+    public function fixChineseWrapInPDF($str){
+        $s = '';
+        for($i=0;$i<mb_strlen($str);$i++){
+            $s .= mb_substr($str,$i,1) . ' ';
+        }
+        return str_replace(["\r\n","\n","\r"],"<br />",$s);
+    }
 }

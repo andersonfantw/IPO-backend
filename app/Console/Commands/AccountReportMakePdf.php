@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use App\AccountReport;
+use App\Jobs\MakeAccountReportPdf;
 
 class AccountReportMakePdf extends Command
 {
@@ -54,6 +56,10 @@ class AccountReportMakePdf extends Command
             $AccountReport= AccountReport::where('account_report_sending_summary_id','=',$account_report_sending_summary_id)->where('client_acc_id','=',$this->option('client'))->first();
             if(empty($AccountReport)) $this->line(sprintf('AccountReport:MakePdf client:%s is not in id{%s}',$this->option('client'),$account_report_sending_summary_id));
             else{
+                $AccountReport->report_queue_time = Carbon::now();
+                $AccountReport->make_report_status = 'pending';
+                $AccountReport->save();
+                MakeAccountReportPdf::dispatch($account_report_sending_summary_id,$this->option('client'));
                 $this->line(sprintf('AccountReport:MakePdf id{%s} client:%s',$this->option('client'),$account_report_sending_summary_id));
             }
         }

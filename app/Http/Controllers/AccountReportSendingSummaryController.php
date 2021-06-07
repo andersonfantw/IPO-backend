@@ -46,7 +46,6 @@ class AccountReportSendingSummaryController extends HomeController
         if(empty($id)) abort('404');
         $input = $request->only(AccountReportSendingSummaryFormRequest::field_names);
         AccountReportSendingSummary::findOrFail($id)->update($input);
-var_dump($id,$input);
         return ['ok'=>true];
     }
     public function destroy($id){

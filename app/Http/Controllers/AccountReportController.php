@@ -11,14 +11,15 @@ use App\TempIpoSummary;
 use App\A01;
 use App\A05;
 use App\A06;
-use App\Traits\Image;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use PDF;
+use App\Traits\Report;
 
 class AccountReportController extends Controller
 {
-    use Image;
+    use Report;
 
     protected $name = 'AccountReport';
 
@@ -88,8 +89,15 @@ class AccountReportController extends Controller
     }
 
     // 選擇項目的功能
-    public function makePdf(){
-
+    public function makePdf(Request $request, $id){
+        $input = $request->only('list');
+        foreach(explode(',',$input['list']) as $client_acc_id) {
+            Artisan::call('AccountReport:MakePdf', [
+                'id' => $id,
+                '--client' => $client_acc_id
+            ]);
+        }
+        return ['ok'=>true];
     }
     public function sendTestMail(){
 
@@ -106,8 +114,11 @@ class AccountReportController extends Controller
     }
 
     // 全部清單的功能
-    public function makeAll(){
-
+    public function makeAll($id){
+        Artisan::call('AccountReport:MakePdf', [
+            'id'=>$id,
+        ]);
+        return ['ok'=>true];
     }
     public function sendAll(){
 
@@ -162,13 +173,5 @@ class AccountReportController extends Controller
         $pdf = PDF::loadView('pdf.AnnualAccountReport',$this->prepareDocData($AccountReportSendingSummary,$client_acc_id));
         $pdf->setOptions(['isPhpEnabled' => true]);
         return $pdf->stream('AnnualAccountReport.pdf');
-    }
-
-    public function fixChineseWrapInPDF($str){
-        $s = '';
-        for($i=0;$i<mb_strlen($str);$i++){
-            $s .= mb_substr($str,$i,1) . ' ';
-        }
-        return str_replace(["\r\n","\n","\r"],"<br />",$s);
     }
 }
