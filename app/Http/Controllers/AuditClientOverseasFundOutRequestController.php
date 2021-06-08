@@ -13,11 +13,9 @@ class AuditClientOverseasFundOutRequestController extends ViewClientOverseasFund
     {
         $input = $request->all();
         $ClientOverseasFundOutRequest = ClientOverseasFundOutRequest::find($input['id']);
-        $rejected = false;
-        if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
+        if ($request->has(['駁回信息'])) {
             $ClientOverseasFundOutRequest->status = 'rejected';
             $ClientOverseasFundOutRequest->remark = $input['駁回信息'];
-            $rejected = true;
         } else {
             $ClientOverseasFundOutRequest->status = 'approved';
             $ClientOverseasFundOutRequest->remark = null;

@@ -13,11 +13,9 @@ class AuditClientHKFundOutRequestController extends ViewClientHKFundOutRequestCo
     {
         $input = $request->all();
         $ClientHKFundOutRequest = ClientHKFundOutRequest::find($input['id']);
-        $rejected = false;
-        if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
+        if ($request->has(['駁回信息'])) {
             $ClientHKFundOutRequest->status = 'rejected';
             $ClientHKFundOutRequest->remark = $input['駁回信息'];
-            $rejected = true;
         } else {
             $ClientHKFundOutRequest->status = 'approved';
             $ClientHKFundOutRequest->remark = null;
