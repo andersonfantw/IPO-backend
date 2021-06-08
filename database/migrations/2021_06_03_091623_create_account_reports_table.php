@@ -31,7 +31,7 @@ class CreateAccountReportsTable extends Migration
                 $table->string('issued_by',50)->nullable();
                 $table->text('remark')->nullable();
                 $table->timestamps();
-                $table->unique(['account_report_sending_summary_id','client_acc_id'],'unique1')
+                $table->unique(['account_report_sending_summary_id','client_acc_id'],'unique1');
             });
 
             Schema::table($table_name, function (Blueprint $table) use($table_name) {

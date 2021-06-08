@@ -39,7 +39,7 @@
                         </b-button>
                     </span>
                     <span id="send_test_mail" tabindex="0">
-                        <b-button size="sm" :disabled="!(all_selected || indeterminate) && list.length<=5" @click="send_test_mail">
+                        <b-button size="sm" :disabled="!(all_selected || indeterminate) && list.length>5" @click="send_test_mail">
                             <i class="fas fa-envelope-square"></i> &nbsp;發送測試
                         </b-button>
                     </span>
@@ -136,7 +136,7 @@
                     查看報告書
                 </b-button>
                 <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="!row.item.make_report_time">
-                    查看寄出的報告書
+                    查看寄出的PDF
                 </b-button>
             </template>
         </b-table>
@@ -156,7 +156,6 @@ export default {
     props:['ipo_activity_period_id'],
     data() {
       return {
-          id:0,
           all_selected: false,
           indeterminate: false,
           status_options:[
@@ -209,7 +208,6 @@ export default {
       }
     },
     created(){
-        this.id = document.getElementById('ar_id').value
         this.index();
     },
     watch: {
@@ -274,7 +272,7 @@ export default {
                 _this.buttons = response.buttons
                 _this.pagination.last_page = response.last_page
                 _this.pagination.base_url = response.path + '?page='
-            },'/AccountReportSendingSummary/'+this.id+'/'+this.$options.name+'?page='+this.pagination.current_page, this.filter);
+            },'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name+'?page='+this.pagination.current_page, this.filter);
         },
         find_client(){
             let _this = this
@@ -292,27 +290,29 @@ export default {
                 if(response.ok){
                     console.log(response)
                 }else if(response.msg) _this.alertFail(response.msg)
-            },this.getFormData(this.search),'/AccountReportSendingSummary/'+this.id+'/'+this.$options.name)
+            },this.getFormData(this.search),'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name)
         },
 
         // 選擇項目的功能
         create_selected_pdf(){
             let _this = this
             this.myPost(function(response) {
-                console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/MakePdf')
+                _this.list = []
+                _this.index()
+            },this.getFormData({list:this.list}),'/api/AccountReport/MakePdf/'+this.ipo_activity_period_id+'/')
         },
         send_test_mail() {
             let _this = this
             this.myPost(function(response) {
-                console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/SendTestMail')
+                _this.list = []
+                _this.index()
+            },this.getFormData({list:this.list}),'/api/AccountReport/SendTestMail/'+this.ipo_activity_period_id+'/')
         },
         send(){
             let _this = this
             this.myPost(function(response) {
                 console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/SendMail')
+            },this.getFormData({list:this.list}),'/api/AccountReport/SendMail/'+this.ipo_activity_period_id+'/')
         },
         del() {
             let _this = this
@@ -327,13 +327,13 @@ export default {
             let _this = this
             this.myPost(function(response) {
                 console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/SendAll')
+            },this.getFormData({list:this.list}),'/api/AccountReport/SendAll/'+this.ipo_activity_period_id+'/')
         },
         send_all(){
             let _this = this
             this.myPost(function(response) {
                 console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/MakeAll')
+            },this.getFormData({list:this.list}),'/api/AccountReport/MakeAll/'+this.ipo_activity_period_id+'/')
         },
 
         show_html(item) {

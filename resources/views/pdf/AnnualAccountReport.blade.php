@@ -99,13 +99,19 @@
             z-index:  -1000;
             opacity: 0.1;
         }
-        #account_summary tbody td:nth-child(1){
+        #account_summary tbody td:nth-child(1),
+        #stock tbody td:nth-child(1),
+        #stock tbody td:nth-child(2){
             text-align: center;
         }
-        #account_summary tbody td:nth-child(3){
+        #account_summary tbody td:nth-child(3),
+        #stock thead th:nth-child(3),
+        #stock thead th:nth-child(4),
+        #stock tbody td:nth-child(3){
             text-align: right;
         }
-        #account_summary tbody td:nth-child(4){
+        #account_summary tbody td:nth-child(4),
+        #stock tbody td:nth-child(4){
             text-align: right;
             font-weight: bold;
         }
@@ -283,7 +289,7 @@
         <br />
         <br />
         <h4>二. 庫存資訊</h4>
-        <table width="100%" cellspacing="0">
+        <table id="stock" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th>標的名稱</th>
@@ -301,9 +307,9 @@
                 @foreach($data['Alloted'] as $alloted)
                 <tr>
                     <td>{{$alloted['product_name']}}</td>
-                    <td>{{$alloted['qty']}}</td>
-                    <td>{{$alloted['allot_price1']}}</td>
-                    <td>{{$alloted['amount']}}</td>
+                    <td>{{number_format($alloted['qty'],0)}}</td>
+                    <td>{{number_format($alloted['allot_price1'],2)}}</td>
+                    <td>{{number_format($alloted['amount'],2)}}</td>
                 </tr>
                 @endforeach
             </tbody>

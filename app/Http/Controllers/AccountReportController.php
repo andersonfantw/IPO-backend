@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use PDF;
 use App\Traits\Report;
+use App\Services\SiteDocumentService;
 
 class AccountReportController extends Controller
 {
@@ -99,10 +100,19 @@ class AccountReportController extends Controller
         }
         return ['ok'=>true];
     }
-    public function sendTestMail(){
-
+    public function sendTestMail(Request $request, $id){
+        $input = $request->only('list');
+        $i=0;
+        foreach(explode(',',$input['list']) as $client_acc_id) {
+            Artisan::call('AccountReport:SendTestMail', [
+                'id' => $id,
+                'client' => $client_acc_id
+            ]);
+            if($i++>5) break;
+        }
+        return ['ok'=>true];
     }
-    public function sendMail(){
+    public function sendMail(Request $request, $id){
 
     }
     public function removeClient(Request $request,$id){
@@ -114,13 +124,13 @@ class AccountReportController extends Controller
     }
 
     // 全部清單的功能
-    public function makeAll($id){
+    public function makeAll(Request $request, $id){
         Artisan::call('AccountReport:MakePdf', [
             'id'=>$id,
         ]);
         return ['ok'=>true];
     }
-    public function sendAll(){
+    public function sendAll(Request $request, $id){
 
     }
 
@@ -132,10 +142,10 @@ class AccountReportController extends Controller
         $date = Carbon::parse($AccountReportSendingSummary['end_date'])->gt(Carbon::today())?Carbon::today():$AccountReportSendingSummary['end_date'];
         $Subscription = A06::where('client_acc_id','=',$client_acc_id)->whereDate('close_time','>=',$date)->whereDate('allot_date','<',$date)->sum('amount');
         // 已中簽的新股
-        $a06_alloted = A06::where('client_acc_id','=',$client_acc_id)
+        $a06_alloted = A06::select('product_id','product_name','allot_price1','qty','amount')->where('client_acc_id','=',$client_acc_id)
         ->whereDate('allot_date','>=',Carbon::today())
         ->whereNotIn('product_id',A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->get('product_id'))
-        ->get('product_id','product_name','allot_price1','qty','amount');
+        ->get();
 
         $Deposits = A01::select('buss_date','amount',DB::raw("case remark when 'OUT_TRANSFER' then '提款' else '入金' end as method"))->where('client_acc_id','=',$client_acc_id)->where('gl_mapping_item_id','=','OTH:Acct1')->where(function ($query){
             $query->whereNull('remark')->orWhere(function ($query){
@@ -167,10 +177,10 @@ class AccountReportController extends Controller
     }
 
     public function showHtml(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id){
-        return View('pdf.AnnualAccountReport',$this->prepareDocData($AccountReportSendingSummary,$client_acc_id));
+        return View('pdf.AnnualAccountReport',(new SiteDocumentService())->AnnualAccountReportData($AccountReportSendingSummary,$client_acc_id));
     }
     public function showPdf(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id){
-        $pdf = PDF::loadView('pdf.AnnualAccountReport',$this->prepareDocData($AccountReportSendingSummary,$client_acc_id));
+        $pdf = PDF::loadView('pdf.AnnualAccountReport',(new SiteDocumentService())->AnnualAccountReportData($AccountReportSendingSummary,$client_acc_id));
         $pdf->setOptions(['isPhpEnabled' => true]);
         return $pdf->stream('AnnualAccountReport.pdf');
     }

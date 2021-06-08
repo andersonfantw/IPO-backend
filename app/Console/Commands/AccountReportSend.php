@@ -52,8 +52,9 @@ class AccountReportSend extends Command
                 ]);
             }
         }else {
+            $AccountReportSendingSummary = AccountReportSendingSummary::findOrFail($account_report_sending_summary_id);
             $AccountReport = AccountReport::where('account_report_sending_summary_id', '=', $account_report_sending_summary_id)->where('client_acc_id', '=', $this->option('client'))->first();
-            if (empty($AccountReport)) $this->line(sprintf('AccountReport:send client:%s is not in id{%s}', $this->option('client'), $account_report_sending_summary_id));
+            if (empty($AccountReport)) $this->error(sprintf('AccountReport:send id{%s}, client:%s is not exists!', $account_report_sending_summary_id, $this->option('client')));
             else {
                 $AccountReport->sending_queue_time = Carbon::now();
                 $AccountReport->sending_status = 'pending';
