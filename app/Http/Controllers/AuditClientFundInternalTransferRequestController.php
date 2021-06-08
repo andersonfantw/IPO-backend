@@ -13,11 +13,9 @@ class AuditClientFundInternalTransferRequestController extends ViewClientFundInt
     {
         $input = $request->all();
         $ClientFundInternalTransferRequest = ClientFundInternalTransferRequest::find($input['id']);
-        $rejected = false;
-        if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
+        if ($request->has(['駁回信息'])) {
             $ClientFundInternalTransferRequest->status = 'rejected';
             $ClientFundInternalTransferRequest->remark = $input['駁回信息'];
-            $rejected = true;
         } else {
             $ClientFundInternalTransferRequest->status = 'approved';
             $ClientFundInternalTransferRequest->remark = null;
