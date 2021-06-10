@@ -43,4 +43,8 @@ class AnnualAccountReport extends Mailable
             ->with($this->content)
             ->attachFromStorage($this->content['attachFile']);
     }
+
+    public function failed($e){
+        var_dump(3,$e);
+    }
 }

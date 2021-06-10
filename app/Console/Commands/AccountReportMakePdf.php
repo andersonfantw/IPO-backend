@@ -61,10 +61,7 @@ class AccountReportMakePdf extends Command
                 $AccountReport->report_queue_time = Carbon::now();
                 $AccountReport->make_report_status = 'pending';
                 $AccountReport->save();
-                MakeAccountReportPdf::dispatch(
-                    $account_report_sending_summary_id,
-                    $this->option('client')
-                )->onQueue('report');
+                MakeAccountReportPdf::dispatch($AccountReport)->onQueue('report');
                 $this->line(sprintf('AccountReport:MakePdf id{%s} client:%s',$account_report_sending_summary_id,$this->option('client')));
             }
         }

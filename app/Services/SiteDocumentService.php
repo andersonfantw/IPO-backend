@@ -17,6 +17,10 @@ class SiteDocumentService
 {
     use Report;
 
+    public static function getStoragePath(string $uuid, Carbon $report_make_date, int $client_acc_id){
+        return 'upload/'.$uuid.sprintf('/AnnualAccountReport[%s]_%s.pdf',$report_make_date->format('YM'), $client_acc_id);
+    }
+
     public function AnnualAccountReportData(AccountReportSendingSummary $AccountReportSendingSummary, int $client_acc_id){
         $ViewClient = ViewClient::where('account_no','=',$client_acc_id);
         if(!$ViewClient) return [

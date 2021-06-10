@@ -22,7 +22,7 @@ Vue.use(IconsPlugin);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
- import { LayoutPlugin, TabsPlugin, CardPlugin, AlertPlugin, CollapsePlugin, ModalPlugin, FormDatepickerPlugin, FormTimepickerPlugin, ListGroupPlugin, FormGroupPlugin, FormRadioPlugin, FormSelectPlugin, FormInputPlugin, ButtonPlugin, FormCheckboxPlugin, PopoverPlugin, AvatarPlugin, FormFilePlugin, OverlayPlugin, LinkPlugin, FormPlugin, PaginationNavPlugin } from 'bootstrap-vue';
+ import { LayoutPlugin, TabsPlugin, CardPlugin, AlertPlugin, CollapsePlugin, ModalPlugin, FormDatepickerPlugin, FormTimepickerPlugin, ListGroupPlugin, FormGroupPlugin, FormRadioPlugin, FormSelectPlugin, FormInputPlugin, ButtonPlugin, FormCheckboxPlugin, PopoverPlugin, AvatarPlugin, FormFilePlugin, OverlayPlugin, LinkPlugin, FormPlugin, PaginationNavPlugin, ProgressPlugin } from 'bootstrap-vue';
  Vue.use(LayoutPlugin)
  Vue.use(TabsPlugin)
  Vue.use(CardPlugin)
@@ -45,6 +45,7 @@ Vue.use(IconsPlugin);
  Vue.use(LinkPlugin)
  Vue.use(FormPlugin)
  Vue.use(PaginationNavPlugin)
+ Vue.use(ProgressPlugin)
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))

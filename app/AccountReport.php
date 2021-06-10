@@ -14,11 +14,15 @@ class AccountReport extends Model
     ];
 
     public function AccountReportSendingSummary(){
-        return $this->belongsTo('APP\AccountReportSendingSummary');
+        return $this->belongsTo('App\AccountReportSendingSummary');
     }
 
     public function ClientInfo(){
         return $this->hasOne('App\CysislbGtsClientAcc','client_acc_id','client_acc_id');
+    }
+
+    public function ViewClient(){
+        return $this->hasOne('App\ViewClient','account_no','client_acc_id');
     }
 
     public function scopeOfParentID(Builder $query, $id){

@@ -60,7 +60,8 @@ class AccountReportSend extends Command
                 $AccountReport->sending_status = 'pending';
                 $AccountReport->save();
                 // send
-                SendAccountReport::dispatch($account_report_sending_summary_id,$this->option('client'));
+                dispatch((new SendAccountReport($AccountReport))->onQueue('emails'));
+
                 $this->line(sprintf('AccountReport:send id{%s} client:%s',$this->option('client'),$account_report_sending_summary_id));
             }
         }
