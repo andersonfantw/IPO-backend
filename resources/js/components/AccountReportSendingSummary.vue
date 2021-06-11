@@ -128,7 +128,7 @@ export default {
             for ( let k in this.form ) this.form[k]=(['id','ipo_activity_period_id'].indexOf(k)===-1)?'':0
         },
         enter(item){
-            document.location.href='/AccountReportSendingSummary/'+item.data.id
+            document.location.href=process.env.MIX_BASE_PATH+'/AccountReportSendingSummary/'+item.data.id
         },
         modify(){
             if(this.form.id===0) this.store()
