@@ -322,7 +322,7 @@ export default {
             if(this.search.client_acc_id.length>3){
                 this.myPost(function(response){
                     _this.find_client_list = response
-                },{acc_no:_this.search.client_acc_id},'/api/find/client');
+                },{acc_no:_this.search.client_acc_id},this.url('/find/client'));
             }
         },
         add_to_list(){
@@ -342,27 +342,27 @@ export default {
             this.myPost(function(response) {
                 _this.list = []
                 _this.index()
-            },this.getFormData({list:this.list}),'/api/AccountReport/MakePdf/'+this.ipo_activity_period_id+'/')
+            },this.getFormData({list:this.list}),this.url('/AccountReport/MakePdf/')+this.ipo_activity_period_id+'/')
         },
         send_test_mail() {
             let _this = this
             this.myPost(function(response) {
                 _this.list = []
                 _this.index()
-            },this.getFormData({list:this.list}),'/api/AccountReport/SendTestMail/'+this.ipo_activity_period_id+'/')
+            },this.getFormData({list:this.list}),this.url('/AccountReport/SendTestMail/')+this.ipo_activity_period_id+'/')
         },
         send(){
             let _this = this
             this.myPost(function(response) {
                 console.log(response)
-            },this.getFormData({list:this.list}),'/api/AccountReport/SendMail/'+this.ipo_activity_period_id+'/')
+            },this.getFormData({list:this.list}),this.url('/AccountReport/SendMail/')+this.ipo_activity_period_id+'/')
         },
         del() {
             let _this = this
             this.myPost(function(response) {
                 _this.list = []
                 _this.index()
-            },this.getFormData({ipo_activity_period_id:this.ipo_activity_period_id,list:this.list}),'/api/AccountReport/RemoveClient/'+this.ipo_activity_period_id+'/')
+            },this.getFormData({ipo_activity_period_id:this.ipo_activity_period_id,list:this.list}),this.url('/AccountReport/RemoveClient/')+this.ipo_activity_period_id+'/')
         },
 
         // 全部清單的功能
@@ -375,7 +375,7 @@ export default {
                     _this.stop_reload()
                     _this.index()
                     _this.busy=false;
-                },{},'/api/AccountReport/StopMake/'+this.ipo_activity_period_id+'/',function(response){
+                },{},this.url('/AccountReport/StopMake/'+this.ipo_activity_period_id+'/'),function(response){
                     _this.busy=false;
                 })
             }else{
@@ -383,7 +383,7 @@ export default {
                     console.log(response)
                     _this.reload_list()
                     _this.busy=false;
-                },{},'/api/AccountReport/MakeAll/'+this.ipo_activity_period_id+'/',function(response){
+                },{},this.url('/AccountReport/MakeAll/'+this.ipo_activity_period_id+'/'),function(response){
                     _this.busy=false;
                 })
             }
@@ -397,7 +397,7 @@ export default {
                     _this.stop_reload()
                     _this.index()
                     _this.busy=false;
-                },{},'/api/AccountReport/StopSend/'+this.ipo_activity_period_id+'/',function(response){
+                },{},this.url('/AccountReport/StopSend/'+this.ipo_activity_period_id+'/'),function(response){
                     _this.busy=false;
                 })
             }else{
@@ -405,7 +405,7 @@ export default {
                     console.log(response)
                     _this.reload_list()
                     _this.busy=false;
-                },{},'/api/AccountReport/SendAll/'+this.ipo_activity_period_id+'/',function(response){
+                },{},this.url('/AccountReport/SendAll/'+this.ipo_activity_period_id+'/'),function(response){
                     _this.busy=false;
                 })
             }
