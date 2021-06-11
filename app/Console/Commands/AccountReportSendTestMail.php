@@ -48,7 +48,7 @@ class AccountReportSendTestMail extends Command
         $AccountReport = AccountReport::where('account_report_sending_summary_id', '=', $account_report_sending_summary_id)
             ->where('client_acc_id', '=', $this->argument('client'))->firstOrFail();
 
-        dispatch((new SendAccountReportTestMail($AccountReport))->onQueue('emails'));
+        dispatch((new SendAccountReportTestMail($AccountReport))->onQueue('email'));
 
         $this->line(sprintf('AccountReport:SendTestMail id{%s} client:%s',$this->argument('client'),$account_report_sending_summary_id));
         return 0;

@@ -28,4 +28,12 @@ class AccountReport extends Model
     public function scopeOfParentID(Builder $query, $id){
         return $query->where('account_report_sending_summary_id','=',$id);
     }
+
+    public function scopeOfReportStatus(Builder $query, $status){
+        return $query->where('make_report_status','=',$status);
+    }
+
+    public function scopeOfSendingStatus(Builder $query, $status){
+        return $query->where('sending_status','=',$status);
+    }
 }

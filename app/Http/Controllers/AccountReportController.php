@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 use App\Http\Requests\AccountReportFormRequest;
 use Carbon\Carbon;
 use PDF;
@@ -81,13 +82,13 @@ class AccountReportController extends Controller
                 'buttons' => [
                     'total' => AccountReport::ofParentID($id)->count(),
                     'pdf'=> array_merge(
-                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'active'=>false],
+                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'active'=>(Queue::size('report')>0)],
                         AccountReport::ofParentID($id)
                         ->select(DB::raw("ifnull(make_report_status,'null') as make_report_status"),DB::raw('count(*) as total'))
                         ->groupBy('make_report_status')->pluck('total','make_report_status')->toArray()
                     ),
                     'email'=> array_merge(
-                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'active'=>false],
+                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'active'=>(Queue::size('email')>0)],
                         AccountReport::ofParentID($id)
                         ->select(DB::raw("ifnull(sending_status,'null') as sending_status"),DB::raw('count(*) as total'))
                         ->groupBy('sending_status')->pluck('total','sending_status')->toArray()
@@ -95,12 +96,6 @@ class AccountReportController extends Controller
                 ]
             ]
         );
-        $last_time = AccountReport::ofParentID($id)->max('make_report_time');
-        $pdf_active = $last_time?Carbon::parse($last_time)->gt(Carbon::now()->subHour()):false;
-        $result['buttons']['pdf']['active'] = ($result['buttons']['pdf']['pending']>0) && $pdf_active;
-        $last_time = AccountReport::ofParentID($id)->max('sending_time');
-        $email_active = $last_time?Carbon::parse($last_time)->gt(Carbon::now()->subHour()):false;
-        $result['buttons']['email']['active'] = ($result['buttons']['email']['pending']>0) && $email_active;
         return $result;
     }
 
@@ -133,7 +128,7 @@ class AccountReportController extends Controller
     public function removeClient(Request $request,$id){
         $input = $request->only('list');
         foreach(explode(',',$input['list']) as $client_acc_id){
-            AccountReport::where('account_report_sending_summary_id','=',$id)
+            AccountReport::ofParentID($id)
             ->where('client_acc_id','=',$client_acc_id)->delete();
         }
         return ['ok'=>true];
@@ -141,13 +136,22 @@ class AccountReportController extends Controller
 
     // 全部清單的功能
     public function makeAll(Request $request, $id){
-        Artisan::call('AccountReport:MakePdf', [
-            'id'=>$id,
-        ]);
+        Artisan::call('AccountReport:MakePdf', ['id'=>$id]);
+        return ['ok'=>true];
+    }
+    public function stopMake(Request $request, $id){
+        AccountReport::ofParentID($id)->ofReportStatus('pending')->update(['make_report_status'=>null]);
+        Artisan::call('queue:clear', ['name'=>'report']);
         return ['ok'=>true];
     }
     public function sendAll(Request $request, $id){
-
+        Artisan::call('AccountReport:send', ['id'=>$id]);
+        return ['ok'=>true];
+    }
+    public function stopSend(Request $request, $id){
+        AccountReport::ofParentID($id)->ofSendingStatus('pending')->update(['sending_status'=>null]);
+        Artisan::call('queue:clear', ['name'=>'email']);
+        return ['ok'=>true];
     }
 
     public function showHtml(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id, SiteDocumentService $SiteDocumentService){

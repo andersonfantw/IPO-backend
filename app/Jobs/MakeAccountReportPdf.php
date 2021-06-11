@@ -40,7 +40,7 @@ class MakeAccountReportPdf implements ShouldQueue
      */
     public function handle(SiteDocumentService $SiteDocumentService)
     {
-        $this->AccountReportSendingSummary = $this->AccountReport->AccountReportSendingSummary()->first();
+        $this->AccountReportSendingSummary = $this->AccountReport->AccountReportSendingSummary()->firstOrFail();
         $this->ViewClient = ViewClient::where('account_no','=',$this->AccountReport->client_acc_id)->firstOrFail();
         $this->AccountReport->make_report_time = Carbon::now();
         $result = $SiteDocumentService->AnnualAccountReport($this->AccountReportSendingSummary,$this->AccountReport->client_acc_id);

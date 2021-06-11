@@ -7,6 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\AccountReport;
+use App\Mail\AnnualAccountReport;
+use Carbon\Carbon;
 use Throwable;
 
 class SendAccountReport implements ShouldQueue
@@ -60,6 +65,8 @@ class SendAccountReport implements ShouldQueue
             $this->AccountReport->sending_status = 'success';
             $this->AccountReport->save();
         }
+
+        sleep(2);
     }
 
     public function failed(Throwable $exception){

@@ -1,5 +1,12 @@
 <template>
     <b-container class="m-4" fluid>
+        <b-overlay variant="dark" :show="busy" rounded="sm" no-center>
+            <template #overlay>
+                <div class="d-table m-auto text-center mt-5">
+                    <span class="spinner-border my-5"></span>
+                    <p class="text-white display-4 ml-3">執行中，請稍待...</p>
+                </div>
+            </template>
         <b-alert :show="alert.message!==''" :variant="alert.variant" dismissible>{{alert.message}}</b-alert>
         <h1 class="text-warning text-center">年度通知書發送清單</h1>
         <hr />
@@ -70,19 +77,23 @@
             <b-col cols="2">
                 <b-button-group class="mb-3">
                     <span id="create_pdf" tabindex="0">
-                    <b-button size="sm" variant="primary"  @click="create_pdf"
-                        :disabled="(buttons.pdf.null===0 && buttons.pdf.pending===0 && (buttons.total === buttons.pdf.success+buttons.pdf.fail)) || buttons.pdf.active">
+                    <b-button size="sm" :variant="buttons.pdf.active?'danger':'primary'"  @click="create_pdf"
+                        @mouseover="buttons2.hover_make_report_pdf=true"
+                        @mouseout="buttons2.hover_make_report_pdf=false"
+                        :disabled="(buttons.pdf.null===0 && buttons.pdf.pending===0 && (buttons.total === buttons.pdf.success+buttons.pdf.fail)) || buttons.email.active">
                         <i class="far fa-stop-circle" v-if="buttons.pdf.active"></i>
                         <i class="far fa-file-pdf" v-else></i>
-                        &nbsp;製作文件
+                        &nbsp;<span v-if="buttons.pdf.active">停止製作</span><span v-else>製作文件</span>
                     </b-button>
                     </span>
                     <span id="send_all" tabindex="0">
-                    <b-button size="sm" variant="success" @click="send_all"
-                        :disabled="(buttons.email.null===0 && buttons.email.pending===0 && (buttons.total === buttons.email.success+buttons.email.fail)) || buttons.email.active">
+                    <b-button size="sm" :variant="buttons.email.active?'danger':'primary'" @click="send_all"
+                        @mouseover="buttons2.hover_send_email_button=true"
+                        @mouseout="buttons2.hover_send_email_button=false"
+                        :disabled="(buttons.email.null===0 && buttons.email.pending===0 && (buttons.total === buttons.email.success+buttons.email.fail)) || buttons.pdf.active">
                         <i class="far fa-stop-circle" v-if="buttons.email.active"></i>
                         <i class="far fa-envelope" v-else></i>
-                        &nbsp;全部發送
+                        &nbsp;<span v-if="buttons.email.active">停止發送</span><span v-else>全部發送</span>
                     </b-button>
                     </span>
                 </b-button-group>
@@ -93,12 +104,12 @@
                     為已產生年報的人寄送報告。完成製作年報後，才可寄送報告
                 </b-tooltip>
             </b-col>
-            <b-col cols="2">
+            <b-col cols="3">
                 <p class="text-white my-1">{{info}}</p>
             </b-col>
-            <b-col cols="5">
+            <b-col cols="4">
                 <b-input-group size="sm">
-                    <b-input size="sm" list="client_list" v-model="search.client_acc_id" @keyup="find_client" placeholder="輸入四位數字後自動檢索"></b-input>
+                    <b-input size="sm" list="client_list" v-model="search.client_acc_id" @keyup="find_client" placeholder="四位數字後自動檢索"></b-input>
                     <b-input size="sm" v-model="search.client_name" disabled></b-input>
                     <datalist id="client_list">
                         <option v-for="client in find_client_list" :key="client['client_acc_id']" :value="client['client_acc_id']">{{ client['name'] }}</option>
@@ -129,13 +140,13 @@
             <template #cell(make_report_status)="row">
                 <div v-if="row.item.make_report_status==='pending'">排程中 {{row.item.report_queue_time}}</div>
                 <div v-else-if="row.item.make_report_status==='success'">成功 {{row.item.make_report_time}}</div>
-                <div v-else-if="row.item.make_report_status==='fail'" class="text-danger">失敗 {{row.item.make_report_time}}</div>
+                <div v-else-if="row.item.make_report_status==='fail'" class="text-danger">失敗 {{row.item.make_report_time}}<br />{{row.item.remark}}</div>
                 <div v-else>{{row.item.make_report_status}}</div>
             </template>
             <template #cell(sending_status)="row">
                 <div v-if="row.item.sending_status==='pending'">排程中 {{row.item.sending_queue_time}}</div>
                 <div v-else-if="row.item.sending_status==='success'">成功 {{row.item.sending_time}}</div>
-                <div v-else-if="row.item.sending_status==='fail'" class="text-danger">失敗 {{row.item.sending_time}}</div>
+                <div v-else-if="row.item.sending_status==='fail'" class="text-danger">失敗 {{row.item.sending_time}}<br />{{row.item.remark}}</div>
                 <div v-else>{{row.item.sending_status}}</div>
             </template>
             <template #cell(actions)="row">
@@ -152,6 +163,7 @@
         <b-modal id="del" title="BootstrapVue" @ok="del">
             <p class="my-4">您確定要刪除{{selected_list_client_name}}嗎?</p>
         </b-modal>
+        </b-overlay>
     </b-container>
 </template>
 
@@ -167,6 +179,7 @@ export default {
           all_selected: false,
           indeterminate: false,
           interval_id: 0,
+          busy: false,
           status_options:[
               {value:'all', text:'全部'},
               {value:'null', text:'無'},
@@ -206,8 +219,12 @@ export default {
           // button status: '' -> process -> done
           buttons: {
               total: 0,
-              pdf: { pending:0, success:0, fail: 0 },
-              email: { pending:0, success:0, fail: 0 },
+              pdf: { pending:0, success:0, fail: 0, active:false },
+              email: { pending:0, success:0, fail: 0, active:false },
+          },
+          buttons2:{
+              hover_make_report_pdf:false,
+              hover_send_email_button:false,
           },
           // button_status:{
           //     create_pdf: {status:'', progress: ''},
@@ -245,8 +262,10 @@ export default {
     },
     computed:{
         info(){
-            if(this.buttons.pdf.active) return '製作文件執行中 '+(this.buttons.pdf.success+this.buttons.pdf.fail)+' / '+this.buttons.total
-            else if(this.buttons.email.active) return '郵件發送中 '+(this.buttons.email.success+this.buttons.email.fail)+' / '+this.buttons.total
+            if(this.buttons.pdf.active) return '製作文件執行中 '+(this.buttons.pdf.success+this.buttons.pdf.fail)+' / '+(this.buttons.pdf.pending+this.buttons.pdf.success+this.buttons.pdf.fail)+' 共'+this.buttons.total
+            else if(this.buttons.email.active) return '郵件發送中 '+(this.buttons.email.success+this.buttons.email.fail)+' / '+(this.buttons.email.pending+this.buttons.email.success+this.buttons.email.fail)+' 共'+this.buttons.total
+            else if(this.buttons2.hover_make_report_pdf) return '製作文件未處理'+ this.buttons.pdf.null+'、排程中'+this.buttons.pdf.pending +'、成功'+this.buttons.pdf.success+ '、失敗'+this.buttons.pdf.fail
+            else if(this.buttons2.hover_send_email_button) return '郵件發送未處理'+ this.buttons.email.null+'、排程中'+this.buttons.email.pending +'、成功'+this.buttons.email.success+ '、失敗'+this.buttons.email.fail
             else return '共 '+ this.buttons.total + ' 人、已選取 ' + this.list.length + ' 人';
         },
         selected_list_client_name(){
@@ -275,6 +294,7 @@ export default {
 
         // reflash list
         reload_list(){
+            let _this = this
             if(this.interval_id===0) this.interval_id = setInterval(function(){ _this.index() }, 5000);
         },
         stop_reload(){
@@ -348,17 +368,47 @@ export default {
         // 全部清單的功能
         create_pdf(){
             let _this = this
-            this.myPost(function(response) {
-                console.log(response)
-                _this.reload_list()
-            },{},'/api/AccountReport/SendAll/'+this.ipo_activity_period_id+'/')
+            this.busy=true;
+            if(this.buttons.pdf.pending){
+                this.myPost(function(response) {
+                    console.log(response)
+                    _this.stop_reload()
+                    _this.index()
+                    _this.busy=false;
+                },{},'/api/AccountReport/StopMake/'+this.ipo_activity_period_id+'/',function(response){
+                    _this.busy=false;
+                })
+            }else{
+                this.myPost(function(response) {
+                    console.log(response)
+                    _this.reload_list()
+                    _this.busy=false;
+                },{},'/api/AccountReport/MakeAll/'+this.ipo_activity_period_id+'/',function(response){
+                    _this.busy=false;
+                })
+            }
         },
         send_all(){
             let _this = this
-            this.myPost(function(response) {
-                console.log(response)
-                _this.reload_list()
-            },{},'/api/AccountReport/MakeAll/'+this.ipo_activity_period_id+'/')
+            this.busy=true;
+            if(this.buttons.email.pending){
+                this.myPost(function(response) {
+                    console.log(response)
+                    _this.stop_reload()
+                    _this.index()
+                    _this.busy=false;
+                },{},'/api/AccountReport/StopSend/'+this.ipo_activity_period_id+'/',function(response){
+                    _this.busy=false;
+                })
+            }else{
+                this.myPost(function(response) {
+                    console.log(response)
+                    _this.reload_list()
+                    _this.busy=false;
+                },{},'/api/AccountReport/SendAll/'+this.ipo_activity_period_id+'/',function(response){
+                    _this.busy=false;
+                })
+            }
         },
 
         show_html(item) {

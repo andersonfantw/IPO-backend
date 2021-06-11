@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\AccountReport;
+use App\AccountReportSendingSummary;
 use App\Jobs\SendAccountReport;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -43,8 +44,10 @@ class AccountReportSend extends Command
     {
         $account_report_sending_summary_id = $this->argument('id');
         if($this->option('client')=='all') {
-            // 寄給所有client_acc_id
-            $AccountReport = AccountReport::where('account_report_sending_summary_id','=',$account_report_sending_summary_id)->get();
+            // 寄給所有client_acc_id。有文件的才寄信
+            $AccountReport = AccountReport::ofParentID($account_report_sending_summary_id)->where(function($query){
+                $query->whereNull('sending_status')->orWhere('sending_status','=','pending');
+            })->where('make_report_status','=','success')->get();
             foreach($AccountReport as $account){
                 Artisan::call('AccountReport:send', [
                     'id'=>$account_report_sending_summary_id,
@@ -60,7 +63,7 @@ class AccountReportSend extends Command
                 $AccountReport->sending_status = 'pending';
                 $AccountReport->save();
                 // send
-                dispatch((new SendAccountReport($AccountReport))->onQueue('emails'));
+                dispatch((new SendAccountReport($AccountReport))->onQueue('email'));
 
                 $this->line(sprintf('AccountReport:send id{%s} client:%s',$this->option('client'),$account_report_sending_summary_id));
             }

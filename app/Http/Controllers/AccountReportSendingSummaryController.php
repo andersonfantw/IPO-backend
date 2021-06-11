@@ -18,13 +18,21 @@ class AccountReportSendingSummaryController extends HomeController
     }
     public function index(Request $request){
         return array_map(function($row){
+            $total = AccountReport::ofParentID($row['id'])->count();
+            $success = AccountReport::ofParentID($row['id'])->ofSendingStatus('success')->count();
+            $failure = AccountReport::ofParentID($row['id'])->ofSendingStatus('fail')->count();    
+            if($total){
+                $sending_progress = sprintf("%.2f%%",number_format(($success+$failure)/$total*100,4));
+            }else{
+                $sending_progress = '0.00%';
+            }
             return [
                 'id' => $row['id'],
                 'data' => $row,
-                'total' => AccountReport::where('account_report_sending_summary_id','=',$row['id'])->count(),
-                'sending_progress' => '',
-                'success' => '',
-                'failure' => '',
+                'total' => $total,
+                'sending_progress' => $sending_progress,
+                'success' => $success,
+                'failure' => $failure,
             ];
         },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get()->toArray());
     }
