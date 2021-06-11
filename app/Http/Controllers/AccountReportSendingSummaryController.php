@@ -58,7 +58,8 @@ class AccountReportSendingSummaryController extends HomeController
         return ['ok'=>true];
     }
     public function destroy($id){
-        $AccountReportSendingSummary = AccountReportSendingSummary::destroy($id);
+        AccountReport::ofParentID($id)->delete();
+        AccountReportSendingSummary::destroy($id);
         return ['ok'=>true];
     }
 
