@@ -40,14 +40,15 @@ class AccountReportSendingSummaryController extends HomeController
         $AccountReportSendingSummary = AccountReportSendingSummary::create(
             $request->only(AccountReportSendingSummaryFormRequest::field_names)
         );
-        CysislbGtsClientAcc::whereRaw("substr(client_acc_id,-2,2)='13'")->active()->chunk(500, function($rows) use($AccountReportSendingSummary){
+        $CysislbGtsClientAcc = CysislbGtsClientAcc::whereRaw("substr(client_acc_id,-2,2)='13'")->active()->get();
+        foreach($CysislbGtsClientAcc->chunk(500) as $rows){
             AccountReport::Upsert(array_map(function($row) use($AccountReportSendingSummary){
                 return [
                     'account_report_sending_summary_id' => $AccountReportSendingSummary->id,
                     'client_acc_id' => $row['client_acc_id'],
                 ];
             },$rows->toArray()),['account_report_sending_summary_id','client_acc_id'],[]);
-        });
+        }
         return ['ok'=>true];
     }
     public function update(AccountReportSendingSummaryFormRequest $request, $id){
