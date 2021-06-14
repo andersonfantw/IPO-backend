@@ -144,6 +144,12 @@ class AccountReportController extends Controller
         Artisan::call('queue:clear', ['name'=>'report']);
         return ['ok'=>true];
     }
+    public function addMakeAllProgress(Request $request, $id){
+        return [
+            'ok'=>true,
+            'count'=>AccountReport::ofParentID($id)->ofReportStatus(null)->count()
+        ];
+    }
     public function sendAll(Request $request, $id){
         Artisan::call('AccountReport:send', ['id'=>$id]);
         return ['ok'=>true];
@@ -152,6 +158,12 @@ class AccountReportController extends Controller
         AccountReport::ofParentID($id)->ofSendingStatus('pending')->update(['sending_status'=>null]);
         Artisan::call('queue:clear', ['name'=>'email']);
         return ['ok'=>true];
+    }
+    public function addSendAllProgress(Request $request, $id){
+        return [
+            'ok'=>true,
+            'count'=>AccountReport::ofParentID($id)->ofSendingStatus(null)->count()
+        ];
     }
 
     public function showHtml(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id, SiteDocumentService $SiteDocumentService){

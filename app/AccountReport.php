@@ -30,10 +30,12 @@ class AccountReport extends Model
     }
 
     public function scopeOfReportStatus(Builder $query, $status){
-        return $query->where('make_report_status','=',$status);
+        if($status===null) return $query->whereNull('make_report_status');
+        else return $query->where('make_report_status','=',$status);
     }
 
     public function scopeOfSendingStatus(Builder $query, $status){
-        return $query->where('sending_status','=',$status);
+        if($status===null) return $query->whereNull('sending_status');
+        else return $query->where('sending_status','=',$status);
     }
 }

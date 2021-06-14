@@ -142,9 +142,10 @@ export default {
             });
         },
         store(){
+            let _this = this
             let formdata = this.getFormData();
             this.crudStore(function(response){
-
+                _this.index()
             }, formdata);
         },
         update(){
