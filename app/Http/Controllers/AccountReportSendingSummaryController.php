@@ -18,13 +18,21 @@ class AccountReportSendingSummaryController extends HomeController
     }
     public function index(Request $request){
         return array_map(function($row){
+            $total = AccountReport::ofParentID($row['id'])->count();
+            $success = AccountReport::ofParentID($row['id'])->ofSendingStatus('success')->count();
+            $failure = AccountReport::ofParentID($row['id'])->ofSendingStatus('fail')->count();    
+            if($total){
+                $sending_progress = sprintf("%.2f%%",number_format(($success+$failure)/$total*100,4));
+            }else{
+                $sending_progress = '0.00%';
+            }
             return [
                 'id' => $row['id'],
                 'data' => $row,
-                'total' => AccountReport::where('account_report_sending_summary_id','=',$row['id'])->count(),
-                'sending_progress' => '',
-                'success' => '',
-                'failure' => '',
+                'total' => $total,
+                'sending_progress' => $sending_progress,
+                'success' => $success,
+                'failure' => $failure,
             ];
         },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get()->toArray());
     }
@@ -32,14 +40,15 @@ class AccountReportSendingSummaryController extends HomeController
         $AccountReportSendingSummary = AccountReportSendingSummary::create(
             $request->only(AccountReportSendingSummaryFormRequest::field_names)
         );
-        CysislbGtsClientAcc::active()->chunk(500, function($rows) use($AccountReportSendingSummary){
+        $CysislbGtsClientAcc = CysislbGtsClientAcc::whereRaw("substr(client_acc_id,-2,2)='13'")->active()->get();
+        foreach($CysislbGtsClientAcc->chunk(500) as $rows){
             AccountReport::Upsert(array_map(function($row) use($AccountReportSendingSummary){
                 return [
                     'account_report_sending_summary_id' => $AccountReportSendingSummary->id,
                     'client_acc_id' => $row['client_acc_id'],
                 ];
             },$rows->toArray()),['account_report_sending_summary_id','client_acc_id'],[]);
-        });
+        }
         return ['ok'=>true];
     }
     public function update(AccountReportSendingSummaryFormRequest $request, $id){
@@ -49,7 +58,8 @@ class AccountReportSendingSummaryController extends HomeController
         return ['ok'=>true];
     }
     public function destroy($id){
-        $AccountReportSendingSummary = AccountReportSendingSummary::destroy($id);
+        AccountReport::ofParentID($id)->delete();
+        AccountReportSendingSummary::destroy($id);
         return ['ok'=>true];
     }
 

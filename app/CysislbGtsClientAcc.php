@@ -34,6 +34,8 @@ class CysislbGtsClientAcc extends Model
     ];
 
     public function scopeActive(Builder $query){
-        return $this->where('status','=','A');
+        return $query->where(function($query){
+            $query->where('status','=','A')->orWhereRaw('length(client_acc_id)=8');
+        });
     }
 }

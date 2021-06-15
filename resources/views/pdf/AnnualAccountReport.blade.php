@@ -235,6 +235,16 @@
                     @endif
                     <td></td>
                 </tr>
+                <tr class="subitem">
+                    <td></td>
+                    <td>融資資金</td>
+                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
+                    <td>0.00</td>
+                    @else
+                    <td>{{number_format($data['Subscription'],2)}}</td>
+                    @endif
+                    <td></td>
+                </tr>
                 <tr class="subitem solid">
                     <td></td>
                     <td>投資組合市值</td>
@@ -274,18 +284,21 @@
             </tbody>
         </table>
         <br />
-        @if ($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'] > 0)
         <div>
             <b>說明:</b>
             <ol>
-                @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
+                @if ($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'] > 0)
+                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
                 <li>表現費: {{($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.2}} ({{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}*20%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
-                @else
+                    @else
                 <li>表現費: {{($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.8}} ({{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
+                    @endif
+                @else
+                <li>本期管理費管理費豁免。</li>
                 @endif
+                <li>與交易相關的手續費，請參閱報告期間的日交易報表。</li>
             </ol>
         </div>
-        @endif
         <br />
         <br />
         <h4>二. 庫存資訊</h4>

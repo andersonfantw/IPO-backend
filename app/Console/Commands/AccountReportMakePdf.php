@@ -45,7 +45,9 @@ class AccountReportMakePdf extends Command
         $account_report_sending_summary_id = $this->argument('id');
         if($this->option('client')=='all'){
             // 新增所有client_acc_id
-            $AccountReport = AccountReport::where('account_report_sending_summary_id','=',$account_report_sending_summary_id)->get();
+            $AccountReport = AccountReport::ofParentID($account_report_sending_summary_id)->where(function($query){
+                $query->whereNull('make_report_status')->orWhere('make_report_status','=','pending');
+            })->get();
             foreach($AccountReport as $account){
                 Artisan::call('AccountReport:MakePdf', [
                     'id'=>$account_report_sending_summary_id,
@@ -53,18 +55,13 @@ class AccountReportMakePdf extends Command
                 ]);
             }
         }else{
-            // 檢查client_acc_id是否存在
-            $AccountReportSendingSummary = AccountReportSendingSummary::findOrFail($account_report_sending_summary_id);
-            $AccountReport= AccountReport::where('account_report_sending_summary_id','=',$account_report_sending_summary_id)->where('client_acc_id','=',$this->option('client'))->first();
+            $AccountReport= AccountReport::ofParentID($account_report_sending_summary_id)->where('client_acc_id','=',$this->option('client'))->first();
             if(empty($AccountReport)) $this->error(sprintf('AccountReport:MakePdf id{%s}, client:%s is not exists!',$account_report_sending_summary_id,$this->option('client')));
             else{
                 $AccountReport->report_queue_time = Carbon::now();
                 $AccountReport->make_report_status = 'pending';
                 $AccountReport->save();
-                MakeAccountReportPdf::dispatch(
-                    $account_report_sending_summary_id,
-                    $this->option('client')
-                )->onQueue('report');
+                MakeAccountReportPdf::dispatch($AccountReport)->onQueue('report');
                 $this->line(sprintf('AccountReport:MakePdf id{%s} client:%s',$account_report_sending_summary_id,$this->option('client')));
             }
         }
