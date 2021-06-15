@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits;
 
+use Storage;
+
 trait Image
 {
     use File;
@@ -19,19 +21,22 @@ trait Image
         return "data:image/$filetype;base64,$base64";
     }
 
-    public function blobToBase64(String $blob)
+    public function base64ToBlob(String $base64)
+    {
+        $base64 = preg_replace("/^data:image\/.+;base64,/i", '', $base64);
+        return base64_decode($base64);
+    }
+
+    public function blobToBase64($blob)
     {
         $base64 = base64_encode($blob);
-        // $base64 = preg_replace("/^data:image\/.+;base64,/i", '', $base64);
-        // return base64_decode($base64);
-        return $base64;
+        return "data:image/jpeg;base64,$base64";
     }
 
     public function saveBase64Image(String $base64, String $file_path, String $file_name)
     {
         $extension = explode(";base64,", $base64);
         $type_aux = explode("image/", $extension[0]);
-        // $extension = $type_aux[1];
         Storage::putFileAs($file_path, $base64, "$file_name.$type_aux[1]");
         return "$file_name.$type_aux[1]";
     }

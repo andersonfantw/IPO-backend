@@ -7,6 +7,7 @@ use App\ClientCNIDCard;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\Traits\Excel;
+use App\ViewClientIDCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -120,7 +121,15 @@ class DeliverableList2Controller extends HomeController
 
     public function downloadFilesForOpeningAccount(Request $request)
     {
+        $zipFile = new \PhpZip\ZipFile();
         $clients = $request->input('clients');
-        $data['backcard_face'] = $this->saveBase64Image($request->input('hk_bank_card'), "upload/$client->uuid", 'hk_bank_card');
+        foreach ($clients as $client) {
+            $ClientIDCard = ViewClientIDCard::where('uuid', $client['uuid'])->first();
+            $idcard_face = $this->saveBase64Image($this->blobToBase64($ClientIDCard->idcard_face), "upload/$ClientIDCard->uuid", 'idcard_face');
+            $idcard_back = $this->saveBase64Image($this->blobToBase64($ClientIDCard->idcard_back), "upload/$ClientIDCard->uuid", 'idcard_back');
+            $zipFile->addDir(storage_path("app/upload/$ClientIDCard->uuid"));
+        }
+        $zipFile->saveAsFile(storage_path("app/public/file.zip"))->close();
+        return response()->download(storage_path("app/public/file.zip"));
     }
 }
