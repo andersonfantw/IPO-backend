@@ -22,30 +22,30 @@ Vue.use(IconsPlugin);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
- import { LayoutPlugin, TabsPlugin, CardPlugin, AlertPlugin, CollapsePlugin, ModalPlugin, FormDatepickerPlugin, FormTimepickerPlugin, ListGroupPlugin, FormGroupPlugin, FormRadioPlugin, FormSelectPlugin, FormInputPlugin, ButtonPlugin, FormCheckboxPlugin, PopoverPlugin, AvatarPlugin, FormFilePlugin, OverlayPlugin, LinkPlugin, FormPlugin, PaginationNavPlugin, ProgressPlugin } from 'bootstrap-vue';
- Vue.use(LayoutPlugin)
- Vue.use(TabsPlugin)
- Vue.use(CardPlugin)
- Vue.use(AlertPlugin)
- Vue.use(CollapsePlugin)
- Vue.use(ModalPlugin)
- Vue.use(FormDatepickerPlugin)
- Vue.use(FormTimepickerPlugin)
- Vue.use(ListGroupPlugin)
- Vue.use(FormGroupPlugin)
- Vue.use(FormRadioPlugin)
- Vue.use(FormSelectPlugin)
- Vue.use(FormInputPlugin)
- Vue.use(ButtonPlugin)
- Vue.use(FormCheckboxPlugin)
- Vue.use(PopoverPlugin)
- Vue.use(AvatarPlugin)
- Vue.use(FormFilePlugin)
- Vue.use(OverlayPlugin)
- Vue.use(LinkPlugin)
- Vue.use(FormPlugin)
- Vue.use(PaginationNavPlugin)
- Vue.use(ProgressPlugin)
+import { LayoutPlugin, TabsPlugin, CardPlugin, AlertPlugin, CollapsePlugin, ModalPlugin, FormDatepickerPlugin, FormTimepickerPlugin, ListGroupPlugin, FormGroupPlugin, FormRadioPlugin, FormSelectPlugin, FormInputPlugin, ButtonPlugin, FormCheckboxPlugin, PopoverPlugin, AvatarPlugin, FormFilePlugin, OverlayPlugin, LinkPlugin, FormPlugin, PaginationNavPlugin, ProgressPlugin } from 'bootstrap-vue';
+Vue.use(LayoutPlugin)
+Vue.use(TabsPlugin)
+Vue.use(CardPlugin)
+Vue.use(AlertPlugin)
+Vue.use(CollapsePlugin)
+Vue.use(ModalPlugin)
+Vue.use(FormDatepickerPlugin)
+Vue.use(FormTimepickerPlugin)
+Vue.use(ListGroupPlugin)
+Vue.use(FormGroupPlugin)
+Vue.use(FormRadioPlugin)
+Vue.use(FormSelectPlugin)
+Vue.use(FormInputPlugin)
+Vue.use(ButtonPlugin)
+Vue.use(FormCheckboxPlugin)
+Vue.use(PopoverPlugin)
+Vue.use(AvatarPlugin)
+Vue.use(FormFilePlugin)
+Vue.use(OverlayPlugin)
+Vue.use(LinkPlugin)
+Vue.use(FormPlugin)
+Vue.use(PaginationNavPlugin)
+Vue.use(ProgressPlugin)
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
@@ -105,6 +105,8 @@ Vue.component('client-bank-cards', require('./components/ClientBankCards.vue').d
 Vue.component('account-report-sending-summary', require('./components/AccountReportSendingSummary.vue').default);
 
 Vue.component('account-report', require('./components/AccountReport.vue').default);
+
+Vue.component('client-address-proof-updates', require('./components/ClientAddressProofUpdates.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

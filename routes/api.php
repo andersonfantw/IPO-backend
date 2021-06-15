@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get('/user', 'Controller@user');
 
 Route::prefix('AE')->group(function () {
     Route::any('/create', 'AEController@create');
@@ -53,6 +50,7 @@ Route::prefix('DeliverableList2')->group(function () {
     Route::any('/all_data', 'DeliverableList2Controller@getData');
     Route::any('/NoOfNews', 'DeliverableList2Controller@getNoOfNews');
     Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
+    Route::any('/DownloadFilesForOpeningAccount', 'DeliverableList2Controller@downloadFilesForOpeningAccount');
 });
 
 Route::prefix('Ayers')->group(function () {
@@ -101,18 +99,22 @@ Route::prefix('ClientBankCards')->group(function () {
     Route::any('/all_data', 'ClientBankCardsController@getData');
 });
 
+Route::prefix('ClientAddressProofUpdates')->group(function () {
+    Route::any('/all_data', 'ClientAddressProofUpdatesController@getData');
+});
+
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
-Route::post('/find/client','AccountReportController@findClient');
+Route::post('/find/client', 'AccountReportController@findClient');
 
-Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTestMail')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/SendMail/{id}/', 'AccountReportController@sendMail')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/RemoveClient/{id}/', 'AccountReportController@removeClient')->where(['id'=>'[0-9]+']);
+Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id' => '[0-9]+']);
+Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTestMail')->where(['id' => '[0-9]+']);
+Route::post('/AccountReport/SendMail/{id}/', 'AccountReportController@sendMail')->where(['id' => '[0-9]+']);
+Route::post('/AccountReport/RemoveClient/{id}/', 'AccountReportController@removeClient')->where(['id' => '[0-9]+']);
 
-Route::post('/AccountReport/MakeAll/{id}/', 'AccountReportController@makeAll')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/StopMake/{id}/', 'AccountReportController@stopMake')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/SendAll/{id}/', 'AccountReportController@sendAll')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/StopSend/{id}/', 'AccountReportController@stopSend')->where(['id'=>'[0-9]+']);
+Route::post('/AccountReport/MakeAll/{id}/', 'AccountReportController@makeAll')->where(['id' => '[0-9]+']);
+Route::post('/AccountReport/StopMake/{id}/', 'AccountReportController@stopMake')->where(['id' => '[0-9]+']);
+Route::post('/AccountReport/SendAll/{id}/', 'AccountReportController@sendAll')->where(['id' => '[0-9]+']);
+Route::post('/AccountReport/StopSend/{id}/', 'AccountReportController@stopSend')->where(['id' => '[0-9]+']);
 // Anderson 2021-05-31 end

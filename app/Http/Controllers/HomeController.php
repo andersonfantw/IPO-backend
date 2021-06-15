@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Imports\A07Import;
 use App\Traits\CountRecords;
+use App\Traits\Image;
 use Excel;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    use CountRecords;
+    use CountRecords, Image;
 
     protected $name = 'Home';
     private $menu;
@@ -91,7 +92,7 @@ class HomeController extends Controller
                 ],
             ],
             [
-                'label' => " 客戶出入金申請",
+                'label' => "客戶出入金申請",
                 'items' => [
                     [
                         'label' => "存款申請",
@@ -117,6 +118,16 @@ class HomeController extends Controller
                         'label' => "銀盛信用卡出款申請",
                         'url' => route('ClientCreditCardFundOutRequests'),
                         'no_of_news' => $this->countNewClientCreditCardFundOutRequests(),
+                    ],
+                ],
+            ],
+            [
+                'label' => "帳戶資料修改申請",
+                'items' => [
+                    [
+                        'label' => "住址證明修改申請",
+                        'url' => route('ClientAddressProofUpdates'),
+                        'no_of_news' => $this->countNewClientAddressProofUpdates(),
                     ],
                 ],
             ],

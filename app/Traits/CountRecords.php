@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Client;
+use App\ClientAddressProofUpdate;
 use App\ClientCNIDCard;
 use App\ClientCreditCardFundOutRequest;
 use App\ClientFundInRequest;
@@ -163,6 +164,12 @@ trait CountRecords
     public function countNewClientCreditCardFundOutRequests()
     {
         $NoOfNews = ClientCreditCardFundOutRequest::where('status', 'pending')->count();
+        return $NoOfNews > 0 ? $NoOfNews : null;
+    }
+
+    public function countNewClientAddressProofUpdates()
+    {
+        $NoOfNews = ClientAddressProofUpdate::where('status', 'pending')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 }

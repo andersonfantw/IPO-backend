@@ -54,8 +54,6 @@ class UnauditedList1Controller extends HomeController
             ClientOtherIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'unaudited');
         })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'unaudited');
         })->whereHas('ClientFinancialStatus', function (Builder $query) {
@@ -65,8 +63,6 @@ class UnauditedList1Controller extends HomeController
         })->whereHas('ClientEvaluationResults', function (Builder $query) {
             $query->where('status', 'unaudited');
         })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'unaudited');
         })->where('status', 'unaudited')->orderBy('created_at', 'desc')->get();
         $rows = [];

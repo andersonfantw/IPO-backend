@@ -218,8 +218,10 @@ class AuditClientController extends ViewClientController
         $Client->ClientSignature->save();
 
         if ($request->has(['駁回存款證明']) && $request->filled(['駁回存款證明'])) {
-            $Client->ClientDepositProof->status = 'rejected';
-            $Client->ClientDepositProof->remark = $input['駁回存款證明'];
+            if (is_object($Client->ClientDepositProof)) {
+                $Client->ClientDepositProof->status = 'rejected';
+                $Client->ClientDepositProof->remark = $input['駁回存款證明'];
+            }
             $this->addEditableSteps($Client, 'DepositProof');
             ClientRejectionLog::create([
                 'uuid' => $Client->uuid,
@@ -228,12 +230,16 @@ class AuditClientController extends ViewClientController
             ]);
             $rejected = true;
         } else {
-            $Client->ClientDepositProof->status = $input['next_status'];
-            $Client->ClientDepositProof->remark = null;
+            if (is_object($Client->ClientDepositProof)) {
+                $Client->ClientDepositProof->status = $input['next_status'];
+                $Client->ClientDepositProof->remark = null;
+            }
             $this->deleteEditableSteps($Client, 'DepositProof');
         }
-        $Client->ClientDepositProof->count_of_audits++;
-        $Client->ClientDepositProof->save();
+        if (is_object($Client->ClientDepositProof)) {
+            $Client->ClientDepositProof->count_of_audits++;
+            $Client->ClientDepositProof->save();
+        }
         if (env('IS_PRODUCTION') && $rejected) {
             return $this->sendRejectionSMS($Client);
         }
