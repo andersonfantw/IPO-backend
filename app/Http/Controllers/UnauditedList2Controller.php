@@ -61,8 +61,6 @@ class UnauditedList2Controller extends HomeController
             ClientOtherIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'audited1');
         })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited1');
         })->whereHas('ClientFinancialStatus', function (Builder $query) {
@@ -72,8 +70,6 @@ class UnauditedList2Controller extends HomeController
         })->whereHas('ClientEvaluationResults', function (Builder $query) {
             $query->where('status', 'audited1');
         })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'audited1');
         })->where('status', 'audited1')->orderBy('created_at', 'desc')->get();
         $rows = [];

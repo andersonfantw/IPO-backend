@@ -60,8 +60,6 @@ class DeliverableList2Controller extends HomeController
             ClientOtherIDCard::class,
         ], function (Builder $query) {
             $query->where('status', 'audited2');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'audited2');
         })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited2');
         })->whereHas('ClientFinancialStatus', function (Builder $query) {
@@ -71,8 +69,6 @@ class DeliverableList2Controller extends HomeController
         })->whereHas('ClientEvaluationResults', function (Builder $query) {
             $query->where('status', 'audited2');
         })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'audited2');
         })->where('status', 'audited2')->orderBy('created_at', 'asc')->get();
         $rows = [];
