@@ -350,7 +350,7 @@ export default {
                 if(response.ok){
                     console.log(response)
                 }else if(response.msg) _this.alertFail(response.msg)
-            },this.getFormData(this.search),'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name)
+            },this.getFormData(this.search),process.env.MIX_BASE_PATH+'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name)
         },
 
         // 選擇項目的功能
@@ -424,10 +424,10 @@ export default {
         },
 
         show_html(item) {
-            window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowHtml/'+item.client_acc_id)
+            window.open(process.env.MIX_BASE_PATH+'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowHtml/'+item.client_acc_id)
         },
         show_pdf(item) {
-            window.open('/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowPdf/'+item.client_acc_id)
+            window.open(process.env.MIX_BASE_PATH+'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowPdf/'+item.client_acc_id)
         },
 
         getObjectByValue(array, key, value){
