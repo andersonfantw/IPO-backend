@@ -159,7 +159,7 @@
                 <b-button size="sm" class="mr-1" @click="show_html(row.item)">
                     查看報告書
                 </b-button>
-                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="!row.item.make_report_status=='fail'">
+                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="row.item.make_report_status=='fail'">
                     查看寄出的PDF
                 </b-button>
             </template>
