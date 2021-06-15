@@ -81,14 +81,15 @@ class AccountReportController extends Controller
             [
                 'buttons' => [
                     'total' => AccountReport::ofParentID($id)->count(),
-                    'pdf'=> array_merge(
-                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'active'=>(Queue::size('report')>0)],
+                    'command' => Queue::size('command'),
+                    'pdf' => array_merge(
+                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'queue'=>Queue::size('report')],
                         AccountReport::ofParentID($id)
                         ->select(DB::raw("ifnull(make_report_status,'null') as make_report_status"),DB::raw('count(*) as total'))
                         ->groupBy('make_report_status')->pluck('total','make_report_status')->toArray()
                     ),
-                    'email'=> array_merge(
-                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'active'=>(Queue::size('email')>0)],
+                    'email' => array_merge(
+                        ['null'=>0,'pending'=>0,'success'=>0,'fail'=>0,'queue'=>Queue::size('email')],
                         AccountReport::ofParentID($id)
                         ->select(DB::raw("ifnull(sending_status,'null') as sending_status"),DB::raw('count(*) as total'))
                         ->groupBy('sending_status')->pluck('total','sending_status')->toArray()
@@ -123,7 +124,14 @@ class AccountReportController extends Controller
         return ['ok'=>true];
     }
     public function sendMail(Request $request, $id){
-
+        $input = $request->only('list');
+        foreach(explode(',',$input['list']) as $client_acc_id){
+            Artisan::call('AccountReport:send', [
+                'id'=>$id,
+                '--client'=>$client_acc_id
+            ]);
+        }
+        return ['ok'=>true];
     }
     public function removeClient(Request $request,$id){
         $input = $request->only('list');
@@ -144,12 +152,6 @@ class AccountReportController extends Controller
         Artisan::call('queue:clear', ['name'=>'report']);
         return ['ok'=>true];
     }
-    public function addMakeAllProgress(Request $request, $id){
-        return [
-            'ok'=>true,
-            'count'=>AccountReport::ofParentID($id)->ofReportStatus(null)->count()
-        ];
-    }
     public function sendAll(Request $request, $id){
         Artisan::call('AccountReport:send', ['id'=>$id]);
         return ['ok'=>true];
@@ -158,12 +160,6 @@ class AccountReportController extends Controller
         AccountReport::ofParentID($id)->ofSendingStatus('pending')->update(['sending_status'=>null]);
         Artisan::call('queue:clear', ['name'=>'email']);
         return ['ok'=>true];
-    }
-    public function addSendAllProgress(Request $request, $id){
-        return [
-            'ok'=>true,
-            'count'=>AccountReport::ofParentID($id)->ofSendingStatus(null)->count()
-        ];
     }
 
     public function showHtml(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id, SiteDocumentService $SiteDocumentService){

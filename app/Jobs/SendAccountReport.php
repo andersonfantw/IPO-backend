@@ -44,10 +44,7 @@ class SendAccountReport implements ShouldQueue
         $ViewClient = $this->AccountReport->ViewClient()->firstOrFail();
 
         $attach_file = 'upload/'.$ViewClient->uuid.sprintf('/AnnualAccountReport[%s]_%s.pdf',$AccountReportSendingSummary->report_make_date->format('YM'),$client_acc_id);
-        if(Storage::missing($attach_file)){
-            $this->error(sprintf('AccountReport:SendTestMail id{%s}, client:%s, missing report file. Forgot to create pdf?', $account_report_sending_summary_id, $client_acc_id));
-            return 1;
-        }
+        if(Storage::missing($attach_file)) abort(404);
 
         Mail::to(explode(',',env('MAIL_TO_OPERATOR')))
         ->send((new AnnualAccountReport([
@@ -66,7 +63,7 @@ class SendAccountReport implements ShouldQueue
             $this->AccountReport->save();
         }
 
-        sleep(2);
+        sleep(5);
     }
 
     public function failed(Throwable $exception){

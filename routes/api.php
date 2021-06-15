@@ -113,8 +113,6 @@ Route::post('/AccountReport/RemoveClient/{id}/', 'AccountReportController@remove
 
 Route::post('/AccountReport/MakeAll/{id}/', 'AccountReportController@makeAll')->where(['id'=>'[0-9]+']);
 Route::post('/AccountReport/StopMake/{id}/', 'AccountReportController@stopMake')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/addMakeAllProgress/{id}/', 'AccountReportController@makeProgress')->where(['id'=>'[0-9]+']);
 Route::post('/AccountReport/SendAll/{id}/', 'AccountReportController@sendAll')->where(['id'=>'[0-9]+']);
 Route::post('/AccountReport/StopSend/{id}/', 'AccountReportController@stopSend')->where(['id'=>'[0-9]+']);
-Route::post('/AccountReport/addSendAllProgress/{id}/', 'AccountReportController@sendProgress')->where(['id'=>'[0-9]+']);
 // Anderson 2021-05-31 end

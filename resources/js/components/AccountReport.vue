@@ -77,23 +77,23 @@
             <b-col cols="2">
                 <b-button-group class="mb-3">
                     <span id="create_pdf" tabindex="0">
-                    <b-button size="sm" :variant="buttons.pdf.active?'danger':'primary'"  @click="create_pdf"
+                    <b-button size="sm" :variant="buttons.pdf.queue?'danger':'primary'"  @click="create_pdf"
                         @mouseover="buttons2.hover_make_report_pdf=true"
                         @mouseout="buttons2.hover_make_report_pdf=false"
-                        :disabled="(buttons.pdf.null===0 && buttons.pdf.pending===0 && (buttons.total === buttons.pdf.success+buttons.pdf.fail)) || buttons.email.active || busy">
-                        <i class="far fa-stop-circle" v-if="buttons.pdf.active"></i>
+                        :disabled="(buttons.pdf.null===0 && buttons.pdf.pending===0 && (buttons.total === buttons.pdf.success+buttons.pdf.fail)) || buttons.email.queue>0 || this.buttons.command>0">
+                        <i class="far fa-stop-circle" v-if="buttons.pdf.queue>0"></i>
                         <i class="far fa-file-pdf" v-else></i>
-                        &nbsp;<span v-if="buttons.pdf.active">停止製作</span><span v-else>製作文件</span>
+                        &nbsp;<span v-if="buttons.pdf.queue>0">停止製作</span><span v-else>製作文件</span>
                     </b-button>
                     </span>
                     <span id="send_all" tabindex="0">
-                    <b-button size="sm" :variant="buttons.email.active?'danger':'primary'" @click="send_all"
+                    <b-button size="sm" :variant="buttons.email.queue?'danger':'primary'" @click="send_all"
                         @mouseover="buttons2.hover_send_email_button=true"
                         @mouseout="buttons2.hover_send_email_button=false"
-                        :disabled="(buttons.email.null===0 && buttons.email.pending===0 && (buttons.total === buttons.email.success+buttons.email.fail)) || buttons.pdf.active || busy">
-                        <i class="far fa-stop-circle" v-if="buttons.email.active"></i>
+                        :disabled="(buttons.email.null===0 && buttons.email.pending===0 && (buttons.total === buttons.email.success+buttons.email.fail)) || buttons.pdf.queue>0 || this.buttons.command>0">
+                        <i class="far fa-stop-circle" v-if="buttons.email.queue>0"></i>
                         <i class="far fa-envelope" v-else></i>
-                        &nbsp;<span v-if="buttons.email.active">停止發送</span><span v-else>全部發送</span>
+                        &nbsp;<span v-if="buttons.email.queue>0">停止發送</span><span v-else>全部發送</span>
                     </b-button>
                     </span>
                 </b-button-group>
@@ -105,7 +105,7 @@
                 </b-tooltip>
             </b-col>
             <b-col cols="3">
-                <p class="text-white my-1">{{info}}</p>
+                <small class="text-white" style="margin-top: -3px;position: absolute;padding: 0 15px;">{{info}}</small>
             </b-col>
             <b-col cols="4">
                 <b-input-group size="sm">
@@ -115,7 +115,7 @@
                         <option v-for="client in find_client_list" :key="client['client_acc_id']" :value="client['client_acc_id']">{{ client['name'] }}</option>
                     </datalist>
                     <b-input-group-append>
-                        <b-button size="sm" class="w-100" @click="add_to_list" variant="primary">
+                        <b-button size="sm" class="w-100" @click="add_to_list" variant="primary" :disabled="busy">
                             <i class="fas fa-user-plus" variant="secondary"></i> &nbsp;新增人員
                         </b-button>
                     </b-input-group-append>
@@ -123,13 +123,19 @@
             </b-col>
         </b-row>
 
-        <b-progress :max="buttons.pdf.pending+buttons.pdf.fail+buttons.pdf.success" show-progress v-if="buttons.pdf.pending>0 && buttons.pdf.active">
-            <b-progress-bar :value="buttons.pdf.success">{{buttons.pdf.success+buttons.pdf.fail}} / {{buttons.pdf.pending+buttons.pdf.fail+buttons.pdf.success}}</b-progress-bar>
+        <b-progress
+            :max="buttons.pdf.pending+buttons.pdf.fail+buttons.pdf.success"
+            height="5px"
+            v-if="buttons.pdf.pending>0 && buttons.pdf.queue>0 && this.buttons.command==0"
+            :value="buttons.pdf.success">
         </b-progress>
-        <b-progress :max="buttons.email.pending+buttons.email.fail+buttons.email.success" show-progress v-if="buttons.email.pending>0 && buttons.email.active">
-            <b-progress-bar :value="buttons.email.success">{{buttons.email.success+buttons.email.fail}} / {{buttons.email.pending+buttons.email.fail+buttons.email.success}}</b-progress-bar>
+        <b-progress
+            :max="buttons.email.pending+buttons.email.fail+buttons.email.success"
+            height="5px"
+            v-if="buttons.email.pending>0 && buttons.email.queue>0 && this.buttons.command==0"
+            :value="buttons.email.success">
         </b-progress>
-        <b-overlay variant="dark" :show="buttons.pdf.active||buttons.email.active" rounded="sm">
+        <b-overlay variant="dark" :show="buttons.command>0" rounded="sm">
         <b-table class="text-white" :items="items" :fields="fields">
             <template #head(select)>
                 <b-form-checkbox name="selected_all" v-model="all_selected" :indeterminate="indeterminate" @change="select_all"></b-form-checkbox>
@@ -179,13 +185,10 @@ export default {
           all_selected: false,
           indeterminate: false,
           interval_id: 0,
-          busy: false,
-          action: '',
-          progress: 0,
           status_options:[
               {value:'all', text:'全部'},
               {value:'null', text:'無'},
-              {value:'pending', text:'排程中 queue'},
+              {value:'pending', text:'排程中 pending'},
               {value:'success', text:'成功 success'},
               {value:'fail', text:'失敗 fail'}
           ],
@@ -221,8 +224,8 @@ export default {
           // button status: '' -> process -> done
           buttons: {
               total: 0,
-              pdf: { null:0, pending:0, success:0, fail: 0, active:false },
-              email: { null:0, pending:0, success:0, fail: 0, active:false },
+              pdf: { null:0, pending:0, success:0, fail: 0, queue:0, command:0 },
+              email: { null:0, pending:0, success:0, fail: 0, queue:0, command:0 },
           },
           buttons2:{
               hover_make_report_pdf:false,
@@ -263,22 +266,20 @@ export default {
         }
     },
     computed:{
+        busy(){
+            return (this.buttons.pdf.queue>0 || this.buttons.email.queue>0 || this.buttons.command>0)
+        },
         info(){
-            if(this.busy){
-                switch(this.action){
-                    case 'create_selected_pdf': return '製作中...'
-                    case 'send_test_mail': return '發送中...'
-                    case 'send': return '發送中...'
-                    case 'del': return '刪除中...'
-                    case 'create_all': return '添加製作文件任務，剩下'+this.progress+'個任務...'
-                    case 'send_all': return '添加發送任務，剩下，剩下'+this.progress+'個任務...'
-                }
-            }
-            if(this.buttons.pdf.active) return '製作文件執行中 '+(this.buttons.pdf.success+this.buttons.pdf.fail)+' / '+(this.buttons.pdf.pending+this.buttons.pdf.success+this.buttons.pdf.fail)+' 共'+this.buttons.total
-            else if(this.buttons.email.active) return '郵件發送中 '+(this.buttons.email.success+this.buttons.email.fail)+' / '+(this.buttons.email.pending+this.buttons.email.success+this.buttons.email.fail)+' 共'+this.buttons.total
+            let s = ''
+            if(this.filter.make_report_status!='all') s += '，文件狀態為'+this.filter.make_report_status+'的共'+this.buttons.pdf[this.filter.make_report_status] + '人'
+            if(this.filter.sending_status!='all') s += '，'+((this.filter.make_report_status!='all')?'且':'')+'發送狀態為'+this.filter.sending_status+'的共'+this.buttons.email[this.filter.sending_status] +'人'
+            if(this.buttons.command>0 && this.buttons.pdf.queue>0) return '添加製作文件任務，剩下'+this.buttons.pdf.null+'個任務...'
+            else if(this.buttons.command>0 && this.buttons.email.queue>0) return '添加發送任務，剩下'+this.buttons.email.null+'個任務...'
+            else if(this.buttons.pdf.queue>0) return '製作文件執行中 '+(this.buttons.pdf.success+this.buttons.pdf.fail)+' / '+(this.buttons.pdf.pending+this.buttons.pdf.success+this.buttons.pdf.fail)+' 共'+this.buttons.total
+            else if(this.buttons.email.queue>0) return '郵件發送中 '+(this.buttons.email.success+this.buttons.email.fail)+' / '+(this.buttons.email.pending+this.buttons.email.success+this.buttons.email.fail)+' 共'+this.buttons.total
             else if(this.buttons2.hover_make_report_pdf) return '製作文件未處理'+ this.buttons.pdf.null+'、排程中'+this.buttons.pdf.pending +'、成功'+this.buttons.pdf.success+ '、失敗'+this.buttons.pdf.fail
             else if(this.buttons2.hover_send_email_button) return '郵件發送未處理'+ this.buttons.email.null+'、排程中'+this.buttons.email.pending +'、成功'+this.buttons.email.success+ '、失敗'+this.buttons.email.fail
-            else return '共 '+ this.buttons.total + ' 人、已選取 ' + this.list.length + ' 人';
+            else return '共 '+ this.buttons.total + ' 人、已選取 ' + this.list.length + ' 人'+s;
         },
         selected_list_client_name(){
             let n = (this.list.length>3)?3:this.list.length
@@ -310,8 +311,6 @@ export default {
             if(this.interval_id===0) {
                 this.interval_id = setInterval(function () {
                     _this.index()
-                    if(_this.action==='create_all') _this.add_create_pdf_progress()
-                    if(_this.action==='send_all') _this.add_send_all_progress()
                 }, 5000)
             }
         },
@@ -329,7 +328,7 @@ export default {
             this.crudIndex(function(response){
                 _this.items = response.data
                 _this.buttons = response.buttons
-                if(_this.buttons.pdf.active || _this.buttons.email.active) _this.reload_list()
+                if(_this.buttons.pdf.queue>0 || _this.buttons.email.queue>0) _this.reload_list()
 
                 _this.pagination.last_page = response.last_page
                 _this.pagination.base_url = response.path + '?page='
@@ -359,7 +358,6 @@ export default {
             let _this = this
             this.action='create_selected_pdf'
             this.myPost(function(response) {
-                _this.action=''
                 _this.list = []
                 _this.index()
             },this.getFormData({list:this.list}),this.url('/AccountReport/MakePdf/')+this.ipo_activity_period_id+'/')
@@ -368,7 +366,6 @@ export default {
             let _this = this
             this.action='send_test_mail'
             this.myPost(function(response) {
-                _this.action=''
                 _this.list = []
                 _this.index()
             },this.getFormData({list:this.list}),this.url('/AccountReport/SendTestMail/')+this.ipo_activity_period_id+'/')
@@ -377,15 +374,14 @@ export default {
             let _this = this
             this.action='send'
             this.myPost(function(response) {
-                _this.action=''
-                console.log(response)
+                _this.list = []
+                _this.index()
             },this.getFormData({list:this.list}),this.url('/AccountReport/SendMail/')+this.ipo_activity_period_id+'/')
         },
         del() {
             let _this = this
             this.action='del'
             this.myPost(function(response) {
-                _this.action=''
                 _this.list = []
                 _this.index()
             },this.getFormData({ipo_activity_period_id:this.ipo_activity_period_id,list:this.list}),this.url('/AccountReport/RemoveClient/')+this.ipo_activity_period_id+'/')
@@ -394,65 +390,37 @@ export default {
         // 全部清單的功能
         create_pdf(){
             let _this = this
-            this.busy=true;
             this.action='create_all'
             if(this.buttons.pdf.pending){
                 this.myPost(function(response) {
-                    _this.action=''
-                    console.log(response)
                     _this.stop_reload()
                     _this.index()
-                    _this.busy=false;
                 },{},this.url('/AccountReport/StopMake/'+this.ipo_activity_period_id+'/'),function(response){
-                    _this.busy=false;
                 })
             }else{
                 this.myPost(function(response) {
-                    _this.action=''
-                    console.log(response)
+                    _this.index()
                     _this.reload_list()
-                    _this.busy=false;
                 },{},this.url('/AccountReport/MakeAll/'+this.ipo_activity_period_id+'/'),function(response){
-                    _this.busy=false;
                 })
             }
-        },
-        add_create_pdf_progress(){
-            let _this = this
-            this.myPost(function(response) {
-                if(response.ok) _this.progress = response.count
-            },{},this.url('/AccountReport/addMakeAllProgress/'+this.ipo_activity_period_id+'/'))
         },
         send_all(){
             let _this = this
-            this.busy=true;
             this.action='send_all'
             if(this.buttons.email.pending){
                 this.myPost(function(response) {
-                    _this.action=''
-                    console.log(response)
                     _this.stop_reload()
                     _this.index()
-                    _this.busy=false;
                 },{},this.url('/AccountReport/StopSend/'+this.ipo_activity_period_id+'/'),function(response){
-                    _this.busy=false;
                 })
             }else{
                 this.myPost(function(response) {
-                    _this.action=''
-                    console.log(response)
+                    _this.index()
                     _this.reload_list()
-                    _this.busy=false;
                 },{},this.url('/AccountReport/SendAll/'+this.ipo_activity_period_id+'/'),function(response){
-                    _this.busy=false;
                 })
             }
-        },
-        add_send_all_progress(){
-            let _this = this
-            this.myPost(function(response) {
-                if(response.ok) _this.progress = response.count
-            },{},this.url('/AccountReport/addSendAllProgress/'+this.ipo_activity_period_id+'/'))
         },
 
         show_html(item) {

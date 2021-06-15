@@ -8,6 +8,7 @@ use App\Jobs\SendAccountReport;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use App\Jobs\SendAllAccountReportJobCreate;
 
 class AccountReportSend extends Command
 {
@@ -44,16 +45,7 @@ class AccountReportSend extends Command
     {
         $account_report_sending_summary_id = $this->argument('id');
         if($this->option('client')=='all') {
-            // 寄給所有client_acc_id。有文件的才寄信
-            $AccountReport = AccountReport::ofParentID($account_report_sending_summary_id)->where(function($query){
-                $query->whereNull('sending_status')->orWhere('sending_status','=','pending');
-            })->where('make_report_status','=','success')->get();
-            foreach($AccountReport as $account){
-                Artisan::call('AccountReport:send', [
-                    'id'=>$account_report_sending_summary_id,
-                    '--client'=>$account->client_acc_id
-                ]);
-            }
+            SendAllAccountReportJobCreate::dispatch($account_report_sending_summary_id)->onQueue('command');
         }else {
             $AccountReportSendingSummary = AccountReportSendingSummary::findOrFail($account_report_sending_summary_id);
             $AccountReport = AccountReport::where('account_report_sending_summary_id', '=', $account_report_sending_summary_id)->where('client_acc_id', '=', $this->option('client'))->first();
