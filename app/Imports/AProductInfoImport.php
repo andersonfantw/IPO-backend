@@ -2,7 +2,7 @@
 namespace App\Imports;
 
 use Carbon\Carbon;
-use App\Models\CysislProductInfo;
+use App\CysislProductInfo;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;

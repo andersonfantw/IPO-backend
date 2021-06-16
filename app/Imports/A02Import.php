@@ -1,7 +1,7 @@
 <?php
 namespace App\Imports;
 
-use App\Models\A02;
+use App\A02;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
