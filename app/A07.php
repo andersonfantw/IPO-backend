@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\tableAssist;
 
 class A07 extends Model
 {
+    use tableAssist;
+
     protected $table = 'a_interest_statement_csv07';
     protected $primaryKey = 'sid';
     protected $fillable = [

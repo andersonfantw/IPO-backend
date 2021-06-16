@@ -38,4 +38,9 @@ class CysislbGtsClientAcc extends Model
             $query->where('status','=','A')->orWhereRaw('length(client_acc_id)=8');
         });
     }
+
+    public static function getTableColumns() {
+        $instance = new static;
+        return $instance->getConnection()->getSchemaBuilder()->getColumnListing($instance->getTable());
+    }
 }
