@@ -30,4 +30,8 @@ class CysislProductInfo extends Model
         'warrant_expiry_date',
     ];
 
+    public static function getTableColumns() {
+        $instance = new static;
+        return $instance->getConnection()->getSchemaBuilder()->getColumnListing($instance->getTable());
+    }
 }

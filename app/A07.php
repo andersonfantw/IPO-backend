@@ -35,4 +35,9 @@ class A07 extends Model
         'dayend_margin_call_val',
         'dayend_marginable_val',
     ];
+
+    public static function getTableColumns() {
+        $instance = new static;
+        return $instance->getConnection()->getSchemaBuilder()->getColumnListing($instance->getTable());
+    }
 }
