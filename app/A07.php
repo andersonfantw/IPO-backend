@@ -9,7 +9,7 @@ class A07 extends Model
 {
     use tableAssist;
 
-    protected $table = 'a_interest_statement_csv07';
+    protected $table = 'a_client_interest_statement_csv07';
     protected $primaryKey = 'sid';
     protected $fillable = [
         'rank',
