@@ -17,13 +17,13 @@ class AuditClientController extends ViewClientController
     private function addEditableSteps(Client $Client, String $Progress)
     {
         $step = config("progress.Progress.$Progress.$Client->nationality");
-        EditableSteps::firstOrCreate(['uuid' => $Client->uuid, 'step' => $step]);
+        EditableSteps::firstOrCreate(['uuid' => $Client->uuid, 'step' => $step, 'reason' => 'correction']);
     }
 
     private function deleteEditableSteps(Client $Client, String $Progress)
     {
         $step = config("progress.Progress.$Progress.$Client->nationality");
-        EditableSteps::where('uuid', $Client->uuid)->where('step', $step)->delete();
+        EditableSteps::where('uuid', $Client->uuid)->where('step', $step)->where('reason', 'correction')->delete();
     }
 
     public function audit1(Request $request)
