@@ -78,7 +78,7 @@
           <td width="20%" class="text-warning">
             {{ ClientIDCard.name_en }}
           </td>
-          <td width="20%">
+          <td width="20%" rowspan="5">
             <b-form-textarea
               class="bg-secondary text-white"
               v-if="ClientIDCard.remark"
