@@ -10,5 +10,6 @@ class EditableSteps extends Model
     protected $fillable = [
         'uuid',
         'step',
+        'reason',
     ];
 }
