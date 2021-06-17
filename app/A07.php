@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\tableAssist;
 
 class A07 extends Model
 {
-    protected $table = 'a_interest_statement_csv07';
+    use tableAssist;
+
+    protected $table = 'a_client_interest_statement_csv07';
     protected $primaryKey = 'sid';
     protected $fillable = [
         'rank',
@@ -35,4 +38,9 @@ class A07 extends Model
         'dayend_margin_call_val',
         'dayend_marginable_val',
     ];
+
+    public static function getTableColumns() {
+        $instance = new static;
+        return $instance->getConnection()->getSchemaBuilder()->getColumnListing($instance->getTable());
+    }
 }

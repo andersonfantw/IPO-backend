@@ -48,6 +48,16 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('private'),
+        ],
+
+        'ayers' => [
+            'driver' => 'local',
+            'root' => env('AYERS_ROOT'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

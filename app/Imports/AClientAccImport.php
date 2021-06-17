@@ -1,7 +1,7 @@
 <?php
 namespace App\Imports;
 
-use App\Models\CysislbGtsClientAcc;
+use App\CysislbGtsClientAcc;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
