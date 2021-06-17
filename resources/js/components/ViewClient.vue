@@ -528,7 +528,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="ClientDepositProof">
         <tr>
           <th>入金帳戶</th>
           <td class="text-warning">
@@ -642,7 +642,6 @@ export default {
     next_status: String,
   },
   created() {
-    debugger;
     this.Client = JSON.parse(this.client);
     this.ClientIDCard = JSON.parse(this.client_id_card);
     try {
