@@ -199,7 +199,7 @@
                     <td>{{$data['Deposits'][$i]['buss_date']}}</td>
                     <td>{{$data['Deposits'][$i]['method']}}</td>
                     <td>{{$data['Deposits'][$i]['amount']}}</td>
-                    <td>258,713.02</td>
+                    <td>{{number_format($data['TempIpoSummary']['init_value']+$data['Deposits'][$i]['avail_bal'],2)}}</td>
                 </tr>
                 @endfor
 
@@ -207,7 +207,7 @@
                     <td>31-Aug-20</td>
                     <td>本期帳戶總值</td>
                     <td></td>
-                    <td>{{number_format ($data['TempIpoSummary']['avail_bal'],2)}}</td>
+                    <td>{{number_format ($data['TempIpoSummary']['avail_bal']+$data['TempIpoSummary']['current_subscription']+$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -218,37 +218,25 @@
                 <tr class="subitem">
                     <td></td>
                     <td>總結餘</td>
-                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['Subscription'],2)}}</td>
-                    @else
                     <td>{{number_format($data['TempIpoSummary']['avail_bal'],2)}}</td>
-                    @endif
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>IPO 申請凍結資金 </td>
-                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
-                    <td>{{number_format($data['Subscription'],2)}}</td>
-                    @else
-                    <td>0.00</td>
-                    @endif
+                    <td>{{number_format($data['TempIpoSummary']['current_subscription'],2)}}</td>
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>融資資金</td>
-                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
-                    <td>0.00</td>
-                    @else
-                    <td>{{number_format($data['Subscription'],2)}}</td>
-                    @endif
+                    <td>{{number_format($data['TempIpoSummary']['current_loan'],2)}}</td>
                     <td></td>
                 </tr>
                 <tr class="subitem solid">
                     <td></td>
                     <td>投資組合市值</td>
-                    <td>0.00</td>
+                    <td>{{number_format($data['PortfolioMarketValue'],2)}}</td>
                     <td></td>
                 </tr>
 

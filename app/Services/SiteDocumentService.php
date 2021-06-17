@@ -37,11 +37,11 @@ class SiteDocumentService
             'ok' => false,
             'msg' => 'TempIpoSummary missing data client_acc_id='.$client_acc_id,
         ];
-        // 已申購但未抽籤的新股
-        $date = Carbon::parse($AccountReportSendingSummary['end_date'])->gt(Carbon::today())?Carbon::today():$AccountReportSendingSummary['end_date'];
-        $Subscription = A06::where('client_acc_id','=',$client_acc_id)
-            ->whereDate('close_time','>=',$date)
-            ->whereDate('allot_date','<',$date)->sum('amount');
+        // 已申購但未抽籤的新股。在途資金
+        // $date = Carbon::parse($AccountReportSendingSummary['end_date'])->gt(Carbon::today())?Carbon::today():$AccountReportSendingSummary['end_date'];
+        // $Subscription = A06::where('client_acc_id','=',$client_acc_id)
+        //     ->whereDate('close_time','>=',$date)
+        //     ->whereDate('allot_date','<',$date)->sum('amount');
 
         // 已中簽的新股
         $a06_alloted = A06::select('product_id','product_name','allot_price1','qty','amount')
@@ -58,7 +58,10 @@ class SiteDocumentService
                 $query->whereNull('remark')->orWhere(function ($query){
                 $query->where('remark','=','OUT_TRANSFER')->where('ccy','=','HKD');
             });
-        })->get();
+        })->get()->toArray();
+        for($i=0;$i<count($Deposits);$i++){
+            $Deposits[$i]['avail_bal'] = $i?$Deposits[$i]['amount']+$Deposits[$i-1]['amount']:$Deposits[$i]['amount'];
+        }
 
         $section3 = $AccountReportSendingSummary->report;
         return [
@@ -70,9 +73,10 @@ class SiteDocumentService
                 'User' => $CysislbGtsClientAcc,
                 'TempIpoSummary' => $TempIpoSummary,
                 'Deposits' => $Deposits,
-                'Subscription' => $Subscription,
+                // 'Subscription' => $Subscription,
                 'Alloted_amount' => $a06_alloted->sum('amount'),
                 'Alloted' => $a06_alloted->toArray(),
+                'PortfolioMarketValue' => $a06_alloted->sum('amount'),
             ]
         ];
     }
