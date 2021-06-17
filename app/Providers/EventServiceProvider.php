@@ -20,12 +20,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        // MessageSending::class => [
-        //     'App\Listeners\SendingOpenAccountEmail',
-        // ],
-        // MessageSent::class => [
-        //     'App\Listeners\SentOpenAccountEmail',
-        // ],
+        MessageSending::class => [
+            'App\Listeners\SendingOpenAccountEmail',
+        ],
+        MessageSent::class => [
+            'App\Listeners\SentOpenAccountEmail',
+        ],
     ];
 
     /**
