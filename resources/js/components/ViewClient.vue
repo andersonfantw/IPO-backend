@@ -642,6 +642,7 @@ export default {
     next_status: String,
   },
   created() {
+    debugger;
     this.Client = JSON.parse(this.client);
     this.ClientIDCard = JSON.parse(this.client_id_card);
     try {
