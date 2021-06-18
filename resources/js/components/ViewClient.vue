@@ -285,6 +285,12 @@
           </td>
         </tr>
         <tr>
+          <th>電郵地址</th>
+          <td class="text-warning">
+            {{ Client.email }}
+          </td>
+        </tr>
+        <tr>
           <th>名片</th>
           <td colspan="3">
             <img style="width: 300px" :src="name_card_face" />

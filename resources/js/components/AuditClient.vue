@@ -182,7 +182,7 @@
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">
+          <th width="20%">
             <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行名</div>
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行名
@@ -256,7 +256,7 @@
       </thead>
       <tbody>
         <tr>
-          <th width="20%" scope="row">教育程度</th>
+          <th width="20%">教育程度</th>
           <td colspan="3" class="text-warning">
             {{ Client.education_level }}
           </td>
@@ -316,17 +316,23 @@
           </td>
         </tr>
         <tr>
-          <th scope="row">業務性質</th>
+          <th>業務性質</th>
           <td class="text-warning">
             {{ ClientWorkingStatus.industry }}
           </td>
-          <th scope="row">職位</th>
+          <th>職位</th>
           <td class="text-warning">
             {{ ClientWorkingStatus.position }}
           </td>
         </tr>
         <tr>
-          <th scope="row">名片</th>
+          <th>電郵地址</th>
+          <td class="text-warning">
+            {{ Client.email }}
+          </td>
+        </tr>
+        <tr>
+          <th>名片</th>
           <td colspan="3">
             <img style="width: 300px" :src="name_card_face" />
           </td>
@@ -534,13 +540,13 @@
           </td>
         </tr>
         <tr>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">用戶是否同意</h5>
           </th>
           <td>
             <h5 class="mb-0 text-warning">{{ 用戶是否同意 }}</h5>
           </td>
-          <th scope="row">
+          <th>
             <h5 class="mb-0">投資者同意的特徵</h5>
           </th>
           <td>
