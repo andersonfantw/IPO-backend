@@ -97,4 +97,5 @@ return [
         ],
     ],
 
+    'operator' => explode(',',env('MAIL_TO_OPERATOR')),
 ];

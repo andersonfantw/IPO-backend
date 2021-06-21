@@ -46,7 +46,7 @@ class SendAccountReport implements ShouldQueue
         $attach_file = 'upload/'.$ViewClient->uuid.sprintf('/AnnualAccountReport[%s]_%s.pdf',$AccountReportSendingSummary->report_make_date->format('YM'),$client_acc_id);
         if(Storage::missing($attach_file)) abort(404);
 
-        Mail::to(explode(',',env('MAIL_TO_OPERATOR')))
+        Mail::to(config('mail.operator'))
         ->send((new AnnualAccountReport([
             'client_name' => $CysislbGtsClientAcc->name,
             'client_acc_id' => $client_acc_id,
