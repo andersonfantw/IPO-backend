@@ -54,7 +54,7 @@ class SiteDocumentService
 
         $A01_Rev_of = A01::where('client_acc_id','=',$client_acc_id)
             ->whereRaw("upper(substr(remark,1,6))='REV OF'")
-            ->get('remark','tran_id','amount')->toArray();
+            ->get(['remark','tran_id','amount'])->toArray();
         $target_tran = [];
 
         for($i=0;$i<count($A01_Rev_of);$i++){
@@ -64,13 +64,13 @@ class SiteDocumentService
                 $arr = explode(' ',$A01_Rev_of[$i]['remark']);
                 $target_tran = array_merge(
                     $target_tran,
-                    A01::where('client_acc_id','=',$client_acc_id)->where('tran_id','=',$arr[4])->get('remark','tran_id','amount')->toArray()
+                    A01::where('client_acc_id','=',$client_acc_id)->where('tran_id','=',$arr[4])->get(['remark','tran_id','amount'])->toArray()
                 );
             }elseif($s2='REV OF'){
                 $arr = explode(' ',$A01_Rev_of[$i]['remark']);
                 $target_tran = array_merge(
                     $target_tran,
-                    A01::where('client_acc_id','=',$client_acc_id)->where('tran_id','=',$arr[2])->get('remark','tran_id','amount')->toArray()
+                    A01::where('client_acc_id','=',$client_acc_id)->where('tran_id','=',$arr[2])->get(['remark','tran_id','amount'])->toArray()
                 );
             }
         }
