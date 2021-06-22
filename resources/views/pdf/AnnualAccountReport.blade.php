@@ -180,6 +180,7 @@
                     @else
                 <tr class="dashed">
                     @endif
+
                     @if ($data['TempIpoSummary']['init_value_date'])
                     <td>{{$data['TempIpoSummary']['init_value_date']->format('d-M-y')}}</td>
                     @else
@@ -190,21 +191,28 @@
                     <td>{{number_format($data['TempIpoSummary']['init_value'],2)}}</td>
                 </tr>
                 @endif
+
                 @for ($i=0;$i<count($data['Deposits']);$i++)
                     @if ($i==count($data['Deposits'])-1)
                 <tr class="dashed">
                     @else
                 <tr>
                     @endif
+                        
                     <td>{{$data['Deposits'][$i]['buss_date']}}</td>
+                        @if ($data['TempIpoSummary']['init_value_date']->eq($data['Deposits'][$i]['buss_date']))
+                    <td>初始入金</td>
+                        @else
                     <td>{{$data['Deposits'][$i]['method']}}</td>
-                    <td>{{$data['Deposits'][$i]['amount']}}</td>
-                    <td>{{number_format($data['TempIpoSummary']['init_value']+$data['Deposits'][$i]['avail_bal'],2)}}</td>
+                        @endif
+                    <td>{{number_format($data['Deposits'][$i]['amount'],2)}}</td>
+                    <td>{{number_format($data['Deposits'][$i]['avail_bal'],2)}}</td>
+                        
                 </tr>
                 @endfor
 
                 <tr>
-                    <td>31-Aug-20</td>
+                    <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>本期帳戶總值</td>
                     <td></td>
                     <td>{{number_format ($data['TempIpoSummary']['avail_bal']+$data['TempIpoSummary']['current_subscription']+$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'],2)}}</td>
@@ -241,7 +249,7 @@
                 </tr>
 
                 <tr>
-                    <td>31-Aug-20</td>
+                    <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>帳戶變動</td>
                     <td></td>
                     <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}</td>
@@ -257,8 +265,6 @@
                     <td>投資組合市值異動</td>
                     @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
                     <td>{{number_format($data['Alloted_amount'],2)}}</td>
-                    @else
-                    <td>0.00</td>
                     @endif
                     <td></td>
                 </tr>
