@@ -85,7 +85,11 @@ class SiteDocumentService
                     }
                 );
         });
-        if($A01_Rev_of) $Deposits->whereNotIn('tran_id',collect($A01_Rev_of)->get('tran_id'));
+        if($A01_Rev_of){
+            $Deposits->whereNotIn('tran_id',array_map(function($row){
+                return $row['tran_id'];
+            },$A01_Rev_of));
+        }
         $Deposits = $Deposits->get()->toArray();
         for($i=0;$i<count($Deposits);$i++){
             $Deposits[$i]['avail_bal'] = $i?$Deposits[$i]['amount']+$Deposits[$i-1]['amount']:$Deposits[$i]['amount'];
