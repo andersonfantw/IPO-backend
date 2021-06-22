@@ -39,12 +39,11 @@ class AnnualAccountReport extends Mailable
     public function build()
     {
         return $this->view('email.AccountReport')
-            ->subject(sprintf('CYSS專戶報告[%s]_%s',$this->content['report_date'],$this->content['client_acc_id']))
+            ->subject(sprintf('CYSS專戶報告[%s]_%s',$this->content['report_date']->format('d-M-y'),$this->content['client_acc_id']))
             ->with($this->content)
             ->attachFromStorage($this->content['attachFile']);
     }
 
     public function failed($e){
-        var_dump(3,$e);
     }
 }
