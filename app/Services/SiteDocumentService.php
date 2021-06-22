@@ -58,8 +58,8 @@ class SiteDocumentService
         $target_tran = [];
 
         for($i=0;$i<count($A01_Rev_of);$i++){
-            $s1 = strtoupper(substr($A01_Rev_of[$i]['remark'],16));
-            $s2 = strtoupper(substr($A01_Rev_of[$i]['remark'],6));
+            $s1 = strtoupper(substr($A01_Rev_of[$i]['remark'],0,16));
+            $s2 = strtoupper(substr($A01_Rev_of[$i]['remark'],0,6));
             if($s1=='REV OF TRAN CODE'){
                 $arr = explode(' ',$A01_Rev_of[$i]['remark']);
                 $target_tran = array_merge(
