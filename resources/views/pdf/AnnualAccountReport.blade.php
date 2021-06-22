@@ -271,7 +271,7 @@
                 <tr class="subitem">
                     <td></td>
                     <td>已實現損益</td>
-                    <td>{{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}</td>
                     <td></td>
                 </tr>
 
@@ -288,7 +288,7 @@
                 <li>表現費: {{($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.8}} ({{$data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value']}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
                     @endif
                 @else
-                <li>本期管理費管理費豁免。</li>
+                <li>本期管理費豁免。</li>
                 @endif
                 <li>與交易相關的手續費，請參閱報告期間的日交易報表。</li>
             </ol>
