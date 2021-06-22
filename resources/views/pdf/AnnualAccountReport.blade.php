@@ -283,9 +283,9 @@
             <ol>
                 @if ($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'] > 0)
                     @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
-                <li>表現費: {{(number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.2,2)}} ({{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}*20%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
+                <li>表現費: {{number_format(($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.2,2)}} ({{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}*20%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
                     @else
-                <li>表現費: {{(number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.8,2)}} ({{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
+                <li>表現費: {{number_format(($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'])*0.8,2)}} ({{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
                     @endif
                 @else
                 <li>本期管理費豁免。</li>
