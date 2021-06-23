@@ -152,6 +152,10 @@ class AccountReportController extends Controller
         Artisan::call('queue:clear', ['name'=>'report']);
         return ['ok'=>true];
     }
+    public function clearMake(Request $request, $id){
+        AccountReport::ofParentID($id)->update(['report_queue_time'=>null,'make_report_time'=>null,'make_report_status'=>null]);
+        return ['ok'=>true];
+    }
     public function sendAll(Request $request, $id){
         Artisan::call('AccountReport:send', ['id'=>$id]);
         return ['ok'=>true];
@@ -161,6 +165,11 @@ class AccountReportController extends Controller
         Artisan::call('queue:clear', ['name'=>'email']);
         return ['ok'=>true];
     }
+    public function clearSend(Request $request, $id){
+        AccountReport::ofParentID($id)->update(['sending_queue_time'=>null,'sending_time'=>null,'sending_status'=>null]);
+        return ['ok'=>true];
+    }
+
 
     public function showHtml(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id, SiteDocumentService $SiteDocumentService){
         return View('pdf.AnnualAccountReport',$SiteDocumentService->AnnualAccountReportData($AccountReportSendingSummary,$client_acc_id));

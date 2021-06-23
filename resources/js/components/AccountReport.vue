@@ -77,23 +77,29 @@
             <b-col cols="2">
                 <b-button-group class="mb-3">
                     <span id="create_pdf" tabindex="0">
-                    <b-button size="sm" :variant="buttons.pdf.queue?'danger':'primary'"  @click="create_pdf"
+                    <b-button size="sm" :variant="(buttons.pdf.queue || (buttons.email.success+buttons.email.fail)===buttons.total)?'danger':'primary'"  @click="create_pdf"
                         @mouseover="buttons2.hover_make_report_pdf=true"
                         @mouseout="buttons2.hover_make_report_pdf=false"
-                        :disabled="(buttons.pdf.null===0 && buttons.pdf.pending===0 && (buttons.total === buttons.pdf.success+buttons.pdf.fail)) || buttons.email.queue>0 || this.buttons.command>0">
+                        :disabled="buttons.email.queue>0 || this.buttons.command>0">
                         <i class="far fa-stop-circle" v-if="buttons.pdf.queue>0"></i>
                         <i class="far fa-file-pdf" v-else></i>
-                        &nbsp;<span v-if="buttons.pdf.queue>0">停止製作</span><span v-else>製作文件</span>
+                        &nbsp;
+                        <span v-if="(buttons.email.success+buttons.email.fail)===buttons.total">清除製作記錄</span>
+                        <span v-else-if="buttons.pdf.queue>0">停止製作</span>
+                        <span v-else>製作文件</span>
                     </b-button>
                     </span>
                     <span id="send_all" tabindex="0">
                     <b-button size="sm" :variant="buttons.email.queue?'danger':'primary'" @click="send_all"
                         @mouseover="buttons2.hover_send_email_button=true"
                         @mouseout="buttons2.hover_send_email_button=false"
-                        :disabled="(buttons.email.null===0 && buttons.email.pending===0 && (buttons.total === buttons.email.success+buttons.email.fail)) || buttons.pdf.queue>0 || this.buttons.command>0">
+                        :disabled="buttons.pdf.queue>0 || this.buttons.command>0">
                         <i class="far fa-stop-circle" v-if="buttons.email.queue>0"></i>
                         <i class="far fa-envelope" v-else></i>
-                        &nbsp;<span v-if="buttons.email.queue>0">停止發送</span><span v-else>全部發送</span>
+                        &nbsp;
+                        <span v-if="(buttons.email.success+buttons.email.fail)===buttons.total">清除發送記錄</span>
+                        <span v-else-if="buttons.email.queue>0">停止發送</span>
+                        <span v-else>全部發送</span>
                     </b-button>
                     </span>
                 </b-button-group>
@@ -397,6 +403,12 @@ export default {
                     _this.index()
                 },{},this.url('/AccountReport/StopMake/'+this.ipo_activity_period_id+'/'),function(response){
                 })
+            }else if(this.buttons.pdf.success+this.buttons.pdf.fail===this.buttons.total){
+                this.myPost(function(response) {
+                    _this.index()
+                    _this.reload_list()
+                },{},this.url('/AccountReport/ClearMake/'+this.ipo_activity_period_id+'/'),function(response){
+                })
             }else{
                 this.myPost(function(response) {
                     _this.index()
@@ -413,6 +425,12 @@ export default {
                     _this.stop_reload()
                     _this.index()
                 },{},this.url('/AccountReport/StopSend/'+this.ipo_activity_period_id+'/'),function(response){
+                })
+            }else if(this.buttons.pdf.success+this.buttons.pdf.fail===this.buttons.total){
+                this.myPost(function(response) {
+                    _this.index()
+                    _this.reload_list()
+                },{},this.url('/AccountReport/ClearSend/'+this.ipo_activity_period_id+'/'),function(response){
                 })
             }else{
                 this.myPost(function(response) {
