@@ -77,20 +77,20 @@
             <b-col cols="2">
                 <b-button-group class="mb-3">
                     <span id="create_pdf" tabindex="0">
-                    <b-button size="sm" :variant="(buttons.pdf.queue || (buttons.email.success+buttons.email.fail)===buttons.total)?'danger':'primary'"  @click="create_pdf"
+                    <b-button size="sm" :variant="(buttons.pdf.queue || (buttons.pdf.success+buttons.pdf.fail)===buttons.total)?'danger':'primary'"  @click="create_pdf"
                         @mouseover="buttons2.hover_make_report_pdf=true"
                         @mouseout="buttons2.hover_make_report_pdf=false"
                         :disabled="buttons.email.queue>0 || this.buttons.command>0">
                         <i class="far fa-stop-circle" v-if="buttons.pdf.queue>0"></i>
                         <i class="far fa-file-pdf" v-else></i>
                         &nbsp;
-                        <span v-if="(buttons.email.success+buttons.email.fail)===buttons.total">清除製作記錄</span>
+                        <span v-if="(buttons.pdf.success+buttons.pdf.fail)===buttons.total">清除製作記錄</span>
                         <span v-else-if="buttons.pdf.queue>0">停止製作</span>
                         <span v-else>製作文件</span>
                     </b-button>
                     </span>
                     <span id="send_all" tabindex="0">
-                    <b-button size="sm" :variant="buttons.email.queue?'danger':'primary'" @click="send_all"
+                    <b-button size="sm" :variant="(buttons.email.queue || (buttons.email.success+buttons.email.fail)===buttons.total)?'danger':'primary'" @click="send_all"
                         @mouseover="buttons2.hover_send_email_button=true"
                         @mouseout="buttons2.hover_send_email_button=false"
                         :disabled="buttons.pdf.queue>0 || this.buttons.command>0">
