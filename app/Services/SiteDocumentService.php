@@ -52,8 +52,8 @@ class SiteDocumentService
         $a06_alloted = A06::select('product_id','product_name','allot_price1','qty','amount')
             ->where('client_acc_id','=',$client_acc_id)
             ->whereDate('allot_date','>=',Carbon::today())
-            ->whereNotIn('product_id',A05::where('client_acc_id','=',$client_acc_id)
-            ->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->get('product_id'))
+            ->whereDate('close_time','<',Carbon::today())
+            ->whereNotIn('product_id',A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->get('product_id'))
             ->get('product_id','product_name','allot_price1','qty','amount');
 
 

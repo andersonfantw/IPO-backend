@@ -264,7 +264,7 @@
                     <td></td>
                     <td>投資組合市值異動</td>
                     @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
-                    <td>{{number_format($data['Alloted_amount'],2)}}</td>
+                    <td>0.00</td>
                     @endif
                     <td></td>
                 </tr>
