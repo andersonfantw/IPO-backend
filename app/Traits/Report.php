@@ -36,6 +36,7 @@ trait Report
         $Nationality = [
             'zh-hk' => '中國香港',
             'zh-cn' => '中國',
+            'others' => '台灣',
         ];
         $data = [
             'logo' => $logo,
@@ -417,11 +418,12 @@ trait Report
      * @param $str
      * @return string|string[]
      */
-    public function fixChineseWrapInPDF($str){
+    public function fixChineseWrapInPDF($str)
+    {
         $s = '';
-        for($i=0;$i<mb_strlen($str);$i++){
-            $s .= mb_substr($str,$i,1) . ' ';
+        for ($i = 0; $i < mb_strlen($str); $i++) {
+            $s .= mb_substr($str, $i, 1) . ' ';
         }
-        return str_replace(["\r\n","\n","\r"],"<br />",$s);
+        return str_replace(["\r\n", "\n", "\r"], "<br />", $s);
     }
 }
