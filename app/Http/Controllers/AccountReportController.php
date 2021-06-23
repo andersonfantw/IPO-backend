@@ -38,10 +38,7 @@ class AccountReportController extends Controller
         $input = $request->only('client_acc_id','client_name');
         $AccountReport = AccountReport::firstOrNew(
             ['client_acc_id'=>$input['client_acc_id']],
-            [
-                'account_report_sending_summary_id'=>$id,
-                'status' => 'pending'
-            ]
+            ['account_report_sending_summary_id'=>$id]
         );
         if($AccountReport->exists){
             return ['ok'=>false,'msg'=>sprintf('客戶 %s 編號 %s 已在清單中!',$input['client_name'],$input['client_acc_id'])];
