@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\SentEmailRecord;
 use Illuminate\Mail\Events\MessageSent;
-use Illuminate\Support\Facades\Storage;
+
 class SentOpenAccountEmail
 {
     /**
@@ -25,7 +25,7 @@ class SentOpenAccountEmail
      */
     public function handle(MessageSent $event)
     {
-        if(array_key_exists('client',$event->data) && array_key_exists('sender',$event->data)){
+        if (array_key_exists('client', $event->data) && array_key_exists('sender', $event->data)) {
             $client = $event->data['client'];
             $sender = $event->data['sender'];
             if ($client && $sender) {
