@@ -11,6 +11,7 @@ use App\A06;
 use App\A05;
 use App\A01;
 use App\AccountReportSendingSummary;
+use App\IpoInitialValue;
 use App\Traits\Report;
 
 class SiteDocumentService
@@ -32,6 +33,10 @@ class SiteDocumentService
             'ok' => false,
             'msg' => 'CysislbGtsClientAcc missing data client_acc_id='.$client_acc_id,
         ];
+        $InitValue = IpoInitialValue::where('client_acc_id','=',$client_acc_id)->orderByDesc('buss_date')->first();
+        if($InitValue) $InitValue = $InitValue['init_value'];
+        else $InitValue = 0;
+
         $TempIpoSummary = TempIpoSummary::where('client_acc_id','=',$client_acc_id)->first();
         if(!$TempIpoSummary) return [
             'ok' => false,
@@ -101,6 +106,7 @@ class SiteDocumentService
             'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
             'section3' => $this->fixChineseWrapInPDF($section3),
             'data' => [
+                'InitValue' => $InitValue,
                 'AccountReportSendingSummary' => $AccountReportSendingSummary,
                 'User' => $CysislbGtsClientAcc,
                 'TempIpoSummary' => $TempIpoSummary,
