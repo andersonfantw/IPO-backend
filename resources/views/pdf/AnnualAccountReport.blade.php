@@ -287,8 +287,6 @@
                     @else
                 <li>表現費: {{number_format(($data['TempIpoSummary']['avail_bal'] - $data['InitValue'])*0.8,2)}} ({{number_format($data['TempIpoSummary']['avail_bal'] - $data['InitValue'],2)}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
                     @endif
-                @else
-                <li>本期管理費豁免。</li>
                 @endif
                 <li>與交易相關的手續費，請參閱報告期間的日交易報表。</li>
             </ol>
