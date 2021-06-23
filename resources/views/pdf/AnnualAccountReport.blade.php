@@ -252,7 +252,7 @@
                     <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>帳戶變動</td>
                     <td></td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['InitValue'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>

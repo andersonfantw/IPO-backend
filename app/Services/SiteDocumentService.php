@@ -34,7 +34,7 @@ class SiteDocumentService
             'msg' => 'CysislbGtsClientAcc missing data client_acc_id='.$client_acc_id,
         ];
         $InitValue = IpoInitialValue::where('client_acc_id','=',$client_acc_id)->orderByDesc('buss_date')->first();
-        if($InitValue) $InitValue = $InitValue['init_value'];
+        if($InitValue) $InitValue = $InitValue['avail_bal'];
         else $InitValue = 0;
 
         $TempIpoSummary = TempIpoSummary::where('client_acc_id','=',$client_acc_id)->first();
