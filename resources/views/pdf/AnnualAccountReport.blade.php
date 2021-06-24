@@ -232,13 +232,13 @@
                 <tr class="subitem">
                     <td></td>
                     <td>IPO 申請凍結資金 </td>
-                    <td>{{number_format($data['TempIpoSummary']['current_subscription'],2)}}</td>
+                    <td>{{number_format(-$data['TempIpoSummary']['current_subscription'],2)}}</td>
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>融資資金</td>
-                    <td>{{number_format($data['TempIpoSummary']['current_loan'],2)}}</td>
+                    <td>{{number_format(-$data['TempIpoSummary']['current_loan'],2)}}</td>
                     <td></td>
                 </tr>
                 <tr class="subitem solid">
@@ -263,9 +263,7 @@
                 <tr class="subitem">
                     <td></td>
                     <td>投資組合市值異動</td>
-                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
                     <td>0.00</td>
-                    @endif
                     <td></td>
                 </tr>
                 <tr class="subitem">
