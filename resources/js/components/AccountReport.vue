@@ -356,7 +356,7 @@ export default {
                 if(response.ok){
                     console.log(response)
                 }else if(response.msg) _this.alertFail(response.msg)
-            },this.getFormData(this.search),this.url('/AccountReportSendingSummary/')+this.ipo_activity_period_id+'/'+this.$options.name)
+            },this.getFormData(this.search),'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name)
         },
 
         // 選擇項目的功能
