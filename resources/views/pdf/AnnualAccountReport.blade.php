@@ -217,7 +217,7 @@
                     <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>本期帳戶總值</td>
                     <td></td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal']+$data['TempIpoSummary']['current_subscription']+$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
