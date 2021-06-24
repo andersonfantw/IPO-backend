@@ -57,12 +57,12 @@ class SiteDocumentService
             ->get('product_id','product_name','allot_price1','qty','amount');
         // 已中簽尚未賣出的新股
         $a06_alloted = A06::select('product_id','product_name','allot_price1','qty','amount')
-            ->where('client_acc_id','=',$client_acc_id)
-            ->whereDate('allot_date','<',Carbon::today())
             ->whereNotIn('product_id', array_merge(
-                A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->get('product_id')->toArray(),
-                A01::where('client_acc_id','=',$client_acc_id)->where('gl_mapping_item_id','=','OTH:IPORefund')->whereRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(remark,' ',-2),' ',1)=0")->get('product_id')->toArray()
-            ))->get('product_id','product_name','allot_price1','qty','amount');
+                A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->pluck('product_id')->all(),
+                A01::where('client_acc_id','=',$client_acc_id)->where('gl_mapping_item_id','=','OTH:IPORefund')->whereRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(remark,' ',-2),' ',1)=0")->pluck('product_id')->all()
+            ))->where('client_acc_id','=',$client_acc_id)
+            ->whereDate('allot_date','<',Carbon::today())
+            ->get('product_id','product_name','allot_price1','qty','amount');
 
         $A01_Rev_of = A01::where('client_acc_id','=',$client_acc_id)
             ->whereRaw("upper(substr(remark,1,6))='REV OF'")
