@@ -57,7 +57,8 @@ class SiteDocumentService
                 A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','>=',$AccountReportSendingSummary['start_date'])->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->pluck('product_id')->all(),
                 A01::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','>=',$AccountReportSendingSummary['start_date'])->where('gl_mapping_item_id','=','OTH:IPORefund')->whereRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(remark,' ',-2),' ',1)=0")->pluck('product_id')->all()
             ))->where('client_acc_id','=',$client_acc_id)
-            ->whereDate('allot_date','>',Carbon::today())
+            ->whereDate('allot_date','<',Carbon::today())
+            ->whereDate('allot_date','>=',$AccountReportSendingSummary['start_date'])
             ->get('product_id','product_name','allot_price1','qty','amount');
 
         $A01_Rev_of = A01::where('client_acc_id','=',$client_acc_id)
