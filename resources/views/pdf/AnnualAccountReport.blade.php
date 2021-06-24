@@ -254,7 +254,7 @@
                     <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>帳戶變動</td>
                     <td></td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['InitValue'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'] - $data['InitValue'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -271,7 +271,7 @@
                 <tr class="subitem">
                     <td></td>
                     <td>已實現損益</td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal']+$data['TempIpoSummary']['current_subscription']+$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'] - $data['TempIpoSummary']['init_value'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'] - $data['TempIpoSummary']['init_value'],2)}}</td>
                     <td></td>
                 </tr>
 
