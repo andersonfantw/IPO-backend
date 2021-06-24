@@ -39,6 +39,9 @@ class CreateTtIpoSummaryTable extends Migration
                 $table->decimal('rev_cash_withdraw', 22, 6)->nullable();
                 $table->decimal('cost', 22, 6)->nullable();
                 $table->decimal('settlement_amount', 22, 6)->nullable();
+                $table->decimal('current_subscription', 22, 6)->nullable();
+                $table->decimal('current_loan', 22, 6)->nullable();
+                $table->decimal('current_fee', 22, 6)->nullable();
                 $table->decimal('alloted_subscription', 22, 6)->nullable();
                 $table->decimal('alloted_refund', 22, 6)->nullable();
                 $table->decimal('alloted_loan_return', 22, 6)->nullable();
@@ -51,7 +54,10 @@ class CreateTtIpoSummaryTable extends Migration
                 $table->string('avail_table', 1)->nullable();
                 $table->boolean('result')->nullable();
                 $table->decimal('diff', 22, 6)->nullable();
-                $table->decimal('caculate_init_deposit', 22, 6)->nullable();
+                $table->decimal('restore_avail_bal', 22, 6)->nullable();
+                $table->decimal('correct_init_val', 22, 6)->nullable();
+                $table->decimal('percent', 22, 6)->nullable();
+                $table->decimal('this_performance_fee', 22, 6)->nullable();
             });
         }
     }
