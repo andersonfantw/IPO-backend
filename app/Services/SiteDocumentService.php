@@ -42,26 +42,22 @@ class SiteDocumentService
             'ok' => false,
             'msg' => 'TempIpoSummary missing data client_acc_id='.$client_acc_id,
         ];
-        // 已申購但未抽籤的新股。在途資金
-        // $date = Carbon::parse($AccountReportSendingSummary['end_date'])->gt(Carbon::today())?Carbon::today():$AccountReportSendingSummary['end_date'];
-        // $Subscription = A06::where('client_acc_id','=',$client_acc_id)
-        //     ->whereDate('close_time','>=',$date)
-        //     ->whereDate('allot_date','<',$date)->sum('amount');
 
-        // 抽籤中的新股
-        $a06_subscription = A06::select('product_id','product_name','allot_price1','qty','amount')
-            ->where('client_acc_id','=',$client_acc_id)
-            ->whereDate('allot_date','>=',Carbon::today())
-            ->whereDate('close_time','<',Carbon::today())
-            ->whereNotIn('product_id',A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->get('product_id'))
-            ->get('product_id','product_name','allot_price1','qty','amount');
+        // 抽籤中的新股。在途資金
+        // $a06_subscription = A06::select('product_id','product_name','allot_price1','qty','amount')
+        //     ->where('client_acc_id','=',$client_acc_id)
+        //     ->whereDate('allot_date','>=',Carbon::today())
+        //     ->whereDate('close_time','<',Carbon::today())
+        //     ->whereNotIn('product_id',A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->get('product_id'))
+        //     ->get('product_id','product_name','allot_price1','qty','amount');
+
         // 已中簽尚未賣出的新股
         $a06_alloted = A06::select('product_id','product_name','allot_price1','qty','amount')
             ->whereNotIn('product_id', array_merge(
-                A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->pluck('product_id')->all(),
-                A01::where('client_acc_id','=',$client_acc_id)->where('gl_mapping_item_id','=','OTH:IPORefund')->whereRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(remark,' ',-2),' ',1)=0")->pluck('product_id')->all()
+                A05::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','>=',$AccountReportSendingSummary['start_date'])->whereDate('buss_date','<',$AccountReportSendingSummary['end_date'])->pluck('product_id')->all(),
+                A01::where('client_acc_id','=',$client_acc_id)->whereDate('buss_date','>=',$AccountReportSendingSummary['start_date'])->where('gl_mapping_item_id','=','OTH:IPORefund')->whereRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(remark,' ',-2),' ',1)=0")->pluck('product_id')->all()
             ))->where('client_acc_id','=',$client_acc_id)
-            ->whereDate('allot_date','<',Carbon::today())
+            ->whereDate('allot_date','>',Carbon::today())
             ->get('product_id','product_name','allot_price1','qty','amount');
 
         $A01_Rev_of = A01::where('client_acc_id','=',$client_acc_id)
