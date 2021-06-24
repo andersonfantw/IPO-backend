@@ -73,6 +73,9 @@
         .text-center{
             text-align: center;
         }
+        .text-left{
+            text-align: left;
+        }
         .text-right{
             text-align: right;
         }
@@ -309,7 +312,7 @@
                 @endif
                 @foreach($data['Alloted'] as $alloted)
                 <tr>
-                    <td>{{$alloted['product_name']}}</td>
+                    <td class="text-left">{{$alloted['product_id']}} {{$alloted['product_name']}}</td>
                     <td>{{number_format($alloted['qty'],0)}}</td>
                     <td>{{number_format($alloted['allot_price1'],2)}}</td>
                     <td>{{number_format($alloted['amount'],2)}}</td>
