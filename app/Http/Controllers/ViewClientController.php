@@ -90,9 +90,9 @@ class ViewClientController extends HomeController
         $Client->selected_flow = stripslashes($Client->selected_flow);
         $parameters['uuid'] = $Client->uuid;
         $parameters['redirect_route'] = $input['redirect_route'];
-        $Client->ViewClientIDCard->idcard_face = $this->blobToBase64($Client->ViewClientIDCard->idcard_face);
-        $Client->ViewClientIDCard->idcard_back = $this->blobToBase64($Client->ViewClientIDCard->idcard_back);
-        $parameters['ClientIDCard'] = $Client->ViewClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
+        $Client->IDCard->idcard_face = $this->blobToBase64($Client->IDCard->idcard_face);
+        $Client->IDCard->idcard_back = $this->blobToBase64($Client->IDCard->idcard_back);
+        $parameters['ClientIDCard'] = $Client->IDCard->toJson(JSON_UNESCAPED_UNICODE);
         if (is_object($Client->ClientAddressProof)) {
             $Client->ClientAddressProof->image = $this->blobToBase64($Client->ClientAddressProof->image);
             $Client->ClientAddressProof->detailed_address = addslashes($Client->ClientAddressProof->detailed_address);
