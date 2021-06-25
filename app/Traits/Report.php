@@ -45,7 +45,7 @@ trait Report
             'AccountNo' => null,
             'InternetTradingService' => '是',
             'ClientNameC' => [$Client->IDCard->name_c, null],
-            'ClientNameE' => [$Client->ViewClientIDCard->name_en, null],
+            'ClientNameE' => [$Client->IDCard->name_en, null],
             'ClientSignature' => [$ClientSignature, null],
             'Gender' => [$Client->IDCard->gender, null],
             'IDNo' => [$Client->IDCard->idcard_no, null],

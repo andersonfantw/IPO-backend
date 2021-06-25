@@ -26,20 +26,30 @@ class AyersAccountController extends Controller
                 } else {
                     $account_no = 200000;
                 }
-                ClientAyersAccount::create([
-                    'uuid' => $client['uuid'],
-                    'account_no' => "{$account_no}08",
-                    'type' => '現金賬戶',
-                    'client_type' => '拼一手',
-                ]);
-                ClientAyersAccount::create([
-                    'uuid' => $client['uuid'],
-                    'account_no' => "{$account_no}13",
-                    'type' => '全權委託賬戶',
-                    'client_type' => '拼一手',
-                ]);
                 $Client = Client::where('uuid', $client['uuid'])->first();
-                $this->AccountOpeningForm($Client);
+                if ($Client->ClientBusinessType->business_type == '全权委托账户（拼一手）' || $Client->ClientBusinessType->business_type == '全權委托賬戶（拼一手）') {
+                    ClientAyersAccount::create([
+                        'uuid' => $client['uuid'],
+                        'account_no' => "{$account_no}08",
+                        'type' => '現金賬戶',
+                        'client_type' => '拼一手',
+                    ]);
+                    ClientAyersAccount::create([
+                        'uuid' => $client['uuid'],
+                        'account_no' => "{$account_no}13",
+                        'type' => '全權委託賬戶',
+                        'client_type' => '拼一手',
+                    ]);
+                } else {
+                    ClientAyersAccount::create([
+                        'uuid' => $client['uuid'],
+                        'account_no' => "{$account_no}08",
+                        'type' => '現金賬戶',
+                        'client_type' => '拼一手',
+                    ]);
+                }
+                // $Client = Client::where('uuid', $client['uuid'])->first();
+                // $this->AccountOpeningForm($Client);
             }
         }
         // return redirect()->route($request->input('redirect_route'));
