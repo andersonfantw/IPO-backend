@@ -455,7 +455,7 @@ export default {
         },
 
         onRowClicked(item, index, event){
-            _this.list.push(item.client_acc_id)
+            this.list.push(item.client_acc_id)
         }
     }
 }
