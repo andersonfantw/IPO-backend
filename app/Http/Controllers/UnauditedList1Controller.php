@@ -45,29 +45,27 @@ class UnauditedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        // $Clients = Client::has('ClientBusinessType')->whereHasMorph('IDCard', [
-        //     ClientCNIDCard::class,
-        //     ClientHKIDCard::class,
-        //     ClientOtherIDCard::class,
-        // ], function (Builder $query) {
-        //     $query->where('status', 'unaudited');
-        // })->whereHas('ClientWorkingStatus', function (Builder $query) {
-        //     $query->where('status', 'unaudited');
-        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
-        //     $query->where('status', 'unaudited');
-        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-        //     $query->where('status', 'unaudited');
-        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
-        //     $query->where('status', 'unaudited');
-        // })->whereHas('ClientSignature', function (Builder $query) {
-        //     $query->where('status', 'unaudited');
-        // })->where('status', 'unaudited')->orderBy('created_at', 'desc')->limit(10)->get();
-
-        // $Clients = DB::select('select * from users where active = ?', [1]);
-
-        $Clients = Client::has('ClientBusinessType')->whereHas('ClientSignature', function (Builder $query) {
+        $Clients = Client::has('ClientBusinessType')->whereHasMorph('IDCard', [
+            ClientCNIDCard::class,
+            ClientHKIDCard::class,
+            ClientOtherIDCard::class,
+        ], function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->where('status', 'unaudited')->orderBy('created_at', 'desc')->limit(10)->get();
+        })->whereHas('ClientWorkingStatus', function (Builder $query) {
+            $query->where('status', 'unaudited');
+        })->whereHas('ClientFinancialStatus', function (Builder $query) {
+            $query->where('status', 'unaudited');
+        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+            $query->where('status', 'unaudited');
+        })->whereHas('ClientEvaluationResults', function (Builder $query) {
+            $query->where('status', 'unaudited');
+        })->whereHas('ClientSignature', function (Builder $query) {
+            $query->where('status', 'unaudited');
+        })->where('status', 'unaudited')->orderBy('created_at', 'desc')->get();
+
+        // $Clients = Client::has('ClientBusinessType')->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->where('status', 'unaudited')->orderBy('created_at', 'desc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
