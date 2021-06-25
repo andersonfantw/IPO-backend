@@ -73,6 +73,9 @@
         .text-center{
             text-align: center;
         }
+        .text-left{
+            text-align: left;
+        }
         .text-right{
             text-align: right;
         }
@@ -100,7 +103,6 @@
             opacity: 0.1;
         }
         #account_summary tbody td:nth-child(1),
-        #stock tbody td:nth-child(1),
         #stock tbody td:nth-child(2){
             text-align: center;
         }
@@ -215,7 +217,7 @@
                     <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>本期帳戶總值</td>
                     <td></td>
-                    <td>{{number_format ($data['TempIpoSummary']['avail_bal']+$data['TempIpoSummary']['current_subscription']+$data['TempIpoSummary']['current_loan']+$data['PortfolioMarketValue'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']-$data['TempIpoSummary']['current_fee']+$data['PortfolioMarketValue'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -232,13 +234,19 @@
                 <tr class="subitem">
                     <td></td>
                     <td>IPO 申請凍結資金 </td>
-                    <td>{{number_format($data['TempIpoSummary']['current_subscription'],2)}}</td>
+                    <td>{{number_format(-$data['TempIpoSummary']['current_subscription'],2)}}</td>
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>融資資金</td>
-                    <td>{{number_format($data['TempIpoSummary']['current_loan'],2)}}</td>
+                    <td>{{number_format(-$data['TempIpoSummary']['current_loan'],2)}}</td>
+                    <td></td>
+                </tr>
+                <tr class="subitem">
+                    <td></td>
+                    <td>手續費調整</td>
+                    <td>{{number_format(-$data['TempIpoSummary']['current_fee'],2)}}</td>
                     <td></td>
                 </tr>
                 <tr class="subitem solid">
@@ -252,7 +260,7 @@
                     <td>{{$data['AccountReportSendingSummary']['report_make_date']->subDay()->format('d-M-y')}}</td>
                     <td>帳戶變動</td>
                     <td></td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']-$data['TempIpoSummary']['current_fee']+$data['PortfolioMarketValue'] - $data['InitValue'],2)}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -263,15 +271,13 @@
                 <tr class="subitem">
                     <td></td>
                     <td>投資組合市值異動</td>
-                    @if ($data['TempIpoSummary']['current_program']=='C' || strlen($data['TempIpoSummary']['client_acc_id'])===8)
-                    <td>{{number_format($data['Alloted_amount'],2)}}</td>
-                    @endif
+                    <td>0.00</td>
                     <td></td>
                 </tr>
                 <tr class="subitem">
                     <td></td>
                     <td>已實現損益</td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal'] - $data['TempIpoSummary']['init_value'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']-$data['TempIpoSummary']['current_fee']+$data['PortfolioMarketValue'] - $data['TempIpoSummary']['init_value'],2)}}</td>
                     <td></td>
                 </tr>
 
@@ -287,8 +293,6 @@
                     @else
                 <li>表現費: {{number_format(($data['TempIpoSummary']['avail_bal'] - $data['InitValue'])*0.8,2)}} ({{number_format($data['TempIpoSummary']['avail_bal'] - $data['InitValue'],2)}}*80%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
                     @endif
-                @else
-                <li>本期管理費豁免。</li>
                 @endif
                 <li>與交易相關的手續費，請參閱報告期間的日交易報表。</li>
             </ol>
@@ -313,7 +317,7 @@
                 @endif
                 @foreach($data['Alloted'] as $alloted)
                 <tr>
-                    <td>{{$alloted['product_name']}}</td>
+                    <td>{{$alloted['product_id']}} {{$alloted['product_name']}}</td>
                     <td>{{number_format($alloted['qty'],0)}}</td>
                     <td>{{number_format($alloted['allot_price1'],2)}}</td>
                     <td>{{number_format($alloted['amount'],2)}}</td>
