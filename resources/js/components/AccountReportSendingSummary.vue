@@ -112,6 +112,7 @@ export default {
               start_date: '',
               end_date: '',
               report_make_date: '',
+              performance_fee_date: '',
               report: ''
           }
       }
