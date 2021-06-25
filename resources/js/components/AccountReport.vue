@@ -455,7 +455,9 @@ export default {
         },
 
         onRowClicked(item, index, event){
-            this.list.push(item.client_acc_id)
+            let i = this.list.indexOf(item.client_acc_id);
+            if(i===-1) this.list.push(item.client_acc_id)
+            else delete this.list[i]
         }
     }
 }
