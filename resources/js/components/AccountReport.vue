@@ -142,7 +142,7 @@
             :value="buttons.email.success">
         </b-progress>
         <b-overlay variant="dark" :show="buttons.command>0" rounded="sm">
-        <b-table class="text-white" :items="items" :fields="fields">
+        <b-table class="text-white" :items="items" :fields="fields" @row-clicked="onRowClicked">
             <template #head(select)>
                 <b-form-checkbox name="selected_all" v-model="all_selected" :indeterminate="indeterminate" @change="select_all"></b-form-checkbox>
             </template>
@@ -452,6 +452,10 @@ export default {
             return array.filter(function (o) {
                 return o[key] === value;
             });
+        },
+
+        onRowClicked(item, index, event){
+            _this.list.push(item.client_acc_id)
         }
     }
 }
