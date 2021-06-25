@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ayers:importall today All')->dailyAt('23:30');
         $schedule->call(function(){
             dispatch((new \App\Jobs\UpdateA01ProductId)->onQueue('AyersCSVImport'));
-            dispatch((new \App\Jobs\UpdateRelayTable)->onQueue('AyersCSVImport'));
+            //dispatch((new \App\Jobs\UpdateRelayTable)->onQueue('AyersCSVImport'));
             dispatch((new \App\Jobs\ReflashIpoSummary)->onQueue('AyersCSVImport'));
         })->dailyAt('23:35');
     }
