@@ -7,7 +7,6 @@ use App\ClientCNIDCard;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\Traits\Excel;
-use App\ViewClientIDCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -120,7 +119,8 @@ class DeliverableList2Controller extends HomeController
         $zipFile = new \PhpZip\ZipFile();
         $clients = $request->input('clients');
         foreach ($clients as $client) {
-            $ClientIDCard = ViewClientIDCard::where('uuid', $client['uuid'])->first();
+            $Client = Client::where('uuid', $client['uuid'])->first();
+            $ClientIDCard = $Client->IDCard;
             $idcard_face = $this->saveBase64Image($this->blobToBase64($ClientIDCard->idcard_face), "upload/$ClientIDCard->uuid", 'idcard_face');
             $idcard_back = $this->saveBase64Image($this->blobToBase64($ClientIDCard->idcard_back), "upload/$ClientIDCard->uuid", 'idcard_back');
             $zipFile->addDir(storage_path("app/upload/$ClientIDCard->uuid"));
