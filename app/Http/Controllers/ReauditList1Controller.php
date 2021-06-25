@@ -71,9 +71,9 @@ class ReauditList1Controller extends HomeController
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
-            $row['客户姓名'] = $Client->ViewClientIDCard->name_c;
-            $row['證件號碼'] = $Client->ViewClientIDCard->idcard_no;
-            $row['所在地'] = $Client->ViewClientIDCard->address;
+            $row['客户姓名'] = $Client->IDCard->name_c;
+            $row['證件號碼'] = $Client->IDCard->idcard_no;
+            $row['所在地'] = $Client->IDCard->address;
             $row['手機號碼'] = $Client->mobile;
             $row['郵箱'] = $Client->email;
             $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
