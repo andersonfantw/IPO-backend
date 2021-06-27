@@ -113,8 +113,8 @@ class ViewClientController extends HomeController
         $parameters['ClientFinancialStatus'] = $Client->ClientFinancialStatus->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientFinancialStatus->fund_source = stripslashes($Client->ClientFinancialStatus->fund_source);
         $parameters['ClientInvestmentExperience'] = $Client->ClientInvestmentExperience->toJson(JSON_UNESCAPED_UNICODE);
-        // $parameters['ClientScore'] = $Client->ViewClientScore->toJson(JSON_UNESCAPED_UNICODE);
-        $parameters['ClientScore'] = '[]';
+        $parameters['ClientScore'] = $Client->ViewClientScore->toJson(JSON_UNESCAPED_UNICODE);
+        // $parameters['ClientScore'] = '[]';
         $parameters['ClientEvaluationResults'] = $Client->ClientEvaluationResults->toJson(JSON_UNESCAPED_UNICODE);
         $parameters['ClientSignature'] = $Client->ClientSignature->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
