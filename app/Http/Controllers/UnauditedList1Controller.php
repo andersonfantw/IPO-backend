@@ -36,7 +36,7 @@ class UnauditedList1Controller extends HomeController
             ['key' => '操作'],
         ];
         $FilterType = [
-            'AE' => 'startsWith',
+            'AE' => 'equals',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
             '已入金' => 'equals',

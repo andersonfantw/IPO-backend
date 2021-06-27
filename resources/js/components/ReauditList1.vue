@@ -35,8 +35,18 @@
       <b-col cols="6">
         <DateRange :name="'提交時間'" v-model="filters['提交時間']" />
       </b-col>
-      <b-col> </b-col>
-      <b-col> </b-col>
+      <b-col>
+        <b-input-group prepend="AE">
+          <b-form-select v-model="filters['AE']" :options="aes">
+          </b-form-select>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="已入金">
+          <b-form-select v-model="filters['已入金']" :options="已入金">
+          </b-form-select>
+        </b-input-group>
+      </b-col>
     </b-row>
     <b-table
       hover
@@ -106,6 +116,16 @@ export default {
       perPage: 10,
       FilterType: {},
       totalRows: 0,
+      aes: [
+        { value: null, text: "全部" },
+        { value: "梧桐花開", text: "梧桐花開" },
+        { value: "劉素惠", text: "劉素惠" },
+      ],
+      已入金: [
+        { value: null, text: "全部" },
+        { value: "是", text: "是" },
+        { value: "否", text: "否" },
+      ],
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
