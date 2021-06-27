@@ -71,7 +71,7 @@ class ReauditList1Controller extends HomeController
             $query->where('status', 'reaudit');
         })->orWhereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'reaudit');
-        })->orWhere('status', 'reaudit')->orderBy('created_at', 'desc')->limit(100)->get();
+        })->orWhere('status', 'reaudit')->orderBy('created_at', 'asc')->limit(200)->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];

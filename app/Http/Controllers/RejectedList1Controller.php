@@ -45,7 +45,7 @@ class RejectedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('EditableSteps')->orderBy('created_at', 'desc')->limit(100)->get();
+        $Clients = Client::has('EditableSteps')->orderBy('created_at', 'asc')->limit(200)->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
