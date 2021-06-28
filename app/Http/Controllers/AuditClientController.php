@@ -16,13 +16,17 @@ class AuditClientController extends ViewClientController
 
     private function addEditableSteps(Client $Client, String $Progress)
     {
-        $step = config("progress.Progress.$Progress.$Client->nationality");
+        $selected_flow = json_decode($Client->selected_flow, true);
+        $selected_flow = implode('.', $selected_flow);
+        $step = config("progress.Progress.$Progress.$selected_flow");
         EditableSteps::firstOrCreate(['uuid' => $Client->uuid, 'step' => $step, 'reason' => 'correction']);
     }
 
     private function deleteEditableSteps(Client $Client, String $Progress)
     {
-        $step = config("progress.Progress.$Progress.$Client->nationality");
+        $selected_flow = json_decode($Client->selected_flow, true);
+        $selected_flow = implode('.', $selected_flow);
+        $step = config("progress.Progress.$Progress.$selected_flow");
         EditableSteps::where('uuid', $Client->uuid)->where('step', $step)->where('reason', 'correction')->delete();
     }
 

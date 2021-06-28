@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Traits\CountRecords;
 use App\Traits\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class UnauditedList1Controller extends HomeController
 {
-    use Report;
+    use Report, CountRecords;
 
     protected $name = 'UnauditedList1';
 
@@ -44,6 +45,8 @@ class UnauditedList1Controller extends HomeController
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);
+        $parameters['CountUnauditedHasDepositProof'] = $this->countUnauditedHasDepositProof();
+        $parameters['Countaudited1HasDepositProof'] = $this->countaudited1HasDepositProof();
         return $parameters;
     }
 

@@ -15,6 +15,22 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait CountRecords
 {
+    public function countUnauditedHasDepositProof()
+    {
+        $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
+            $query->where('status', 'unaudited');
+        })->where('status', 'unaudited')->count();
+        return $NoOfNews > 0 ? $NoOfNews : null;
+    }
+
+    public function countaudited1HasDepositProof()
+    {
+        $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->where('status', 'audited1')->count();
+        return $NoOfNews > 0 ? $NoOfNews : null;
+    }
+
     public function countNewUnauditedClients1()
     {
         // $NoOfNews = Client::whereHasMorph('IDCard', [
