@@ -57,7 +57,7 @@ class UnauditedList2Controller extends HomeController
             $query->where('status', 'audited1');
         })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited1');
-        })->whereHas('ClientBankCard', function (Builder $query) {
+        })->whereHas('ClientBankCards', function (Builder $query) {
             $query->where('status', 'audited1');
         })->whereHas('ClientFinancialStatus', function (Builder $query) {
             $query->where('status', 'audited1');
