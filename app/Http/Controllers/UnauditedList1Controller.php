@@ -73,7 +73,8 @@ class UnauditedList1Controller extends HomeController
         // })->where('status', 'unaudited')->orderBy('created_at', 'asc')->get();
         $Clients = Client::whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->where('status', 'unaudited')->orderBy('created_at', 'asc')->get();
+        })->where('status', 'unaudited')->where('idcard_type', '!=', 'App\ClientOtherIDCard')->
+            orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
@@ -93,7 +94,8 @@ class UnauditedList1Controller extends HomeController
             $rows[] = $row;
         }
 
-        $Clients = Client::where('status', 'unaudited')->where('progress', 16)->orderBy('created_at', 'asc')->get();
+        $Clients = Client::where('status', 'unaudited')->where('progress', 16)->
+            where('idcard_type', 'App\ClientOtherIDCard')->orderBy('created_at', 'asc')->get();
         foreach ($Clients as $Client) {
             $row = [];
             $row['AE'] = $Client->ViewIntroducer->ae_name;
