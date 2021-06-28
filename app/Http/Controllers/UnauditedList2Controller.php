@@ -46,28 +46,28 @@ class UnauditedList2Controller extends HomeController
 
     public function getData(Request $request)
     {
-        // $Clients = Client::whereHasMorph('IDCard', [
-        //     ClientCNIDCard::class,
-        //     ClientHKIDCard::class,
-        //     ClientOtherIDCard::class,
-        // ], function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->whereHas('ClientWorkingStatus', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->whereHas('ClientSignature', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->whereHas('ClientDepositProof', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->where('status', 'audited1')->orderBy('created_at', 'asc')->get();
-        $Clients = Client::whereHas('ClientDepositProof', function (Builder $query) {
+        $Clients = Client::whereHasMorph('IDCard', [
+            ClientCNIDCard::class,
+            ClientHKIDCard::class,
+            ClientOtherIDCard::class,
+        ], function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->whereHas('ClientWorkingStatus', function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->whereHas('ClientFinancialStatus', function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->whereHas('ClientEvaluationResults', function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->whereHas('ClientSignature', function (Builder $query) {
+            $query->where('status', 'audited1');
+        })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'audited1');
         })->where('status', 'audited1')->orderBy('created_at', 'asc')->get();
+        // $Clients = Client::whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->where('status', 'audited1')->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
