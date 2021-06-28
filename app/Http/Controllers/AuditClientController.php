@@ -18,6 +18,7 @@ class AuditClientController extends ViewClientController
     {
         $selected_flow = json_decode($Client->selected_flow, true);
         $selected_flow = implode('.', $selected_flow);
+        dd("progress.Progress.$Progress.$selected_flow");
         $step = config("progress.Progress.$Progress.$selected_flow");
         EditableSteps::firstOrCreate(['uuid' => $Client->uuid, 'step' => $step, 'reason' => 'correction']);
     }
