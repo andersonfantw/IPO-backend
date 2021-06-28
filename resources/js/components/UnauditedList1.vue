@@ -118,7 +118,7 @@ export default {
       totalRows: 0,
       aes: [
         { value: null, text: "全部" },
-        { value: "進", text: "進" },
+        { value: "梧桐花開", text: "梧桐花開" },
         { value: "劉素惠", text: "劉素惠" },
       ],
       已入金: [
