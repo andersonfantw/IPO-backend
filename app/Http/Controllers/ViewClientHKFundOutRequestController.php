@@ -35,6 +35,8 @@ class ViewClientHKFundOutRequestController extends HomeController
                 $ClientIDCard->{$key} = addslashes($value);
             }
         }
+        $ClientIDCard->idcard_face = null;
+        $ClientIDCard->idcard_back = null;
         $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
 
         $AyersAccounts = [];
