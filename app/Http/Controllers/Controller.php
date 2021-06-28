@@ -21,4 +21,10 @@ class Controller extends BaseController
     {
         return view('welcome');
     }
+
+    public function TestRoute(Request $request)
+    {
+        $route = $request->input('route');
+        dd($route);
+    }
 }
