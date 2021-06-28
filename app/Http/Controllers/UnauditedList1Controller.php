@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\ClientCNIDCard;
-use App\ClientHKIDCard;
-use App\ClientOtherIDCard;
 use App\Traits\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -52,24 +49,27 @@ class UnauditedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('ClientBusinessType')->whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
+        // $Clients = Client::has('ClientBusinessType')->whereHasMorph('IDCard', [
+        //     ClientCNIDCard::class,
+        //     ClientHKIDCard::class,
+        //     ClientOtherIDCard::class,
+        // ], function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->where('status', 'unaudited')->orderBy('created_at', 'asc')->get();
+        $Clients = Client::whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'unaudited');
-            // })->whereHas('ClientDepositProof', function (Builder $query) {
-            //     $query->where('status', 'unaudited');
         })->where('status', 'unaudited')->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
