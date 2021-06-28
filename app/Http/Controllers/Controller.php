@@ -25,6 +25,6 @@ class Controller extends BaseController
     public function TestRoute(Request $request)
     {
         $route = $request->input('route');
-        dd($route);
+        dd(config($route));
     }
 }
