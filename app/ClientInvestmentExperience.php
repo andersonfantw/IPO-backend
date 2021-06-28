@@ -10,6 +10,7 @@ class ClientInvestmentExperience extends Model
     protected $fillable = [
         'uuid',
         'investment_objective',
+        'other_investment_objective',
         'stock',
         'derivative_warrants',
         'cbbc',

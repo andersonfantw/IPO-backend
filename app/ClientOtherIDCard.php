@@ -9,6 +9,7 @@ class ClientOtherIDCard extends Model
     protected $table = 'client_other_idcard';
     protected $fillable = [
         'uuid',
+        'type',
         'idcard_face',
         'idcard_back',
         'name_c',
@@ -19,6 +20,7 @@ class ClientOtherIDCard extends Model
         'status',
         'remark',
         'count_of_audits',
+        'closed_at',
     ];
     public function client()
     {

@@ -12,17 +12,19 @@ class Client extends Model
         'introducer_uuid',
         'type',
         'email',
+        'country_code',
         'mobile',
         'tel',
         'fax',
         'nationality',
+        'selected_flow',
         'status',
         'progress',
         'education_level',
         'idcard_type',
-        'status',
         'remark',
         'count_of_audits',
+        'closed_at',
     ];
 
     public function ClientFundInRequests()

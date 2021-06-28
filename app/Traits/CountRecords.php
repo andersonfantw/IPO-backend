@@ -20,7 +20,7 @@ trait CountRecords
         $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'unaudited');
         })->where('status', 'unaudited')->count();
-        return $NoOfNews > 0 ? $NoOfNews : null;
+        return $NoOfNews;
     }
 
     public function countaudited1HasDepositProof()
@@ -28,7 +28,7 @@ trait CountRecords
         $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'audited1');
         })->where('status', 'audited1')->count();
-        return $NoOfNews > 0 ? $NoOfNews : null;
+        return $NoOfNews;
     }
 
     public function countNewUnauditedClients1()
