@@ -69,7 +69,7 @@ class DeliverableList2Controller extends HomeController
             $query->where('status', 'audited2');
         })->whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'audited2');
-        })->where('status', 'audited2')->orderBy('created_at', 'asc')->limit(200)->get();
+        })->where('status', 'audited2')->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             if ($Client->AyersAccounts->isNotEmpty()) {
