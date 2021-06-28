@@ -127,4 +127,5 @@ Route::get('/AccountReportSendingSummary','AccountReportSendingSummaryController
 Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}','AccountReportSendingSummaryController@show')->where(['AccountReportSendingSummary'=>'[0-9]+']);
 Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowHtml/{account_no}', 'AccountReportController@showHtml')->where(['AccountReportSendingSummary'=>'[0-9]+','account_no'=>'[0-9]{7,8}']);
 Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowPdf/{account_no}', 'AccountReportController@showPdf')->where(['AccountReportSendingSummary'=>'[0-9]+','account_no'=>'[0-9]{7,8}']);
+Route::get('/max/deposit','SimpleListController@deposit');
 // Anderson 2021-05-31 end
