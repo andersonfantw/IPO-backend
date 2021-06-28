@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AccountReportFormRequest;
 use Carbon\Carbon;
-class AccountReportController extends Controller
+class SimpleListController extends Controller
 {
     public function deposit()
     {
