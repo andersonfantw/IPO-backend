@@ -17,25 +17,28 @@ trait CountRecords
 {
     public function countNewUnauditedClients1()
     {
-        $NoOfNews = Client::whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
+        // $NoOfNews = Client::whereHasMorph('IDCard', [
+        //     ClientCNIDCard::class,
+        //     ClientHKIDCard::class,
+        //     ClientOtherIDCard::class,
+        // ], function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientBankCards', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->where('status', 'unaudited')->count();
+        $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'unaudited');
         })->where('status', 'unaudited')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
