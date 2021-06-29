@@ -11,6 +11,7 @@ use App\ClientHKFundOutRequest;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\ClientOverseasFundOutRequest;
+use App\ViewPendingClient;
 use Illuminate\Database\Eloquent\Builder;
 
 trait CountRecords
@@ -62,27 +63,28 @@ trait CountRecords
 
     public function countNewUnauditedClients2()
     {
-        $NoOfNews = Client::whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->where('status', 'audited1')->count();
+        // $NoOfNews = Client::whereHasMorph('IDCard', [
+        //     ClientCNIDCard::class,
+        //     ClientHKIDCard::class,
+        //     ClientOtherIDCard::class,
+        // ], function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientBankCards', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->where('status', 'audited1')->count();
+        $NoOfNews = ViewPendingClient::where('has_deposit_proof', 1)->where('status', 'audited1')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 
