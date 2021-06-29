@@ -48,6 +48,7 @@ class SimpleListController extends Controller
                     )->leftJoin('editable_steps','client.uuid','=','editable_steps.uuid')
                     ->leftJoin('view_client_idcard','client.uuid','=','view_client_idcard.uuid')
                     ->where('client.type','=','拼一手')
+                    ->where('client.status','<>','audited2')
                     ->get()->toArray()
             ]
         );
