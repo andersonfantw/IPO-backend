@@ -27,11 +27,9 @@ class SimpleListController extends Controller
 
         return view('Table', 
             [
-                'data' => AccountReport::with([
-                    'ClientInfo' => function($query){
-                        $query->select('client_acc_id','name','email');
-                    }
-                ])->select()->ofParentID(20)->get()->toArray()
+                'data' => CysislbGtsClientAcc::select('client_acc_id','name','email')
+                    ->whereIn('client_acc_id',AccountReport::ofParentID(20)->pluck('client_acc_id'))
+                    ->get()->toArray()
             ]
         );
     }
