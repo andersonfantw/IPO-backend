@@ -24,12 +24,15 @@ class SimpleListController extends Controller
     }
 
     public function MailList(){
-        return view('Table', [
-            'data' => AccountReport::with([
-                'ClientInfo' => function($query){
-                    $query->select('client_acc_id','name','email');
-                }
-            ])->select()->ofParentID(3)->get()->toArray()
-        ]);
+
+        return view('Table', 
+            [
+                'data' => AccountReport::with([
+                    'ClientInfo' => function($query){
+                        $query->select('client_acc_id','name','email');
+                    }
+                ])->select()->ofParentID(20)->get()->toArray()
+            ]
+        );
     }
 }
