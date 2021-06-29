@@ -14,10 +14,6 @@ class AccountReportSendingSummary extends Model
         'report_make_date',
         'performance_fee_date',
     ];
-    protected $casts = [
-        'start_date' => 'datetime:Y-m-d',
-        'end_date' => 'datetime:Y-m-d',
-    ];
 
     public function AccountReport(){
         return $this->hasMany('APP\AccountReport');
@@ -25,18 +21,18 @@ class AccountReportSendingSummary extends Model
 
     protected function serializeStartDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('Y-m-d');
     }
     protected function serializeEndDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('Y-m-d');
     }
     protected function serializeReportMakeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('Y-m-d');
     }
     protected function serializePerformanceFeeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('Y-m-d');
     }
 }
