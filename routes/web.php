@@ -132,5 +132,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowPdf/{account_no}', 'AccountReportController@showPdf')->where(['AccountReportSendingSummary' => '[0-9]+', 'account_no' => '[0-9]{7,8}']);
 
     Route::get('/max/deposit', 'SimpleListController@deposit');
+    Route::get('/max/MailList', 'SimpleListController@MailList');
 });
 // Anderson 2021-05-31 end

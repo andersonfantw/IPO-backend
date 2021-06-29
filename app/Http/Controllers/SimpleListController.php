@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ClientDepositProof;
 use App\ViewClientIDCard;
+use App\AccountReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AccountReportFormRequest;
@@ -20,5 +21,15 @@ class SimpleListController extends Controller
                     ->get()->toArray()
             ]
         );
+    }
+
+    public function MailList(){
+        return view('Table', [
+            'data' => AccountReport::with([
+                'ClientInfo' => function($query) use($request){
+                    $query->select('client_acc_id','name','email');
+                }
+            ])->select()->ofParentID($id)
+        ]);
     }
 }
