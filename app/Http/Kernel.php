@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'PreviewClient' => \App\Http\Middleware\PreviewClient::class,
         'PreviewClientFundInRequest' => \App\Http\Middleware\PreviewClientFundInRequest::class,
         'PreviewClientHKFundOutRequest' => \App\Http\Middleware\PreviewClientHKFundOutRequest::class,
         'PreviewClientOverseasFundOutRequest' => \App\Http\Middleware\PreviewClientOverseasFundOutRequest::class,

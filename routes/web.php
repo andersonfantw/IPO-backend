@@ -28,7 +28,9 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::get('/ReauditList1', 'ReauditList1Controller@index')->name('ReauditList1');
 
-    Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient');
+    Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient')->middleware([
+        'PreviewClient',
+    ]);
 
     Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest')->middleware([
         'PreviewClientFundInRequest',
@@ -124,11 +126,11 @@ Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCo
 
 // Anderson 2021-05-31 start
 Route::middleware(['auth'])->group(function () {
-    Route::get('/AccountReportSendingSummary','AccountReportSendingSummaryController@indexView')->name('AccountReportSendingSummary');
-    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}','AccountReportSendingSummaryController@show')->where(['AccountReportSendingSummary'=>'[0-9]+']);
-    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowHtml/{account_no}', 'AccountReportController@showHtml')->where(['AccountReportSendingSummary'=>'[0-9]+','account_no'=>'[0-9]{7,8}']);
-    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowPdf/{account_no}', 'AccountReportController@showPdf')->where(['AccountReportSendingSummary'=>'[0-9]+','account_no'=>'[0-9]{7,8}']);
+    Route::get('/AccountReportSendingSummary', 'AccountReportSendingSummaryController@indexView')->name('AccountReportSendingSummary');
+    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}', 'AccountReportSendingSummaryController@show')->where(['AccountReportSendingSummary' => '[0-9]+']);
+    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowHtml/{account_no}', 'AccountReportController@showHtml')->where(['AccountReportSendingSummary' => '[0-9]+', 'account_no' => '[0-9]{7,8}']);
+    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowPdf/{account_no}', 'AccountReportController@showPdf')->where(['AccountReportSendingSummary' => '[0-9]+', 'account_no' => '[0-9]{7,8}']);
 
-    Route::get('/max/deposit','SimpleListController@deposit');
+    Route::get('/max/deposit', 'SimpleListController@deposit');
 });
 // Anderson 2021-05-31 end

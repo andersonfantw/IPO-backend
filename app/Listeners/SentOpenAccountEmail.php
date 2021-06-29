@@ -25,16 +25,16 @@ class SentOpenAccountEmail
      */
     public function handle(MessageSent $event)
     {
-        if (array_key_exists('client', $event->data) && array_key_exists('sender', $event->data)) {
-            $client = $event->data['client'];
-            $sender = $event->data['sender'];
-            if ($client && $sender) {
-                SentEmailRecord::create([
-                    'uuid' => $client->uuid,
-                    'type' => 'open account email',
-                    'sent_by' => $sender['name'],
-                ]);
-            }
+        // if (array_key_exists('client', $event->data) && array_key_exists('sender', $event->data)) {
+        $client = $event->data['client'];
+        $sender = $event->data['sender'];
+        if ($client && $sender) {
+            SentEmailRecord::create([
+                'uuid' => $client->uuid,
+                'type' => 'open account email',
+                'sent_by' => $sender['name'],
+            ]);
         }
+        // }
     }
 }

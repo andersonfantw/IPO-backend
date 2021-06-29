@@ -25,6 +25,7 @@ class Client extends Model
         'remark',
         'count_of_audits',
         'closed_at',
+        'previewing_by',
     ];
 
     public function ClientFundInRequests()
