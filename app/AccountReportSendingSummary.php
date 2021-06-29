@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use DateTimeInterface;
 class AccountReportSendingSummary extends Model
 {
     protected $table = 'account_report_sending_summary';
