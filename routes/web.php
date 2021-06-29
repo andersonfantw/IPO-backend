@@ -134,5 +134,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/max/deposit', 'SimpleListController@deposit');
     Route::get('/max/MailList', 'SimpleListController@MailList');
     Route::get('/max/OpenStatus' ,'SimpleListController@OpenStatus');
+    Route::get('/max/BankcardRejected' ,'SimpleListController@BankcardRejected');
 });
 // Anderson 2021-05-31 end

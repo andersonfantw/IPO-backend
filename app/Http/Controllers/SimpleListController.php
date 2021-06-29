@@ -7,6 +7,7 @@ use App\ViewClientIDCard;
 use App\CysislbGtsClientAcc;
 use App\AccountReport;
 use App\Client;
+use App\ClientBankCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AccountReportFormRequest;
@@ -52,5 +53,15 @@ class SimpleListController extends Controller
                     ->get()->toArray()
             ]
         );
+    }
+
+    public function BankcardRejected(){
+        return view('Table', 
+            [
+                'data' => ClientBankCard::select('name_c','name_en','lcid','bank_name','bank_code','account_no','client_bankcard.status as bankcard_status')
+                    ->leftJoin('view_client_idcard','view_client_idcard.uuid','=','client_bankcard')
+                    ->whereIn('uuid',Client::where('status','=','audited2')->pluck('uuid'))
+            ]
+        ); 
     }
 }
