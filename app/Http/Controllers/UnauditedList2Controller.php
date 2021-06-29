@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ViewPendingClient;
+use DB;
 use Illuminate\Http\Request;
 
 class UnauditedList2Controller extends HomeController
