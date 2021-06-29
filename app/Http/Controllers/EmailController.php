@@ -21,7 +21,7 @@ class EmailController extends Controller
         foreach ($clients as $client) {
             $Client = Client::where('uuid', $client['uuid'])->first();
             // App::setLocale($Client->nationality);
-            Mail::to($Client->email, $Client->ViewClientIDCard->name_c)->send(new AccountOpened($Client, $User));
+            Mail::to($Client->email, $Client->IDCard->name_c)->send(new AccountOpened($Client, $User));
         }
     }
 }

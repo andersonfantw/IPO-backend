@@ -43,7 +43,7 @@ class AccountOpened extends Mailable
         }
         $score = $this->client->ViewClientScore->sum('score');
         $data = [
-            'account_name' => $this->client->ViewClientIDCard->name_c,
+            'account_name' => $this->client->IDCard->name_c,
             'account_no' => implode(", ", $account_no),
             'account_type' => implode(", ", $account_type),
             'level' => $this->getLevel($score),
