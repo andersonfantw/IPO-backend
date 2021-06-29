@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DateTimeInterface;
 
 class Client extends Model
 {
@@ -136,5 +137,10 @@ class Client extends Model
     public function AyersAccounts()
     {
         return $this->hasMany('App\ClientAyersAccount', 'uuid', 'uuid')->orderBy('account_no', 'asc');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
     }
 }
