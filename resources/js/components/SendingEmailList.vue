@@ -117,7 +117,7 @@ export default {
       filteredClients: [],
       User: null,
       currentPage: 1,
-      perPage: 10,
+      perPage: 50,
       FilterType: {},
       totalRows: 0,
       options: [

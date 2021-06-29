@@ -49,7 +49,7 @@ class AyersAccountController extends Controller
                     ]);
                 }
                 // $Client = Client::where('uuid', $client['uuid'])->first();
-                $this->AccountOpeningForm($Client);
+                // $this->AccountOpeningForm($Client);
             }
         }
         // return redirect()->route($request->input('redirect_route'));
