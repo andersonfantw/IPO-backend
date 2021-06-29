@@ -1,5 +1,5 @@
 <template>
-    <b-container class="m-4" fluid>
+    <b-container class="p-4" fluid>
         <b-overlay variant="dark" rounded="sm" no-center>
             <template #overlay>
                 <div class="d-table m-auto text-center mt-5">
@@ -21,11 +21,11 @@
             </b-col>
             <b-col cols="3">
                 <label for="client_acc_id">帳戶號碼</label>
-                <b-input id="client_acc_id" v-model="filter.client_acc_id" @keyup="index"></b-input>
+                <b-input id="client_acc_id" v-model="filter.client_acc_id" @keyup.enter="index" placeholder="按[ENTER]查詢"></b-input>
             </b-col>
             <b-col cols="3">
                 <label for="client_name">客戶姓名</label>
-                <b-input id="client_name" v-model="filter.name" @keyup="index"></b-input>
+                <b-input id="client_name" v-model="filter.name" @keyup.enter="index" placeholder="按[ENTER]查詢"></b-input>
             </b-col>
         </b-row>
 
@@ -294,8 +294,8 @@ export default {
                 let o = this.getObjectByValue(this.items,'client_acc_id',this.list[i])
                 if(o.length) s += o[0]['client_info']['name'] + ','
             }
-            if(n>3) s += '...等'+n+'人'
-            else s += '共'+n+'人'
+            if(n>3) s += '...等'+this.list.length+'人'
+            else s += '共'+this.list.length+'人'
             return s
         }
     },
