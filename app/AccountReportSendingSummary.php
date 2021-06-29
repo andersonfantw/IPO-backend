@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use DateTimeInterface;
 class AccountReportSendingSummary extends Model
 {
     protected $table = 'account_report_sending_summary';
@@ -14,12 +14,13 @@ class AccountReportSendingSummary extends Model
         'report_make_date',
         'performance_fee_date',
     ];
-    protected $casts = [
-        'start_date' => 'datetime:Y-m-d',
-        'end_date' => 'datetime:Y-m-d',
-    ];
 
     public function AccountReport(){
         return $this->hasMany('APP\AccountReport');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
     }
 }
