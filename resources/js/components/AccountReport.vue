@@ -257,7 +257,6 @@ export default {
                 this.all_selected = true
             } else {
                 this.indeterminate = true
-                this.all_selected = false
             }
         },
         'pagination.current_page': function(n){
