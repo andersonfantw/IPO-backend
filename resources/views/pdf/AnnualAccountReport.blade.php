@@ -202,7 +202,7 @@
                     @endif
                         
                     <td>{{$data['Deposits'][$i]['buss_date']}}</td>
-                        @if (isset($data['TempIpoSummary']['init_value_date']))
+                        @if (!isset($data['TempIpoSummary']['init_value_date']))
                     <td>{{$data['Deposits'][$i]['method']}}</td>
                         @elseif ($data['TempIpoSummary']['init_value_date']->eq($data['Deposits'][$i]['buss_date']))
                     <td>初始入金</td>
