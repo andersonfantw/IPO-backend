@@ -26,7 +26,7 @@ class SimpleListController extends Controller
     public function MailList(){
         return view('Table', [
             'data' => AccountReport::with([
-                'ClientInfo' => function($query) use($request){
+                'ClientInfo' => function($query){
                     $query->select('client_acc_id','name','email');
                 }
             ])->select()->ofParentID($id)
