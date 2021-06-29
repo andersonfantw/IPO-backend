@@ -55,9 +55,10 @@ trait CountRecords
         // })->whereHas('ClientDepositProof', function (Builder $query) {
         //     $query->where('status', 'unaudited');
         // })->where('status', 'unaudited')->count();
-        $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->where('status', 'unaudited')->count();
+        // $NoOfNews = Client::whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'unaudited');
+        // })->where('status', 'unaudited')->count();
+        $NoOfNews = ViewPendingClient::where('has_deposit_proof', 1)->where('status', 'unaudited')->count();
         return $NoOfNews > 0 ? $NoOfNews : null;
     }
 
