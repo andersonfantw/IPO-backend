@@ -59,8 +59,8 @@ class SimpleListController extends Controller
         return view('Table', 
             [
                 'data' => ClientBankCard::select('name_c','name_en','lcid','bank_name','bank_code','account_no','client_bankcard.status as bankcard_status')
-                    ->leftJoin('view_client_idcard','view_client_idcard.uuid','=','client_bankcard')
-                    ->whereIn('uuid',Client::where('status','=','audited2')->pluck('uuid'))
+                    ->leftJoin('view_client_idcard','view_client_idcard.uuid','=','client_bankcard.uuid')
+                    ->whereIn('client_bankcard.uuid',Client::where('status','=','audited2')->pluck('uuid'))
                     ->get()->toArray()
             ]
         ); 
