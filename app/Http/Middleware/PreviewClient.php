@@ -17,8 +17,13 @@ class PreviewClient
     public function handle($request, Closure $next)
     {
         $Client = Client::where('uuid', $request->input('uuid'))->
-            where('status', '!=', 'audited2')->where(function ($query) {
-            $query->whereNull('previewing_by')->orWhere('previewing_by', auth()->user()->name);
+            where(function ($query) {
+            $query->where('status', 'unaudited')
+                ->orWhere('status', 'audited1')
+                ->orWhere('status', 'reaudit');
+        })->where(function ($query) {
+            $query->whereNull('previewing_by')
+                ->orWhere('previewing_by', auth()->user()->name);
         })->update(['previewing_by' => auth()->user()->name]);
         if ($Client > 0) {
             return $next($request);
