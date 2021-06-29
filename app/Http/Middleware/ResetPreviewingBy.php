@@ -20,7 +20,7 @@ class ResetPreviewingBy
      */
     public function handle($request, Closure $next)
     {
-        Client::where('status', '!=', 'audited2')->where('previewing_by', auth()->user()->name)->
+        Client::where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
         ClientFundInRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
