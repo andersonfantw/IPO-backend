@@ -122,7 +122,6 @@ class UnauditedList1Controller extends HomeController
         //     $row['uuid'] = $Client->uuid;
         //     $rows[] = $row;
         // }
-
         return json_encode([
             'data' => $Clients,
         ], JSON_UNESCAPED_UNICODE);
