@@ -22,4 +22,21 @@ class AccountReportSendingSummary extends Model
     public function AccountReport(){
         return $this->hasMany('APP\AccountReport');
     }
+
+    protected function serializeStartDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+    protected function serializeEndDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+    protected function serializeReportMakeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+    protected function serializePerformanceFeeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
