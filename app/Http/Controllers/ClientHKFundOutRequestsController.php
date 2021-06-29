@@ -43,9 +43,10 @@ class ClientHKFundOutRequestsController extends HomeController
 
     public function getData(Request $request)
     {
+        $today = today()->toDateString();
         $ClientHKFundOutRequests = ClientHKFundOutRequest::whereHas('ClientBankCard', function (Builder $query) {
             $query->whereIn('status', ['audited2', 'approved']);
-        })->orderBy('created_at', 'asc')->get();
+        })->where('updated_at', 'like', "$today%")->orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
             $Client = $ClientHKFundOutRequest->Client;
