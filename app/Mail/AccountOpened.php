@@ -35,12 +35,17 @@ class AccountOpened extends Mailable
     public function build()
     {
         App::setLocale($this->client->nationality);
-        $AyersAccount = $this->client->AyersAccounts->where('type', '全權委託賬戶')->first();
+        $account_no = [];
+        $account_type = [];
+        foreach ($this->client->AyersAccounts as $AyersAccount) {
+            $account_no[] = $AyersAccount->account_no;
+            $account_type[] = $AyersAccount->type;
+        }
         $score = $this->client->ViewClientScore->sum('score');
         $data = [
             'account_name' => $this->client->ViewClientIDCard->name_c,
-            'account_no' => $AyersAccount->account_no,
-            'account_type' => '現金/保證金賬戶(看客戶開戶選擇)/全權委託賬戶',
+            'account_no' => implode(", ", $account_no),
+            'account_type' => implode(", ", $account_type),
             'level' => $this->getLevel($score),
             'risk_tolerance' => $this->風險承受程度($score),
         ];
