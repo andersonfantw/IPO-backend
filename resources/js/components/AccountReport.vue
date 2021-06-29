@@ -253,7 +253,6 @@ export default {
                 this.indeterminate = false
                 this.all_selected = false
             } else if (n.length === this.items.length) {
-                this.indeterminate = false
                 this.all_selected = true
             } else {
                 this.indeterminate = true
