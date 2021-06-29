@@ -155,7 +155,8 @@ export default {
     loadData() {
       const self = this;
       axios.post("api/UnauditedList1/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
+        // const json = self.getDecryptedJsonObject(res.data);
+        const json = res.data;
         self.data = json.data;
         self.totalRows = self.data.length;
         self.loading = false;
