@@ -141,6 +141,6 @@ class Client extends Model
 
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d');
+        return $date->format('Y-m- H:i:s');
     }
 }
