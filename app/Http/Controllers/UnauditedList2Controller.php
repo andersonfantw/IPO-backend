@@ -10,11 +10,6 @@ class UnauditedList2Controller extends HomeController
 {
     protected $name = 'UnauditedList2';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Client;
 use App\ClientFundInRequest;
 use App\ClientFundInternalTransferRequest;
 use App\ClientHKFundOutRequest;
@@ -19,6 +20,8 @@ class ResetPreviewingBy
      */
     public function handle($request, Closure $next)
     {
+        Client::where('status', '!=', 'audited2')->where('previewing_by', auth()->user()->name)->
+            update(['previewing_by' => null]);
         ClientFundInRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
         ClientHKFundOutRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->

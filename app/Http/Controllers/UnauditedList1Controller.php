@@ -14,11 +14,6 @@ class UnauditedList1Controller extends HomeController
 
     protected $name = 'UnauditedList1';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
@@ -71,10 +66,11 @@ class UnauditedList1Controller extends HomeController
         // })->whereHas('ClientDepositProof', function (Builder $query) {
         //     $query->where('status', 'unaudited');
         // })->where('status', 'unaudited')->orderBy('created_at', 'asc')->get();
-        $Clients = Client::whereHas('ClientDepositProof', function (Builder $query) {
+        $Clients = Client::whereHas('ClientSignature', function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->where('status', 'unaudited')->where('idcard_type', '!=', 'App\ClientOtherIDCard')->
-            orderBy('created_at', 'asc')->get();
+        })->where('status', 'unaudited')
+            ->where('idcard_type', '!=', 'App\ClientOtherIDCard')
+            ->orderBy('created_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
