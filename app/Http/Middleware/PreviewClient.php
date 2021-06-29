@@ -22,7 +22,7 @@ class PreviewClient
                 $query->whereNull('previewing_by')
                     ->orWhere('previewing_by', auth()->user()->name);
             })->update(['previewing_by' => auth()->user()->name]);
-        dd($Client);
+        dd($request->input('uuid'));
         if ($Client > 0) {
             return $next($request);
         } else {
