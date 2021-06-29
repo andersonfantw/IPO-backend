@@ -29,7 +29,7 @@ class SimpleListController extends Controller
                 'ClientInfo' => function($query){
                     $query->select('client_acc_id','name','email');
                 }
-            ])->select()->ofParentID(3)->toArray()
+            ])->select()->ofParentID(3)->get()->toArray()
         ]);
     }
 }
