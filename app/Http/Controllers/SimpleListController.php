@@ -44,9 +44,9 @@ class SimpleListController extends Controller
                         DB::raw("concat(concat(country_code,'-'),mobile) as mobile"), 
                         'progress', 'client.status', 
                         DB::raw("case length(selected_flow) when 14 then 15 when 15 then 16 when 40 then 19 when 37 then 15 end as total_steps"),
-                        'c.created_at'
+                        'client.created_at'
                     )->leftJoin('editable_steps','uuid','=','uuid')
-                    ->leftJoin('editable_steps','uuid','=','uuid')
+                    ->leftJoin('view_client_idcard','uuid','=','uuid')
                     ->where('client.type','=','拼一手')
                     ->get()->toArray()
             ]
