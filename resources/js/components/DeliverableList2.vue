@@ -130,7 +130,7 @@ export default {
       DownloadingExcel: false,
       DownloadFilesForOpeningAccount: false,
       currentPage: 1,
-      perPage: 10,
+      perPage: 50,
       FilterType: {},
       totalRows: 0,
       options: [
