@@ -60,6 +60,7 @@ class AccountReportSendingSummaryController extends HomeController
         unset($AccountReportSendingSummary);
 
         return array_map(function($row) use($hash){
+            $row = $row->toArray();
             $row['data'] = $hash[$row->account_report_sending_summary_id];
             return $row;
         },$AccountReport);
