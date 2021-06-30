@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}', 'AccountReportSendingSummaryController@show')->where(['AccountReportSendingSummary' => '[0-9]+']);
     Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowHtml/{account_no}', 'AccountReportController@showHtml')->where(['AccountReportSendingSummary' => '[0-9]+', 'account_no' => '[0-9]{7,8}']);
     Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/ShowPdf/{account_no}', 'AccountReportController@showPdf')->where(['AccountReportSendingSummary' => '[0-9]+', 'account_no' => '[0-9]{7,8}']);
+    Route::get('/AccountReportSendingSummary/{AccountReportSendingSummary}/DownloadPdf/{account_no}', 'AccountReportController@downloadPdf')->where(['AccountReportSendingSummary' => '[0-9]+', 'account_no' => '[0-9]{7,8}']);
 
     Route::get('/max/deposit', 'SimpleListController@deposit');
     Route::get('/max/MailList', 'SimpleListController@MailList');

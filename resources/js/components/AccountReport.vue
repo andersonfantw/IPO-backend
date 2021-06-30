@@ -165,7 +165,10 @@
                 <b-button size="sm" class="mr-1" @click="show_html(row.item)">
                     查看報告書
                 </b-button>
-                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" :disabled="row.item.make_report_status=='fail'">
+                <b-button size="sm" class="mr-1" @click="download_pdf(row.item)" v-if="row.item.make_report_status=='fail'">
+                    下載PDF
+                </b-button>
+                <b-button size="sm" class="mr-1" @click="show_pdf(row.item)" v-else :disabled="row.item.make_report_status!='success'">
                     查看寄出的PDF
                 </b-button>
             </template>
@@ -444,6 +447,9 @@ export default {
         },
         show_pdf(item) {
             window.open(process.env.MIX_BASE_PATH+'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/ShowPdf/'+item.client_acc_id)
+        },
+        download_pdf(item) {
+            window.open(process.env.MIX_BASE_PATH+'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/DownloadPdf/'+item.client_acc_id)
         },
 
         getObjectByValue(array, key, value){

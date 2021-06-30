@@ -18,24 +18,6 @@ class AccountReportSendingSummaryController extends HomeController
         return parent::index($request);
     }
     public function index(Request $request){
-        // return DB::query()->fromSub(function($query){
-        //     $query->fromSub(function($query){
-        //         $query->from('account_reports')
-        //             ->select('account_report_sending_summary_id','sending_status')
-        //             ->selectRaw('count(*) as num')
-        //             ->groupBy('account_report_sending_summary_id','sending_status');
-        //     })->select('account_report_sending_summary_id')
-        //     ->selectRaw("sum(IF(sending_status is null, num, 0)) AS nulls")
-        //     ->selectRaw("sum(IF(sending_status='fail', num, 0)) AS failure")
-        //     ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
-        //     ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
-        //     ->groupBy('account_report_sending_summary_id');
-        // })->select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')
-        // ->select('nulls','failure','success','pending')
-        // ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
-        // ->selectRaw('nulls+failure+success+pending as total')
-        // ->get()->toArray();
-
         $AccountReport = DB::query()->select('account_report_sending_summary_id','nulls','failure','success','pending')
             ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
             ->selectRaw('nulls+failure+success+pending as total')

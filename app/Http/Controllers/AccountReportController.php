@@ -172,8 +172,6 @@ class AccountReportController extends Controller
         return View('pdf.AnnualAccountReport',$SiteDocumentService->AnnualAccountReportData($AccountReportSendingSummary,$client_acc_id));
     }
     public function showPdf(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id){
-        //$pdf = PDF::loadView('pdf.AnnualAccountReport',(new SiteDocumentService())->AnnualAccountReportData($AccountReportSendingSummary,$client_acc_id));
-        //$pdf->setOptions(['isPhpEnabled' => true]);
         $ViewClient = ViewClient::where('account_no','=',$client_acc_id)->firstOrFail();
         return response()->file(
             storage_path('app/').SiteDocumentService::getStoragePath(
@@ -182,5 +180,10 @@ class AccountReportController extends Controller
                 $client_acc_id
             )
         );
+    }
+    public function downloadPdf(AccountReportSendingSummary $AccountReportSendingSummary, $client_acc_id){
+        $pdf = PDF::loadView('pdf.AnnualAccountReport',(new SiteDocumentService())->AnnualAccountReportData($AccountReportSendingSummary,$client_acc_id));
+        $pdf->setOptions(['isPhpEnabled' => true]);
+        return $pdf->stream(sprintf('AnnualReport_%s.pdf',$client_acc_id));
     }
 }
