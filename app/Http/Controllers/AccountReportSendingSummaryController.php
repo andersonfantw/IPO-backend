@@ -36,20 +36,22 @@ class AccountReportSendingSummaryController extends HomeController
         // ->selectRaw('nulls+failure+success+pending as total')
         // ->get()->toArray();
 
-        return array_map(function($row){
-            $AccountReport = DB::query()->fromSub(function($query){
-                $query->from('account_reports')
-                    ->select('account_report_sending_summary_id','sending_status')
-                    ->selectRaw('count(*) as num')
-                    ->groupBy('account_report_sending_summary_id','sending_status');
-            })->select('account_report_sending_summary_id')
-            ->selectRaw("sum(IF(sending_status is null, num, 0)) AS nulls")
-            ->selectRaw("sum(IF(sending_status='fail', num, 0)) AS failure")
-            ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
-            ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
-            ->groupBy('account_report_sending_summary_id')
-            ->get()->toArray();
+        $AccountReport = DB::query()->fromSub(function($query){
+            $query->from('account_reports')
+                ->select('account_report_sending_summary_id','sending_status')
+                ->selectRaw('count(*) as num')
+                ->groupBy('account_report_sending_summary_id','sending_status');
+        },'t')->select('account_report_sending_summary_id')
+        ->selectRaw("sum(IF(sending_status is null, num, 0)) AS nulls")
+        ->selectRaw("sum(IF(sending_status='fail', num, 0)) AS failure")
+        ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
+        ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
+        ->groupBy('account_report_sending_summary_id')
+        ->get()->toArray();
 dd($AccountReport);
+
+        return array_map(function($row){
+
             $total = AccountReport::ofParentID($row['id'])->count();
             if($total){
                 $sending_progress = sprintf("%.2f%%",number_format(($AccountReport->success+$AccountReport->failure)/$total*100,4));
