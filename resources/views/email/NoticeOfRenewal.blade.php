@@ -11,8 +11,8 @@
     </p>
     <div>____________________</div>
     <ol>
-        <li>根據“現金客戶協議書”，客戶常設授權的有效期為十二個月。</li>
-        <li>根據“保證金客戶協議書”，客戶常設授權的有效期為十二個月。</li>
+        <li>根據"現金客戶協議書"，客戶常設授權的有效期為十二個月。</li>
+        <li>根據"保證金客戶協議書"，客戶常設授權的有效期為十二個月。</li>
     </ol>
     <div>中國銀盛國際證券有限公司</div>
     <div>日期 2021年6月1日</div>
@@ -23,10 +23,10 @@
         30 June 2021. We require this authorization from you to continue provision of our service. Unless we receive
         your written objection on or before 15June 2021, the authorization will be renewed for further 12 months.
         Confirmation will be sent to you within one week after the renewal.</p>
-    <div>____________________ </div>
+    <div>____________________</div>
     <ol>
-        <li>Under “Cash Client Agreement”, the Client Standing Authority is valid for a period of 12 months.</li>
-        <li>Under “Margin Client Agreement”, the Client Standing Authority is valid for a period of 12 months.</li>
+        <li>Under "Cash Client Agreement", the Client Standing Authority is valid for a period of 12 months.</li>
+        <li>Under "Margin Client Agreement", the Client Standing Authority is valid for a period of 12 months.</li>
     </ol>
     <div>China Yinsheng International Securities Limited</div>
     <div>Date : 1 June 2021</div>
