@@ -120,7 +120,6 @@ class ViewClientController extends HomeController
         $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
         $parameters['ClientBusinessType'] = $Client->ClientBusinessType->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientBusinessType->direct_promotion = stripslashes($Client->ClientBusinessType->direct_promotion);
-        dd($Client->ClientDepositProof);
         if (is_object($Client->ClientDepositProof)) {
             $Client->ClientDepositProof->image = null;
             $parameters['ClientDepositProof'] = $Client->ClientDepositProof->toJson(JSON_UNESCAPED_UNICODE);
