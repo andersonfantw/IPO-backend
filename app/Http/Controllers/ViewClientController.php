@@ -90,11 +90,11 @@ class ViewClientController extends HomeController
         $Client->selected_flow = stripslashes($Client->selected_flow);
         $parameters['uuid'] = $Client->uuid;
         $parameters['redirect_route'] = $input['redirect_route'];
-        $Client->IDCard->idcard_face = $this->blobToBase64($Client->IDCard->idcard_face);
-        $Client->IDCard->idcard_back = $this->blobToBase64($Client->IDCard->idcard_back);
+        $Client->IDCard->idcard_face = null;
+        $Client->IDCard->idcard_back = null;
         $parameters['ClientIDCard'] = $Client->IDCard->toJson(JSON_UNESCAPED_UNICODE);
         if (is_object($Client->ClientAddressProof)) {
-            $Client->ClientAddressProof->image = $this->blobToBase64($Client->ClientAddressProof->image);
+            $Client->ClientAddressProof->image = null;
             $Client->ClientAddressProof->detailed_address = addslashes($Client->ClientAddressProof->detailed_address);
             $parameters['ClientAddressProof'] = $Client->ClientAddressProof->toJson(JSON_UNESCAPED_UNICODE);
             $Client->ClientAddressProof->detailed_address = stripslashes($Client->ClientAddressProof->detailed_address);
@@ -102,11 +102,11 @@ class ViewClientController extends HomeController
             $parameters['ClientAddressProof'] = null;
         }
         foreach ($Client->ClientBankCards as &$ClientBankCard) {
-            $ClientBankCard->bankcard_blob = $this->blobToBase64($ClientBankCard->bankcard_blob);
+            $ClientBankCard->bankcard_blob = null;
         }
         $parameters['ClientBankCards'] = $Client->ClientBankCards->toJson(JSON_UNESCAPED_UNICODE);
         if ($Client->ClientWorkingStatus->name_card_face) {
-            $Client->ClientWorkingStatus->name_card_face = $this->blobToBase64($Client->ClientWorkingStatus->name_card_face);
+            $Client->ClientWorkingStatus->name_card_face = null;
         }
         $parameters['ClientWorkingStatus'] = $Client->ClientWorkingStatus->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientFinancialStatus->fund_source = addslashes($Client->ClientFinancialStatus->fund_source);
@@ -121,7 +121,7 @@ class ViewClientController extends HomeController
         $parameters['ClientBusinessType'] = $Client->ClientBusinessType->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientBusinessType->direct_promotion = stripslashes($Client->ClientBusinessType->direct_promotion);
         if (is_object($Client->ClientDepositProof)) {
-            $Client->ClientDepositProof->image = $this->blobToBase64($Client->ClientDepositProof->image);
+            $Client->ClientDepositProof->image = null;
             $parameters['ClientDepositProof'] = $Client->ClientDepositProof->toJson(JSON_UNESCAPED_UNICODE);
         } else {
             $parameters['ClientDepositProof'] = null;
