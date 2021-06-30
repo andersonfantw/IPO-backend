@@ -37,34 +37,35 @@ class AccountReportSendingSummaryController extends HomeController
         // ->get()->toArray();
 
         $AccountReport = DB::query()->fromSub(function($query){
-            $query->from('account_reports')
-                ->select('account_report_sending_summary_id','sending_status')
-                ->selectRaw('count(*) as num')
-                ->groupBy('account_report_sending_summary_id','sending_status');
-        },'t')->select('account_report_sending_summary_id')
-        ->selectRaw("sum(IF(sending_status is null, num, 0)) AS nulls")
-        ->selectRaw("sum(IF(sending_status='fail', num, 0)) AS failure")
-        ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
-        ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
-        ->groupBy('account_report_sending_summary_id')
+            $query->fromSub(function($query){
+                $query->from('account_reports')
+                    ->select('account_report_sending_summary_id','sending_status')
+                    ->selectRaw('count(*) as num')
+                    ->groupBy('account_report_sending_summary_id','sending_status');
+            },'t')->select('account_report_sending_summary_id')
+            ->selectRaw("sum(IF(sending_status is null, num, 0)) AS nulls")
+            ->selectRaw("sum(IF(sending_status='fail', num, 0)) AS failure")
+            ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
+            ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
+            ->groupBy('account_report_sending_summary_id');
+        },'t1')->select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')
+        ->select('nulls','failure','success','pending')
+        ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
+        ->selectRaw('nulls+failure+success+pending as total')
         ->get()->toArray();
-dd($AccountReport);
+        $hash = [];
+
+        foreach($AccountReport as $row) $hash[$row['account_report_sending_summary_id']] = $row;
+        unset($AccountReport);
 
         return array_map(function($row){
-
-            $total = AccountReport::ofParentID($row['id'])->count();
-            if($total){
-                $sending_progress = sprintf("%.2f%%",number_format(($AccountReport->success+$AccountReport->failure)/$total*100,4));
-            }else{
-                $sending_progress = '0.00%';
-            }
             return [
                 'id' => $row['id'],
                 'data' => $row,
-                'total' => $total,
-                'sending_progress' => $sending_progress,
-                'success' => $success,
-                'failure' => $failure,
+                'total' => $hash[$row['id']]['total'],
+                'sending_progress' => $hash[$row['id']]['sending_progress'],
+                'success' => $hash[$row['id']]['success'],
+                'failure' => $hash[$row['id']]['failure'],
             ];
         },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get()->toArray());
     }
