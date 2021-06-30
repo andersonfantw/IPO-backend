@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AuthorizedUserRequest;
 use App\Http\Requests\AccountReportSendingSummaryFormRequest;
 use App\AccountReportSendingSummary;
@@ -17,12 +18,28 @@ class AccountReportSendingSummaryController extends HomeController
         return parent::index($request);
     }
     public function index(Request $request){
+        // return DB::query()->fromSub(function($query){
+        //     $query->fromSub(function($query){
+        //         $query->from('account_reports')
+        //             ->select('account_report_sending_summary_id','sending_status')
+        //             ->selectRaw('count(*) as num')
+        //             ->groupBy('account_report_sending_summary_id','sending_status');
+        //     })->select('account_report_sending_summary_id')
+        //     ->selectRaw("sum(IF(sending_status is null, num, 0)) AS nulls")
+        //     ->selectRaw("sum(IF(sending_status='fail', num, 0)) AS failure")
+        //     ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
+        //     ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending");
+        // })->select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')
+        // ->select('nulls','failure','success','pending')
+        // ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
+        // ->selectRaw('nulls+failure+success+pending as total')
+        // ->get()->toArray();
+
         return array_map(function($row){
+            $AccountReport = AccountReport::ofParentID($row['id'])->groupBy('sending_status')->get();
             $total = AccountReport::ofParentID($row['id'])->count();
-            $success = AccountReport::ofParentID($row['id'])->ofSendingStatus('success')->count();
-            $failure = AccountReport::ofParentID($row['id'])->ofSendingStatus('fail')->count();    
             if($total){
-                $sending_progress = sprintf("%.2f%%",number_format(($success+$failure)/$total*100,4));
+                $sending_progress = sprintf("%.2f%%",number_format(($AccountReport->success+$AccountReport->failure)/$total*100,4));
             }else{
                 $sending_progress = '0.00%';
             }
