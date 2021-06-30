@@ -53,20 +53,16 @@ class AccountReportSendingSummaryController extends HomeController
         ->selectRaw('nulls+failure+success+pending as total')
         ->get()->toArray();
 
+        $AccountReportSendingSummary = AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get();
+
         $hash = [];
-        foreach($AccountReport as $row) $hash[$row['account_report_sending_summary_id']] = $row;
-        unset($AccountReport);
+        foreach($AccountReportSendingSummary as $row) $hash[$row->id] = $row;
+        unset($AccountReportSendingSummary);
 
         return array_map(function($row){
-            return [
-                'id' => $row['id'],
-                'data' => $row,
-                'total' => $hash[$row['id']]['total'],
-                'sending_progress' => $hash[$row['id']]['sending_progress'],
-                'success' => $hash[$row['id']]['success'],
-                'failure' => $hash[$row['id']]['failure'],
-            ];
-        },AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get()->toArray());
+            $row['data'] = $hash[$row->account_report_sending_summary_id];
+            return $row;
+        },$AccountReport);
     }
     public function store(AccountReportSendingSummaryFormRequest $request){
         $AccountReportSendingSummary = AccountReportSendingSummary::create(
