@@ -22,15 +22,6 @@ class ViewClientHKFundOutRequestController extends HomeController
         $parameters['Request'] = $ClientHKFundOutRequest->toJson(JSON_UNESCAPED_UNICODE);
 
         $Client = $ClientHKFundOutRequest->Client;
-        if (is_object($Client)) {
-            foreach ($Client->getAttributes() as $key => $value) {
-                if ($key == 'idcard_type') {
-                    continue;
-                }
-                $Client->{$key} = addslashes($value);
-            }
-        }
-        $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         $ClientIDCard = $Client->IDCard;
         $ClientIDCard->idcard_face = null;
@@ -41,6 +32,13 @@ class ViewClientHKFundOutRequestController extends HomeController
             }
         }
         $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
+
+        if (is_object($Client)) {
+            foreach ($Client->getAttributes() as $key => $value) {
+                $Client->{$key} = addslashes($value);
+            }
+        }
+        $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         $AyersAccounts = [];
         foreach ($Client->AyersAccounts as $AyersAccount) {
