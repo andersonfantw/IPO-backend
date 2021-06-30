@@ -36,7 +36,10 @@ class AccountReportSendingSummaryController extends HomeController
         // ->selectRaw('nulls+failure+success+pending as total')
         // ->get()->toArray();
 
-        $AccountReport = DB::query()->fromSub(function($query){
+        $AccountReport = DB::query()->select('account_report_sending_summary_id','nulls','failure','success','pending')
+            ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
+            ->selectRaw('nulls+failure+success+pending as total')
+            ->fromSub(function($query){
             $query->fromSub(function($query){
                 $query->from('account_reports')
                     ->select('account_report_sending_summary_id','sending_status')
@@ -48,10 +51,7 @@ class AccountReportSendingSummaryController extends HomeController
             ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
             ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
             ->groupBy('account_report_sending_summary_id');
-        },'t1')->select('account_report_sending_summary_id','nulls','failure','success','pending')
-        ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
-        ->selectRaw('nulls+failure+success+pending as total')
-        ->get()->toArray();
+        },'t1')->get()->toArray();
 
         $AccountReportSendingSummary = AccountReportSendingSummary::select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')->get();
 
@@ -60,9 +60,14 @@ class AccountReportSendingSummaryController extends HomeController
         unset($AccountReportSendingSummary);
 
         return array_map(function($row) use($hash){
-            $row = $row->toArray();
-            $row['data'] = $hash[$row->account_report_sending_summary_id];
-            return $row;
+            return [
+                'id' => $row->account_report_sending_summary_id,
+                'data' => $hash[$row->account_report_sending_summary_id],
+                'total' => $row->total,
+                'sending_progress' => $row->sending_progress,
+                'success' => $row->success,
+                'failure' => $row->failure,
+            ];;
         },$AccountReport);
     }
     public function store(AccountReportSendingSummaryFormRequest $request){
