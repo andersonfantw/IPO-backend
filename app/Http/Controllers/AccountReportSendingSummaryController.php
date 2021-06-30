@@ -48,13 +48,12 @@ class AccountReportSendingSummaryController extends HomeController
             ->selectRaw("sum(IF(sending_status='success', num, 0)) AS success")
             ->selectRaw("sum(IF(sending_status='pending', num, 0)) AS pending")
             ->groupBy('account_report_sending_summary_id');
-        },'t1')->select('id','ipo_activity_period_id','start_date','end_date','report_make_date','performance_fee_date','report')
-        ->select('nulls','failure','success','pending')
+        },'t1')->select('account_report_sending_summary_id','nulls','failure','success','pending')
         ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")
         ->selectRaw('nulls+failure+success+pending as total')
         ->get()->toArray();
-        $hash = [];
 
+        $hash = [];
         foreach($AccountReport as $row) $hash[$row['account_report_sending_summary_id']] = $row;
         unset($AccountReport);
 
