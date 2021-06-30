@@ -29,7 +29,7 @@ class ViewClientHKFundOutRequestController extends HomeController
         }
         $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
-        $ClientIDCard = $Client->ViewClientIDCard;
+        $ClientIDCard = $Client->IDCard;
         $ClientIDCard->idcard_face = null;
         $ClientIDCard->idcard_back = null;
         if (is_object($ClientIDCard)) {

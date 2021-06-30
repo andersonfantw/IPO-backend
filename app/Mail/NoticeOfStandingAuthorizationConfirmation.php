@@ -11,6 +11,6 @@ class NoticeOfStandingAuthorizationConfirmation extends Mailable
 
     public function build()
     {
-        return $this->view('email.NoticeOfStandingAuthorizationConfirmation')->subject('常設受權確認通知');
+        return $this->view('email.常設受權確認通知')->subject('常設受權確認通知');
     }
 }
