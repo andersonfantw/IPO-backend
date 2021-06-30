@@ -29,32 +29,32 @@ class HomeController extends Controller
                     [
                         'label' => "一審資料未審核清單",
                         'url' => route('UnauditedList1'),
-                        'no_of_news' => $this->countNewUnauditedClients1(),
+                        // 'no_of_news' => $this->countNewUnauditedClients1(),
                     ],
                     [
                         'label' => "一審資料再審核清單",
                         'url' => route('ReauditList1'),
-                        'no_of_news' => $this->countNewReauditClients(),
+                        // 'no_of_news' => $this->countNewReauditClients(),
                     ],
                     [
                         'label' => "資料駁回清單",
                         'url' => route('RejectedList1'),
-                        'no_of_news' => $this->countNewRejectedClients1(),
+                        // 'no_of_news' => $this->countNewRejectedClients1(),
                     ],
                     [
                         'label' => "二審資料未審核清單",
                         'url' => route('UnauditedList2'),
-                        'no_of_news' => $this->countNewUnauditedClients2(),
+                        // 'no_of_news' => $this->countNewUnauditedClients2(),
                     ],
                     [
                         'label' => "二審資料可投遞清單",
                         'url' => route('DeliverableList2'),
-                        'no_of_news' => $this->countNewDeliverableClients(),
+                        // 'no_of_news' => $this->countNewDeliverableClients(),
                     ],
                     [
                         'label' => "開戶信發送清單",
                         'url' => route('SendingEmailList'),
-                        'no_of_news' => $this->countNewSendingEmailClients(),
+                        // 'no_of_news' => $this->countNewSendingEmailClients(),
                     ],
                     [
                         'label' => "年度通知書發送清單",
@@ -97,27 +97,27 @@ class HomeController extends Controller
                     [
                         'label' => "存款申請",
                         'url' => route('ClientFundInRequests'),
-                        'no_of_news' => $this->countNewClientFundInRequests(),
+                        // 'no_of_news' => $this->countNewClientFundInRequests(),
                     ],
                     [
                         'label' => "香港出款申請",
                         'url' => route('ClientHKFundOutRequests'),
-                        'no_of_news' => $this->countNewClientHKFundOutRequests(),
+                        // 'no_of_news' => $this->countNewClientHKFundOutRequests(),
                     ],
                     [
                         'label' => "海外出款申請",
                         'url' => route('ClientOverseasFundOutRequests'),
-                        'no_of_news' => $this->countNewClientOverseasFundOutRequests(),
+                        // 'no_of_news' => $this->countNewClientOverseasFundOutRequests(),
                     ],
                     [
                         'label' => "內部轉帳申請",
                         'url' => route('ClientFundInternalTransferRequests'),
-                        'no_of_news' => $this->countNewClientFundInternalTransferRequests(),
+                        // 'no_of_news' => $this->countNewClientFundInternalTransferRequests(),
                     ],
                     [
                         'label' => "銀盛信用卡出款申請",
                         'url' => route('ClientCreditCardFundOutRequests'),
-                        'no_of_news' => $this->countNewClientCreditCardFundOutRequests(),
+                        // 'no_of_news' => $this->countNewClientCreditCardFundOutRequests(),
                     ],
                 ],
             ],
@@ -127,7 +127,7 @@ class HomeController extends Controller
                     [
                         'label' => "住址證明修改申請",
                         'url' => route('ClientAddressProofUpdates'),
-                        'no_of_news' => $this->countNewClientAddressProofUpdates(),
+                        // 'no_of_news' => $this->countNewClientAddressProofUpdates(),
                     ],
                 ],
             ],
