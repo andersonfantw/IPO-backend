@@ -192,6 +192,17 @@
                     <td></td>
                     <td>{{number_format($data['TempIpoSummary']['prev_account_value'],2)}}</td>
                 </tr>
+                @else
+                @if (empty($data['Deposits']))
+                <tr>
+                    @else
+                <tr class="dashed">
+                    @endif
+                    <td></td>
+                    <td>初始帳戶總值</td>
+                    <td></td>
+                    <td>0.00</td>
+                </tr>
                 @endif
 
                 @for ($i=0;$i<count($data['Deposits']);$i++)
