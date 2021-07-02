@@ -293,6 +293,9 @@
                 <li>表現費: {{number_format($data['TempIpoSummary']['this_performance_fee'],2)}} ({{number_format($data['TempIpoSummary']['restore_avail_bal'] - $data['TempIpoSummary']['correct_init_val'],2)}}*{{$data['TempIpoSummary']['percent']*100}}%)將於 {{$data['AccountReportSendingSummary']['performance_fee_date']->format('Y/m/d')}} 扣除</li>
                 @endif
                 <li>與交易相關的手續費，請參閱報告期間的日交易報表。</li>
+                @if ($data['TempIpoSummary']['current_fee']<0)
+                <li>手續費調整為申購中新股2190歸創通橋醫療科手續費的回調，該項收費屬下一期費用。</li>
+                @endif
             </ol>
         </div>
         <br />
