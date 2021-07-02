@@ -40,13 +40,13 @@ class SendAccountReport implements ShouldQueue
         $account_report_sending_summary_id = $this->AccountReport->account_report_sending_summary_id;
         $client_acc_id = $this->AccountReport->client_acc_id;
         $AccountReportSendingSummary = $this->AccountReport->AccountReportSendingSummary()->firstOrFail();
-        $CysislbGtsClientAcc = $this->AccountReport->ViewClient()->firstOrFail();
+        $CysislbGtsClientAcc = $this->AccountReport->ClientInfo()->firstOrFail();
         $ViewClient = $this->AccountReport->ViewClient()->firstOrFail();
 
         $attach_file = 'upload/'.$ViewClient->uuid.sprintf('/AnnualAccountReport[%s]_%s.pdf',$AccountReportSendingSummary->report_make_date->format('YM'),$client_acc_id);
         if(Storage::missing($attach_file)) abort(404);
 
-        Mail::to(config('mail.operator'))
+        Mail::to($CysislbGtsClientAcc->email)
         ->send((new AnnualAccountReport([
             'client_name' => $CysislbGtsClientAcc->name,
             'client_acc_id' => $client_acc_id,

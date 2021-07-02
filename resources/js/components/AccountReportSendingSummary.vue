@@ -119,6 +119,7 @@ export default {
     },
     created() {
         this.index();
+        this.program();
     },
     methods: {
         info(item, index, button) {
@@ -135,6 +136,12 @@ export default {
             if(this.form.id===0) this.store()
             else this.update()
             this.index()
+        },
+        program(){
+            let _this = this
+            this.myGet(function(response) {
+                _this.ipo_activity_period_options = response
+            },{},this.url('/AccountReport/program'));
         },
         index(){
             let _this = this
