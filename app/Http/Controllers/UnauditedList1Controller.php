@@ -80,9 +80,9 @@ class UnauditedList1Controller extends HomeController
                 'address as 所在地',
                 'mobile as 手機號碼',
                 'email as 郵箱',
-                'created_at as 提交時間',
+                'updated_at as 提交時間',
                 'uuid')
-            ->orderBy('created_at', 'asc')->get();
+            ->orderBy('updated_at', 'asc')->get();
         // return $Clients;
         // $rows = [];
         // foreach ($Clients as $Client) {
