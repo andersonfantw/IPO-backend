@@ -9,6 +9,7 @@ use App\Http\Requests\AccountReportSendingSummaryFormRequest;
 use App\AccountReportSendingSummary;
 use App\AccountReport;
 use App\CysislbGtsClientAcc;
+use App\IpoActivityPeriod;
 
 class AccountReportSendingSummaryController extends HomeController
 {
