@@ -108,9 +108,10 @@ Route::prefix('ClientAddressProofUpdates')->group(function () {
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
+Route::get('/AccountReport/program', 'AccountReportSendingSummaryController@getProgram');
+
 Route::post('/find/client', 'AccountReportController@findClient');
 
-Route::post('/AccountReport/program', 'AccountReportController@getProgram');
 Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTestMail')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/SendMail/{id}/', 'AccountReportController@sendMail')->where(['id' => '[0-9]+']);

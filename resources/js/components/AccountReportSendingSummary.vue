@@ -138,7 +138,7 @@ export default {
             this.index()
         },
         program(){
-            this.myPost(function(response) {
+            this.myGet(function(response) {
                 _this.ipo_activity_period_options = response
             },{},this.url('/AccountReport/program'));
         },
