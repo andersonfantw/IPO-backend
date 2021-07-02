@@ -279,7 +279,7 @@
                 <tr class="subitem">
                     <td></td>
                     <td>已實現損益</td>
-                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']-$data['TempIpoSummary']['current_fee']+$data['PortfolioMarketValue'] - $data['TempIpoSummary']['init_value'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['avail_bal']-$data['TempIpoSummary']['current_subscription']-$data['TempIpoSummary']['current_loan']-$data['TempIpoSummary']['current_fee']+$data['PortfolioMarketValue'] - $data['InitValue'],2)}}</td>
                     <td></td>
                 </tr>
 
