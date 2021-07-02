@@ -190,7 +190,7 @@
                     @endif
                     <td>上期帳戶總值</td>
                     <td></td>
-                    <td>{{number_format($data['TempIpoSummary']['init_value'],2)}}</td>
+                    <td>{{number_format($data['TempIpoSummary']['prev_account_value'],2)}}</td>
                 </tr>
                 @endif
 
