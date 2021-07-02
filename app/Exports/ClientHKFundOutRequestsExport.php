@@ -14,7 +14,7 @@ class ClientHKFundOutRequestsExport extends AyersValueBinder implements FromView
         $ClientHKFundOutRequests = ClientHKFundOutRequest::where('status', 'approved')->get();
         $Requests = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
-            $Request['tran_date'] = $ClientHKFundOutRequest->created_at->format('d/m/Y');
+            $Request['tran_date'] = $ClientHKFundOutRequest->updated_at->format('d/m/Y');
             $Request['ccclnId'] = $ClientHKFundOutRequest->account_out;
             $Request['ccy'] = 'HKD';
             $Request['amount'] = $ClientHKFundOutRequest->amount * -1;
