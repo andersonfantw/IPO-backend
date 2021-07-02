@@ -17,6 +17,11 @@ class AccountReportSendingSummaryController extends HomeController
     public function indexView(Request $request){
         return parent::index($request);
     }
+
+    public function getProgram(){
+        return IpoActivityPeriod::select('id as value', 'name as text')->get();
+    }
+
     public function index(Request $request){
         $AccountReport = DB::query()->select('account_report_sending_summary_id','nulls','failure','success','pending')
             ->selectRaw("concat(format((failure+success)/(nulls+failure+success+pending)*100,2),'%') as sending_progress")

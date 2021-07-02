@@ -110,6 +110,7 @@ Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryContr
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
 Route::post('/find/client', 'AccountReportController@findClient');
 
+Route::post('/AccountReport/program', 'AccountReportController@getProgram');
 Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTestMail')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/SendMail/{id}/', 'AccountReportController@sendMail')->where(['id' => '[0-9]+']);
