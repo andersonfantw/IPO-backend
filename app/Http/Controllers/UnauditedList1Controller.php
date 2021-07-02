@@ -71,7 +71,13 @@ class UnauditedList1Controller extends HomeController
         // })->where('status', 'unaudited')
         //     ->where('idcard_type', '!=', 'App\ClientOtherIDCard')
         //     ->orderBy('created_at', 'asc')->get();
-        $Clients = ViewPendingClient::where('has_deposit_proof', 1)
+        $Clients = ViewPendingClient::where(function ($query) {
+            $query->where('has_deposit_proof', 1)
+                ->orWhere(function ($query) {
+                    $query->where('nationality', 'others')
+                        ->where('progress', 16);
+                });
+        })
             ->where('status', 'unaudited')
             ->select('ae_name as AE',
                 'name_c as 客户姓名',
