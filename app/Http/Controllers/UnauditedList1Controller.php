@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
