@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class RejectedList1Controller extends HomeController
@@ -45,7 +46,9 @@ class RejectedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('EditableSteps')->orderBy('updated_at', 'asc')->get();
+        $Clients = Client::has('EditableSteps', function (Builder $query) {
+            $query->where('reason', 'correction');
+        })->orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
