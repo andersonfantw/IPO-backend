@@ -47,6 +47,9 @@ class ClientBankCardsController extends HomeController
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;
+            if ($Client->status != 'audited2') {
+                continue;
+            }
             $row = [];
             $AyersAccounts = [];
             foreach ($Client->AyersAccounts as $AyersAccount) {
