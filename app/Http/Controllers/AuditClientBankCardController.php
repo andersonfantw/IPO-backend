@@ -11,17 +11,17 @@ class AuditClientBankCardController extends ViewClientBankCardController
 
     public function audit(Request $request)
     {
-        $input = $request->all();
-        $ClientBankCard = ClientBankCard::find($input['account_no']);
-        if ($request->filled(['駁回信息'])) {
-            $ClientBankCard->status = 'rejected';
-            $ClientBankCard->remark = $input['駁回信息'];
+        $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->first();
+        if ($request->has(['駁回信息'])) {
+            // $ClientBankCard->status = 'rejected';
+            // $ClientBankCard->remark = $input['駁回信息'];
+            $ClientBankCard->delete();
         } else {
             $ClientBankCard->status = 'approved';
             $ClientBankCard->remark = null;
+            $ClientBankCard->issued_by = auth()->user()->name;
+            $ClientBankCard->save();
         }
-        $ClientBankCard->issued_by = auth()->user()->name;
-        $ClientBankCard->save();
         return redirect()->route('ClientBankCards');
     }
 }

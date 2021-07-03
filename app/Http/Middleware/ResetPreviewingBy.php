@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Client;
+use App\ClientBankCard;
 use App\ClientFundInRequest;
 use App\ClientFundInternalTransferRequest;
 use App\ClientHKFundOutRequest;
@@ -20,15 +21,15 @@ class ResetPreviewingBy
      */
     public function handle($request, Closure $next)
     {
-        Client::where('previewing_by', auth()->user()->name)->
+        Client::where('previewing_by', auth()->user()->name)->update(['previewing_by' => null]);
+        ClientBankCard::where('previewing_by', auth()->user()->name)->update(['previewing_by' => null]);
+        ClientFundInRequest::where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
-        ClientFundInRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
+        ClientHKFundOutRequest::where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
-        ClientHKFundOutRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
+        ClientOverseasFundOutRequest::where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
-        ClientOverseasFundOutRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
-            update(['previewing_by' => null]);
-        ClientFundInternalTransferRequest::where('status', 'pending')->where('previewing_by', auth()->user()->name)->
+        ClientFundInternalTransferRequest::where('previewing_by', auth()->user()->name)->
             update(['previewing_by' => null]);
         return $next($request);
     }
