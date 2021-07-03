@@ -53,7 +53,7 @@
         <tr>
           <th width="20%" scope="row">銀行卡</th>
           <td colspan="3">
-            <img style="width: 300px" :src="bank_card" />
+            <img style="width: 300px" :src="bank_card_image" />
           </td>
         </tr>
         <tr>
