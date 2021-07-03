@@ -113,6 +113,10 @@ Vue.component('client-progress', require('./components/ClientProgress.vue').defa
 Vue.component('view-client-bank-card', require('./components/ViewClientBankCard.vue').default);
 
 Vue.component('audit-client-bank-card', require('./components/AuditClientBankCard.vue').default);
+
+Vue.component('client-credit-cards', require('./components/ClientCreditCards.vue').default);
+
+// Vue.component('audit-client-bank-card', require('./components/AuditClientBankCard.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

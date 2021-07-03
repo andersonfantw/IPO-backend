@@ -70,6 +70,10 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::any('/DoAuditClientBankCard', 'AuditClientBankCardController@audit')->name('DoAuditClientBankCard');
 
+    Route::any('/AuditClientCreditCard', 'AuditClientCreditCardController@index')->name('AuditClientCreditCard');
+
+    Route::any('/DoAuditClientCreditCard', 'AuditClientCreditCardController@audit')->name('DoAuditClientCreditCard');
+
     Route::any('/ViewClient', 'ViewClientController@index')->name('ViewClient');
 
     Route::any('/ViewClientFundInRequest', 'ViewClientFundInRequestController@index')->name('ViewClientFundInRequest');
@@ -85,6 +89,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/ViewClientBankCard', 'ViewClientBankCardController@index')->name('ViewClientBankCard');
 
     Route::any('/ViewClientAddressProofUpdate', 'ViewClientBankCardController@index')->name('ViewClientAddressProofUpdate');
+
+    Route::any('/ViewClientCreditCard', 'ViewClientCreditCardController@index')->name('ViewClientCreditCard');
 
     Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
 
@@ -107,6 +113,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/ClientAddressProofUpdates', 'ClientAddressProofUpdatesController@index')->name('ClientAddressProofUpdates');
 
     Route::any('/ClientBankCards', 'ClientBankCardsController@index')->name('ClientBankCards');
+
+    Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
 
     Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
     Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');

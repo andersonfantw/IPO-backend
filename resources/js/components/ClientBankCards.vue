@@ -108,7 +108,6 @@ export default {
       perPage: 10,
       FilterType: {},
       totalRows: 0,
-      DownloadingExcel: false,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],

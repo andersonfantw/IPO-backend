@@ -105,6 +105,10 @@ Route::prefix('ClientBankCards')->group(function () {
     Route::any('/all_data', 'ClientBankCardsController@getData');
 });
 
+Route::prefix('ClientCreditCards')->group(function () {
+    Route::any('/all_data', 'ClientCreditCardsController@getData');
+});
+
 Route::prefix('ClientAddressProofUpdates')->group(function () {
     Route::any('/all_data', 'ClientAddressProofUpdatesController@getData');
 });

@@ -12,7 +12,6 @@ class ViewClientBankCardController extends HomeController
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
-        $input = $request->all();
         $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->first();
         if (is_object($ClientBankCard)) {
             $ClientBankCard->bankcard_blob = null;

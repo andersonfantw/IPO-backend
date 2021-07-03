@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
@@ -97,6 +97,11 @@ class Client extends Model
     public function ClientBankCards()
     {
         return $this->hasMany('App\ClientBankCard', 'uuid', 'uuid');
+    }
+
+    public function ClientCreditCards()
+    {
+        return $this->hasMany('App\ClientCreditCard', 'uuid', 'uuid');
     }
 
     public function ClientWorkingStatus()

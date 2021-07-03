@@ -92,6 +92,7 @@ class HomeController extends Controller
                     ],
                     [
                         'label' => "添加信用卡申請",
+                        'url' => route('ClientCreditCards'),
                     ],
                 ],
             ],
