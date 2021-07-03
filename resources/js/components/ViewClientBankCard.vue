@@ -128,9 +128,21 @@ export default {
     redirect_route: String,
   },
   created() {
-    this.Client = JSON.parse(this.client);
-    this.ClientIDCard = JSON.parse(this.client_id_card);
-    this.ClientBankCard = JSON.parse(this.client_bank_card);
+    try {
+      this.Client = JSON.parse(this.client);
+    } catch (err) {
+      debugger;
+    }
+    try {
+      this.ClientIDCard = JSON.parse(this.client_id_card);
+    } catch (err) {
+      debugger;
+    }
+    try {
+      this.ClientBankCard = JSON.parse(this.client_bank_card);
+    } catch (err) {
+      debugger;
+    }
   },
   methods: {},
 };
