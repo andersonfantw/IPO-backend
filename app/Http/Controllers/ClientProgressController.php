@@ -54,10 +54,14 @@ class ClientProgressController extends HomeController
                 } elseif ($selected_flow[1] == 'others') {
                     $流程 = '其他地區';
                 } elseif ($selected_flow[1] == 'zh-cn') {
-                    if ($selected_flow[2] == 'WithHKBankCard') {
-                        $流程 = '中國(香港銀行卡)';
-                    } elseif ($selected_flow[2] == 'WithOtherBankCard') {
-                        $流程 = '中國(其他地區銀行卡)';
+                    if (array_key_exists(2, $selected_flow)) {
+                        if ($selected_flow[2] == 'WithHKBankCard') {
+                            $流程 = '中國(香港銀行卡)';
+                        } elseif ($selected_flow[2] == 'WithOtherBankCard') {
+                            $流程 = '中國(其他地區銀行卡)';
+                        }
+                    } else {
+                        $流程 = '中國';
                     }
                 }
                 $selected_flow = implode('.', $selected_flow);
