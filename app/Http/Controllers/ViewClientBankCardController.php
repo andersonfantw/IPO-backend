@@ -29,6 +29,7 @@ class ViewClientBankCardController extends HomeController
                 $Client->{$key} = addslashes($value);
             }
         }
+        $Client->idcard_type = stripslashes($Client->idcard_type);
         $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         $ClientIDCard = $Client->IDCard;
