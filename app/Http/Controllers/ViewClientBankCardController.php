@@ -14,15 +14,13 @@ class ViewClientBankCardController extends HomeController
         $parameters = parent::setViewParameters($request);
         $input = $request->all();
         $ClientBankCard = ClientBankCard::find($input['id']);
+        $ClientBankCard->bankcard_blob = null;
         if (is_object($ClientBankCard)) {
             foreach ($ClientBankCard->getAttributes() as $key => $value) {
-                if ($key == 'bankcard_blob') {
-                    $ClientBankCard->{$key} = null;
-                } else {
-                    $ClientBankCard->{$key} = addslashes($value);
-                }
+                $ClientBankCard->{$key} = addslashes($value);
             }
         }
+        $parameters['ClientBankCardID'] = $ClientBankCard->id;
         $parameters['ClientBankCard'] = $ClientBankCard->toJson(JSON_UNESCAPED_UNICODE);
 
         $Client = $ClientBankCard->Client;
@@ -33,7 +31,7 @@ class ViewClientBankCardController extends HomeController
         }
         $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
-        $ClientIDCard = $Client->ViewClientIDCard;
+        $ClientIDCard = $Client->IDCard;
         $ClientIDCard->idcard_face = null;
         $ClientIDCard->idcard_back = null;
         if (is_object($ClientIDCard)) {
@@ -42,16 +40,6 @@ class ViewClientBankCardController extends HomeController
             }
         }
         $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
-
-        $AyersAccounts = [];
-        foreach ($Client->AyersAccounts as $AyersAccount) {
-            $AyersAccount = $AyersAccount->attributesToArray();
-            foreach ($AyersAccount as $key => $value) {
-                $AyersAccount[$key] = addslashes($value);
-            }
-            $AyersAccounts[] = $AyersAccount;
-        }
-        $parameters['AyersAccounts'] = json_encode($AyersAccounts, JSON_UNESCAPED_UNICODE);
 
         return $parameters;
     }

@@ -26,33 +26,7 @@
         <tr>
           <th scope="col" colspan="6">
             <h5 class="mb-0">
-              <i class="far fa-user-circle"></i> 客戶帳戶資料
-            </h5>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="AyersAccount in AyersAccounts"
-          :key="AyersAccount.account_no"
-        >
-          <th width="25%" scope="row">帳戶號碼</th>
-          <td width="25%" class="text-warning">
-            {{ AyersAccount.account_no }}
-          </td>
-          <th width="25%" scope="row">帳戶類型</th>
-          <td width="25%" class="text-warning">
-            {{ AyersAccount.type }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table class="table table-bordered text-light">
-      <thead>
-        <tr>
-          <th scope="col" colspan="6">
-            <h5 class="mb-0">
-              <i class="fas fa-money-check-alt"></i> 入金申請資料
+              <i class="fas fa-money-check-alt"></i> 銀行卡資料
             </h5>
           </th>
         </tr>
@@ -61,12 +35,20 @@
         <tr>
           <th width="25%" scope="row">銀行</th>
           <td width="25%" class="text-warning">
-            {{ Request.bank }}
+            {{ ClientBankCard.bank_name }}
           </td>
-          <th width="25%" scope="row">入金方法</th>
+          <th width="25%" scope="row">銀行碼</th>
           <td width="25%" class="text-warning">
-            {{ Request.method }}
+            {{ ClientBankCard.bank_code }}
           </td>
+        </tr>
+        <tr>
+          <th width="25%" scope="row">帳戶號碼</th>
+          <td width="25%" class="text-warning">
+            {{ ClientBankCard.account_no }}
+          </td>
+          <th width="25%"></th>
+          <td width="25%" class="text-warning"></td>
         </tr>
         <tr>
           <th width="20%" scope="row">銀行卡</th>
@@ -76,33 +58,29 @@
         </tr>
         <tr>
           <th width="25%" scope="row">狀態</th>
-          <td width="25%" :class="Request.status">
-            {{ Request.status }}
+          <td width="25%" :class="ClientBankCard.status">
+            {{ ClientBankCard.status }}
           </td>
           <th width="25%" scope="row">經手人</th>
           <td width="25%" class="text-warning">
-            {{ Request.issued_by }}
+            {{ ClientBankCard.issued_by }}
           </td>
         </tr>
         <tr>
-          <th width="25%" scope="row">轉帳時間</th>
-          <td width="25%" class="text-warning">
-            {{ formateDateTime(Request.transfer_time) }}
-          </td>
           <th width="25%" scope="row">申請發送時間</th>
           <td width="25%" class="text-warning">
-            {{ formateDateTime(Request.created_at) }}
+            {{ formateDateTime(ClientBankCard.created_at) }}
           </td>
+          <th width="25%" scope="row"></th>
+          <td width="25%" class="text-warning"></td>
         </tr>
         <tr>
-          <th width="25%" scope="row">入金證明</th>
-          <td colspan="5">
-            <img :src="receipt" />
-          </td>
+          <th width="25%" scope="row"></th>
+          <td colspan="5"></td>
         </tr>
       </tbody>
     </table>
-    <table v-if="Request.remark" class="table table-bordered text-light">
+    <table v-if="ClientBankCard.remark" class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col">
@@ -121,7 +99,7 @@
               class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
               rows="7"
-              v-model="Request.remark"
+              v-model="ClientBankCard.remark"
               :readonly="true"
             ></b-form-textarea>
           </td>
@@ -135,28 +113,24 @@ import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
-      Request: null,
       Client: null,
-      AyersAccounts: null,
+      ClientBankCard: null,
       ClientIDCard: null,
     };
   },
   mixins: [CommonFunctionMixin],
   components: {},
   props: {
-    request: String,
     client: String,
     client_id_card: String,
-    ayers_accounts: Array,
+    client_bank_card: String,
+    bank_card_image: String,
     redirect_route: String,
-    receipt: String,
-    bank_card: String,
   },
   created() {
     this.Client = JSON.parse(this.client);
     this.ClientIDCard = JSON.parse(this.client_id_card);
-    this.Request = JSON.parse(this.request);
-    this.AyersAccounts = this.ayers_accounts;
+    this.ClientBankCard = JSON.parse(this.client_bank_card);
   },
   methods: {},
 };
