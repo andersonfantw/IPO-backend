@@ -29,6 +29,7 @@ class VerifyCsrfToken extends Middleware
         'ViewClientFundInternalTransferRequest',
         'ViewClientFundInRequest',
         'ViewClientOverseasFundOutRequest',
+        'AuditClientBankCard',
         'ViewClientBankCard',
     ];
 }
