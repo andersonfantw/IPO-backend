@@ -44,4 +44,10 @@ class ViewClientBankCardController extends HomeController
 
         return $parameters;
     }
+
+    public function loadBankCard(Request $request)
+    {
+        $ClientBankCard = ClientBankCard::find($request->input('id'));
+        return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/jpeg');
+    }
 }
