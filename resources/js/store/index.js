@@ -14,6 +14,7 @@ import ClientOverseasFundOutRequests from "./modules/ClientOverseasFundOutReques
 import ClientCreditCardFundOutRequests from "./modules/ClientCreditCardFundOutRequests";
 import ClientBankCards from "./modules/ClientBankCards";
 import ClientAddressProofUpdates from "./modules/ClientAddressProofUpdates";
+import ClientProgress from "./modules/ClientProgress";
 
 export default new Vuex.Store({
 	strict: false,
@@ -31,5 +32,6 @@ export default new Vuex.Store({
 		ClientCreditCardFundOutRequests: ClientCreditCardFundOutRequests,
 		ClientBankCards: ClientBankCards,
 		ClientAddressProofUpdates: ClientAddressProofUpdates,
+		ClientProgress: ClientProgress,
 	}
 });

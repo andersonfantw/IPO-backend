@@ -108,6 +108,7 @@ Vue.component('account-report', require('./components/AccountReport.vue').defaul
 
 Vue.component('client-address-proof-updates', require('./components/ClientAddressProofUpdates.vue').default);
 
+Vue.component('client-progress', require('./components/ClientProgress.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

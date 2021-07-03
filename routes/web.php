@@ -20,6 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
+    Route::get('/ClientProgress', 'ClientProgressController@index')->name('ClientProgress');
+
     Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');
 
     Route::get('/UnauditedList2', 'UnauditedList2Controller@index')->name('UnauditedList2');
@@ -134,7 +136,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/max/deposit', 'SimpleListController@deposit');
     Route::get('/max/MailList', 'SimpleListController@MailList');
-    Route::get('/max/OpenStatus' ,'SimpleListController@OpenStatus');
-    Route::get('/max/BankcardRejected' ,'SimpleListController@BankcardRejected');
+    Route::get('/max/OpenStatus', 'SimpleListController@OpenStatus');
+    Route::get('/max/BankcardRejected', 'SimpleListController@BankcardRejected');
 });
 // Anderson 2021-05-31 end

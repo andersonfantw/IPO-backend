@@ -17,6 +17,10 @@ Route::any('/TestRoute', 'Controller@TestRoute');
 
 Route::middleware('auth:api')->get('/user', 'Controller@user');
 
+Route::prefix('ClientProgress')->group(function () {
+    Route::any('/all_data', 'ClientProgressController@getData');
+});
+
 Route::prefix('AE')->group(function () {
     Route::any('/create', 'AEController@create');
     Route::any('/createStaff', 'AEController@createStaff');

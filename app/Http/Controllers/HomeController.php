@@ -27,6 +27,10 @@ class HomeController extends Controller
                 'label' => "開戶處理",
                 'items' => [
                     [
+                        'label' => "開戶進度",
+                        'url' => route('ClientProgress'),
+                    ],
+                    [
                         'label' => "一審資料未審核清單",
                         'url' => route('UnauditedList1'),
                         // 'no_of_news' => $this->countNewUnauditedClients1(),
