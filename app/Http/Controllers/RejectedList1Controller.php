@@ -45,7 +45,7 @@ class RejectedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('EditableSteps')->orderBy('created_at', 'asc')->get();
+        $Clients = Client::has('EditableSteps')->orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
@@ -60,7 +60,7 @@ class RejectedList1Controller extends HomeController
             }
             $row['手機號碼'] = $Client->mobile;
             $row['郵箱'] = $Client->email;
-            $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['提交時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
