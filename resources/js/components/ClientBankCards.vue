@@ -102,8 +102,8 @@ export default {
       FilterMatchMode: {},
       Loading: false,
       data: null,
-      SelectedRequests: [],
-      FilteredRequests: [],
+      SelectedBankCards: [],
+      FilteredBankCards: [],
       currentPage: 1,
       perPage: 10,
       FilterType: {},
@@ -133,9 +133,9 @@ export default {
   methods: {
     selectAll(e) {
       if (e) {
-        this.SelectedRequests = this.FilteredRequests;
+        this.SelectedBankCards = this.FilteredBankCards;
       } else {
-        this.SelectedRequests = [];
+        this.SelectedBankCards = [];
       }
     },
     loadData() {
@@ -143,14 +143,14 @@ export default {
       axios.post("api/ClientBankCards/all_data").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
-        self.FilteredRequests = self.data;
+        self.FilteredBankCards = self.data;
         self.totalRows = self.data.length;
         self.Loading = false;
       });
     },
     onFiltered(filteredItems) {
-      this.SelectedRequests = [];
-      this.FilteredRequests = filteredItems;
+      this.SelectedBankCards = [];
+      this.FilteredBankCards = filteredItems;
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
@@ -166,7 +166,7 @@ export default {
     },
     checked: {
       get() {
-        return this.SelectedRequests.length == this.FilteredRequests.length;
+        return this.SelectedBankCards.length == this.FilteredBankCards.length;
       },
       set(value) {},
     },

@@ -83,8 +83,8 @@ export default {
       FilterMatchMode: {},
       Loading: false,
       data: null,
-      SelectedRequests: [],
-      FilteredRequests: [],
+      SelectedCreditCards: [],
+      FilteredCreditCards: [],
       currentPage: 1,
       perPage: 10,
       FilterType: {},
@@ -114,9 +114,9 @@ export default {
   methods: {
     selectAll(e) {
       if (e) {
-        this.SelectedRequests = this.FilteredRequests;
+        this.SelectedCreditCards = this.FilteredCreditCards;
       } else {
-        this.SelectedRequests = [];
+        this.SelectedCreditCards = [];
       }
     },
     loadData() {
@@ -124,14 +124,14 @@ export default {
       axios.post("api/ClientCreditCards/all_data").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
-        self.FilteredRequests = self.data;
+        self.FilteredCreditCards = self.data;
         self.totalRows = self.data.length;
         self.Loading = false;
       });
     },
     onFiltered(filteredItems) {
-      this.SelectedRequests = [];
-      this.FilteredRequests = filteredItems;
+      this.SelectedCreditCards = [];
+      this.FilteredCreditCards = filteredItems;
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
@@ -147,7 +147,9 @@ export default {
     },
     checked: {
       get() {
-        return this.SelectedRequests.length == this.FilteredRequests.length;
+        return (
+          this.SelectedCreditCards.length == this.FilteredCreditCards.length
+        );
       },
       set(value) {},
     },
