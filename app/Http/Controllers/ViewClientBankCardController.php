@@ -24,13 +24,6 @@ class ViewClientBankCardController extends HomeController
         $parameters['ClientBankCard'] = $ClientBankCard->toJson(JSON_UNESCAPED_UNICODE);
 
         $Client = $ClientBankCard->Client;
-        if (is_object($Client)) {
-            foreach ($Client->getAttributes() as $key => $value) {
-                $Client->{$key} = addslashes($value);
-            }
-        }
-        $Client->idcard_type = stripslashes($Client->idcard_type);
-        $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         $ClientIDCard = $Client->IDCard;
         $ClientIDCard->idcard_face = null;
@@ -41,6 +34,13 @@ class ViewClientBankCardController extends HomeController
             }
         }
         $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
+
+        if (is_object($Client)) {
+            foreach ($Client->getAttributes() as $key => $value) {
+                $Client->{$key} = addslashes($value);
+            }
+        }
+        $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         return $parameters;
     }
