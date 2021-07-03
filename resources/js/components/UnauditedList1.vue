@@ -139,8 +139,6 @@ export default {
       required: true,
     },
     audit_client_url: String,
-    count_unaudited_has_deposit_proof: Number,
-    count_audited1_has_deposit_proof: Number,
   },
   components: {
     DateRange,
