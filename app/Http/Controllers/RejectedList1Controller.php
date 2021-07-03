@@ -46,7 +46,7 @@ class RejectedList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('EditableSteps', function (Builder $query) {
+        $Clients = Client::whereHas('EditableSteps', function (Builder $query) {
             $query->where('reason', 'correction');
         })->orderBy('updated_at', 'asc')->get();
         $rows = [];
