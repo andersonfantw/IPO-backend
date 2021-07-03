@@ -111,6 +111,8 @@ Vue.component('client-address-proof-updates', require('./components/ClientAddres
 Vue.component('client-progress', require('./components/ClientProgress.vue').default);
 
 Vue.component('view-client-bank-card', require('./components/ViewClientBankCard.vue').default);
+
+Vue.component('audit-client-bank-card', require('./components/AuditClientBankCard.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
