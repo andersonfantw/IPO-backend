@@ -13,9 +13,9 @@ class ViewClientBankCardController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $input = $request->all();
-        $ClientBankCard = ClientBankCard::find($input['id']);
-        $ClientBankCard->bankcard_blob = null;
+        $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->first();
         if (is_object($ClientBankCard)) {
+            $ClientBankCard->bankcard_blob = null;
             foreach ($ClientBankCard->getAttributes() as $key => $value) {
                 $ClientBankCard->{$key} = addslashes($value);
             }
