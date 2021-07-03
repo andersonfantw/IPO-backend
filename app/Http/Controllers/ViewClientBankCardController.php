@@ -13,7 +13,7 @@ class ViewClientBankCardController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $input = $request->all();
-        $ClientBankCard = ClientBankCard::find($input['account_no']);
+        $ClientBankCard = ClientBankCard::find($input['id']);
         if (is_object($ClientBankCard)) {
             foreach ($ClientBankCard->getAttributes() as $key => $value) {
                 if ($key == 'bankcard_blob') {
