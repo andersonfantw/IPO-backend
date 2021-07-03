@@ -43,7 +43,7 @@ class ClientBankCardsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientBankCards = ClientBankCard::where('status', 'pending')->get();
+        $ClientBankCards = ClientBankCard::where('type', '拼一手')->where('status', 'pending')->get();
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;
