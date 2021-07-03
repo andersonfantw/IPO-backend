@@ -60,7 +60,7 @@ class ClientBankCardsController extends HomeController
             $row['銀行戶口'] = $ClientBankCard->account_no;
             $row['發送時間'] = date_format($ClientBankCard->created_at, "Y-m-d H:i:s");
             $row['經手人'] = $ClientBankCard->issued_by;
-            $row['審批時間'] = $row['狀態'] == 'pending' ? null : date_format($ClientBankCard->updated_at, "Y-m-d H:i:s");
+            $row['審批時間'] = $ClientBankCard->status == 'pending' ? null : date_format($ClientBankCard->updated_at, "Y-m-d H:i:s");
             $row['id'] = $ClientBankCard->id;
             $rows[] = $row;
         }
