@@ -127,6 +127,7 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/LoadAddressProof', 'AuditClientController@loadAddressProof')->name('LoadAddressProof');
     Route::any('/LoadReceipt', 'ViewClientFundInRequestController@loadReceipt')->name('LoadReceipt');
     Route::any('/LoadBankCard', 'ViewClientBankCardController@loadBankCard')->name('LoadBankCard');
+    Route::any('/LoadCreditCard', 'ViewClientCreditCardController@loadCreditCard')->name('LoadCreditCard');
 });
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
