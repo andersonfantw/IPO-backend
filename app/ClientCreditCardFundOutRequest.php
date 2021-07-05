@@ -22,4 +22,9 @@ class ClientCreditCardFundOutRequest extends Model
     {
         return $this->belongsTo('App\Client', 'uuid', 'uuid');
     }
+
+    public function ClientCreditCard()
+    {
+        return $this->belongsTo('App\ClientCreditCard', 'account_in', 'card_no');
+    }
 }

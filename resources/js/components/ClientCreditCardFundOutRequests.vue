@@ -125,7 +125,7 @@ export default {
       SelectedRequests: [],
       FilteredRequests: [],
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       FilterType: {},
       totalRows: 0,
       DownloadingExcel: false,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ClientCreditCardFundOutRequest;
 use App\Traits\Excel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClientCreditCardFundOutRequestsController extends HomeController
@@ -42,7 +43,9 @@ class ClientCreditCardFundOutRequestsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientCreditCardFundOutRequests = ClientCreditCardFundOutRequest::orderBy('created_at', 'asc')->get();
+        $ClientCreditCardFundOutRequests = ClientCreditCardFundOutRequest::whereHas('ClientCreditCard', function (Builder $query) {
+            $query->where('status', 'approved');
+        })->orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($ClientCreditCardFundOutRequests as $ClientCreditCardFundOutRequest) {
             $Client = $ClientCreditCardFundOutRequest->Client;
