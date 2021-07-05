@@ -22,7 +22,7 @@ class ClientHKFundOutRequestsExport extends AyersValueBinder implements FromView
             $Request['amount'] = $ClientHKFundOutRequest->amount * -1;
             $Request['remark'] = 'OUT_CASH WITHDRAWAL';
             $Request['gl_mapping_item_id'] = null;
-            $Request['bank_acc_id'] = $ClientHKFundOutRequest->account_in;
+            $Request['bank_acc_id'] = "ICBC:HKD:861-512-04226-1";
             $Request['cheque'] = null;
             $Requests[] = $Request;
         }

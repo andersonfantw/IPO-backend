@@ -38,7 +38,7 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
-    <b-button variant="success" @click="downloadExcel"
+    <b-button variant="success" @click="downloadFundOutExcel"
       ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
         v-if="DownloadingExcel"
         label="Spinning"
@@ -177,7 +177,11 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    downloadExcel(e) {
+    downloadFundInExcel(e) {
+      const self = this;
+      self.DownloadingExcel = true;
+    },
+    downloadFundOutExcel(e) {
       const self = this;
       self.DownloadingExcel = true;
       axios

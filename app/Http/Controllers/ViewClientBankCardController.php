@@ -19,7 +19,7 @@ class ViewClientBankCardController extends HomeController
                 $ClientBankCard->{$key} = addslashes($value);
             }
         }
-        $parameters['ClientBankCardAccountNo'] = $ClientBankCard->account_no;
+        $parameters['ClientBankCardID'] = $ClientBankCard->id;
         $parameters['ClientBankCard'] = $ClientBankCard->toJson(JSON_UNESCAPED_UNICODE);
 
         $Client = $ClientBankCard->Client;
@@ -46,7 +46,7 @@ class ViewClientBankCardController extends HomeController
 
     public function loadBankCard(Request $request)
     {
-        $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->first();
+        $ClientBankCard = ClientBankCard::find($request->input('id'));
         return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/jpeg');
     }
 }
