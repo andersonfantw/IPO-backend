@@ -24,9 +24,9 @@ class ViewClientHKFundOutRequestController extends HomeController
         $Client = $ClientHKFundOutRequest->Client;
 
         $ClientIDCard = $Client->IDCard;
-        $ClientIDCard->idcard_face = null;
-        $ClientIDCard->idcard_back = null;
         if (is_object($ClientIDCard)) {
+            $ClientIDCard->idcard_face = null;
+            $ClientIDCard->idcard_back = null;
             foreach ($ClientIDCard->getAttributes() as $key => $value) {
                 $ClientIDCard->{$key} = addslashes($value);
             }

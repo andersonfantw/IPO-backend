@@ -30,9 +30,9 @@ class ViewClientOverseasFundOutRequestController extends HomeController
         $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         $ClientIDCard = $Client->ViewClientIDCard;
-        $ClientIDCard->idcard_face = null;
-        $ClientIDCard->idcard_back = null;
         if (is_object($ClientIDCard)) {
+            $ClientIDCard->idcard_face = null;
+            $ClientIDCard->idcard_back = null;
             foreach ($ClientIDCard->getAttributes() as $key => $value) {
                 $ClientIDCard->{$key} = addslashes($value);
             }
