@@ -21,7 +21,8 @@ class ChunkReadListOfCustomersWhoFailedToPay implements ToCollection, WithChunkR
                 $Client = $ClientAyersAccount->Client;
                 $contents = [
                     '[中国银盛国际证券]',
-                    "尊敬的客户，由于您开户时填写的民生银行信息没有填写「分行号码」，因此出款时被银行驳回提款，后台人员已帮您手动添加「分行号码」，请重新提交提款申请，后台人员会再次帮您处理出金，抱歉对您造成的不便。",
+                    "尊敬的客户，您开户时填写的银行账户名称为“花旗银行”，与您实际的银行账户名称不同，请您登陆账户总览，然后选择“添加银行卡”，提交您实际的银行卡账户信息，等候后台人员审批后，便可再次尝试提交出款申请。",
+                    "账户总览链接：https://pysao.chinayss.hk/",
                 ];
                 $content = implode("\n", $contents);
                 $response = $this->sendSMS($Client, $content);
