@@ -48,6 +48,22 @@ trait SMS
         return implode("", $unicode);
     }
 
+    public function sendSMS(Client $Client, String $content)
+    {
+        $recipient = $Client->mobile;
+        $country_code = config("locale.CountryCode.$Client->nationality");
+        $response = Http::get(env('HK_SMS_URL'), [
+            'langeng' => 0,
+            'dos' => 'now',
+            'senderid' => 'CYSS',
+            'content' => $this->Text2Unicode($content),
+            'recipient' => "$country_code$recipient",
+            'username' => env('HK_SMS_USERNAME'),
+            'password' => env('HK_SMS_PASSWORD'),
+        ]);
+        return $response;
+    }
+
     public function sendRejectionSMS(Client $Client)
     {
         $recipient = $Client->mobile;
