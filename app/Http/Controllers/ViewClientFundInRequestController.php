@@ -27,12 +27,10 @@ class ViewClientFundInRequestController extends HomeController
         $input = $request->all();
         $ClientFundInRequest = ClientFundInRequest::find($input['id']);
         if (is_object($ClientFundInRequest)) {
+            $ClientFundInRequest->receipt = null;
+            $ClientFundInRequest->bankcard = null;
             foreach ($ClientFundInRequest->getAttributes() as $key => $value) {
-                if ($key == 'receipt' || $key == 'bankcard') {
-                    $ClientFundInRequest->{$key} = null;
-                } else {
-                    $ClientFundInRequest->{$key} = addslashes($value);
-                }
+                $ClientFundInRequest->{$key} = addslashes($value);
             }
         }
         $parameters['Request_ID'] = $ClientFundInRequest->id;
@@ -47,9 +45,9 @@ class ViewClientFundInRequestController extends HomeController
         $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
 
         $ClientIDCard = $Client->ViewClientIDCard;
-        $ClientIDCard->idcard_face = null;
-        $ClientIDCard->idcard_back = null;
         if (is_object($ClientIDCard)) {
+            $ClientIDCard->idcard_face = null;
+            $ClientIDCard->idcard_back = null;
             foreach ($ClientIDCard->getAttributes() as $key => $value) {
                 $ClientIDCard->{$key} = addslashes($value);
             }
