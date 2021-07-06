@@ -8,7 +8,6 @@ use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\Traits\Excel;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 
 class DeliverableList2Controller extends HomeController
@@ -49,13 +48,13 @@ class DeliverableList2Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::with(['AyersAccounts'])->with(['IDCard' => function (MorphTo $morphTo) {
-            $morphTo->morphWith([
-                ClientCNIDCard::class,
-                ClientHKIDCard::class,
-                ClientOtherIDCard::class,
-            ])->where('status', 'audited2');
-        }])->whereHas('ClientWorkingStatus', function (Builder $query) {
+        $Clients = Client::with(['AyersAccounts', 'IDCard'])->whereHasMorph('IDCard', [
+            ClientCNIDCard::class,
+            ClientHKIDCard::class,
+            ClientOtherIDCard::class,
+        ], function (Builder $query) {
+            $query->where('status', 'audited2');
+        })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited2');
         })->whereHas('ClientFinancialStatus', function (Builder $query) {
             $query->where('status', 'audited2');
