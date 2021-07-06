@@ -39,7 +39,7 @@
       </b-col>
     </b-row>
     <b-button variant="success" @click="downloadFundOutExcel"
-      ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
+      ><i class="fas fa-download"></i> 出金Excel下載<b-spinner
         v-if="DownloadingExcel"
         label="Spinning"
         small
