@@ -30,8 +30,8 @@ class ClientHKFundOutRequest extends Model
         return $this->belongsTo('App\ClientBankCard', 'account_in', 'account_no');
     }
 
-    public function ViewClientIDCard()
+    public function IDCard()
     {
-        return $this->hasOne('App\ViewClientIDCard', 'uuid', 'uuid');
+        return $this->morphTo(__FUNCTION__, 'idcard_type', 'uuid', 'uuid');
     }
 }
