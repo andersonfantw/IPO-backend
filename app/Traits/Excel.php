@@ -4,6 +4,7 @@ namespace App\Traits;
 use App\Exports\AyersDataExport;
 use App\Exports\ClientFundInRequestsExport;
 use App\Exports\ClientFundInternalTransferRequestsExport;
+use App\Exports\ClientHKFundOutRequestsExport2;
 use App\Exports\ClientHKFundOutRequestsExport;
 use App\Exports\ClientOverseasFundOutRequestsExport;
 use App\Imports\ClientFundInternalTransferRequestsImport;
@@ -25,6 +26,11 @@ trait Excel
     public function exportClientHKFundOutRequests()
     {
         return _Excel::download(new ClientHKFundOutRequestsExport(), 'HKFundOutRequests.xlsx');
+    }
+
+    public function exportClientHKFundOutRequests2()
+    {
+        return _Excel::download(new ClientHKFundOutRequestsExport2(), 'HKFundOutRequests2.xlsx');
     }
 
     public function exportClientOverseasFundOutRequests()

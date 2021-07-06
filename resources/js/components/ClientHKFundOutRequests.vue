@@ -38,7 +38,12 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
-    <b-button variant="success" @click="downloadFundOutExcel"
+    <b-button
+      variant="success"
+      @click="
+        downloadFundOutExcel;
+        downloadFundOutExcel2;
+      "
       ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
         v-if="DownloadingExcel"
         label="Spinning"
@@ -177,9 +182,30 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    downloadFundInExcel(e) {
+    downloadFundOutExcel2(e) {
       const self = this;
       self.DownloadingExcel = true;
+      axios
+        .post(
+          "api/ClientHKFundOutRequests/DownloadAyersImportData2",
+          {},
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "HKFundOutRequests2.xlsx");
+          link.click();
+          self.DownloadingExcel = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          self.DownloadingExcel = false;
+        });
     },
     downloadFundOutExcel(e) {
       const self = this;

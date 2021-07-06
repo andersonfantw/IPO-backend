@@ -77,4 +77,9 @@ class ClientHKFundOutRequestsController extends HomeController
     {
         return $this->exportClientHKFundOutRequests();
     }
+
+    public function downloadAyersImportData2(Request $request)
+    {
+        return $this->exportClientHKFundOutRequests2();
+    }
 }

@@ -84,6 +84,7 @@ Route::prefix('ClientFundInRequests')->group(function () {
 Route::prefix('ClientHKFundOutRequests')->group(function () {
     Route::any('/all_data', 'ClientHKFundOutRequestsController@getData');
     Route::any('/DownloadAyersImportData', 'ClientHKFundOutRequestsController@downloadAyersImportData');
+    Route::any('/DownloadAyersImportData2', 'ClientHKFundOutRequestsController@downloadAyersImportData2');
 });
 
 Route::prefix('ClientFundInternalTransferRequests')->group(function () {
