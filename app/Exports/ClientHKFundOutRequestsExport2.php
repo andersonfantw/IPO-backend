@@ -21,9 +21,9 @@ class ClientHKFundOutRequestsExport2 extends AyersValueBinder implements FromVie
             if ($ClientHKFundOutRequest->Client->IDCard->name_en) {
                 $Request['英文名字'] = $ClientHKFundOutRequest->Client->IDCard->name_en;
             } else {
-                $Request['英文名字'] = "{$ClientHKFundOutRequest->Client->IDCard->surname}{$ClientHKFundOutRequest->Client->IDCard->given_name}";
+                $Request['英文名字'] = "{$ClientHKFundOutRequest->Client->IDCard->surname} {$ClientHKFundOutRequest->Client->IDCard->given_name}";
             }
-            $Request['提款金額'] = $ClientHKFundOutRequest->amount;
+            $Request['提款金額'] = number_format($ClientHKFundOutRequest->amount, 2);
             $Request['收款銀行名稱'] = $ClientHKFundOutRequest->bank;
             $Request['銀行帳戶號碼'] = $ClientHKFundOutRequest->account_in;
             $Request['updated_at'] = $ClientHKFundOutRequest->updated_at;
