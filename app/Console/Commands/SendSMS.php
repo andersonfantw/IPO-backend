@@ -39,7 +39,7 @@ class SendSMS extends Command
      */
     public function handle()
     {
-        Excel::import(new ChunkReadListOfCustomersWhoFailedToPay, storage_path('app/出錢失敗客戶名單.xls'));
+        Excel::import(new ChunkReadListOfCustomersWhoFailedToPay, storage_path('app/Rejected20210702.xls'));
         return 0;
     }
 }
