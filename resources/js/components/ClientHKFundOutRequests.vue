@@ -38,12 +38,7 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
-    <b-button
-      variant="success"
-      @click="
-        downloadFundOutExcel;
-        downloadFundOutExcel2;
-      "
+    <b-button variant="success" @click="downloadFundOutExcel"
       ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
         v-if="DownloadingExcel"
         label="Spinning"
@@ -231,6 +226,7 @@ export default {
           console.log(error);
           self.DownloadingExcel = false;
         });
+      self.downloadFundOutExcel2(e);
     },
   },
   computed: {
