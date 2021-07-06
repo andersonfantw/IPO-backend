@@ -38,6 +38,14 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
+    <b-row no-gutters>
+      <b-col>
+        <DateRange :name="'發送時間'" v-model="filters['發送時間']" />
+      </b-col>
+      <b-col>
+        <DateRange :name="'審批時間'" v-model="filters['審批時間']" />
+      </b-col>
+    </b-row>
     <b-button variant="success" @click="downloadFundOutExcel"
       ><i class="fas fa-download"></i> 出金Excel下載<b-spinner
         v-if="DownloadingExcel"
@@ -118,6 +126,7 @@
   </b-container>
 </template>
 <script>
+import DateRange from "./DateRange";
 import SearchSelectOptions from "./SearchSelectOptions";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
@@ -153,6 +162,7 @@ export default {
   },
   components: {
     SearchSelectOptions,
+    DateRange,
   },
   created() {
     this.Columns = JSON.parse(this.columns);
