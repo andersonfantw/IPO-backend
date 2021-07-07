@@ -20,7 +20,12 @@ trait Excel
 
     public function exportClientFundInRequests()
     {
-        return _Excel::download(new ClientFundInRequestsExport(), 'FundInRequests.xlsx');
+        return _Excel::download(new ClientFundInRequestsExport(), 'FundInRequests.xls');
+    }
+
+    public function exportClientFundInRequests2()
+    {
+        return _Excel::download(new ClientFundInRequestsExport2(), 'FundInRequests2.xls');
     }
 
     public function exportClientHKFundOutRequests()

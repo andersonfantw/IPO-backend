@@ -51,8 +51,8 @@
         >
           <input type="hidden" name="redirect_route" value="ClientBankCards" />
           <b-button
-            name="account_no"
-            :value="data.item.銀行戶口"
+            name="id"
+            :value="data.item.id"
             variant="warning"
             type="submit"
             ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
@@ -61,8 +61,8 @@
         <b-form v-else :action="view_request_url" method="post">
           <input type="hidden" name="redirect_route" value="ClientBankCards" />
           <b-button
-            name="account_no"
-            :value="data.item.銀行戶口"
+            name="id"
+            :value="data.item.id"
             variant="success"
             type="submit"
             ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button

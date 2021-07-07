@@ -12,7 +12,7 @@ class AuditClientBankCardController extends ViewClientBankCardController
 
     public function audit(Request $request)
     {
-        $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->first();
+        $ClientBankCard = ClientBankCard::find($request->input('id'));
         if (is_object($ClientBankCard)) {
             if ($request->has(['駁回信息'])) {
                 RejectedClientBankcard::create([

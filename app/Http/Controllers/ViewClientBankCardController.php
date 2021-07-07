@@ -12,7 +12,7 @@ class ViewClientBankCardController extends HomeController
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
-        $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->first();
+        $ClientBankCard = ClientBankCard::find($request->input('id'));
         if (is_object($ClientBankCard)) {
             $ClientBankCard->bankcard_blob = null;
             foreach ($ClientBankCard->getAttributes() as $key => $value) {

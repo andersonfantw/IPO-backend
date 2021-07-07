@@ -38,7 +38,7 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
-    <b-button variant="success" @click="downloadExcel"
+    <b-button variant="success" @click="downloadFundInExcel"
       ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
         v-if="DownloadingExcel"
         label="Spinning"
@@ -184,7 +184,7 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    downloadExcel(e) {
+    downloadFundInExcel(e) {
       const self = this;
       self.DownloadingExcel = true;
       axios
@@ -200,7 +200,32 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "FundInRequests.xlsx");
+          link.setAttribute("download", "FundInRequests.xls");
+          link.click();
+          self.DownloadingExcel = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          self.DownloadingExcel = false;
+        });
+    },
+    downloadFundInExcel2(e) {
+      const self = this;
+      self.DownloadingExcel = true;
+      axios
+        .post(
+          "api/ClientFundInRequests/DownloadAyersImportData2",
+          {},
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "FundInRequests.xls");
           link.click();
           self.DownloadingExcel = false;
         })

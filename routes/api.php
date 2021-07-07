@@ -79,6 +79,7 @@ Route::prefix('OpenAccountEmail')->group(function () {
 Route::prefix('ClientFundInRequests')->group(function () {
     Route::any('/all_data', 'ClientFundInRequestsController@getData');
     Route::any('/DownloadAyersImportData', 'ClientFundInRequestsController@downloadAyersImportData');
+    Route::any('/DownloadAyersImportData2', 'ClientFundInRequestsController@downloadAyersImportData2');
 });
 
 Route::prefix('ClientHKFundOutRequests')->group(function () {

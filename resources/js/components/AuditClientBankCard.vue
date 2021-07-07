@@ -1,6 +1,6 @@
 <template>
   <form :action="action" method="POST">
-    <input type="hidden" name="account_no" v-model="ClientBankCard.account_no" />
+    <input type="hidden" name="id" v-model="ClientBankCard.id" />
     <input type="hidden" name="redirect_route" v-model="redirect_route" />
     <table class="table table-bordered text-light">
       <thead>
