@@ -25,12 +25,12 @@ trait Excel
 
     public function exportClientHKFundOutRequests()
     {
-        return _Excel::download(new ClientHKFundOutRequestsExport(), 'HKFundOutRequests.xlsx');
+        return _Excel::download(new ClientHKFundOutRequestsExport(), 'HKFundOutRequests.xls');
     }
 
     public function exportClientHKFundOutRequests2()
     {
-        return _Excel::download(new ClientHKFundOutRequestsExport2(), 'HKFundOutRequests2.xlsx');
+        return _Excel::download(new ClientHKFundOutRequestsExport2(), 'HKFundOutRequests2.xls');
     }
 
     public function exportClientOverseasFundOutRequests()

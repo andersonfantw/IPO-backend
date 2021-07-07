@@ -203,7 +203,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "HKFundOutRequests2.xlsx");
+          link.setAttribute("download", "HKFundOutRequests2.xls");
           link.click();
           self.DownloadingExcel = false;
         })
@@ -228,7 +228,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "HKFundOutRequests.xlsx");
+          link.setAttribute("download", "HKFundOutRequests.xls");
           link.click();
           self.DownloadingExcel = false;
           self.downloadFundOutExcel2(e);
