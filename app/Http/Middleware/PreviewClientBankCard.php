@@ -16,7 +16,7 @@ class PreviewClientBankCard
      */
     public function handle($request, Closure $next)
     {
-        $ClientBankCard = ClientBankCard::where('account_no', $request->input('account_no'))->
+        $ClientBankCard = ClientBankCard::where('id', $request->input('id'))->
             where('status', 'pending')->where(function ($query) {
             $query->whereNull('previewing_by')->orWhere('previewing_by', auth()->user()->name);
         })->update(['previewing_by' => auth()->user()->name]);
