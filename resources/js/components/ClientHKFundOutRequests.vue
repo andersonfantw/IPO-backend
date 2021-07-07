@@ -231,13 +231,12 @@ export default {
           link.setAttribute("download", "HKFundOutRequests.xls");
           link.click();
           self.DownloadingExcel = false;
-          self.downloadFundOutExcel2(e);
         })
         .catch((error) => {
           console.log(error);
           self.DownloadingExcel = false;
-          self.downloadFundOutExcel2(e);
         });
+      self.downloadFundOutExcel2(e);
     },
   },
   computed: {
