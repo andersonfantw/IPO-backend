@@ -43,7 +43,7 @@ class ClientCreditCardsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientCreditCards = ClientCreditCard::get();
+        $ClientCreditCards = ClientCreditCard::whereIn('status', ['pending', 'approved'])->get();
         $rows = [];
         foreach ($ClientCreditCards as $ClientCreditCard) {
             $Client = $ClientCreditCard->Client;
