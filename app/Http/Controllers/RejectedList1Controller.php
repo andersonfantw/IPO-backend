@@ -37,7 +37,7 @@ class RejectedList1Controller extends HomeController
             '手機號碼' => 'startsWith',
             '所在地' => 'equals',
             '郵箱' => 'startsWith',
-            '提交時間' => 'between',
+            '提交時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);

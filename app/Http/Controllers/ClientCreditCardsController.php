@@ -30,10 +30,10 @@ class ClientCreditCardsController extends HomeController
             '手機號碼' => 'startsWith',
             '卡號' => 'startsWith',
             '發卡機構' => 'startsWith',
-            '有效日期' => 'between',
-            '發送時間' => 'between',
+            '有效日期' => 'betweenDate',
+            '發送時間' => 'betweenDate',
             '經手人' => 'startsWith',
-            '審批時間' => 'between',
+            '審批時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);

@@ -18,6 +18,18 @@ export const CommonFunctionMixin = {
                             .padStart(2, "0")}:${dt.getSeconds().toString().padStart(2, "0")}`;
             return dformat;
         },
+        formateDate(datetime) {
+            const dt = new Date(datetime);
+            const dformat = `${dt.getFullYear().toString().padStart(4, "0")}-${(
+                dt.getMonth() + 1
+            )
+                .toString()
+                .padStart(2, "0")}-${dt
+                    .getDate()
+                    .toString()
+                    .padStart(2, "0")}`;
+            return dformat;
+        },
         filter(item, filter) {
             let keep = true;
             for (const [key, value] of Object.entries(filter)) {
@@ -35,8 +47,11 @@ export const CommonFunctionMixin = {
                 return false;
             }
         },
-        between(val, array) {
-            return val >= array[0] && val <= array[1];
+        betweenDate(val, array) {
+            const date = this.formateDate(val);
+            const from = this.formateDate(array[0]);
+            const to = this.formateDate(array[1]);
+            return date >= from && date <= to;
         },
         equals(val1, val2) {
             return val1 == val2;

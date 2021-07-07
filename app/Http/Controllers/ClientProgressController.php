@@ -30,7 +30,7 @@ class ClientProgressController extends HomeController
             '流程' => 'equals',
             '開戶進度' => 'equals',
             '郵箱' => 'startsWith',
-            '更新時間' => 'between',
+            '更新時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);

@@ -38,8 +38,8 @@ class DeliverableList2Controller extends HomeController
             '證件號碼' => 'startsWith',
             '手機號碼' => 'startsWith',
             '郵箱' => 'startsWith',
-            '開戶時間' => 'between',
-            '帳戶生成時間' => 'between',
+            '開戶時間' => 'betweenDate',
+            '帳戶生成時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);

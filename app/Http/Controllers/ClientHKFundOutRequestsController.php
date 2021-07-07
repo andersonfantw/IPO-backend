@@ -31,9 +31,9 @@ class ClientHKFundOutRequestsController extends HomeController
             '客户姓名' => 'startsWith',
             '手機號碼' => 'startsWith',
             '狀態' => 'equals',
-            '發送時間' => 'between',
+            '發送時間' => 'betweenDate',
             '經手人' => 'startsWith',
-            '審批時間' => 'between',
+            '審批時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);

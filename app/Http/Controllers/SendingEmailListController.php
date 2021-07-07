@@ -28,10 +28,10 @@ class SendingEmailListController extends HomeController
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
             '電郵' => 'startsWith',
-            '投遞日期' => 'between',
+            '投遞日期' => 'betweenDate',
             '狀態' => 'equals',
             '電郵發送者' => 'startsWith',
-            '電郵發送時間' => 'between',
+            '電郵發送時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);
