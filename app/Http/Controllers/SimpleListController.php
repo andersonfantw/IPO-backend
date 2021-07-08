@@ -81,7 +81,8 @@ class SimpleListController extends Controller
         $input = $request->only('senderid','recipient','content');
         $content=$this->Text2Unicode($input['content']);
         $result = [];
-        foreach(explode(',',$input['recipient']) as $recipient){
+        $contents = str_replace(',',"\n",$input['recipient']);
+        foreach(explode("\n",$contents) as $recipient){
             $params = [
                 'senderid' => $input['senderid'],
                 'recipient' => trim($recipient),
