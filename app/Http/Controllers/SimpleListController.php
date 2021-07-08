@@ -91,7 +91,7 @@ class SimpleListController extends Controller
                 'password'=> config('notification.Meteorsis.password'),
                 'langeng' => 0
             ];
-            $result = [$recipient => Http::get(config('notification.Meteorsis.url'), $params)];
+            $result[$recipient] = Http::get(config('notification.Meteorsis.url'), $params);
             sleep(1);
         }
         return implode('<br />',$result);
