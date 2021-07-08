@@ -1,4 +1,4 @@
-<form method="get" action="{{$url}}">
+<form enctype="multipart/form-data" method="get" action="{{$url}}">
     <input id="senderid" type="text" value="CYSS" />
     <input id="recipient" type="text" value="" />
     <input id="content" type="text" value="" />
