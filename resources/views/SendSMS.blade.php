@@ -5,9 +5,14 @@
         <form method="post">
             @csrf
             <input id="senderid" name="senderid" type="text" value="CYSS" />
-            <input id="recipient" name="recipient" type="text" value="" />
-            <input id="content" name="content" type="text" value="" />
+            <textarea id="recipient" rows="10" name="recipient" type="text"></textarea>
+            <textarea id="content" rows="10" name="content" type="text" value=""></textarea>
             <button onclick="sendsms()">發送簡訊</button>
         </form>
+        <style>
+            input, textarea{
+                width: 100%;
+            }
+        </style>
     </body>
 </html>
