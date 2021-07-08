@@ -72,6 +72,6 @@ class SimpleListController extends Controller
     }
 
     public function sendsms(){
-        return View('SendSMS',config('notification.meteorsis'));
+        return View('SendSMS',config('notification.Meteorsis'));
     }
 }
