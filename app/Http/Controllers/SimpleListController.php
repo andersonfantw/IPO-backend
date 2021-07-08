@@ -8,10 +8,14 @@ use App\CysislbGtsClientAcc;
 use App\AccountReport;
 use App\Client;
 use App\ClientBankCard;
+use App\A01;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\AccountReportFormRequest;
 use Carbon\Carbon;
+
+
 class SimpleListController extends Controller
 {
     public function deposit()
@@ -65,5 +69,9 @@ class SimpleListController extends Controller
                     ->get()->toArray()
             ]
         ); 
+    }
+
+    public function sendsms(){
+        return config('notification.meteorsis');
     }
 }

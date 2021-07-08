@@ -148,5 +148,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/max/MailList', 'SimpleListController@MailList');
     Route::get('/max/OpenStatus', 'SimpleListController@OpenStatus');
     Route::get('/max/BankcardRejected', 'SimpleListController@BankcardRejected');
+
+    Route::get('/sendsms', 'SimpleListController@sendsms');
+
+    Route::get('/NotificationSummary', 'NotificationSummaryController@indexView');
+    Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
 });
-// Anderson 2021-05-31 end
+// Anderson 2021-05-31 end 
