@@ -5,7 +5,7 @@
             function sendsms(){
                 params = ['senderid','recipient','content','dos','username','password','langeng'];
                 o = [];
-                for(i=0;i<params.length;i++) o.push(params[i]+'='+$('#'+params[i]).value);
+                for(i=0;i<params.length;i++) o.push(params[i]+'='+$('#'+params[i]).val()));
                 window.open('{{$url}}?'+o.join('&'));
             }
         </script>
@@ -14,7 +14,7 @@
         <input id="senderid" type="text" value="CYSS" />
         <input id="recipient" type="text" value="" />
         <input id="content" type="text" value="" />
-        <input id="dos " type="hidden" value="now" />
+        <input id="dos" type="hidden" value="now" />
         <input id="username" type="hidden" value="{{$username}}" />
         <input id="password" type="hidden" value="{{$password}}" />
         <input id="langeng" type="hidden" value="0" />
