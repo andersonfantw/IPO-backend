@@ -84,7 +84,7 @@ class SimpleListController extends Controller
         foreach(explode(',',$input['recipient']) as $recipient){
             $params = [
                 'senderid' => $input['senderid'],
-                'recipient' => $recipient,
+                'recipient' => trim($recipient),
                 'content' => $content,
                 'dos' => 'now',
                 'username' => config('notification.Meteorsis.username'),
@@ -92,6 +92,7 @@ class SimpleListController extends Controller
                 'langeng' => 0
             ];
             $result = [$recipient => Http::get(config('notification.Meteorsis.url'), $params)];
+            sleep(1);
         }
         return implode('<br />',$result);
     }
