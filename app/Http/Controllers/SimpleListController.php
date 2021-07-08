@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\AccountReportFormRequest;
 use Carbon\Carbon;
-
+use CubyBase\SMS\SMSMessageable;
 
 class SimpleListController extends Controller
 {
+    use SMSMessageable;
+
     public function deposit()
     {
         return view('Table',
@@ -71,7 +73,25 @@ class SimpleListController extends Controller
         ); 
     }
 
-    public function sendsms(){
-        return View('SendSMS',config('notification.Meteorsis'));
+    public function sms(){
+        return View('SendSMS');
+    }
+    public function sendsms(Request $request){
+        $input = $request->only('senderid','recipient','content');
+        $content=$this->Text2Unicode($input['content']);
+        $result = [];
+        foreach(explode(',',$input['recipient']) as $recipient){
+            $params = [
+                'senderid' => $input['senderid'],
+                'recipient' => $recipient,
+                'content' => $content,
+                'dos' => 'now',
+                'username' => config('notification.Meteorsis.username'),
+                'password'=> config('notification.Meteorsis.password'),
+                'langeng' => 0
+            ];
+            $result = [$recipient => Http::get(config('notification.Meteorsis.url'), $params)];
+        }
+        return implode('<br />',$result);
     }
 }

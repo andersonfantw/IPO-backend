@@ -149,7 +149,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/max/OpenStatus', 'SimpleListController@OpenStatus');
     Route::get('/max/BankcardRejected', 'SimpleListController@BankcardRejected');
 
-    Route::get('/sendsms', 'SimpleListController@sendsms');
+    Route::get('/sendsms', 'SimpleListController@sms');
+    Route::post('/sendsms', 'SimpleListController@sendsms');
 
     Route::get('/NotificationSummary', 'NotificationSummaryController@indexView');
     Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
