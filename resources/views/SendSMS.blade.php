@@ -5,7 +5,7 @@
             function sendsms(){
                 params = ['senderid','recipient','content','dos','username','password','langeng'];
                 o = [];
-                for(i=0;i<params.length;i++) o.push(params[i]+'='+$('#'+params[i]).val()));
+                for(i=0;i<params.length;i++) o.push(params[i]+'='+$('#'+params[i]).val());
                 window.open('{{$url}}?'+o.join('&'));
             }
         </script>
