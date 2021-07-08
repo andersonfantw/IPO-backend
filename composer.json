@@ -25,9 +25,7 @@
         "predis/predis": "^1.1",
         "randomstate/camelot-php": "^1.0",
         "simplesoftwareio/simple-qrcode": "~4",
-        "staudenmeir/laravel-upsert": "^1.0",
-        "cuby/cubybase": "dev-master",
-        "cuby/meteorsis": "dev-master"
+        "staudenmeir/laravel-upsert": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
