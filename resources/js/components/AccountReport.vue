@@ -114,18 +114,7 @@
                 <small class="text-white" style="margin-top: -3px;position: absolute;padding: 0 15px;">{{info}}</small>
             </b-col>
             <b-col cols="4">
-                <b-input-group size="sm">
-                    <b-input size="sm" list="client_list" v-model="search.client_acc_id" @keyup="find_client" placeholder="四位數字後自動檢索"></b-input>
-                    <b-input size="sm" v-model="search.client_name" disabled></b-input>
-                    <datalist id="client_list">
-                        <option v-for="client in find_client_list" :key="client['client_acc_id']" :value="client['client_acc_id']">{{ client['name'] }}</option>
-                    </datalist>
-                    <b-input-group-append>
-                        <b-button size="sm" class="w-100" @click="add_to_list" variant="primary" :disabled="busy">
-                            <i class="fas fa-user-plus" variant="secondary"></i> &nbsp;新增人員
-                        </b-button>
-                    </b-input-group-append>
-                </b-input-group>
+                <find-a-client></find-a-client>
             </b-col>
         </b-row>
 
@@ -249,6 +238,10 @@ export default {
     },
     created(){
         this.index()
+        this.$bus.$on('find_a_client::add',(o)=>this.add_to_list(o))
+    },
+    beforeDestroy(){
+        this.$bus.$off("find_a_client::add");
     },
     watch: {
         list(n,o) {
@@ -341,23 +334,15 @@ export default {
                 _this.pagination.base_url = response.path + '?page='
             },'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name+'?page='+this.pagination.current_page, this.filter);
         },
-        find_client(){
-            let _this = this
-            if(this.search.client_acc_id.length>3){
-                this.myPost(function(response){
-                    _this.find_client_list = response
-                },{acc_no:_this.search.client_acc_id},this.url('/find/client'));
-            }
-        },
-        add_to_list(){
-            if(this.search.client_acc_id.length<7) return
-            if(this.search.client_acc_id.length>9) return
+        add_to_list(obj){
+            if(obj.client_acc_id.length<7) return
+            if(obj.client_acc_id.length>9) return
             let _this = this
             this.crudStore(function(response){
                 if(response.ok){
                     console.log(response)
                 }else if(response.msg) _this.alertFail(response.msg)
-            },this.getFormData(this.search),'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name)
+            },this.getFormData(obj),'/AccountReportSendingSummary/'+this.ipo_activity_period_id+'/'+this.$options.name)
         },
 
         // 選擇項目的功能
@@ -466,13 +451,3 @@ export default {
     }
 }
 </script>
-
-<style>
-#add_person{
-    margin-right: 0px;
-}
-
-#add_person input{
-    border-radius: 0.2rem 0 0 0.2rem;
-}
-</style>

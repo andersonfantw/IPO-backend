@@ -118,8 +118,8 @@ Route::prefix('ClientAddressProofUpdates')->group(function () {
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
-Route::get('/AccountReport/program', 'AccountReportSendingSummaryController@getProgram');
 
+Route::get('/AccountReport/program', 'AccountReportSendingSummaryController@getProgram');
 Route::post('/find/client', 'AccountReportController@findClient');
 
 Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id' => '[0-9]+']);
@@ -127,10 +127,18 @@ Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTe
 Route::post('/AccountReport/SendMail/{id}/', 'AccountReportController@sendMail')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/RemoveClient/{id}/', 'AccountReportController@removeClient')->where(['id' => '[0-9]+']);
 
+// MakeAll 對應功能
 Route::post('/AccountReport/MakeAll/{id}/', 'AccountReportController@makeAll')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/StopMake/{id}/', 'AccountReportController@stopMake')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/ClearMake/{id}/', 'AccountReportController@clearMake')->where(['id' => '[0-9]+']);
+// SendAll 對應功能
 Route::post('/AccountReport/SendAll/{id}/', 'AccountReportController@sendAll')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/StopSend/{id}/', 'AccountReportController@stopSend')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/ClearSend/{id}/', 'AccountReportController@clearSend')->where(['id' => '[0-9]+']);
+
+// 通知任務中心
+Route::resource('NotificationSummary', 'NotificationSummaryController');
+Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
+
+Route::post('/Notification/SendAll');
 // Anderson 2021-05-31 end

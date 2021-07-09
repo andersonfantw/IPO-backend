@@ -117,6 +117,25 @@ Vue.component('audit-client-bank-card', require('./components/AuditClientBankCar
 Vue.component('client-credit-cards', require('./components/ClientCreditCards.vue').default);
 
 Vue.component('audit-client-credit-card', require('./components/AuditClientCreditCard.vue').default);
+
+// Anderson start
+import VueBus from 'vue-bus';
+Vue.use(VueBus);
+
+import Multiselect from 'vue-multiselect'
+Vue.component('multiselect', Multiselect);
+
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+Vue.component('date-picker', DatePicker);
+
+Vue.component('notification-summary', require('./components/NotificationSummary.vue').default);
+
+Vue.component('notification-record', require('./components/NotificationRecord.vue').default);
+
+Vue.component('find-a-client', require('./components/v_find_a_client.vue').default);
+// Anderson end
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
