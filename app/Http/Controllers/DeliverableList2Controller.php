@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\ClientCNIDCard;
-use App\ClientHKIDCard;
-use App\ClientOtherIDCard;
 use App\Traits\Excel;
-use Illuminate\Database\Eloquent\Builder;
+use App\ViewDeliverableClient;
 use Illuminate\Http\Request;
 
 class DeliverableList2Controller extends HomeController
@@ -48,52 +45,37 @@ class DeliverableList2Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::with(['AyersAccounts', 'IDCard'])->whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->where('status', 'audited2')->orderBy('updated_at', 'asc')->get();
+        // $Clients = Client::with(['AyersAccounts', 'IDCard'])->whereHasMorph('IDCard', [
+        //     ClientCNIDCard::class,
+        //     ClientHKIDCard::class,
+        //     ClientOtherIDCard::class,
+        // ], function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->where('status', 'audited2')->orderBy('updated_at', 'asc')->get();
+        $Clients = ViewDeliverableClient::orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
-            if ($Client->AyersAccounts->isNotEmpty()) {
-                foreach ($Client->AyersAccounts as $AyersAccount) {
-                    $row = [];
-                    $row['帳戶號碼'] = $AyersAccount->account_no;
-                    $row['開通賬戶類型'] = $AyersAccount->type;
-                    $row['客户姓名'] = $Client->IDCard->name_c;
-                    $row['證件號碼'] = $Client->IDCard->idcard_no;
-                    $row['手機號碼'] = $Client->mobile;
-                    $row['郵箱'] = $Client->email;
-                    $row['開戶時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
-                    $row['帳戶生成時間'] = date_format($AyersAccount->created_at, "Y-m-d H:i:s");
-                    $row['uuid'] = $Client->uuid;
-                    $rows[] = $row;
-                }
-            } else {
-                $row = [];
-                $row['帳戶號碼'] = null;
-                $row['開通賬戶類型'] = null;
-                $row['客户姓名'] = $Client->IDCard->name_c;
-                $row['證件號碼'] = $Client->IDCard->idcard_no;
-                $row['手機號碼'] = $Client->mobile;
-                $row['郵箱'] = $Client->email;
-                $row['開戶時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
-                $row['帳戶生成時間'] = null;
-                $row['uuid'] = $Client->uuid;
-                $rows[] = $row;
-            }
+            $row = [];
+            $row['帳戶號碼'] = $Client->account_no;
+            $row['開通賬戶類型'] = $Client->type;
+            $row['客户姓名'] = $Client->name_c;
+            $row['證件號碼'] = $Client->idcard_no;
+            $row['手機號碼'] = $Client->mobile;
+            $row['郵箱'] = $Client->email;
+            $row['開戶時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
+            $row['帳戶生成時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['uuid'] = $Client->uuid;
+            $rows[] = $row;
         }
         return encrypt(json_encode([
             'data' => $rows,

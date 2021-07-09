@@ -225,7 +225,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "FundInRequests.xls");
+          link.setAttribute("download", "FundInRequests2.xls");
           link.click();
           self.DownloadingExcel = false;
         })
