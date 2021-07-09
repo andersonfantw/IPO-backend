@@ -73,7 +73,7 @@ class DeliverableList2Controller extends HomeController
             $row['手機號碼'] = $Client->mobile;
             $row['郵箱'] = $Client->email;
             $row['開戶時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
-            $row['帳戶生成時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['帳戶生成時間'] = $Client->created_at ? date_format($Client->created_at, "Y-m-d H:i:s") : $Client->created_at;
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
