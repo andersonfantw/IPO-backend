@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Client;
+use App\ViewSendingOpenedACEmail;
 use Illuminate\Http\Request;
 
 class SendingEmailListController extends HomeController
@@ -41,24 +41,21 @@ class SendingEmailListController extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::has('AyersAccounts')->where('type', '拼一手')->orderBy('created_at', 'asc')->get();
+        // $Clients = Client::has('AyersAccounts')->where('type', '拼一手')->orderBy('created_at', 'asc')->get();
+        $Clients = ViewSendingOpenedACEmail::orderBy('email_sent_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
-            $AyersAccounts = [];
-            foreach ($Client->AyersAccounts as $AyersAccount) {
-                $AyersAccounts[] = $AyersAccount->account_no;
-                $row['投遞日期'] = date_format($AyersAccount->created_at, "Y-m-d");
-            }
+            $AyersAccounts = [$Client->ayers_08, $Client->ayers_13];
+            $row['投遞日期'] = $Client->ayers_ac_created_at;
             $row['帳戶號碼'] = implode(", ", $AyersAccounts);
-            $row['客户姓名'] = $Client->IDCard->name_c;
-            $row['證件號碼'] = $Client->IDCard->idcard_no;
+            $row['客户姓名'] = $Client->name_c;
+            $row['證件號碼'] = $Client->idcard_no;
             // $row['手機號碼'] = $Client->mobile;
             $row['電郵'] = $Client->email;
-            $SentEmailRecord = $Client->SentEmailRecords->where('type', 'open account email')->first();
-            $row['狀態'] = is_object($SentEmailRecord) ? '已發送' : '未發送';
-            $row['電郵發送時間'] = is_object($SentEmailRecord) ? date_format($SentEmailRecord->created_at, "Y-m-d H:i:s") : null;
-            $row['電郵發送者'] = is_object($SentEmailRecord) ? $SentEmailRecord->sent_by : null;
+            $row['狀態'] = $Client->status;
+            $row['電郵發送時間'] = $Client->email_sent_at;
+            $row['電郵發送者'] = $Client->sent_by;
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
