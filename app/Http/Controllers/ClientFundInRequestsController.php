@@ -76,4 +76,9 @@ class ClientFundInRequestsController extends HomeController
         // $clients = $request->input('clients');
         return $this->exportClientFundInRequests();
     }
+
+    public function downloadAyersImportData2(Request $request)
+    {
+
+    }
 }

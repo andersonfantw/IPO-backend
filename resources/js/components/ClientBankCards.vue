@@ -27,6 +27,14 @@
       </b-col>
       <b-col></b-col>
     </b-row>
+    <b-row no-gutters>
+      <b-col>
+        <DateRange :name="'發送時間'" v-model="filters['發送時間']" />
+      </b-col>
+      <b-col>
+        <DateRange :name="'審批時間'" v-model="filters['審批時間']" />
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -95,6 +103,7 @@
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
+import DateRange from "./DateRange";
 export default {
   data() {
     return {
@@ -123,7 +132,9 @@ export default {
     audit_request_url: String,
     view_request_url: String,
   },
-  components: {},
+  components: {
+    DateRange,
+  },
   created() {
     this.Columns = JSON.parse(this.columns);
     this.FilterType = JSON.parse(this.filter_type);

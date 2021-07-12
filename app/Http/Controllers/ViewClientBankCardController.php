@@ -34,6 +34,14 @@ class ViewClientBankCardController extends HomeController
         }
         $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
 
+        $AyersAccounts = $Client->AyersAccounts;
+        foreach ($AyersAccounts as &$AyersAccount) {
+            foreach ($AyersAccount->getAttributes() as $key => $value) {
+                $AyersAccount->{$key} = addslashes($value);
+            }
+        }
+        $parameters['AyersAccounts'] = $AyersAccounts->toJson(JSON_UNESCAPED_UNICODE);
+
         if (is_object($Client)) {
             foreach ($Client->getAttributes() as $key => $value) {
                 $Client->{$key} = addslashes($value);
