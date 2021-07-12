@@ -65,6 +65,7 @@ Route::prefix('Ayers')->group(function () {
 
 Route::prefix('AyersAccount')->group(function () {
     Route::any('/generate', 'AyersAccountController@generate');
+    // Route::any('/generateAccountOpeningForm', 'AyersAccountController@generateAccountOpeningForm');
 });
 
 Route::prefix('SendingEmailList')->group(function () {

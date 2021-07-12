@@ -54,4 +54,14 @@ class AyersAccountController extends Controller
         }
         // return redirect()->route($request->input('redirect_route'));
     }
+
+    public function generateAccountOpeningForm(Request $request)
+    {
+        $Clients = Client::has('AyersAccounts')->where('type', '拼一手')->get();
+        foreach ($Clients as $Client) {
+            $this->AccountOpeningForm($Client);
+            dump($Client->uuid);
+            dump($Client->IDCard->name_c);
+        }
+    }
 }
