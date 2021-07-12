@@ -93,7 +93,7 @@ class SimpleListController extends Controller
                 'langeng' => 0
             ];
             $result[$recipient] = Http::get(config('notification.Meteorsis.url'), $params);
-            sleep(1);
+            usleep(200000);
         }
         return implode('<br />',$result);
     }
