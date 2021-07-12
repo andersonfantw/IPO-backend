@@ -19,7 +19,7 @@ class ClientFundInRequestsExport extends AyersValueBinder implements FromView
             $Request['ccclnId'] = $ClientFundInRequest->account_in;
             $Request['ccy'] = 'HKD';
             $Request['amount'] = $ClientFundInRequest->amount;
-            $Request['remark'] = 'PRINCIPLE IN';
+            $Request['remark'] = 'PRINCIPAL IN';
             $Request['gl_mapping_item_id'] = null;
             $Request['bank_acc_id'] = "$ClientFundInRequest->bank:HKD:$ClientFundInRequest->bank_account";
             $Request['cheque'] = null;
