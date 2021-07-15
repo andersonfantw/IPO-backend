@@ -114,7 +114,7 @@
             :disabled="Auditing"
             name="id"
             :value="data.item.id"
-            variant="success"
+            variant="warning"
             type="submit"
             ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button
           >
