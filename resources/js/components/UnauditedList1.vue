@@ -68,6 +68,14 @@
         <b-form :action="audit_client_url" method="post">
           <input type="hidden" name="redirect_route" value="UnauditedList1" />
           <input type="hidden" name="next_status" value="audited1" />
+          <!-- <b-button
+            name="uuid"
+            :value="data.item.uuid"
+            variant="warning"
+            type="button"
+            @click="showClientDetails(data.item.uuid)"
+            ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
+          > -->
           <b-button
             name="uuid"
             :value="data.item.uuid"
@@ -97,10 +105,17 @@
       align="center"
     >
     </b-pagination>
+    <ClientDetails
+      ref="ClientDetails"
+      :base_url="base_url"
+      :title="'一審客戶信息'"
+      @audited="loadData"
+    />
   </b-container>
 </template>
 <script>
 import DateRange from "./DateRange";
+import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -139,9 +154,11 @@ export default {
       required: true,
     },
     audit_client_url: String,
+    base_url: String,
   },
   components: {
     DateRange,
+    ClientDetails,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);
@@ -150,6 +167,12 @@ export default {
     this.loadData();
   },
   methods: {
+    showClientDetails(uuid) {
+      this.$refs.ClientDetails.showModal(uuid);
+    },
+    hideClientDetails() {
+      this.$refs.ClientDetails.hideModal();
+    },
     loadData() {
       const self = this;
       axios.post("api/UnauditedList1/all_data").then((res) => {

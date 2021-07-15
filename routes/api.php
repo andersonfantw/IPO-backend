@@ -21,6 +21,11 @@ Route::prefix('ClientProgress')->group(function () {
     Route::any('/all_data', 'ClientProgressController@getData');
 });
 
+Route::prefix('Client')->group(function () {
+    Route::any('/details', 'ViewClientController@getClientDetails');
+    Route::post('/audit', 'AuditClientController@audit1');
+});
+
 Route::prefix('AE')->group(function () {
     Route::any('/create', 'AEController@create');
     Route::any('/createStaff', 'AEController@createStaff');
@@ -81,12 +86,14 @@ Route::prefix('ClientFundInRequests')->group(function () {
     Route::any('/all_data', 'ClientFundInRequestsController@getData');
     Route::any('/DownloadAyersImportData', 'ClientFundInRequestsController@downloadAyersImportData');
     Route::any('/DownloadAyersImportData2', 'ClientFundInRequestsController@downloadAyersImportData2');
+    Route::any('/Audit', 'AuditClientFundInRequestController@fastAudit');
 });
 
 Route::prefix('ClientHKFundOutRequests')->group(function () {
     Route::any('/all_data', 'ClientHKFundOutRequestsController@getData');
     Route::any('/DownloadAyersImportData', 'ClientHKFundOutRequestsController@downloadAyersImportData');
     Route::any('/DownloadAyersImportData2', 'ClientHKFundOutRequestsController@downloadAyersImportData2');
+    Route::any('/Audit', 'AuditClientHKFundOutRequestController@fastAudit');
 });
 
 Route::prefix('ClientFundInternalTransferRequests')->group(function () {

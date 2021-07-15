@@ -13,6 +13,7 @@ class ClientBankCard extends Model
         'lcid',
         'bank_name',
         'bank_code',
+        'branch_code',
         'currency',
         'account_no',
         'backcard_face',

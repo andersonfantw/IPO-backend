@@ -24,4 +24,12 @@ class AuditClientFundInRequestController extends ViewClientFundInRequestControll
         $ClientFundInRequest->save();
         return redirect()->route('ClientFundInRequests');
     }
+
+    public function fastAudit(Request $request)
+    {
+        $ClientFundInRequest = ClientFundInRequest::find($request->input('id'));
+        $ClientFundInRequest->status = $request->input('status');
+        $ClientFundInRequest->issued_by = $request->input('issued_by');
+        $ClientFundInRequest->save();
+    }
 }

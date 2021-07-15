@@ -116,6 +116,7 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
 
+    // Route::middleware(['cors'])->group(function () {
     Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
     Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
     Route::any('/LoadHKBankCard', 'AuditClientController@loadHKBankCard')->name('LoadHKBankCard');
@@ -129,6 +130,7 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/LoadFundInBankCard', 'ViewClientFundInRequestController@loadBankcard')->name('LoadFundInBankCard');
     Route::any('/LoadBankCard', 'ViewClientBankCardController@loadBankCard')->name('LoadBankCard');
     Route::any('/LoadCreditCard', 'ViewClientCreditCardController@loadCreditCard')->name('LoadCreditCard');
+    // });
 });
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
@@ -155,4 +157,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/NotificationSummary', 'NotificationSummaryController@indexView');
     Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
 });
-// Anderson 2021-05-31 end 
+// Anderson 2021-05-31 end

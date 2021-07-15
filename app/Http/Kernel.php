@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'PreviewClientFundInternalTransferRequest' => \App\Http\Middleware\PreviewClientFundInternalTransferRequest::class,
         'ResetPreviewingBy' => \App\Http\Middleware\ResetPreviewingBy::class,
         'PreviewClientBankCard' => \App\Http\Middleware\PreviewClientBankCard::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

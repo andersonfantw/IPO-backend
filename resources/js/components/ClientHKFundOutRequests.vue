@@ -70,7 +70,7 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <b-form
+        <!-- <b-form
           v-if="data.item.狀態 == 'pending'"
           :action="audit_request_url"
           method="post"
@@ -87,14 +87,31 @@
             type="submit"
             ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
           >
-        </b-form>
-        <b-form v-else :action="view_request_url" method="post">
+        </b-form> -->
+        <b-form :action="view_request_url" method="post">
           <input
             type="hidden"
             name="redirect_route"
             value="ClientHKFundOutRequests"
           />
           <b-button
+            :disabled="Auditing"
+            v-if="data.item.狀態 == 'pending'"
+            type="button"
+            variant="success"
+            @click="approve(data.item.id)"
+            ><h5 class="mb-0"><i class="fas fa-check"></i> 通過</h5></b-button
+          >
+          <b-button
+            :disabled="Auditing"
+            v-if="data.item.狀態 == 'pending'"
+            type="button"
+            variant="danger"
+            @click="reject(data.item.id)"
+            ><h5 class="mb-0"><i class="fas fa-times"></i> 駁回</h5></b-button
+          >
+          <b-button
+            :disabled="Auditing"
             name="id"
             :value="data.item.id"
             variant="success"
@@ -145,6 +162,7 @@ export default {
       FilterType: {},
       totalRows: 0,
       DownloadingExcel: false,
+      Auditing: false,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -159,6 +177,7 @@ export default {
     },
     audit_request_url: String,
     view_request_url: String,
+    issued_by: String,
   },
   components: {
     SearchSelectOptions,
@@ -171,6 +190,46 @@ export default {
     this.loadData();
   },
   methods: {
+    approve(id) {
+      const self = this;
+      self.Auditing = true;
+      axios
+        .post("api/ClientHKFundOutRequests/Audit", {
+          id: id,
+          status: "approved",
+          issued_by: self.issued_by,
+        })
+        .then((res) => {
+          console.log(res);
+          self.Auditing = false;
+          self.loadData();
+        })
+        .catch((error) => {
+          self.Auditing = false;
+          alert(error);
+          console.log(error);
+        });
+    },
+    reject(id) {
+      const self = this;
+      self.Auditing = true;
+      axios
+        .post("api/ClientHKFundOutRequests/Audit", {
+          id: id,
+          status: "rejected",
+          issued_by: self.issued_by,
+        })
+        .then((res) => {
+          console.log(res);
+          self.Auditing = false;
+          self.loadData();
+        })
+        .catch((error) => {
+          self.Auditing = false;
+          alert(error);
+          console.log(error);
+        });
+    },
     loadData() {
       const self = this;
       axios.post("api/ClientHKFundOutRequests/all_data").then((res) => {

@@ -19,6 +19,9 @@ class ClientFundInRequestsController extends HomeController
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '手機號碼', 'sortable' => true],
+            ['key' => '銀行', 'sortable' => true],
+            ['key' => '金額', 'sortable' => true],
+            ['key' => '方法', 'sortable' => true],
             ['key' => '狀態', 'sortable' => true],
             ['key' => '發送時間', 'sortable' => true],
             ['key' => '經手人', 'sortable' => true],
@@ -29,6 +32,9 @@ class ClientFundInRequestsController extends HomeController
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '手機號碼' => 'startsWith',
+            '銀行' => 'equals',
+            '金額' => 'equals',
+            '方法' => 'equals',
             '狀態' => 'equals',
             '發送時間' => 'betweenDate',
             '經手人' => 'startsWith',
@@ -56,6 +62,7 @@ class ClientFundInRequestsController extends HomeController
             $row['手機號碼'] = $Client->mobile;
             $row['銀行'] = $ClientFundInRequest->bank;
             $row['方法'] = $ClientFundInRequest->method;
+            $row['金額'] = $ClientFundInRequest->amount;
             $row['狀態'] = $ClientFundInRequest->status;
             $row['發送時間'] = date_format($ClientFundInRequest->created_at, "Y-m-d H:i:s");
             $row['經手人'] = $ClientFundInRequest->issued_by;

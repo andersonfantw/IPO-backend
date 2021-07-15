@@ -24,4 +24,12 @@ class AuditClientHKFundOutRequestController extends ViewClientHKFundOutRequestCo
         $ClientHKFundOutRequest->save();
         return redirect()->route('ClientHKFundOutRequests');
     }
+
+    public function fastAudit(Request $request)
+    {
+        $ClientHKFundOutRequest = ClientHKFundOutRequest::find($request->input('id'));
+        $ClientHKFundOutRequest->status = $request->input('status');
+        $ClientHKFundOutRequest->issued_by = $request->input('issued_by');
+        $ClientHKFundOutRequest->save();
+    }
 }

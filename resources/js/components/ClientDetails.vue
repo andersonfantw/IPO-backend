@@ -1,0 +1,856 @@
+<template>
+  <b-modal ref="modal" size="xl" :title="title">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="6">
+            <h5 class="mb-0"><i class="fas fa-info"></i> 基礎信息</h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="17%">地區</th>
+          <td v-if="Client" width="17%" class="">
+            {{ 地區map[Client.nationality] }}
+          </td>
+          <th width="17%">開通賬戶</th>
+          <td width="17%" class="">證券（現金）賬戶</td>
+          <th width="17%">介紹人</th>
+          <td v-if="Introducer" width="17%" class="">
+            {{ Introducer.name }} ({{ Introducer.type }})
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientAddressProof" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="3">
+            <h5 class="mb-0"><i class="fas fa-map-marked-alt"></i> 住址證明</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回住址證明"
+                v-model="駁回.住址證明"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%">地址</th>
+          <td width="20%" class="">
+            {{ ClientAddressProof.address_text }}
+          </td>
+          <td width="40%">
+            <img style="width: 500px" :src="AddressProof" />
+          </td>
+          <td width="20%" rowspan="6">
+            <b-form-textarea
+              class=""
+              v-if="駁回.住址證明"
+              name="駁回住址證明"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="7"
+              v-model="ClientAddressProof.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0"><i class="far fa-id-card"></i> 身份證信息</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回身份證信息"
+                v-model="駁回.身份證信息"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%">姓名</th>
+          <td v-if="ClientIDCard" width="20%" class="">
+            {{ ClientIDCard.name_c }}
+          </td>
+          <th width="20%">英文名</th>
+          <td v-if="ClientIDCard" width="20%" class="">
+            {{ ClientIDCard.name_en }}
+          </td>
+          <td v-if="ClientIDCard" width="20%" rowspan="6">
+            <b-form-textarea
+              class=""
+              v-if="駁回.身份證信息"
+              name="駁回身份證信息"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              v-model="ClientIDCard.remark"
+              rows="10"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>性別</th>
+          <td v-if="ClientIDCard" class="">
+            {{ ClientIDCard.gender }}
+          </td>
+          <th>手機號碼</th>
+          <td v-if="Client" class="">
+            {{ Client.mobile }}
+          </td>
+        </tr>
+        <tr>
+          <th>出生日期</th>
+          <td v-if="ClientIDCard" class="">
+            {{ ClientIDCard.birthday }}
+          </td>
+          <th>證件類型</th>
+          <td v-if="ClientIDCard" class="">
+            {{ ClientIDCard.passport_type }}
+          </td>
+        </tr>
+        <tr>
+          <th>住址</th>
+          <td v-if="ClientIDCard" class="">
+            {{ ClientIDCard.address }}
+          </td>
+          <th>證件號碼</th>
+          <td v-if="ClientIDCard" class="">
+            {{ ClientIDCard.idcard_no }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <img style="width: 300px" :src="IDCardFace" />
+          </td>
+          <td colspan="2">
+            <img style="width: 300px" :src="IDCardBack" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      v-for="銀行卡 in 銀行卡s"
+      :key="銀行卡.id"
+      class="table table-bordered"
+    >
+      <thead>
+        <tr>
+          <th scope="col" colspan="3">
+            <h5 v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">
+              <i class="fas fa-money-check-alt"></i> 香港銀行卡信息
+            </h5>
+            <h5 v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              <i class="fas fa-money-check-alt"></i> 大陸銀行卡信息
+            </h5>
+            <h5 v-else-if="銀行卡.lcid == 'others'" class="mb-0">
+              <i class="fas fa-money-check-alt"></i> 銀行卡信息
+            </h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                :id="'駁回' + 銀行卡.lcid + '銀行卡信息'"
+                v-model="駁回[銀行卡.lcid + '銀行卡信息']"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td width="40%" rowspan="2">
+            <img
+              v-if="銀行卡.lcid == 'zh-hk'"
+              style="width: 300px"
+              :src="HKBankcardFace"
+            />
+            <img
+              v-else-if="銀行卡.lcid == 'zh-cn'"
+              style="width: 300px"
+              :src="CNBankcardFace"
+            />
+            <img
+              v-else-if="銀行卡.lcid == 'others'"
+              style="width: 300px"
+              :src="OtherBankcardFace"
+            />
+          </td>
+          <th width="20%">
+            <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行名</div>
+            <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              大陸銀行名
+            </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行名</div>
+          </th>
+          <td width="20%" class="">
+            {{ 銀行卡.bank_name }} ({{ 銀行卡.bank_code }})
+          </td>
+          <td width="20%" rowspan="2">
+            <b-form-textarea
+              class=""
+              v-if="駁回[銀行卡.lcid + '銀行卡信息']"
+              :name="'駁回' + 銀行卡.lcid + '銀行卡信息'"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="銀行卡.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th width="20%">
+            <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡號</div>
+            <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              大陸銀行卡號
+            </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
+          </th>
+          <td width="20%" class="">
+            {{ 銀行卡.account_no }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="Client" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0"><i class="fas fa-user-plus"></i> 客戶補充資料</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回客戶補充資料"
+                v-model="駁回.客戶補充資料"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%">教育程度</th>
+          <td colspan="3" class="">
+            {{ Client.education_level }}
+          </td>
+          <td width="20%" rowspan="2">
+            <b-form-textarea
+              class=""
+              v-if="駁回.客戶補充資料"
+              name="駁回客戶補充資料"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="3"
+              v-model="Client.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientWorkingStatus" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0"><i class="fas fa-briefcase"></i> 工作狀態</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回工作狀態"
+                v-model="駁回.工作狀態"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%">工作狀態</th>
+          <td width="20%" class="">
+            {{ ClientWorkingStatus.working_status }}
+          </td>
+          <th width="20%">雇主名稱</th>
+          <td width="20%" class="">
+            {{ ClientWorkingStatus.company_name }}
+          </td>
+          <td width="20%" rowspan="4">
+            <b-form-textarea
+              class=""
+              v-if="駁回.工作狀態"
+              name="駁回工作狀態"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="10"
+              v-model="ClientWorkingStatus.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>業務性質</th>
+          <td class="">
+            {{ ClientWorkingStatus.industry }}
+          </td>
+          <th>職位</th>
+          <td class="">
+            {{ ClientWorkingStatus.position }}
+          </td>
+        </tr>
+        <tr>
+          <th>電郵地址</th>
+          <td class="">
+            {{ Client.email }}
+          </td>
+        </tr>
+        <tr>
+          <th>名片</th>
+          <td colspan="3">
+            <img style="width: 300px" :src="NameCardFace" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientFinancialStatus" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <i class="fas fa-hand-holding-usd"></i> 財政狀況
+            </h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回財政狀況"
+                v-model="駁回.財政狀況"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%">資金來源</th>
+          <td width="20%" class="">
+            {{ ClientFinancialStatus.fund_source }}
+          </td>
+          <th width="20%">其他資金來源</th>
+          <td width="20%" class="">
+            {{ ClientFinancialStatus.other_fund_source }}
+          </td>
+          <td width="20%" rowspan="3">
+            <b-form-textarea
+              class=""
+              v-if="駁回.財政狀況"
+              name="駁回財政狀況"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="ClientFinancialStatus.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>每年收入(港元)</th>
+          <td class="">
+            {{ ClientFinancialStatus.annual_income }}
+          </td>
+          <th>資產項目</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th>其他資產</th>
+          <td></td>
+          <th>資產淨值</th>
+          <td class="">
+            {{ ClientFinancialStatus.net_assets }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientInvestmentExperience" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-line"></i> 投資經驗及衍生產品認識
+            </h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回投資經驗及衍生產品認識"
+                v-model="駁回.投資經驗及衍生產品認識"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th width="20%">投資目標</th>
+          <td width="20%" class="">
+            {{ ClientInvestmentExperience.investment_objective }}
+          </td>
+          <th width="20%">股票</th>
+          <td width="20%" class="">
+            {{ ClientInvestmentExperience.stock }}
+          </td>
+          <td width="20%" rowspan="4">
+            <b-form-textarea
+              class=""
+              v-if="駁回.投資經驗及衍生產品認識"
+              name="駁回投資經驗及衍生產品認識"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="ClientInvestmentExperience.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>衍生認股證</th>
+          <td class="">
+            {{ ClientInvestmentExperience.derivative_warrants }}
+          </td>
+          <th>牛熊證</th>
+          <td class="">
+            {{ ClientInvestmentExperience.cbbc }}
+          </td>
+        </tr>
+        <tr>
+          <th>期貨及期權</th>
+          <td class="">
+            {{ ClientInvestmentExperience.futures_and_options }}
+          </td>
+          <th>債券/基金</th>
+          <td class="">
+            {{ ClientInvestmentExperience.bonds_funds }}
+          </td>
+        </tr>
+        <tr>
+          <th>其他投資經驗</th>
+          <td class="">
+            {{ ClientInvestmentExperience.other_investment_experience }}
+          </td>
+          <th></th>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientEvaluationResults" class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="3" scope="col">
+            <h5 class="mb-0"><i class="fas fa-question"></i> 問題</h5>
+          </th>
+          <th colspan="3" scope="col">
+            <h5 class="mb-0"><i class="far fa-lightbulb"></i> 答案</h5>
+          </th>
+          <th colspan="1" scope="col">
+            <h5 class="mb-0"><i class="fas fa-poll"></i> 分數</h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(score, index) of ClientScore" :key="index">
+          <th colspan="3" width="40%">{{ score.question_text }}?</th>
+          <td colspan="3" width="40%" class="">
+            {{ score.answer }}
+          </td>
+          <td colspan="3" width="20%" class="">
+            {{ score.score }}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <h5 class="mb-0">評估結果</h5>
+          </th>
+          <td>
+            <h5 class="mb-0">
+              {{ 評估結果 }}
+            </h5>
+          </td>
+          <th>
+            <h5 class="mb-0">投資者特徵</h5>
+          </th>
+          <td>
+            <h5 class="mb-0">{{ 投資者特徵 }}</h5>
+          </td>
+          <th>
+            <h5 class="mb-0">風險承受程度</h5>
+          </th>
+          <td>
+            <h5 class="mb-0">{{ 風險承受程度 }}</h5>
+          </td>
+          <td rowspan="2" width="20%">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回問卷調查"
+                v-model="駁回.問卷調查"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+            <b-form-textarea
+              class=""
+              v-if="駁回.問卷調查"
+              name="駁回問卷調查"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="3"
+              v-model="ClientEvaluationResults.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <h5 class="mb-0">用戶是否同意</h5>
+          </th>
+          <td>
+            <h5 class="mb-0">{{ 用戶是否同意 }}</h5>
+          </td>
+          <th>
+            <h5 class="mb-0">投資者同意的特徵</h5>
+          </th>
+          <td>
+            <h5 class="mb-0">
+              {{ ClientEvaluationResults.investor_characteristics }}
+            </h5>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientSignature" class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="4" scope="col">
+            <h5 class="mb-0"><i class="fas fa-signature"></i> 簽名</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回簽名"
+                v-model="駁回.簽名"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <td colspan="4">
+          <img style="width: 300px" :src="ClientSignature.image" />
+        </td>
+        <td width="20%">
+          <b-form-textarea
+            class=""
+            v-if="駁回.簽名"
+            name="駁回簽名"
+            style="width: 100%"
+            placeholder="請寫駁回理由"
+            rows="10"
+            v-model="ClientSignature.remark"
+          ></b-form-textarea>
+        </td>
+      </tbody>
+    </table>
+    <table v-if="ClientBusinessType" class="table table-bordered">
+      <tbody>
+        <th width="17%">
+          <h5 class="mb-0"><i class="fas fa-mail-bulk"></i> 直接促銷</h5>
+        </th>
+        <td>
+          <h5 class="mb-0">
+            {{ ClientBusinessType.direct_promotion }}
+          </h5>
+        </td>
+      </tbody>
+    </table>
+    <table v-if="ClientDepositProof" class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="4" scope="col">
+            <h5 class="mb-0"><i class="fas fa-dollar-sign"></i> 存款證明</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回存款證明"
+                v-model="駁回.存款證明"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>入金帳戶</th>
+          <td class="">
+            {{ ClientDepositProof.deposit_account }}
+          </td>
+          <th>入金金額</th>
+          <td class="">HK${{ ClientDepositProof.deposit_amount }}</td>
+          <td width="20%" rowspan="3">
+            <b-form-textarea
+              class=""
+              v-if="駁回.存款證明"
+              name="駁回存款證明"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="10"
+              v-model="ClientDepositProof.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>入金銀行</th>
+          <td class="">
+            {{ ClientDepositProof.deposit_bank }}
+          </td>
+          <th>入金方法</th>
+          <td class="">
+            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
+              {{ ClientDepositProof.other_deposit_method }}
+            </div>
+            <div v-else class="mb-0">
+              {{ ClientDepositProof.deposit_method }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <img style="width: 500px" :src="DepositProof" />
+          </td>
+          <th>轉帳時間</th>
+          <td class="">
+            {{ ClientDepositProof.transfer_time }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <template #modal-footer="">
+      <b-button variant="success" @click="submit"> 提交審核 </b-button>
+    </template>
+  </b-modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      uuid: null,
+      駁回: {
+        身份證信息: false,
+        "zh-hk銀行卡信息": false,
+        "zh-cn銀行卡信息": false,
+        others銀行卡信息: false,
+        客戶補充資料: false,
+        工作狀態: false,
+        財政狀況: false,
+        投資經驗及衍生產品認識: false,
+        問卷調查: false,
+        簽名: false,
+        住址證明: false,
+        存款證明: false,
+      },
+      地區map: {},
+      Client: null,
+      ClientIDCard: null,
+      ClientAddressProof: null,
+      銀行卡s: [],
+      ClientWorkingStatus: null,
+      ClientFinancialStatus: null,
+      ClientInvestmentExperience: null,
+      ClientEvaluationResults: null,
+      ClientSignature: null,
+      ClientBusinessType: null,
+      ClientDepositProof: null,
+      Introducer: null,
+      ClientScore: [],
+    };
+  },
+  created() {
+    this.地區map["zh-hk"] = "香港";
+    this.地區map["zh-cn"] = "中國";
+    this.地區map["others"] = "台灣";
+  },
+  mounted() {
+    console.log("mounted");
+  },
+  props: {
+    base_url: String,
+    title: String,
+  },
+  methods: {
+    submit() {
+      const self = this;
+      let data = {};
+      data["uuid"] = self.uuid;
+      data["駁回身份證信息"] = self.ClientIDCard.remark;
+      data["駁回住址證明"] = self.ClientAddressProof.remark;
+      self.銀行卡s.forEach(function (bankcard) {
+        data["駁回" + bankcard.lcid + "銀行卡信息"] = bankcard.remark;
+      });
+      data["駁回客戶補充資料"] = self.Client.remark;
+      data["駁回工作狀態"] = self.ClientWorkingStatus.remark;
+      data["駁回財政狀況"] = self.ClientFinancialStatus.remark;
+      data["駁回投資經驗及衍生產品認識"] =
+        self.ClientInvestmentExperience.remark;
+      data["駁回問卷調查"] = self.ClientEvaluationResults.remark;
+      data["駁回簽名"] = self.ClientSignature.remark;
+      data["駁回存款證明"] = self.ClientDepositProof.remark;
+      axios
+        .post("api/Client/audit", data)
+        .then((res) => {
+          console.log(res);
+          if (res.data.success) {
+            self.$emit("audited");
+            self.hideModal();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    showModal(uuid) {
+      const self = this;
+      self.uuid = uuid;
+      axios
+        .post("api/Client/details", {
+          uuid: uuid,
+        })
+        .then((res) => {
+          // const json = self.getDecryptedJsonObject(res.data);
+          console.log(res);
+          self.Client = JSON.parse(res.data.Client);
+          self.ClientIDCard = JSON.parse(res.data.ClientIDCard);
+          self.ClientAddressProof = JSON.parse(res.data.ClientAddressProof);
+          self.銀行卡s = JSON.parse(res.data.ClientBankCards);
+          self.ClientWorkingStatus = JSON.parse(res.data.ClientWorkingStatus);
+          self.ClientFinancialStatus = JSON.parse(
+            res.data.ClientFinancialStatus
+          );
+          self.ClientInvestmentExperience = JSON.parse(
+            res.data.ClientInvestmentExperience
+          );
+          self.ClientEvaluationResults = JSON.parse(
+            res.data.ClientEvaluationResults
+          );
+          self.ClientScore = JSON.parse(res.data.ClientScore);
+          self.ClientSignature = JSON.parse(res.data.ClientSignature);
+          self.ClientBusinessType = JSON.parse(res.data.ClientBusinessType);
+          self.ClientDepositProof = JSON.parse(res.data.ClientDepositProof);
+          self.Introducer = JSON.parse(res.data.Introducer);
+          self.$refs.modal.show();
+        })
+        .catch((error) => {
+          console.log(error);
+          self.$refs.modal.show();
+        });
+    },
+    hideModal() {
+      this.$refs.modal.hide();
+    },
+  },
+  computed: {
+    評估結果() {
+      let result = 0;
+      this.ClientScore.forEach((score) => {
+        result += score.score;
+      });
+      return result;
+    },
+    投資者特徵() {
+      if (this.評估結果 <= 19) {
+        return "保守型";
+      } else if (this.評估結果 >= 20 && this.評估結果 <= 29) {
+        return "穩健型";
+      } else if (this.評估結果 >= 30 && this.評估結果 <= 39) {
+        return "平衡型";
+      } else if (this.評估結果 >= 40 && this.評估結果 <= 49) {
+        return "增長型";
+      } else if (this.評估結果 >= 50) {
+        return "進取型";
+      }
+    },
+    風險承受程度() {
+      if (this.評估結果 <= 19) {
+        return "低";
+      } else if (this.評估結果 >= 20 && this.評估結果 <= 29) {
+        return "低至中";
+      } else if (this.評估結果 >= 30 && this.評估結果 <= 39) {
+        return "中";
+      } else if (this.評估結果 >= 40 && this.評估結果 <= 49) {
+        return "中至高";
+      } else if (this.評估結果 >= 50) {
+        return "高";
+      }
+    },
+    用戶是否同意() {
+      return this.ClientEvaluationResults.agree ? "是" : "否";
+    },
+    AddressProof() {
+      return this.base_url + "/LoadAddressProof?uuid=" + this.uuid;
+    },
+    IDCardFace() {
+      return this.base_url + "/LoadIDCardFace?uuid=" + this.uuid;
+    },
+    IDCardBack() {
+      return this.base_url + "/LoadIDCardBack?uuid=" + this.uuid;
+    },
+    HKBankcardFace() {
+      return this.base_url + "/LoadHKBankCard?uuid=" + this.uuid;
+    },
+    CNBankcardFace() {
+      return this.base_url + "/LoadCNBankCard?uuid=" + this.uuid;
+    },
+    OtherBankcardFace() {
+      return this.base_url + "/LoadOtherBankCard?uuid=" + this.uuid;
+    },
+    NameCardFace() {
+      return this.base_url + "/LoadNameCard?uuid=" + this.uuid;
+    },
+    DepositProof() {
+      return this.base_url + "/LoadDepositProof?uuid=" + this.uuid;
+    },
+  },
+};
+</script>
