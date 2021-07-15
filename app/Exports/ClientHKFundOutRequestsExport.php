@@ -16,10 +16,10 @@ class ClientHKFundOutRequestsExport extends AyersValueBinder implements FromView
             ->where('updated_at', 'like', "$today%")->get();
         $Requests = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
-            $Request['tran_date'] = $ClientHKFundOutRequest->updated_at->format('d/m');
+            $Request['tran_date'] = $ClientHKFundOutRequest->updated_at->format('D/M/Y');
             $Request['ccclnId'] = $ClientHKFundOutRequest->account_out;
             $Request['ccy'] = 'HKD';
-            $Request['amount'] = $ClientHKFundOutRequest->amount * -1;
+            $Request['amount'] = number_format($ClientHKFundOutRequest->amount * -1, 2, '.', '');
             $Request['remark'] = 'PRINCIPAL OUT';
             $Request['gl_mapping_item_id'] = null;
             $Request['bank_acc_id'] = "ICBC:HKD:861-512-04226-1";
