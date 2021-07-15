@@ -26,6 +26,7 @@ class ClientHKFundOutRequestsExport extends AyersValueBinder implements FromView
             $Request['cheque'] = null;
             $Requests[] = $Request;
         }
+        dd($Requests);
         return view('excel.ClientHKFundOutRequests', [
             'Headers' => $Headers,
             'ClientHKFundOutRequests' => $Requests,
