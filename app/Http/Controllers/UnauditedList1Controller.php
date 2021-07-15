@@ -71,6 +71,7 @@ class UnauditedList1Controller extends HomeController
         //     ->orderBy('created_at', 'asc')->get();
         $Clients = ViewPendingClient::where(function ($query) {
             $query->where('has_deposit_proof', 1)
+                ->where('deposit_proof_status', 'unaudited')
                 ->orWhere(function ($query) {
                     $query->where('nationality', 'others')
                         ->where('progress', 16);
