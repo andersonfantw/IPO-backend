@@ -66,7 +66,7 @@ class ClientHKFundOutRequestsController extends HomeController
             $row['手機號碼'] = $Client->mobile;
             $row['銀行'] = $ClientHKFundOutRequest->bank;
             // $row['銀行帳戶'] = $ClientHKFundOutRequest->account_in;
-            $row['金額'] = number_format($ClientHKFundOutRequest->amount * -1, 2, '.', '');
+            $row['金額'] = number_format($ClientHKFundOutRequest->amount, 2, '.', '');
             $row['狀態'] = $ClientHKFundOutRequest->status;
             $row['發送時間'] = date_format($ClientHKFundOutRequest->created_at, "Y-m-d H:i:s");
             $row['經手人'] = $ClientHKFundOutRequest->issued_by;
