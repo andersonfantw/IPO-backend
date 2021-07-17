@@ -109,7 +109,7 @@
       ref="ClientDetails"
       :base_url="base_url"
       :title="'一審客戶信息'"
-      @audited="loadData"
+      @audited="loadData(1)"
     />
   </b-container>
 </template>
@@ -164,7 +164,7 @@ export default {
     this.columns = JSON.parse(this.p_columns);
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
-    this.loadData();
+    this.loadData(1);
   },
   methods: {
     showClientDetails(uuid) {

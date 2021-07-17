@@ -87,7 +87,8 @@ class UnauditedList1Controller extends HomeController
                 'email as 郵箱',
                 'updated_at as 提交時間',
                 'uuid')
-            ->orderBy('updated_at', 'asc')->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+            ->orderBy('updated_at', 'asc')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // return $Clients;
         // $rows = [];
         // foreach ($Clients as $Client) {
