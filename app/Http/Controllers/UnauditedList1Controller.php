@@ -69,9 +69,8 @@ class UnauditedList1Controller extends HomeController
             $query->where('status', 'unaudited');
         })->where('status', 'unaudited')
             ->orWhere(function (Builder $query) {
-                $query->whereHas('ClientSignature', function (Builder $query) {
-                    $query->where('status', 'unaudited');
-                })->where('status', 'unaudited')
+                $query->where('status', 'unaudited')
+                    ->where('progress', 16)
                     ->where('idcard_type', 'App\ClientOtherIDCard');
             })
             ->orderBy('updated_at', 'asc')
