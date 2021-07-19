@@ -183,7 +183,7 @@ export default {
         .then((res) => {
           // const json = self.getDecryptedJsonObject(res.data);
           console.log(res);
-          const data = res.data.data.data;
+          const data = res.data.data;
           self.data = self.data.concat(data);
           // console.log(self.data);
           self.totalRows = self.data.length;
