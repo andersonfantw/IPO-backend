@@ -124,6 +124,7 @@ export default {
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
     this.loadData(1);
+    this.loadData(2);
   },
   methods: {
     loadData(pageNumber) {
@@ -141,7 +142,7 @@ export default {
           self.totalRows = self.data.length;
           self.loading = false;
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.loadData(pageNumber + 2);
           }
         })
         .catch((error) => {
