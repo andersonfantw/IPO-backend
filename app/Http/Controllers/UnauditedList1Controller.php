@@ -74,7 +74,7 @@ class UnauditedList1Controller extends HomeController
                 })->where('status', 'unaudited')
                     ->where('idcard_type', 'App\ClientOtherIDCard');
             })
-            ->orderBy('created_at', 'asc')
+            ->orderBy('updated_at', 'asc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $Clients = Client::whereHas('ClientSignature', function (Builder $query) {
         //     $query->where('status', 'unaudited');
@@ -119,7 +119,7 @@ class UnauditedList1Controller extends HomeController
             }
             $row['手機號碼'] = $Client->mobile;
             $row['郵箱'] = $Client->email;
-            $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['提交時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
