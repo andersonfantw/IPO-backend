@@ -127,27 +127,24 @@ export default {
     this.columns = JSON.parse(this.p_columns);
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
-    this.loadData(1);
+    this.loadData();
   },
   methods: {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/ClientProgress/all_data", {
-          perPage: self.perPage,
-          pageNumber: pageNumber,
-        })
+        .post("api/ClientProgress/all_data")
         .then((res) => {
           // const json = self.getDecryptedJsonObject(res.data);
           console.log(res);
           const data = res.data.data;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
-          } else {
-            self.loading = false;
-          }
+          // if (data.length >= self.perPage) {
+          //   self.loadData(pageNumber + 1);
+          // } else {
+          self.loading = false;
+          // }
         })
         .catch((error) => {
           console.log(error);
