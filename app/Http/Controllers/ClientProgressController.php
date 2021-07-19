@@ -39,7 +39,7 @@ class ClientProgressController extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+        $Clients = Client::with(['ViewIntroducer', 'IDCard'])
             ->where('type', '拼一手')->get();
         $rows = [];
         foreach ($Clients as $Client) {
