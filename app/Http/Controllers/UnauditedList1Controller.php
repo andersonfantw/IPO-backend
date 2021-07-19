@@ -67,7 +67,14 @@ class UnauditedList1Controller extends HomeController
             $query->where('status', 'unaudited');
         })->whereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'unaudited');
-        })->where('status', 'unaudited')->orderBy('created_at', 'asc')
+        })->where('status', 'unaudited')
+            ->orWhere(function (Builder $query) {
+                $query->whereHas('ClientSignature', function (Builder $query) {
+                    $query->where('status', 'unaudited');
+                })->where('status', 'unaudited')
+                    ->where('idcard_type', 'App\ClientOtherIDCard');
+            })
+            ->orderBy('created_at', 'asc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $Clients = Client::whereHas('ClientSignature', function (Builder $query) {
         //     $query->where('status', 'unaudited');
