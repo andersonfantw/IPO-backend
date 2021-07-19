@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ViewPendingClient;
+use App\Client;
 use Illuminate\Http\Request;
 
 class ClientProgressController extends HomeController
@@ -39,13 +39,14 @@ class ClientProgressController extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = ViewPendingClient::get();
+        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+            ->where('type', '拼一手')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
-            $row['AE'] = $Client->ae_name;
-            $row['客户姓名'] = $Client->name_c;
-            $row['證件號碼'] = $Client->idcard_no;
+            $row['AE'] = $Client->ViewIntroducer->ae_name;
+            $row['客户姓名'] = is_object($Client->IDCard) ? $Client->IDCard->name_c : null;
+            $row['證件號碼'] = is_object($Client->IDCard) ? $Client->IDCard->idcard_no : null;
             $row['手機號碼'] = $Client->mobile;
             if ($Client->selected_flow) {
                 $selected_flow = json_decode($Client->selected_flow, true);
