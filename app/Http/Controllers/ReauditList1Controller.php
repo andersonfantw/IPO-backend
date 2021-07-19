@@ -49,13 +49,14 @@ class ReauditList1Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientAddressProof', function (Builder $query) {
+        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+            ->whereHasMorph('IDCard', [
+                ClientCNIDCard::class,
+                ClientHKIDCard::class,
+                ClientOtherIDCard::class,
+            ], function (Builder $query) {
+                $query->where('status', 'reaudit');
+            })->orWhereHas('ClientAddressProof', function (Builder $query) {
             $query->where('status', 'reaudit');
         })->orWhereHas('ClientBankCards', function (Builder $query) {
             $query->where('status', 'reaudit');
@@ -71,7 +72,8 @@ class ReauditList1Controller extends HomeController
             $query->where('status', 'reaudit');
         })->orWhereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'reaudit');
-        })->orWhere('status', 'reaudit')->orderBy('created_at', 'asc')->get();
+        })->orWhere('status', 'reaudit')->orderBy('created_at', 'asc')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
@@ -90,9 +92,9 @@ class ReauditList1Controller extends HomeController
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
+        ], JSON_UNESCAPED_UNICODE);
         // return json_encode([
         //     'data' => $rs,
         // ], JSON_UNESCAPED_UNICODE);
