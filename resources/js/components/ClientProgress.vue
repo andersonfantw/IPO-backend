@@ -43,6 +43,11 @@
       </b-col>
       <b-col> </b-col>
     </b-row>
+    <b-row v-if="loading">
+      <b-col class="text-center">
+        <b-spinner variant="warning"></b-spinner>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -56,7 +61,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="loading"
       @filtered="onFiltered"
     >
       <template #empty="scope">
@@ -124,7 +128,6 @@ export default {
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
     this.loadData(1);
-    this.loadData(2);
   },
   methods: {
     loadData(pageNumber) {
@@ -140,9 +143,10 @@ export default {
           const data = res.data.data;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          self.loading = false;
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 2);
+            self.loadData(pageNumber + 1);
+          } else {
+            self.loading = false;
           }
         })
         .catch((error) => {

@@ -48,6 +48,11 @@
         </b-input-group>
       </b-col>
     </b-row>
+    <b-row v-if="loading">
+      <b-col class="text-center">
+        <b-spinner variant="warning"></b-spinner>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -61,7 +66,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="loading"
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
@@ -162,9 +166,10 @@ export default {
           const data = res.data.data;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          self.loading = false;
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
+          } else {
+            self.loading = false;
           }
         })
         .catch((error) => {
