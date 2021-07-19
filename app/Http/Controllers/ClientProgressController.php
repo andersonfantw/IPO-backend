@@ -40,7 +40,8 @@ class ClientProgressController extends HomeController
     public function getData(Request $request)
     {
         $Clients = Client::with(['ViewIntroducer', 'IDCard'])
-            ->where('type', '拼一手')->paginate(20);
+            ->where('type', '拼一手')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];

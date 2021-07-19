@@ -92,7 +92,7 @@ export default {
       columns: [],
       filterMatchMode: {},
       loading: false,
-      data: null,
+      data: [],
       selectedClients: null,
       currentPage: 1,
       perPage: 20,
@@ -123,18 +123,30 @@ export default {
     this.columns = JSON.parse(this.p_columns);
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
-    this.loadData();
+    this.loadData(1);
   },
   methods: {
-    loadData() {
+    loadData(pageNumber) {
       const self = this;
-      axios.post("api/ClientProgress/all_data").then((res) => {
-        // const json = self.getDecryptedJsonObject(res.data);
-        const json = res.data;
-        self.data = json.data;
-        self.totalRows = self.data.length;
-        self.loading = false;
-      });
+      axios
+        .post("api/ClientProgress/all_data", {
+          perPage: self.perPage,
+          pageNumber: pageNumber,
+        })
+        .then((res) => {
+          // const json = self.getDecryptedJsonObject(res.data);
+          console.log(res);
+          const data = res.data.data;
+          self.data = self.data.concat(data);
+          self.totalRows = self.data.length;
+          self.loading = false;
+          if (data.length >= self.perPage) {
+            self.loadData(pageNumber + 1);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;

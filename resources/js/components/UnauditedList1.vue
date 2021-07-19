@@ -185,7 +185,6 @@ export default {
           console.log(res);
           const data = res.data.data;
           self.data = self.data.concat(data);
-          // console.log(self.data);
           self.totalRows = self.data.length;
           self.loading = false;
           if (data.length >= self.perPage) {
