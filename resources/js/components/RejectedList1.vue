@@ -67,13 +67,18 @@
       <template #cell(操作)="data">
         <b-form :action="view_client_url" method="post">
           <input type="hidden" name="redirect_route" value="RejectedList1" />
-          <!-- <input type="hidden" name="next_status" value="audited1" /> -->
           <b-button
             name="uuid"
             :value="data.item.uuid"
             variant="success"
             type="submit"
             ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button
+          >
+          <b-button
+            type="button"
+            variant="danger"
+            @click="refund(data.item.uuid)"
+            ><h5 class="mb-0"><i class="far fa-eye"></i> 退款</h5></b-button
           >
         </b-form>
       </template>
@@ -110,7 +115,7 @@ export default {
       columns: [],
       filterMatchMode: {},
       loading: false,
-      data: null,
+      data: [],
       selectedClients: null,
       currentPage: 1,
       perPage: 20,
@@ -147,17 +152,32 @@ export default {
     this.columns = JSON.parse(this.p_columns);
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
-    this.loadData();
+    this.loadData(1);
   },
   methods: {
-    loadData() {
+    refund(uuid) {
       const self = this;
-      axios.post("api/RejectedList1/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
-        self.data = json.data;
-        self.totalRows = self.data.length;
-        self.loading = false;
-      });
+    },
+    loadData(pageNumber) {
+      const self = this;
+      axios
+        .post("api/RejectedList1/all_data", {
+          perPage: self.perPage,
+          pageNumber: pageNumber,
+        })
+        .then((res) => {
+          console.log(res);
+          const data = res.data.data;
+          self.data = self.data.concat(data);
+          self.totalRows = self.data.length;
+          self.loading = false;
+          if (data.length >= self.perPage) {
+            self.loadData(pageNumber + 1);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
