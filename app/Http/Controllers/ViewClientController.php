@@ -97,11 +97,6 @@ class ViewClientController extends HomeController
             'ViewIntroducer',
         ])
             ->where('uuid', $request->input('uuid'))->first();
-        $Client->idcard_type = addslashes($Client->idcard_type);
-        $Client->education_level = addslashes($Client->education_level);
-        $Client->selected_flow = addslashes($Client->selected_flow);
-        $details['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
-        $Client->idcard_type = stripslashes($Client->idcard_type);
         $details['uuid'] = $Client->uuid;
         $Client->IDCard->idcard_face = null;
         $Client->IDCard->idcard_back = null;
@@ -126,7 +121,7 @@ class ViewClientController extends HomeController
         $details['ClientFinancialStatus'] = $Client->ClientFinancialStatus->toJson(JSON_UNESCAPED_UNICODE);
         $details['ClientInvestmentExperience'] = $Client->ClientInvestmentExperience->toJson(JSON_UNESCAPED_UNICODE);
         // $details['ClientScore'] = $Client->ViewClientScore->toJson(JSON_UNESCAPED_UNICODE);
-        $details['ClientScore'] = json_encode(calculateClientScore($Client), JSON_UNESCAPED_UNICODE);
+        $details['ClientScore'] = json_encode($this->calculateClientScore($Client), JSON_UNESCAPED_UNICODE);
         $details['ClientEvaluationResults'] = $Client->ClientEvaluationResults->toJson(JSON_UNESCAPED_UNICODE);
         $details['ClientSignature'] = $Client->ClientSignature->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
@@ -138,6 +133,11 @@ class ViewClientController extends HomeController
             $details['ClientDepositProof'] = null;
         }
         $details['Introducer'] = $Client->ViewIntroducer->toJson(JSON_UNESCAPED_UNICODE);
+        $Client->idcard_type = addslashes($Client->idcard_type);
+        $Client->education_level = addslashes($Client->education_level);
+        $Client->selected_flow = addslashes($Client->selected_flow);
+        $details['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
+        $Client->idcard_type = stripslashes($Client->idcard_type);
         return $details;
     }
 
