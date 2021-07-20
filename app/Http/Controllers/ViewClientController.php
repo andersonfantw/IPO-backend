@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Traits\Score;
 use Illuminate\Http\Request;
 
 class ViewClientController extends HomeController
 {
+    use Score;
+
     protected $name = 'ViewClient';
 
     public function loadIDCardFace(Request $request)
@@ -122,7 +125,8 @@ class ViewClientController extends HomeController
         $Client->ClientFinancialStatus->fund_source = addslashes($Client->ClientFinancialStatus->fund_source);
         $details['ClientFinancialStatus'] = $Client->ClientFinancialStatus->toJson(JSON_UNESCAPED_UNICODE);
         $details['ClientInvestmentExperience'] = $Client->ClientInvestmentExperience->toJson(JSON_UNESCAPED_UNICODE);
-        $details['ClientScore'] = $Client->ViewClientScore->toJson(JSON_UNESCAPED_UNICODE);
+        // $details['ClientScore'] = $Client->ViewClientScore->toJson(JSON_UNESCAPED_UNICODE);
+        $details['ClientScore'] = json_encode(calculateClientScore($Client), JSON_UNESCAPED_UNICODE);
         $details['ClientEvaluationResults'] = $Client->ClientEvaluationResults->toJson(JSON_UNESCAPED_UNICODE);
         $details['ClientSignature'] = $Client->ClientSignature->toJson(JSON_UNESCAPED_UNICODE);
         $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
