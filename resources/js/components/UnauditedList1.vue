@@ -69,17 +69,15 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
+        <!-- <b-button
+          variant="warning"
+          type="button"
+          @click="showClientDetails(data.item.uuid)"
+          ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
+        > -->
         <b-form :action="audit_client_url" method="post">
           <input type="hidden" name="redirect_route" value="UnauditedList1" />
           <input type="hidden" name="next_status" value="audited1" />
-          <!-- <b-button
-            name="uuid"
-            :value="data.item.uuid"
-            variant="warning"
-            type="button"
-            @click="showClientDetails(data.item.uuid)"
-            ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
-          > -->
           <b-button
             name="uuid"
             :value="data.item.uuid"

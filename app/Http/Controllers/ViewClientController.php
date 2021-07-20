@@ -79,7 +79,21 @@ class ViewClientController extends HomeController
     protected function getClientDetails(Request $request)
     {
         $details = [];
-        $Client = Client::where('uuid', $request->input('uuid'))->first();
+        $Client = Client::with([
+            'IDCard',
+            'ClientAddressProof',
+            'ClientBankCards',
+            'ClientWorkingStatus',
+            'ClientFinancialStatus',
+            'ClientInvestmentExperience',
+            'ViewClientScore',
+            'ClientEvaluationResults',
+            'ClientSignature',
+            'ClientBusinessType',
+            'ClientDepositProof',
+            'ViewIntroducer',
+        ])
+            ->where('uuid', $request->input('uuid'))->first();
         $Client->idcard_type = addslashes($Client->idcard_type);
         $Client->education_level = addslashes($Client->education_level);
         $Client->selected_flow = addslashes($Client->selected_flow);
