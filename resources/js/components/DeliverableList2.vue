@@ -70,6 +70,11 @@
     <b-button variant="warning" @click="downloadFilesForOpeningAccount">
       <i class="fas fa-download"></i> 協議及開戶資料下載
     </b-button>
+    <b-row v-if="loading">
+      <b-col class="text-center">
+        <b-spinner variant="warning"></b-spinner>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -83,7 +88,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="loading"
       @filtered="onFiltered"
     >
       <template #head(操作)>
