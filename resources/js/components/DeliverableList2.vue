@@ -57,19 +57,23 @@
       <b-col></b-col>
       <b-col></b-col>
     </b-row>
-    <b-button variant="primary" @click="generateAccounts"
-      ><i class="far fa-user"></i> 產生Ayers帳號</b-button
-    >
-    <b-button variant="success" @click="downloadExcel">
-      <i class="fas fa-download"></i> 開戶Excel下載<b-spinner
-        v-if="DownloadingExcel"
-        label="Spinning"
-        small
-      />
-    </b-button>
-    <b-button variant="warning" @click="downloadFilesForOpeningAccount">
-      <i class="fas fa-download"></i> 協議及開戶資料下載
-    </b-button>
+    <b-row no-gutters>
+      <b-col>
+        <b-button variant="primary" @click="generateAccounts"
+          ><i class="far fa-user"></i> 產生Ayers帳號</b-button
+        >
+        <b-button variant="success" @click="downloadExcel">
+          <i class="fas fa-download"></i> 開戶Excel下載<b-spinner
+            v-if="DownloadingExcel"
+            label="Spinning"
+            small
+          />
+        </b-button>
+        <b-button variant="warning" @click="downloadFilesForOpeningAccount">
+          <i class="fas fa-download"></i> 協議及開戶資料下載
+        </b-button>
+      </b-col>
+    </b-row>
     <b-row v-if="loading">
       <b-col class="text-center">
         <b-spinner variant="warning"></b-spinner>
