@@ -77,16 +77,30 @@ class DeliverableList2Controller extends HomeController
         // $Clients = ViewDeliverableClient::orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
-            foreach ($Client->AyersAccounts as $AyersAccount) {
+            if (count($Client->AyersAccounts) > 0) {
+                foreach ($Client->AyersAccounts as $AyersAccount) {
+                    $row = [];
+                    $row['帳戶號碼'] = $AyersAccount->account_no;
+                    $row['開通賬戶類型'] = $AyersAccount->type;
+                    $row['客户姓名'] = $Client->IDCard->name_c;
+                    $row['證件號碼'] = $Client->IDCard->idcard_no;
+                    $row['手機號碼'] = $Client->mobile;
+                    $row['郵箱'] = $Client->email;
+                    $row['開戶時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
+                    $row['帳戶生成時間'] = $AyersAccount->created_at ? date_format($AyersAccount->created_at, "Y-m-d H:i:s") : $AyersAccount->created_at;
+                    $row['uuid'] = $Client->uuid;
+                    $rows[] = $row;
+                }
+            } else {
                 $row = [];
-                $row['帳戶號碼'] = $AyersAccount->account_no;
-                $row['開通賬戶類型'] = $AyersAccount->type;
+                $row['帳戶號碼'] = null;
+                $row['開通賬戶類型'] = null;
                 $row['客户姓名'] = $Client->IDCard->name_c;
                 $row['證件號碼'] = $Client->IDCard->idcard_no;
                 $row['手機號碼'] = $Client->mobile;
                 $row['郵箱'] = $Client->email;
                 $row['開戶時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
-                $row['帳戶生成時間'] = $Client->created_at ? date_format($Client->created_at, "Y-m-d H:i:s") : $Client->created_at;
+                $row['帳戶生成時間'] = null;
                 $row['uuid'] = $Client->uuid;
                 $rows[] = $row;
             }
