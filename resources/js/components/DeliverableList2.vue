@@ -271,6 +271,7 @@ export default {
           console.log(res);
           const data = res.data.data;
           self.data = self.data.concat(data);
+          self.filteredClients = self.data;
           self.totalRows = self.data.length;
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
