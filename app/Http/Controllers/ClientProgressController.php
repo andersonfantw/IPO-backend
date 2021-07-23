@@ -69,6 +69,9 @@ class ClientProgressController extends HomeController
                         $query->where('name', $request->input('AE'));
                     });
                 }
+                if ($request->filled('由更新時間') && $request->filled('至更新時間')) {
+                    $query = $query->whereBetween('updated_at', [$request->input('由更新時間'), $request->input('至更新時間')]);
+                }
             })->get();
         $rows = [];
         foreach ($Clients as $Client) {

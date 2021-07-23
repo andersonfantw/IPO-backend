@@ -135,14 +135,19 @@ export default {
     query() {
       const self = this;
       self.loading = true;
+      let data = {
+        客户姓名: self.filters["客户姓名"],
+        證件號碼: self.filters["證件號碼"],
+        手機號碼: self.filters["手機號碼"],
+        郵箱: self.filters["郵箱"],
+        AE: self.filters["AE"],
+      };
+      if (self.filters["更新時間"] && self.filters["更新時間"].length == 2) {
+        data["由更新時間"] = self.filters["更新時間"][0];
+        data["至更新時間"] = self.filters["更新時間"][1];
+      }
       axios
-        .post("api/ClientProgress/query", {
-          客户姓名: self.filters["客户姓名"],
-          證件號碼: self.filters["證件號碼"],
-          手機號碼: self.filters["手機號碼"],
-          郵箱: self.filters["郵箱"],
-          AE: self.filters["AE"],
-        })
+        .post("api/ClientProgress/query", data)
         .then((res) => {
           console.log(res);
           self.data = res.data.data;
