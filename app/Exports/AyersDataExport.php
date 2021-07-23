@@ -245,7 +245,7 @@ class AyersDataExport extends AyersValueBinder implements FromView
                 $AyersImportData['address_line3'] = null;
                 $AyersImportData['address_line4'] = null;
                 $AyersImportData['gender'] = $this->gender[$Client->IDCard->gender];
-                $AyersImportData['DATE_OF_BIRTH'] = $Client->IDCard->birthday;
+                $AyersImportData['DATE_OF_BIRTH'] = preg_replace('/-/i', '', $Client->IDCard->birthday);
                 $AyersImportData['remark'] = null;
                 $AyersImportData['statement_lang'] = 'big5';
                 $AyersImportData['nationality'] = $this->nationality[$Client->nationality];
