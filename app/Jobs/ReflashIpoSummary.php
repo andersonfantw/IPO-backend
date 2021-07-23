@@ -33,6 +33,6 @@ class ReflashIpoSummary implements ShouldQueue
     public function handle()
     {
         // env('IPO_ACTIVITY_PERIOD_ID')
-        DB::select(sprintf('call sp_list_ipo_summary(%u)',3));
+        DB::select(sprintf('call sp_list_ipo_summary(%u)',config('app.activity_id')));
     }
 }
