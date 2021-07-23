@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', 'Controller@user');
 
 Route::prefix('ClientProgress')->group(function () {
     Route::any('/all_data', 'ClientProgressController@getData');
+    Route::any('/query', 'ClientProgressController@query');
 });
 
 Route::prefix('Client')->group(function () {

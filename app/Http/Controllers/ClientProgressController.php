@@ -37,6 +37,10 @@ class ClientProgressController extends HomeController
         return $parameters;
     }
 
+    public function query(Request $request){
+
+    }
+
     public function getData(Request $request)
     {
         $Clients = Client::with(['ViewIntroducer', 'IDCard'])

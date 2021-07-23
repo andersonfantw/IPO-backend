@@ -41,7 +41,9 @@
           </b-form-select>
         </b-input-group>
       </b-col>
-      <b-col> </b-col>
+      <b-col>
+        <b-button @click="query" variant="success">查詢</b-button>
+      </b-col>
     </b-row>
     <b-row v-if="loading">
       <b-col class="text-center">
@@ -127,9 +129,18 @@ export default {
     this.columns = JSON.parse(this.p_columns);
     this.FilterType = JSON.parse(this.filter_type);
     this.loading = true;
-    this.loadData(1);
+    // this.loadData(1);
   },
   methods: {
+    query() {
+      const self = this;
+      axios
+        .post("api/ClientProgress/query", {})
+        .then((res) => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     loadData(pageNumber) {
       const self = this;
       axios

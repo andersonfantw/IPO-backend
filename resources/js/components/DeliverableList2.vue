@@ -251,6 +251,7 @@ export default {
           .post("api/AyersAccount/generate", { clients: self.selectedClients })
           .then((response) => {
             console.log(response);
+            self.data = [];
             self.loadData(1);
           })
           .catch((error) => {
