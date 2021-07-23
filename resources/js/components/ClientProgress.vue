@@ -128,15 +128,27 @@ export default {
   created() {
     this.columns = JSON.parse(this.p_columns);
     this.FilterType = JSON.parse(this.filter_type);
-    this.loading = true;
+    // this.loading = true;
     // this.loadData(1);
   },
   methods: {
     query() {
       const self = this;
+      self.loading = true;
       axios
-        .post("api/ClientProgress/query", {})
-        .then((res) => {})
+        .post("api/ClientProgress/query", {
+          客户姓名: self.filters["客户姓名"],
+          證件號碼: self.filters["證件號碼"],
+          手機號碼: self.filters["手機號碼"],
+          郵箱: self.filters["郵箱"],
+          AE: self.filters["AE"],
+        })
+        .then((res) => {
+          console.log(res);
+          self.data = res.data.data;
+          self.totalRows = self.data.length;
+          self.loading = false;
+        })
         .catch((error) => {
           console.log(error);
         });
