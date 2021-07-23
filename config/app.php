@@ -13,7 +13,7 @@ return [
     |
      */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'China Yinsheng International Securities Limited'),
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +168,9 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        Cuby\Meteorsis\MeteorsisProvider::class,
+        
         /*
          * Application Service Providers...
          */
@@ -234,4 +237,7 @@ return [
 
     ],
 
+    'activity_id' => env('IPO_ACTIVITY_PERIOD_ID'),
+    'it_mobile' => env('IT_MOBILE'),
+    'maintain_ip' => env('MAINTAIN_IP'),
 ];
