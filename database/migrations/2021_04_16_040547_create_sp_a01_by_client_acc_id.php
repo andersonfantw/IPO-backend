@@ -21,7 +21,7 @@ select tmp.*, a06.product_name,
 	case subscription+ipo_loan+ipo_fee+ipo_refund+ipo_interest+ipo_loan_return+ipo_sell
     when 0 then tmp.amount else subscription+ipo_loan+ipo_fee+ipo_refund+ipo_interest+ipo_loan_return+ipo_sell end as 'amount'
 from (
-		select vis.tran_id, vis.tran_type, vis.tran_sub_type, vis.client_acc_id, vis.client_type, vis.buss_date, vis.product_id, vis.qty, vis.price, vis.amount, vis.create_time, vis.remark,
+		select vis.tran_id, vis.tran_type, vis.tran_sub_type, vis.client_acc_id, vis.client_type collate utf8mb4_unicode_ci as client_type, vis.buss_date, vis.product_id, vis.qty, vis.price, vis.amount, vis.create_time, vis.remark,
 			ifnull(a05.avg_price,0) as 'avg_price', ifnull(a05.qty,0) as 'alloted', ifnull(a05.gross_amt,0) as 'gross_amt',
 			cast('subscription' as char(50)) as method,
 			ifnull(vis.buss_date,'') as 'subscription_date',
@@ -47,7 +47,7 @@ from (
 		left join a_client_trade_journal_w_chrg_details_csv05 a05 on(vis.product_id=a05.product_id and vis.client_acc_id=a05.client_acc_id)
 		where vis.client_acc_id=val
 	union
-    select tran_id, tran_type, tran_sub_type, client_acc_id, client_type, buss_date, product_id, qty, price, amount, create_time, remark,
+    select tran_id, tran_type, tran_sub_type, client_acc_id, client_type collate utf8mb4_unicode_ci as client_type, buss_date, product_id, qty, price, amount, create_time, remark,
 		0 as 'avg_price', 0 as 'alloted', 0 as 'gross_amt',
 		'accrued_interest_debit_cashdvp' as method,
 		'' as 'subscription_date',
@@ -66,7 +66,7 @@ from (
         0 as 'ipo_sell'
         from view_a_accrued_interest_debit_cashdvp where client_acc_id=val
 	union
-    select tran_id, tran_type, tran_sub_type, client_acc_id, client_type, buss_date, product_id, qty, price, amount, create_time, remark,
+    select tran_id, tran_type, tran_sub_type, client_acc_id, client_type collate utf8mb4_unicode_ci as client_type, buss_date, product_id, qty, price, amount, create_time, remark,
 		0 as 'avg_price', 0 as 'alloted', 0 as 'gross_amt',
 		'acct1' as method,
 		'' as 'subscription_date',
