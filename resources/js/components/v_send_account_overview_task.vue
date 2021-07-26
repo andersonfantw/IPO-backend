@@ -92,7 +92,7 @@ export default {
             this.myGet(function(response){
                 _this.template_list = response
                 _this.template_list.unshift({text:'自訂文案',value:0,content:'',blade:null})
-            },{mode:(this.mode)?'group_account_overview':'account_overview'},this.url('/api/template_list'))
+            },{mode:(this.mode)?'group_account_overview':'account_overview'},this.url('/template_list'))
         },
         show_template(){
             let item = this.template_list.filter(t => t.value==this.form.template)
@@ -112,7 +112,7 @@ export default {
             let _this = this
             this.myGet(function(response){
                 _this.client_info = response
-            },{client_id:o.client_id},this.url('/api/client_info'))
+            },{client_id:o.client_id},this.url('/client_info'))
         },
         index(){
             this.get_template_list()
