@@ -21,7 +21,7 @@ class CreateNotificationTemplatesTable extends Migration
                 $table->id();
                 $table->string('cate',10)->nullable();
                 $table->string('name')->nullable(false);
-                $table->string('name')->nullable(false);
+                $table->string('blade',50)->nullable(false);
                 $table->text('template')->nullable(false);
                 $table->timestamps();
             });
