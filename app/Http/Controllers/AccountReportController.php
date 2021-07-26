@@ -27,13 +27,6 @@ class AccountReportController extends Controller
 
     protected $name = 'AccountReport';
 
-    public function findClient(Request $request){
-        $input = $request->only('acc_no');
-
-        return CysislbGtsClientAcc::select('client_acc_id','name')
-        ->where('client_acc_id','like',$input['acc_no'].'%')->get();
-    }
-
     public function store(Request $request, $id){
         $input = $request->only('client_acc_id','client_name');
         $AccountReport = AccountReport::firstOrNew(

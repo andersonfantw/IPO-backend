@@ -13,7 +13,7 @@
                 <b-button size="sm" class="mr-1" @click="enter(row.item)">
                     進入
                 </b-button>
-                <b-button size="sm" class="mr-1" variant="danger" v-b-modal.del="del" @click="form.id=row.item.id">
+                <b-button size="sm" class="mr-1" variant="danger" v-b-modal.del @click="form.id=row.item.id">
                     刪除
                 </b-button>
             </template>
