@@ -118,13 +118,18 @@ export default {
   methods: {
     loadData() {
       const self = this;
-      axios.post("api/ClientAddressProofUpdates/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
-        self.data = json.data;
-        self.FilteredRequests = self.data;
-        self.totalRows = self.data.length;
-        self.Loading = false;
-      });
+      axios
+        .post("api/ClientAddressProofUpdates/all_data")
+        .then((res) => {
+          console.log(res);
+          self.data = res.data.data;
+          self.FilteredRequests = self.data;
+          self.totalRows = self.data.length;
+          self.Loading = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.SelectedRequests = [];

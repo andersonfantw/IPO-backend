@@ -14,6 +14,7 @@ class ClientAddressProofUpdate extends Model
         'address_text',
         'status',
         'remark',
+        'issued_by',
         'count_of_audits',
         'previewing_by',
     ];

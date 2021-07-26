@@ -112,6 +112,8 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
 
     Route::any('/ClientAddressProofUpdates', 'ClientAddressProofUpdatesController@index')->name('ClientAddressProofUpdates');
 
+    Route::any('/AuditClientAddressProofUpdate', 'AuditClientAddressProofUpdateController@audit')->name('AuditClientAddressProofUpdate');
+
     Route::any('/ClientBankCards', 'ClientBankCardsController@index')->name('ClientBankCards');
 
     Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
@@ -126,6 +128,7 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
     Route::any('/LoadDepositProof', 'AuditClientController@loadDepositProof')->name('LoadDepositProof');
     Route::any('/LoadAddressProof', 'AuditClientController@loadAddressProof')->name('LoadAddressProof');
+    Route::any('/LoadAddressProofUpdate', 'ViewClientAddressProofUpdateController@loadAddressProofUpdate')->name('LoadAddressProofUpdate');
     Route::any('/LoadFundInReceipt', 'ViewClientFundInRequestController@loadReceipt')->name('LoadFundInReceipt');
     Route::any('/LoadFundInBankCard', 'ViewClientFundInRequestController@loadBankcard')->name('LoadFundInBankCard');
     Route::any('/LoadBankCard', 'ViewClientBankCardController@loadBankCard')->name('LoadBankCard');
@@ -157,7 +160,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/NotificationSummary', 'NotificationGroupController@indexView');
     Route::get('/preview_email/{template_id}', 'NotificationRecordController@preview')->where(['template_id' => '[0-9]+']);
     //Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
-    Route::get('/test_db_notification','NotificationRecordController@notifyDb');
-    Route::get('/list_db_notification','NotificationRecordController@unread');
+    Route::get('/test_db_notification', 'NotificationRecordController@notifyDb');
+    Route::get('/list_db_notification', 'NotificationRecordController@unread');
 });
-// Anderson 2021-05-31 end 
+// Anderson 2021-05-31 end
