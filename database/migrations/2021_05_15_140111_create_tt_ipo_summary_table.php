@@ -69,6 +69,6 @@ class CreateTtIpoSummaryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tt_ipo_summary');
+        // Schema::dropIfExists('tt_ipo_summary');
     }
 }
