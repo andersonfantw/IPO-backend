@@ -177,7 +177,7 @@ export default {
             this.myGet(function(response){
                 _this.template_list = response
                 _this.template_list.unshift({text:'自訂文案',value:0,content:'',blade:null})
-            },{mode:(this.mode)?'group_email':'email'},'/api/template_list')
+            },{mode:(this.mode)?'group_email':'email'},this.url('/api/template_list'))
         },
         choose_receiver(){
             switch(this.mode){
@@ -196,7 +196,7 @@ export default {
             if(item.length==1){
                 this.form.content = item[0].content
                 this.blade = item[0].blade
-                this.preview_url = process.env.MIX_BASE_PATH+'/preview_email/'+this.form.template+((this.form.client_id)?'?client_id='+this.form.client_id:'')
+                this.preview_url = this.url('/preview_email/')+this.form.template+((this.form.client_id)?'?client_id='+this.form.client_id:'')
             }
         },
         written_mode(){
@@ -214,7 +214,7 @@ export default {
             let _this = this
             this.myGet(function(response){
                 _this.client_info = response
-            },{client_id:o.client_id},'/api/client_info')
+            },{client_id:o.client_id},this.url('/api/client_info'))
         },
         index(){
             this.get_template_list()

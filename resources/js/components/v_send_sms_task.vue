@@ -200,13 +200,13 @@ export default {
             this.myGet(function(response){
                 _this.template_list = response
                 _this.template_list.unshift({text:'自訂文案',value:0})
-            },{mode:(this.mode)?'group_sms':'sms'},'/api/template_list')
+            },{mode:(this.mode)?'group_sms':'sms'},this.url('/api/template_list'))
         },
         get_forbidden_words(){
             let _this = this
             this.myGet(function(response){
                 _this.forbidden_words = response
-            },[],'/api/forbidden_words')
+            },[],this.url('/api/forbidden_words'))
         },
         mark_forbidden_words(s){
             this.forbidden_words.forEach(function(item){s=s.replaceAll(item,'<del class="text-danger">'+item+'</del>')})
@@ -225,7 +225,7 @@ export default {
             let _this = this
             this.myGet(function(response){
                 _this.client_info = response
-            },{client_id:o.client_id},'/api/client_info')
+            },{client_id:o.client_id},this.url('/api/client_info'))
         },
         index(){
             this.get_template_list()
