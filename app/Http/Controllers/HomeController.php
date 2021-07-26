@@ -67,6 +67,15 @@ class HomeController extends Controller
                 ],
             ],
             [
+                'label' => "通知發出記錄",
+                'items' => [
+                    [
+                        'label' => "通知發出記錄",
+                        'url' => route('NotificationSummary'),
+                    ],
+                ],
+            ],
+            [
                 'label' => "帳戶查詢",
                 'items' => [
                     [
