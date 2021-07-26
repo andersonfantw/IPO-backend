@@ -72,9 +72,8 @@ class DeliverableList2Controller extends HomeController
                     ->where('progress', 16)
                     ->where('idcard_type', 'App\ClientOtherIDCard');
             })
-            ->orderBy('updated_at', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
-        // $Clients = ViewDeliverableClient::orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             if (count($Client->AyersAccounts) > 0) {
