@@ -13,7 +13,7 @@
             </template>
             <b-row>
                 <b-col cols="8" class="my-2">
-                    <div class="email_bg">
+                    <div class="email_bg" :style="{'background-image': 'url('+email_bg+')'}">
                         <a class="send_email" href="javascript:;" v-b-modal.create></a>
                         <a class="choose_receiver" href="javascript:;" @click="choose_receiver"></a>
                         <input class="email_receiver" v-model="email_receiver" :disabled="form.client_id!=''" />
@@ -111,6 +111,9 @@ export default {
         }
     },
     computed:{
+        email_bg(){
+            return process.env.MIX_BASE_PATH+'/images/email.png'
+        },
         name(){
             return (this.mode=='')?'notify_client':'notify_group'
         },
@@ -234,7 +237,6 @@ export default {
 
 <style>
 .email_bg{
-    background-image: url(/images/email.png);
     width: 590px;
     height: 765px;
     background-repeat: no-repeat;

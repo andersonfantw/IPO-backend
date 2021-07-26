@@ -13,8 +13,8 @@
             </template>
             <b-row>
                 <b-col cols="7" class="my-2">
-                    <div class="sms_bg">
-                        <div class="phone">
+                    <div class="sms_bg" :style="{'background-image': 'url('+sms_bg+')'}">
+                        <div class="phone" :style="{'background-image': 'url('+phone_frame+')'}">
                             <span class="time">{{now}}</span>
                             <b-avatar class="sms_avatar" icon="people-fill"></b-avatar>
                             <span class="sms_sender">CYSS</span>
@@ -114,6 +114,12 @@ export default {
         }
     },
     computed:{
+        sms_bg(){
+            return process.env.MIX_BASE_PATH+'/images/sms.png'
+        },
+        phone_frame(){
+            return process.env.MIX_BASE_PATH+'/images/iphone.png'
+        },
         name(){
             return (this.mode=='')?'notify_client':'notify_group'
         },
@@ -243,7 +249,6 @@ export default {
 
 <style>
 .sms_bg{
-    background-image: url(/images/sms.png);
     width: 463px;
     height: 862px;
     background-repeat: no-repeat;
@@ -253,7 +258,6 @@ export default {
 }
 .phone{
     position: relative;
-    background-image: url(/images/iphone.png);
     width: 100%;
     height: 100%;
 }
