@@ -244,7 +244,7 @@ class AuditClientController extends ViewClientController
                 $Client->ClientDepositProof->count_of_audits++;
                 $Client->ClientDepositProof->save();
             }
-            if (env('APP_ENV') == 'production' && $rejected) {
+            if ($rejected) {
                 $this->sendRejectionSMS($Client);
             }
             return ['success' => true];
@@ -468,7 +468,7 @@ class AuditClientController extends ViewClientController
             $Client->ClientDepositProof->save();
         }
         if ($rejected) {
-            return $this->sendRejectionSMS($Client);
+            $this->sendRejectionSMS($Client);
         }
         return redirect()->route($input['redirect_route']);
     }
