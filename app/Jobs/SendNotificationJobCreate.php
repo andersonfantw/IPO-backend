@@ -7,6 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Notifications\MeteorsisSMS;
+use App\Notifications\CYSSMail;
+use App\Services\NotifyMessage;
+use App\NotificationGroup;
 use App\NotificationRecord;
 
 class SendNotificationJobCreate implements ShouldQueue
@@ -28,16 +32,33 @@ class SendNotificationJobCreate implements ShouldQueue
 
     /**
      * Execute the job.
+     * 此時的title和content已經換過參數
      *
      * @return void
      */
     public function handle()
     {
+        $NotificationGroup = NotificationGroup::findOrFail($this->id);
         $NotificationRecord = NotificationRecord::ofParentID($this->id)->where(function($query){
             $query->whereNull('status')->orWhere('status','=','pending');
         })->get();
-        foreach($NotificationRecord as $record){
-            dispatch((new SendNotification($record->id))->onQueue('notification'));
+        switch($NotificationGroup->route){
+            case 'sms':
+                foreach($NotificationRecord as $record){
+                    $record->queue_time = Carbon::now();
+                    $record->save();
+                    $record->notify(new MeteorsisSMS((new NotifyMessage)->modelNotificationRecord($record)));
+                }        
+                break;
+            case 'email':
+                foreach($NotificationRecord as $record){
+                    $record->queue_time = Carbon::now();
+                    $record->save();
+                    $record->notify(new MeteorsisSMS((new NotifyMessage)->modelNotificationRecord($record)));
+                }
+                break;
+            case 'account_overview':
+                break;
         }
     }
 }

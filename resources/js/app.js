@@ -133,7 +133,24 @@ Vue.component('notification-summary', require('./components/NotificationSummary.
 
 Vue.component('notification-record', require('./components/NotificationRecord.vue').default);
 
+Vue.component('notify-client-list', require('./components/v_notify_client.vue').default);
+Vue.component('notify-group-list', require('./components/v_notify_group.vue').default);
+Vue.component('notify-group-client-list', require('./components/v_notify_group_clients.vue').default);
+Vue.component('system-notification-list', require('./components/v_system_notification.vue').default);
+
 Vue.component('find-a-client', require('./components/v_find_a_client.vue').default);
+
+Vue.component('client-chooser', require('./components/v_client_chooser.vue').default);
+
+Vue.component('client-viewer', require('./components/v_client_viewer.vue').default);
+
+Vue.component('send-sms-task', require('./components/v_send_sms_task.vue').default);
+
+Vue.component('send-email-task', require('./components/v_send_email_task.vue').default);
+
+Vue.component('send-account-overview-task', require('./components/v_send_account_overview_task.vue').default);
+
+Vue.component('notification-import-excel-format-example', require('./components/v_notification_import_excel_format_example.vue').default);
 // Anderson end
 
 /**

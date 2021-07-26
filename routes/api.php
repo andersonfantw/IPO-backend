@@ -129,7 +129,7 @@ Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryContr
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
 
 Route::get('/AccountReport/program', 'AccountReportSendingSummaryController@getProgram');
-Route::post('/find/client', 'AccountReportController@findClient');
+Route::post('/find/client', 'VueController@findClient');
 
 Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id' => '[0-9]+']);
 Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTestMail')->where(['id' => '[0-9]+']);
@@ -146,8 +146,19 @@ Route::post('/AccountReport/StopSend/{id}/', 'AccountReportController@stopSend')
 Route::post('/AccountReport/ClearSend/{id}/', 'AccountReportController@clearSend')->where(['id' => '[0-9]+']);
 
 // 通知任務中心
-Route::resource('NotificationSummary', 'NotificationSummaryController');
-Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
+Route::resource('notify_client', 'NotificationRecordController');
+Route::resource('notify_group', 'NotificationGroupController');
+Route::resource('system_notification_list', 'NotificationRecordController');
 
-Route::post('/Notification/SendAll');
+Route::get('/notify_group/{id}/list/','NotificationGroupController@list')->where(['id' => '[0-9]+']);
+// Route::post('/notify_client/{id}/send/', 'NotificationRecordController@send')->where(['id' => '[0-9]+']);
+Route::post('/notify_group/{id}/SendAll/', 'NotificationGroupController@sendAll')->where(['id' => '[0-9]+']);
+Route::post('/notify_group/{id}/store/{client_id}/', 'NotificationGroupController@addClient')->where(['id' => '[0-9]+', 'client_id' => '[0-9]+']);
+
+Route::get('forbidden_words','VueController@ForbiddenWords');
+Route::get('template_list','VueController@NotificationTemplateList');
+Route::get('client_info','VueController@ClientInfo');
+
+// Route::resource('NotificationSummary', 'NotificationGroupController');
+// Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
 // Anderson 2021-05-31 end

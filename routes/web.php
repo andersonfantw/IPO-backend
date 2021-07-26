@@ -154,7 +154,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sendsms', 'SimpleListController@sms');
     Route::post('/sendsms', 'SimpleListController@sendsms');
 
-    Route::get('/NotificationSummary', 'NotificationSummaryController@indexView');
-    Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
+    Route::get('/NotificationSummary', 'NotificationGroupController@indexView');
+    Route::get('/preview_email/{template_id}', 'NotificationRecordController@preview')->where(['template_id' => '[0-9]+']);
+    //Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
+    Route::get('/test_db_notification','NotificationRecordController@notifyDb');
+    Route::get('/list_db_notification','NotificationRecordController@unread');
 });
-// Anderson 2021-05-31 end
+// Anderson 2021-05-31 end 

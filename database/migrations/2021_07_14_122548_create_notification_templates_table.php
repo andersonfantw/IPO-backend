@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class NotificationSummary extends Migration
+class CreateNotificationTemplatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class NotificationSummary extends Migration
      */
     public function up()
     {
-        $table_name = 'notification_summary';
+        $table_name = 'notification_templates';
         if(Schema::hasTable($table_name)){
             echo $table_name . " table already exist!\n";
         }else{
             Schema::create($table_name, function (Blueprint $table) {
                 $table->id();
+                $table->string('cate',10)->nullable();
                 $table->string('name')->nullable(false);
-                $table->string('title')->nullable(false);
-                $table->text('content')->nullable(false);
-                $table->string('issued_by',50)->nullable(false);
-                $table->string('channel',20)->nullable(false);
-                $table->string('template',50)->nullable(false);
+                $table->string('name')->nullable(false);
+                $table->text('template')->nullable(false);
                 $table->timestamps();
             });
 
@@ -42,6 +40,6 @@ class NotificationSummary extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('notification_summary');
+        // Schema::dropIfExists('notification_templates');
     }
 }
