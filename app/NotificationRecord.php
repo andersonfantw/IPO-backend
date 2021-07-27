@@ -38,7 +38,7 @@ class NotificationRecord extends Model
             case 8: return '852'.$str; // 香港
             case 9: return '886'.$str; // 台灣
             case 10: return '886'.substr($str,1,9); // 台灣
-            case 11: return '86'.$str; // 大陸
+            case 11: return (substr($str,0,3)=='852')?$str:'86'.$str; // 香港/大陸
             default: return $str;
         }
     }

@@ -8,6 +8,7 @@ use App\Notifications\MeteorsisSMS;
 use App\Notifications\CYSSMail;
 use App\Notifications\AccountOverview;
 use App\Services\NotifyMessage;
+use App\Services\NotifyService;
 use App\NotificationRecord;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
@@ -82,23 +83,7 @@ class NotificationRecordController extends HomeController
      */
     public function store(Request $request)
     {
-        $NotifyMessage = (new NotifyMessage($request));
-        $NotificationRecord = NotificationRecord::create($NotifyMessage->toData());
-        switch($NotifyMessage->getRoute()){
-            case 'sms':
-                $NotificationRecord->notify(new MeteorsisSMS($NotifyMessage));
-                break;
-            case 'email':
-                $NotificationRecord->notify(new CYSSMail($NotifyMessage));
-                break;
-            case 'account_overview':
-                $NotificationRecord->notify(new AccountOverview($NotifyMessage));
-                $NotificationRecord->sending_time = Carbon::now();
-                $NotificationRecord->status='success';
-                $NotificationRecord->save();
-                break;
-        }
-
+        (new NotifyService)->notify(new NotifyMessage($request));
         return ['ok' => true];
     }
 

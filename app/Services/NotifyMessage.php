@@ -3,6 +3,7 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\NotificationGroup;
 
 class NotifyMessage{
@@ -33,12 +34,14 @@ class NotifyMessage{
     function route($route){ $this->route=$route; return $this; }
 
     function getRecordId(){ return $this->record_id; }
+    function getEmail(){ return $this->email; }
+    function getMobile(){ return $this->mobile; }
     function getTitle(){ return $this->title; }
     function getContent(){ return $this->content; }
     function getRoute(){ return $this->route; }
     function getTemplate(){ return $this->template_id; }
     function isSendNow(){ return $this->send_now; }
-    
+
     function modelNotificationGroup($model){
         $this->model_group = $model;
         $this->group_id = $model->id;
@@ -62,6 +65,12 @@ class NotifyMessage{
         $this->email = $model->email;
         return $this;
     }
+    /**
+     * 包含收件人資料的data row
+     *
+     * @param [type] $row
+     * @return void
+     */
     function rowClientInfo($row){
         $this->row_client_info = $row;
     }
@@ -159,6 +168,9 @@ class NotifyMessage{
             $en_name = implode(' ', $arr);
             $_params['en_name'] = $en_name;
             $_params['zh_name'] = $zh_name;
+            $_params['title'] = $this->title;
+            $_params['content'] = $this->content;
+        }else{
             $_params['title'] = $this->title;
             $_params['content'] = $this->content;
         }

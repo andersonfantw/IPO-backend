@@ -1,8 +1,14 @@
 <?php
+namespace App\Services;
+
 use Illuminate\Database\Eloquent\Collection;
 use App\NotificationTemplate;
 use App\NotificationRecord;
 use App\Services\NotifyMessage;
+use App\Notifications\MeteorsisSMS;
+use App\Notifications\CYSSMail;
+use App\Notifications\AccountOverview;
+use Carbon\Carbon;
 
 class NotifyService{
     private $saved=false;
@@ -25,8 +31,9 @@ class NotifyService{
      * @return void
      */
     public function notify(NotifyMessage $NotifyMessage){
-        $this->save();
-        switch($this->NotifyMessage->getRoute()){
+        $NotificationRecord = NotificationRecord::create($NotifyMessage->toData());
+        $NotifyMessage->recordId($NotificationRecord->id);
+        switch($NotifyMessage->getRoute()){
             case 'sms':
                 $NotificationRecord->notify(new MeteorsisSMS($NotifyMessage));
                 break;
@@ -34,6 +41,10 @@ class NotifyService{
                 $NotificationRecord->notify(new CYSSMail($NotifyMessage));
                 break;
             case 'account_overview':
+                $NotificationRecord->notify(new AccountOverview($NotifyMessage));
+                $NotificationRecord->sending_time = Carbon::now();
+                $NotificationRecord->status='success';
+                $NotificationRecord->save();
                 break; 
         }
     }

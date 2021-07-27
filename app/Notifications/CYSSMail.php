@@ -105,10 +105,10 @@ class CYSSMail extends Notification implements ShouldQueue
      */
     public function getRecordId(): string
     {
-        return $this->NotifyMessage->record_id;
+        return $this->NotifyMessage->getRecordId();
     }
     public function getEmail(): string
     {
-        return $this->NotifyMessage->email;
+        return $this->NotifyMessage->getEmail();
     }
 }
