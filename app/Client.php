@@ -36,7 +36,7 @@ class Client extends Model
 
     public function SentEmailRecords()
     {
-        return $this->hasMany('App\SentEmailRecord', 'uuid', 'uuid')->orderBy('created_at', 'desc');
+        return $this->hasMany('App\SentEmailRecord', 'uuid', 'uuid')->orderBy('updated_at', 'desc');
     }
 
     public function EditableSteps()

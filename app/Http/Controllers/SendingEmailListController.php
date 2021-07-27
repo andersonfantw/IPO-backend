@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\ViewSendingOpenedACEmail;
+use App\Client;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class SendingEmailListController extends HomeController
@@ -41,21 +42,34 @@ class SendingEmailListController extends HomeController
 
     public function getData(Request $request)
     {
-        // $Clients = Client::has('AyersAccounts')->where('type', '拼一手')->orderBy('created_at', 'asc')->get();
-        $Clients = ViewSendingOpenedACEmail::orderBy('email_sent_at', 'asc')->get();
+        $Clients = Client::with(['AyersAccounts', 'SentEmailRecords'])
+            ->whereHas('AyersAccounts', function (Builder $query) {
+                $query->where('status', '!=', 'suspended');
+            })->where('type', '拼一手')->orderBy('updated_at', 'desc')->get();
+        // $Clients = ViewSendingOpenedACEmail::orderBy('email_sent_at', 'asc')->get();
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
-            $AyersAccounts = [$Client->ayers_08, $Client->ayers_13];
-            $row['投遞日期'] = $Client->ayers_ac_created_at;
+            $AyersAccounts = [];
+            foreach ($Client->AyersAccounts as $AyersAccount) {
+                $AyersAccounts[] = $AyersAccount->account_no;
+                $row['投遞日期'] = date_format($AyersAccount->updated_at, "Y-m-d H:i:s");
+            }
             $row['帳戶號碼'] = implode(", ", $AyersAccounts);
             $row['客户姓名'] = $Client->name_c;
             $row['證件號碼'] = $Client->idcard_no;
             // $row['手機號碼'] = $Client->mobile;
             $row['電郵'] = $Client->email;
-            $row['狀態'] = $Client->status;
-            $row['電郵發送時間'] = $Client->email_sent_at;
-            $row['電郵發送者'] = $Client->sent_by;
+            $SentEmailRecord = $Client->SentEmailRecords->first();
+            if (is_object($SentEmailRecord)) {
+                $row['狀態'] = '已發送';
+                $row['電郵發送時間'] = date_format($SentEmailRecord->updated_at, "Y-m-d H:i:s");
+                $row['電郵發送者'] = $SentEmailRecord->sent_by;
+            } else {
+                $row['狀態'] = '未發送';
+                $row['電郵發送時間'] = null;
+                $row['電郵發送者'] = null;
+            }
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
