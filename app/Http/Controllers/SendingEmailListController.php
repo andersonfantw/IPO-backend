@@ -42,7 +42,7 @@ class SendingEmailListController extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::with(['AyersAccounts', 'SentEmailRecords'])
+        $Clients = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
             ->whereHas('AyersAccounts', function (Builder $query) {
                 $query->where('status', '!=', 'suspended');
             })->where('type', '拼一手')->orderBy('updated_at', 'desc')->get();
@@ -56,8 +56,8 @@ class SendingEmailListController extends HomeController
                 $row['投遞日期'] = date_format($AyersAccount->updated_at, "Y-m-d H:i:s");
             }
             $row['帳戶號碼'] = implode(", ", $AyersAccounts);
-            $row['客户姓名'] = $Client->name_c;
-            $row['證件號碼'] = $Client->idcard_no;
+            $row['客户姓名'] = $Client->IDCard->name_c;
+            $row['證件號碼'] = $Client->IDCard->idcard_no;
             // $row['手機號碼'] = $Client->mobile;
             $row['電郵'] = $Client->email;
             $SentEmailRecord = $Client->SentEmailRecords->first();
