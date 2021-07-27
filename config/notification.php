@@ -1,8 +1,8 @@
 <?php
 return [
     'Meteorsis' => [
-        'username' => env('HK_SMS_USERNAME'),
-        'password' => env('HK_SMS_PASSWORD'),
-        'url' => env('HK_SMS_URL'),
+        'username' => env('METEORSIS_ACCESS_KEY_ID'),
+        'password' => env('METEORSIS_SECRET_ACCESS_KEY'),
+        'url' => env('METEORSIS_API_URL'),
     ],
 ];
