@@ -108,6 +108,8 @@ Vue.component('account-report', require('./components/AccountReport.vue').defaul
 
 Vue.component('client-address-proof-updates', require('./components/ClientAddressProofUpdates.vue').default);
 
+Vue.component('audit-client-address-proof-update', require('./components/AuditClientAddressProofUpdate.vue').default);
+
 Vue.component('client-progress', require('./components/ClientProgress.vue').default);
 
 Vue.component('view-client-bank-card', require('./components/ViewClientBankCard.vue').default);

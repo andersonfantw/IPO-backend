@@ -58,8 +58,8 @@ class ClientAddressProofUpdatesController extends HomeController
             $row['id'] = $ClientAddressProofUpdate->id;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
+        ], JSON_UNESCAPED_UNICODE);
     }
 }
