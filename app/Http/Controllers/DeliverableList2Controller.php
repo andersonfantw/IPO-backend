@@ -48,13 +48,14 @@ class DeliverableList2Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::with(['AyersAccounts', 'IDCard'])->whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        $Clients = Client::with(['AyersAccounts', 'IDCard'])
+            ->whereHasMorph('IDCard', [
+                ClientCNIDCard::class,
+                ClientHKIDCard::class,
+                ClientOtherIDCard::class,
+            ], function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited2');
         })->whereHas('ClientFinancialStatus', function (Builder $query) {
             $query->where('status', 'audited2');
