@@ -45,6 +45,7 @@ class AccountOverview extends Notification
         return [
             'title' => $data['title'],
             'content' => $data['content'],
+            'created_at' => Carbon\Carbon::now()->format('Y-m-d H:i:s')
         ];
     }
 }
