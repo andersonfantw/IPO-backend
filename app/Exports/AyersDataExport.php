@@ -222,8 +222,13 @@ class AyersDataExport extends AyersValueBinder implements FromView
                 $AyersImportData['other_name_gb'] = null;
                 $AyersImportData['other_name_eng'] = $AyersImportData['name'];
                 $AyersImportData['payee_name'] = $AyersImportData['name'];
-                $AyersImportData['payee_bank_code'] = $Client->ClientBankCards->first()->bank_code;
-                $AyersImportData['payee_bank_acc'] = $Client->ClientBankCards->first()->account_no;
+                if (count($Client->ClientBankCards) > 0) {
+                    $AyersImportData['payee_bank_code'] = $Client->ClientBankCards->first()->bank_code;
+                    $AyersImportData['payee_bank_acc'] = $Client->ClientBankCards->first()->account_no;
+                } else {
+                    $AyersImportData['payee_bank_code'] = null;
+                    $AyersImportData['payee_bank_acc'] = null;
+                }
                 $AyersImportData['passport_type'] = $this->passport_type[$Client->idcard_type];
                 $AyersImportData['passport_id'] = $Client->IDCard->idcard_no;
                 if (preg_match("/^\d+13$/i", $AyersAccount->account_no)) {
