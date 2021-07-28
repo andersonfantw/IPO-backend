@@ -49,7 +49,7 @@ class ClientHKFundOutRequestsController extends HomeController
     public function getData(Request $request)
     {
         // $yesterday = today()->subDays(3)->toDateString();
-        $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client.AyersAccounts', 'Client.IDCard'])
+        $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->orderBy('updated_at', 'asc')->get();
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
