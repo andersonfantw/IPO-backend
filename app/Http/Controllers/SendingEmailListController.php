@@ -45,8 +45,8 @@ class SendingEmailListController extends HomeController
         $Clients = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
             ->whereHas('AyersAccounts', function (Builder $query) {
                 $query->where('status', '!=', 'suspended');
-            })->where('type', '拼一手')->orderBy('updated_at', 'desc')->get();
-        // $Clients = ViewSendingOpenedACEmail::orderBy('email_sent_at', 'asc')->get();
+            })->where('type', '拼一手')->orderBy('updated_at', 'desc')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
@@ -73,11 +73,8 @@ class SendingEmailListController extends HomeController
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
-        // return json_encode([
-        //     'data' => $rows,
-        // ], JSON_UNESCAPED_UNICODE);
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

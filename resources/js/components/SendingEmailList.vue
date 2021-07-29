@@ -119,7 +119,7 @@ export default {
     return {
       columns: [],
       loading: false,
-      data: null,
+      data: [],
       selectedClients: [],
       filteredClients: [],
       User: null,
@@ -155,7 +155,7 @@ export default {
     this.FilterType = JSON.parse(this.filter_type);
     this.User = JSON.parse(this.user);
     this.loading = true;
-    this.loadData();
+    this.loadData(1);
   },
   methods: {
     selectAll(e) {
@@ -185,15 +185,28 @@ export default {
         alert("請先選中客戶！");
       }
     },
-    loadData() {
+    loadData(pageNumber) {
       const self = this;
-      axios.post("api/SendingEmailList/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
-        self.data = json.data;
-        self.filteredClients = self.data;
-        self.totalRows = self.data.length;
-        self.loading = false;
-      });
+      axios
+        .post("api/SendingEmailList/all_data", {
+          perPage: self.perPage,
+          pageNumber: pageNumber,
+        })
+        .then((res) => {
+          console.log(res);
+          const data = res.data.data;
+          self.data = self.data.concat(data);
+          self.filteredClients = self.data;
+          self.totalRows = self.data.length;
+          if (data.length >= self.perPage) {
+            self.loadData(pageNumber + 1);
+          } else {
+            self.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.selectedClients = [];
