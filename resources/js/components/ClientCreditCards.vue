@@ -1,5 +1,63 @@
 <template>
   <b-container fluid class="p-0">
+    <h1 class="text-warning text-center">
+      添加信用卡申請
+      <b-spinner v-if="loading" variant="warning"></b-spinner>
+    </h1>
+
+    <b-row no-gutters>
+      <b-col>
+        <b-input-group prepend="帳戶號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['帳戶號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="客户姓名">
+          <b-form-input
+            type="search"
+            v-model="filters['客户姓名']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="手機號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['手機號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="卡號">
+          <b-form-input type="search" v-model="filters['卡號']"></b-form-input>
+        </b-input-group>
+      </b-col>
+    </b-row>
+
+    <b-row no-gutters>
+      <b-col>
+        <DateRange :name="'發送時間'" v-model="filters['發送時間']" />
+      </b-col>
+      <b-col>
+        <DateRange :name="'審批時間'" v-model="filters['審批時間']" />
+      </b-col>
+    </b-row>
+
+    <b-row no-gutters class="mt-3">
+      <b-col class="text-center">
+        <b-pagination
+          v-if="totalRows > 0"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        >
+        </b-pagination>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -13,7 +71,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="Loading"
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
@@ -62,31 +119,24 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="center"
-    >
-    </b-pagination>
   </b-container>
 </template>
 <script>
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
+import DateRange from "./DateRange";
 export default {
   data() {
     return {
       Columns: [],
       FilterMatchMode: {},
-      Loading: false,
-      data: null,
+      loading: false,
+      data: [],
       SelectedCreditCards: [],
       FilteredCreditCards: [],
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       FilterType: {},
       totalRows: 0,
     };
@@ -104,12 +154,14 @@ export default {
     audit_request_url: String,
     view_request_url: String,
   },
-  components: {},
+  components: {
+    DateRange,
+  },
   created() {
     this.Columns = JSON.parse(this.columns);
     this.FilterType = JSON.parse(this.filter_type);
-    this.Loading = true;
-    this.loadData();
+    this.loading = true;
+    this.loadData(1);
   },
   methods: {
     selectAll(e) {
@@ -119,15 +171,27 @@ export default {
         this.SelectedCreditCards = [];
       }
     },
-    loadData() {
+    loadData(pageNumber) {
       const self = this;
-      axios.post("api/ClientCreditCards/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
-        self.data = json.data;
-        self.FilteredCreditCards = self.data;
-        self.totalRows = self.data.length;
-        self.Loading = false;
-      });
+      axios
+        .post("api/ClientCreditCards/all_data", {
+          perPage: self.perPage,
+          pageNumber: pageNumber,
+        })
+        .then((res) => {
+          console.log(res);
+          const data = res.data.data;
+          self.data = self.data.concat(data);
+          self.totalRows = self.data.length;
+          if (data.length >= self.perPage) {
+            self.loadData(pageNumber + 1);
+          } else {
+            self.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.SelectedCreditCards = [];

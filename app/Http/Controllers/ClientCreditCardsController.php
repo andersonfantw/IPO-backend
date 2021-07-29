@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ClientCreditCard;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClientCreditCardsController extends HomeController
@@ -43,13 +44,18 @@ class ClientCreditCardsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientCreditCards = ClientCreditCard::whereIn('status', ['pending', 'approved'])->get();
+        $ClientCreditCards = ClientCreditCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+            ->whereHas('Client', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })
+            ->whereIn('status', ['pending', 'approved'])
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientCreditCards as $ClientCreditCard) {
             $Client = $ClientCreditCard->Client;
-            if ($Client->status != 'audited2') {
-                continue;
-            }
+            // if ($Client->status != 'audited2') {
+            //     continue;
+            // }
             $row = [];
             $AyersAccounts = [];
             foreach ($Client->AyersAccounts as $AyersAccount) {
@@ -68,8 +74,8 @@ class ClientCreditCardsController extends HomeController
             $row['id'] = $ClientCreditCard->id;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

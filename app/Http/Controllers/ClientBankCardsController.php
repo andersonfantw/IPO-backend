@@ -44,7 +44,8 @@ class ClientBankCardsController extends HomeController
     public function getData(Request $request)
     {
         $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-            ->where('type', '拼一手')->whereIn('status', ['pending', 'approved'])->get();
+            ->where('type', '拼一手')->whereIn('status', ['pending', 'approved'])
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;
