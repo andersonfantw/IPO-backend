@@ -105,7 +105,7 @@ class NotifyMessage{
         $this->_params = $this->toParams();
 
         $_params=[]; // 提供文案中變數的替換
-        foreach($this->params as $k => $v) $_params['['.$k.']'] = $v;
+        foreach($this->_params as $k => $v) $_params['['.$k.']'] = $v;
         return [
             'notification_group_id' => 0,
             'route' => $this->route,
