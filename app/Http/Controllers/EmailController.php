@@ -21,8 +21,8 @@ class EmailController extends Controller
         foreach ($clients as $client) {
             $Client = Client::with(['IDCard', 'AyersAccounts'])->where('uuid', $client['uuid'])->first();
             $account_no = $Client->AyersAccounts->first()->account_no;
-            // $client_id = substr($account_no, 0, -2);
-            $client_id = '200001';
+            $client_id = substr($account_no, 0, -2);
+            // $client_id = '200001';
             // Mail::to($Client->email, $Client->IDCard->name_c)->send(new AccountOpened($Client, $User));
             $account_no = [];
             $account_type = [];
