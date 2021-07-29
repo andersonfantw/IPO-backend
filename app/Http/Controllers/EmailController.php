@@ -38,7 +38,7 @@ class EmailController extends Controller
                 'level' => $this->getLevel($score),
                 'risk_tolerance' => $this->風險承受程度($score),
             ];
-            (new NotifyService)->notify((new NotifyMessage)->clientId($client_id)->params($params)->templateId(7)->title('帳戶開戶通知書'));
+            (new NotifyService)->notify((new NotifyMessage)->route('email')->clientId($client_id)->params($params)->templateId(7)->title('帳戶開戶通知書'));
         }
     }
 }
