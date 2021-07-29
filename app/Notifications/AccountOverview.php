@@ -2,11 +2,10 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use App\Services\NotifyMessage;
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 
 class AccountOverview extends Notification
 {
@@ -45,7 +44,7 @@ class AccountOverview extends Notification
         return [
             'title' => $data['title'],
             'content' => $data['content'],
-            'created_at' => Carbon\Carbon::now()->format('Y-m-d H:i:s')
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ];
     }
 }
