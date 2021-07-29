@@ -16,40 +16,41 @@ class ViewClientBankCardController extends HomeController
             ->find($request->input('id'));
         if (is_object($ClientBankCard)) {
             $ClientBankCard->bankcard_blob = null;
+            $client_bank_card = [];
             foreach ($ClientBankCard->getAttributes() as $key => $value) {
-                $ClientBankCard->{$key} = addslashes($value);
+                // $ClientBankCard->{$key} = addslashes($value);
+                $client_bank_card[$key] = addslashes($value);
             }
-        }
-        $parameters['ClientBankCardID'] = $ClientBankCard->id;
-        $parameters['ClientBankCard'] = $ClientBankCard->toJson(JSON_UNESCAPED_UNICODE);
+            $parameters['ClientBankCardID'] = $client_bank_card['id'];
+            $parameters['ClientBankCard'] = json_encode($client_bank_card, JSON_UNESCAPED_UNICODE);
 
-        $Client = $ClientBankCard->Client;
+            $Client = $ClientBankCard->Client;
 
-        $ClientIDCard = $Client->IDCard;
-        if (is_object($ClientIDCard)) {
-            $ClientIDCard->idcard_face = null;
-            $ClientIDCard->idcard_back = null;
-            foreach ($ClientIDCard->getAttributes() as $key => $value) {
-                $ClientIDCard->{$key} = addslashes($value);
+            $ClientIDCard = $Client->IDCard;
+            if (is_object($ClientIDCard)) {
+                $ClientIDCard->idcard_face = null;
+                $ClientIDCard->idcard_back = null;
+                foreach ($ClientIDCard->getAttributes() as $key => $value) {
+                    $ClientIDCard->{$key} = addslashes($value);
+                }
             }
-        }
-        $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
+            $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
 
-        $AyersAccounts = $Client->AyersAccounts;
-        foreach ($AyersAccounts as &$AyersAccount) {
-            foreach ($AyersAccount->getAttributes() as $key => $value) {
-                $AyersAccount->{$key} = addslashes($value);
+            $AyersAccounts = $Client->AyersAccounts;
+            foreach ($AyersAccounts as &$AyersAccount) {
+                foreach ($AyersAccount->getAttributes() as $key => $value) {
+                    $AyersAccount->{$key} = addslashes($value);
+                }
             }
-        }
-        $parameters['AyersAccounts'] = $AyersAccounts->toJson(JSON_UNESCAPED_UNICODE);
+            $parameters['AyersAccounts'] = $AyersAccounts->toJson(JSON_UNESCAPED_UNICODE);
 
-        if (is_object($Client)) {
-            foreach ($Client->getAttributes() as $key => $value) {
-                $Client->{$key} = addslashes($value);
+            if (is_object($Client)) {
+                foreach ($Client->getAttributes() as $key => $value) {
+                    $Client->{$key} = addslashes($value);
+                }
             }
+            $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
         }
-        $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
-
         return $parameters;
     }
 
