@@ -25,7 +25,7 @@ class ViewClientFundInRequestController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $input = $request->all();
-        $ClientFundInRequest = ClientFundInRequest::with(['Client', 'Client.ViewClientIDCard', 'Client.AyersAccounts'])
+        $ClientFundInRequest = ClientFundInRequest::with(['Client', 'Client.IDCard', 'Client.AyersAccounts'])
             ->find($input['id']);
         if (is_object($ClientFundInRequest)) {
             $ClientFundInRequest->receipt = null;
@@ -47,7 +47,7 @@ class ViewClientFundInRequestController extends HomeController
                 }
                 $parameters['Client'] = json_encode($client, JSON_UNESCAPED_UNICODE);
 
-                $ClientIDCard = $Client->ViewClientIDCard;
+                $ClientIDCard = $Client->IDCard;
                 if (is_object($ClientIDCard)) {
                     $ClientIDCard->idcard_face = null;
                     $ClientIDCard->idcard_back = null;
