@@ -12,7 +12,8 @@ class ViewClientCreditCardController extends HomeController
     protected function setViewParameters(Request $request)
     {
         $parameters = parent::setViewParameters($request);
-        $ClientCreditCard = ClientCreditCard::find($request->input('id'));
+        $ClientCreditCard = ClientCreditCard::with(['Client', 'Client.IDCard'])
+            ->find($request->input('id'));
         if (is_object($ClientCreditCard)) {
             $ClientCreditCard->card_blob = null;
             foreach ($ClientCreditCard->getAttributes() as $key => $value) {
