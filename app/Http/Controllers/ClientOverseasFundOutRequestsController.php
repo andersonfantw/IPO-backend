@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ClientOverseasFundOutRequest;
 use App\Traits\Excel;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClientOverseasFundOutRequestsController extends HomeController
@@ -43,9 +42,8 @@ class ClientOverseasFundOutRequestsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientOverseasFundOutRequests = ClientOverseasFundOutRequest::whereHas('ClientBankCard', function (Builder $query) {
-            $query->whereIn('status', ['audited2', 'approved']);
-        })->orderBy('created_at', 'asc')->get();
+        $ClientOverseasFundOutRequests = ClientOverseasFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+            ->orderBy('updated_at', 'desc')->get();
         $rows = [];
         foreach ($ClientOverseasFundOutRequests as $ClientOverseasFundOutRequest) {
             $Client = $ClientOverseasFundOutRequest->Client;

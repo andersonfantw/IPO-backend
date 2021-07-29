@@ -48,7 +48,8 @@ class ClientFundInRequestsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientFundInRequests = ClientFundInRequest::orderBy('created_at', 'asc')->get();
+        $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+            ->orderBy('updated_at', 'desc')->get();
         $rows = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
             $Client = $ClientFundInRequest->Client;
