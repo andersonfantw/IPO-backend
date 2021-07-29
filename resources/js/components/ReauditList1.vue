@@ -1,5 +1,9 @@
 <template>
   <b-container fluid class="p-0">
+    <h1 class="text-warning text-center">
+      一審資料再審核清單
+      <b-spinner v-if="loading" variant="warning"></b-spinner>
+    </h1>
     <b-row no-gutters>
       <b-col>
         <b-input-group prepend="客户姓名">
@@ -48,9 +52,16 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row v-if="loading">
+    <b-row no-gutters class="mt-3">
       <b-col class="text-center">
-        <b-spinner variant="warning"></b-spinner>
+        <b-pagination
+          v-if="totalRows > 0"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        >
+        </b-pagination>
       </b-col>
     </b-row>
     <b-table
@@ -93,14 +104,6 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="center"
-    >
-    </b-pagination>
   </b-container>
 </template>
 <script>

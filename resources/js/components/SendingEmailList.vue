@@ -1,5 +1,9 @@
 <template>
   <b-container fluid class="p-0">
+    <h1 class="text-warning text-center">
+      開戶信發送清單
+      <b-spinner v-if="loading" variant="warning"></b-spinner>
+    </h1>
     <b-row no-gutters>
       <b-col>
         <b-input-group prepend="帳戶號碼">
@@ -58,6 +62,18 @@
     <b-button variant="success" @click="sendEmails"
       ><i class="far fa-envelope"></i> 一鍵發送</b-button
     >
+    <b-row no-gutters class="mt-3">
+      <b-col class="text-center">
+        <b-pagination
+          v-if="totalRows > 0"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        >
+        </b-pagination>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -71,7 +87,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="loading"
       @filtered="onFiltered"
     >
       <template #head(操作)>
@@ -92,14 +107,6 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="center"
-    >
-    </b-pagination>
   </b-container>
 </template>
 <script>
