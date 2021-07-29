@@ -43,7 +43,8 @@ class ClientBankCardsController extends HomeController
 
     public function getData(Request $request)
     {
-        $ClientBankCards = ClientBankCard::where('type', '拼一手')->whereIn('status', ['pending', 'approved'])->get();
+        $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+            ->where('type', '拼一手')->whereIn('status', ['pending', 'approved'])->get();
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;
@@ -68,11 +69,8 @@ class ClientBankCardsController extends HomeController
             $row['id'] = $ClientBankCard->id;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
-        // return json_encode([
-        //     'data' => $rows,
-        // ], JSON_UNESCAPED_UNICODE);
+        ], JSON_UNESCAPED_UNICODE);
     }
 }
