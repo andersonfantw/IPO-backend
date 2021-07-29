@@ -32,6 +32,8 @@ class VerifyCsrfToken extends Middleware
         'AuditClientBankCard',
         'ViewClientBankCard',
         'DoAuditClientBankCard',
+        'AuditClientCreditCard',
+        'ViewClientCreditCard',
         'DoAuditClientCreditCard',
     ];
 }
