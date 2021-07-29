@@ -16,32 +16,35 @@ class ViewClientCreditCardController extends HomeController
             ->find($request->input('id'));
         if (is_object($ClientCreditCard)) {
             $ClientCreditCard->card_blob = null;
+            $client_credit_card = [];
             foreach ($ClientCreditCard->getAttributes() as $key => $value) {
-                $ClientCreditCard->{$key} = addslashes($value);
+                // $ClientCreditCard->{$key} = addslashes($value);
+                $client_credit_card[$key] = addslashes($value);
+            }
+            $parameters['ClientCreditCardID'] = $client_credit_card['id'];
+            $parameters['ClientCreditCard'] = json_encode($client_credit_card, JSON_UNESCAPED_UNICODE);
+
+            $Client = $ClientCreditCard->Client;
+
+            $ClientIDCard = $Client->IDCard;
+            if (is_object($ClientIDCard)) {
+                $ClientIDCard->idcard_face = null;
+                $ClientIDCard->idcard_back = null;
+                foreach ($ClientIDCard->getAttributes() as $key => $value) {
+                    $ClientIDCard->{$key} = addslashes($value);
+                }
+            }
+            $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
+
+            if (is_object($Client)) {
+                $client = [];
+                foreach ($Client->getAttributes() as $key => $value) {
+                    // $Client->{$key} = addslashes($value);
+                    $client[$key] = addslashes($value);
+                }
+                $parameters['Client'] = json_encode($client, JSON_UNESCAPED_UNICODE);
             }
         }
-        $parameters['ClientCreditCardID'] = $ClientCreditCard->id;
-        $parameters['ClientCreditCard'] = $ClientCreditCard->toJson(JSON_UNESCAPED_UNICODE);
-
-        $Client = $ClientCreditCard->Client;
-
-        $ClientIDCard = $Client->IDCard;
-        if (is_object($ClientIDCard)) {
-            $ClientIDCard->idcard_face = null;
-            $ClientIDCard->idcard_back = null;
-            foreach ($ClientIDCard->getAttributes() as $key => $value) {
-                $ClientIDCard->{$key} = addslashes($value);
-            }
-        }
-        $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
-
-        if (is_object($Client)) {
-            foreach ($Client->getAttributes() as $key => $value) {
-                $Client->{$key} = addslashes($value);
-            }
-        }
-        $parameters['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
-
         return $parameters;
     }
 
