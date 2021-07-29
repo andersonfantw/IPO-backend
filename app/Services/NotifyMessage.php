@@ -18,6 +18,7 @@ class NotifyMessage{
     private $route='account_overview';
 
     private $send_now=false;
+    private $_params=[];
     private $params=[];
     private $model_group=null;
     private $model_record=null;
@@ -32,6 +33,7 @@ class NotifyMessage{
     function email($email){ $this->email=$email; $this->route='email'; return $this; }
     function mobile($mobile){ $this->mobile=$mobile; $this->route='sms'; return $this; }
     function route($route){ $this->route=$route; return $this; }
+    function params($params){ $this->params=$params; return $this; }
 
     function getRecordId(){ return $this->record_id; }
     function getEmail(){ return $this->email; }
@@ -100,7 +102,7 @@ class NotifyMessage{
             if($this->title=='') abort(500,sprintf('[NotifyMessage] route=%s 缺少必要參數 title',$this->route));
 
         // 通訊方式以設定的為優先，會要另外設定通常是因為當時的資料庫通訊紀錄尚未修改
-        $this->params = $this->toParams();
+        $this->_params = $this->toParams();
 
         $_params=[]; // 提供文案中變數的替換
         foreach($this->params as $k => $v) $_params['['.$k.']'] = $v;
@@ -128,7 +130,7 @@ class NotifyMessage{
     function toParams(array $params=[]):array
     {
         // 提供view中的變數替換
-        if(!empty($this->params)) return $this->params;
+        if(!empty($this->_params)) return $this->_params;
 
         if($this->group_id>0 && is_null($this->model_group)){
             $this->modelNotificationGroup(
@@ -174,9 +176,10 @@ class NotifyMessage{
             $_params['title'] = $this->title;
             $_params['content'] = $this->content;
         }
-        return $this->params = array_merge(
+        return $this->_params = array_merge(
             array_map(function($v){return str_replace("\n","",$v);},$_params),
-            $params
+            $params,
+            $this->params
         );
     }
 
