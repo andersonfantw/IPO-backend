@@ -72,7 +72,7 @@ class ReauditList1Controller extends HomeController
             $query->where('status', 'reaudit');
         })->orWhereHas('ClientDepositProof', function (Builder $query) {
             $query->where('status', 'reaudit');
-        })->orWhere('status', 'reaudit')->orderBy('created_at', 'asc')
+        })->orWhere('status', 'reaudit')->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
@@ -88,15 +88,12 @@ class ReauditList1Controller extends HomeController
             }
             $row['手機號碼'] = $Client->mobile;
             $row['郵箱'] = $Client->email;
-            $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['提交時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
         return json_encode([
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
-        // return json_encode([
-        //     'data' => $rs,
-        // ], JSON_UNESCAPED_UNICODE);
     }
 }

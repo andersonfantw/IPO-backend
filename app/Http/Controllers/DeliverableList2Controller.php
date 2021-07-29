@@ -108,9 +108,6 @@ class DeliverableList2Controller extends HomeController
         return json_encode([
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
-        // return json_encode([
-        //     'data' => $rs,
-        // ], JSON_UNESCAPED_UNICODE);
     }
 
     public function downloadAyersImportData(Request $request)

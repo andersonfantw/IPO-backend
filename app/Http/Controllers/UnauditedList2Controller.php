@@ -44,13 +44,14 @@ class UnauditedList2Controller extends HomeController
 
     public function getData(Request $request)
     {
-        $Clients = Client::whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+            ->whereHasMorph('IDCard', [
+                ClientCNIDCard::class,
+                ClientHKIDCard::class,
+                ClientOtherIDCard::class,
+            ], function (Builder $query) {
+                $query->where('status', 'audited1');
+            })->whereHas('ClientWorkingStatus', function (Builder $query) {
             $query->where('status', 'audited1');
         })->whereHas('ClientBankCards', function (Builder $query) {
             $query->where('status', 'audited1');
@@ -70,39 +71,8 @@ class UnauditedList2Controller extends HomeController
                     ->where('progress', 16)
                     ->where('idcard_type', 'App\ClientOtherIDCard');
             })
-            ->orderBy('created_at', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
-
-        // $Clients = Client::whereHas('ClientDepositProof', function (Builder $query) {
-        //     $query->where('status', 'audited1');
-        // })->where('status', 'audited1')->where('idcard_type', '!=', 'App\ClientOtherIDCard')->
-        //     orderBy('created_at', 'asc')
-        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
-
-        // $Clients = ViewPendingClient::where(function ($query) {
-        //     $query->where('has_deposit_proof', 1)
-        //         ->where('deposit_proof_status', 'audited1')
-        //         ->orWhere(function ($query) {
-        //             $query->where('nationality', 'others')
-        //                 ->where('progress', 16);
-        //         });
-        // })
-        //     ->where('status', 'audited1')
-        //     ->select('ae_name as AE',
-        //         'name_c as 客户姓名',
-        //         'idcard_no as 證件號碼',
-        //         DB::raw('case when has_deposit_proof=0 then "否" else "是" end as 已入金'),
-        //         'address as 所在地',
-        //         'mobile as 手機號碼',
-        //         'email as 郵箱',
-        //         'updated_at as 提交時間',
-        //         'uuid')
-        //     ->orderBy('updated_at', 'asc')->get();
-
-        // return json_encode([
-        //     'data' => $Clients,
-        // ], JSON_UNESCAPED_UNICODE);
-
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];
@@ -117,36 +87,12 @@ class UnauditedList2Controller extends HomeController
             }
             $row['手機號碼'] = $Client->mobile;
             $row['郵箱'] = $Client->email;
-            $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
+            $row['提交時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
             $row['uuid'] = $Client->uuid;
             $rows[] = $row;
         }
-
-        // $Clients = Client::where('status', 'audited1')->where('progress', 16)->
-        //     where('idcard_type', 'App\ClientOtherIDCard')->orderBy('created_at', 'asc')->get();
-        // foreach ($Clients as $Client) {
-        //     $row = [];
-        //     $row['AE'] = $Client->ViewIntroducer->ae_name;
-        //     $row['客户姓名'] = $Client->IDCard->name_c;
-        //     $row['證件號碼'] = $Client->IDCard->idcard_no;
-        //     $row['已入金'] = is_object($Client->ClientDepositProof) ? '是' : '否';
-        //     if (is_object($Client->ClientAddressProof)) {
-        //         $row['所在地'] = $Client->ClientAddressProof->address_text;
-        //     } else {
-        //         $row['所在地'] = $Client->IDCard->idcard_address;
-        //     }
-        //     $row['手機號碼'] = $Client->mobile;
-        //     $row['郵箱'] = $Client->email;
-        //     $row['提交時間'] = date_format($Client->created_at, "Y-m-d H:i:s");
-        //     $row['uuid'] = $Client->uuid;
-        //     $rows[] = $row;
-        // }
-
         return json_encode([
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
-        // return json_encode([
-        //     'data' => $rs,
-        // ], JSON_UNESCAPED_UNICODE);
     }
 }

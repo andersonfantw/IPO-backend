@@ -49,7 +49,7 @@ class RejectedList1Controller extends HomeController
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
             ->whereHas('EditableSteps', function (Builder $query) {
                 $query->where('reason', 'correction');
-            })->orderBy('updated_at', 'asc')
+            })->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
@@ -72,8 +72,5 @@ class RejectedList1Controller extends HomeController
         return json_encode([
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
-        // return json_encode([
-        //     'data' => $rs,
-        // ], JSON_UNESCAPED_UNICODE);
     }
 }
