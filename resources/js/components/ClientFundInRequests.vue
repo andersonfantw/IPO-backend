@@ -1,5 +1,9 @@
 <template>
   <b-container fluid class="p-0">
+    <h1 class="text-warning text-center">
+      客戶存款申請
+      <b-spinner v-if="loading" variant="warning"></b-spinner>
+    </h1>
     <b-row no-gutters>
       <b-col>
         <b-input-group prepend="帳戶號碼">
@@ -45,6 +49,18 @@
         small
       />
     </b-button>
+    <b-row no-gutters class="mt-3">
+      <b-col class="text-center">
+        <b-pagination
+          v-if="totalRows > 0"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        >
+        </b-pagination>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
@@ -58,7 +74,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="Loading"
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
@@ -144,12 +159,12 @@ export default {
     return {
       Columns: [],
       FilterMatchMode: {},
-      Loading: false,
-      data: null,
+      loading: false,
+      data: [],
       SelectedRequests: [],
       FilteredRequests: [],
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       FilterType: {},
       totalRows: 0,
       DownloadingExcel: false,
@@ -176,8 +191,8 @@ export default {
   created() {
     this.Columns = JSON.parse(this.columns);
     this.FilterType = JSON.parse(this.filter_type);
-    this.Loading = true;
-    this.loadData();
+    this.loading = true;
+    this.loadData(1);
   },
   methods: {
     approve(id) {
@@ -192,7 +207,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.Auditing = false;
-          self.loadData();
+          self.loadData(1);
         })
         .catch((error) => {
           self.Auditing = false;
@@ -212,7 +227,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.Auditing = false;
-          self.loadData();
+          self.loadData(1);
         })
         .catch((error) => {
           self.Auditing = false;
@@ -227,16 +242,28 @@ export default {
         this.SelectedRequests = [];
       }
     },
-    loadData() {
+    loadData(pageNumber) {
       const self = this;
-      self.Loading = true;
-      axios.post("api/ClientFundInRequests/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
-        self.data = json.data;
-        self.FilteredRequests = self.data;
-        self.totalRows = self.data.length;
-        self.Loading = false;
-      });
+      self.loading = true;
+      axios
+        .post("api/ClientFundInRequests/all_data", {
+          perPage: self.perPage,
+          pageNumber: pageNumber,
+        })
+        .then((res) => {
+          console.log(res);
+          const data = res.data.data;
+          self.data = self.data.concat(data);
+          self.totalRows = self.data.length;
+          if (data.length >= self.perPage) {
+            self.loadData(pageNumber + 1);
+          } else {
+            self.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.SelectedRequests = [];

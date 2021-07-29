@@ -110,6 +110,14 @@
         </div>
       </template>
     </b-table>
+    <b-pagination
+      v-if="totalRows > 0"
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="center"
+    >
+    </b-pagination>
     <ClientDetails
       ref="ClientDetails"
       :base_url="base_url"
