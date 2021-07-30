@@ -73,12 +73,9 @@ class ClientHKFundOutRequestsController extends HomeController
             $row['id'] = $ClientHKFundOutRequest->id;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
-        // return json_encode([
-        //     'data' => $rows,
-        // ], JSON_UNESCAPED_UNICODE);
+        ], JSON_UNESCAPED_UNICODE);
     }
 
     public function downloadAyersImportData(Request $request)
