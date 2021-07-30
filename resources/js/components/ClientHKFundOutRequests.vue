@@ -157,7 +157,7 @@ export default {
       Columns: [],
       FilterMatchMode: {},
       loading: false,
-      data: null,
+      data: [],
       SelectedRequests: [],
       FilteredRequests: [],
       currentPage: 1,

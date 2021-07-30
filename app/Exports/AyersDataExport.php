@@ -224,7 +224,8 @@ class AyersDataExport extends AyersValueBinder implements FromView
                 $AyersImportData['payee_name'] = $AyersImportData['name'];
                 if (count($Client->ClientBankCards) > 0) {
                     $AyersImportData['payee_bank_code'] = $Client->ClientBankCards->first()->bank_code;
-                    $AyersImportData['payee_bank_acc'] = $Client->ClientBankCards->first()->account_no;
+                    $payee_bank_acc = $Client->ClientBankCards->first()->branch_code . $Client->ClientBankCards->first()->account_no;
+                    $AyersImportData['payee_bank_acc'] = $payee_bank_acc;
                 } else {
                     $AyersImportData['payee_bank_code'] = null;
                     $AyersImportData['payee_bank_acc'] = null;
@@ -238,7 +239,7 @@ class AyersDataExport extends AyersValueBinder implements FromView
                 }
                 $AyersImportData['alert_remark'] = null;
                 $AyersImportData['email'] = $Client->email;
-                $AyersImportData['phone'] = $Client->mobile;
+                $AyersImportData['phone'] = "{$Client->country_code}{$Client->mobile}";
                 $AyersImportData['other_phone'] = null;
                 $AyersImportData['Fax'] = null;
                 if (is_object($Client->ClientAddressProof)) {
