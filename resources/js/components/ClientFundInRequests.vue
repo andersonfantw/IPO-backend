@@ -42,6 +42,14 @@
         </SearchSelectOptions>
       </b-col>
     </b-row>
+    <b-row no-gutters>
+      <b-col>
+        <DateRange :name="'發送時間'" v-model="filters['發送時間']" />
+      </b-col>
+      <b-col>
+        <DateRange :name="'審批時間'" v-model="filters['審批時間']" />
+      </b-col>
+    </b-row>
     <b-button variant="success" @click="downloadFundInExcel"
       ><i class="fas fa-download"></i> 入金Excel下載<b-spinner
         v-if="DownloadingExcel"

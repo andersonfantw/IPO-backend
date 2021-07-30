@@ -57,6 +57,18 @@
         small
       />
     </b-button>
+    <b-row no-gutters class="mt-3">
+      <b-col class="text-center">
+        <b-pagination
+          v-if="totalRows > 0"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        >
+        </b-pagination>
+      </b-col>
+    </b-row>
     <b-table
       hover
       bordered
