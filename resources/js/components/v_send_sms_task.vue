@@ -9,7 +9,7 @@
         </template>
         <b-overlay :show="sending" rounded="sm">
             <template #overlay>
-                <img src="/images/smsg3.gif" width="400" />
+                <img src="images/smsg3.gif" width="400" />
             </template>
             <b-row>
                 <b-col cols="7" class="my-2">
