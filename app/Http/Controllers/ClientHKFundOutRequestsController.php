@@ -50,7 +50,8 @@ class ClientHKFundOutRequestsController extends HomeController
     {
         // $yesterday = today()->subDays(3)->toDateString();
         $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-            ->orderBy('updated_at', 'desc')->get();
+            ->orderBy('updated_at', 'desc')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
             $Client = $ClientHKFundOutRequest->Client;
