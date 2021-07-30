@@ -1,3 +1,4 @@
+import { BIconFileBreak } from "bootstrap-vue"
 import SimpleVueValidator from "simple-vue-validator"
 const Validator = SimpleVueValidator.Validator
 const Rule = SimpleVueValidator.Rule
@@ -21,6 +22,38 @@ export default {
             }
             return this
         }
+        Rule.prototype.eq = function(val, message){
+            var value = this._checkValue()
+            if (value!=val){
+                this._messages.push(message)
+            }
+            return this
+        }
+        Rule.prototype.digits = function(val, message){
+            var value = this._checkValue()
+            if (value.toString().split('.')[0].length!=val){
+                this._messages.push(message)
+            }
+            return this
+        }
+        Rule.prototype.digits_between = function(max,min, message){
+            var value = this._checkValue()
+            var _v = value.toString().split('.')[0].length;
+            if (_v>max || _v<min){
+                this._messages.push(message)
+            }
+            return this
+        },
+        Rule.prototype.rational = function(digits, message){
+            var value = this._checkValue()
+            let n = value.toString().split('.')
+            if(n.length>2) this._messages.push(message)
+            else if(n.length==1 && n[0]=='') this._messages.push(message)
+            else if(n.length==1 && parseInt(n[0])!=n[0]) this._messages.push(message)
+            else if(n.length==2 && (n[0]=='' || n[1]=='' || n[1].length>digits)) this._messages.push(message)
+            else if(n.length==2 && (parseInt(n[0])!=n[0] || parseInt(n[1])!=n[1])) this._messages.push(message)
+            return this
+        },
         Rule.prototype.dimensions = function(min_width,min_height,max_width,max_height,message){
             let _this = this
             var value = this._checkValue()
@@ -103,11 +136,16 @@ export default {
             let n = 'form.'+name
             switch(method){
                 case 'numeric':
-                    this.$options.validators[n].integer(msg.replace(':attribute',attribute))
-                    // this.$options.validators[n].digit(msg)
-                    break;
-                case 'float':
                     this.$options.validators[n].float(msg.replace(':attribute',attribute))
+                    break;
+                case 'integer':
+                    this.$options.validators[n].integer(msg.replace(':attribute',attribute))
+                    break;
+                case 'digits':
+                    this.$options.validators[n].digits(parseInt(parameters[0]),msg)
+                    break;
+                case 'digits_between':
+                    this.$options.validators[n].digits_between(parseInt(parameters[0]),parseInt(parameters[1]),msg)
                     break;
                 case 'string':
                     break;
@@ -128,6 +166,9 @@ export default {
                 case 'required':
                     this.$options.validators[n].required(msg.replace(':attribute',attribute))
                     break
+                case 'rational':
+                    this.$options.validators[n].rational(parseInt(parameters[0]),msg.replace(':attribute',attribute))
+                    break
                 case 'dimensions':
                     let p = {'min_width':0,'min_height':0,'max_width':3072,'max_height':3072}
                     parameters.forEach(i => {
@@ -146,6 +187,7 @@ export default {
                             this.$options.validators[n].length(parseInt(parameters[0]),msg['string'].replace(':attribute',attribute).replace(':size',parameters[0]))
                             break
                         case 'numeric':
+                            this.$options.validators[n].eq(parseInt(parameters[0]),msg['numeric'].replace(':attribute',attribute).replace(':size',parameters[0]));
                             break
                         case 'array':
                             this.$options.validators[n].size(parseInt(parameters[0]),msg['array'].replace(':attribute',attribute).replace(':size',parameters[0]))
@@ -158,8 +200,9 @@ export default {
                         case 'string':
                             this.$options.validators[n].minLength(parameters[0],msg['string'].replace(':attribute',attribute).replace(':min',parameters[0]))
                             break
+                        case 'integer':
                         case 'numeric':
-                            this.$options.validators[n].greaterThan(parameters[0],msg['numeric'].replace(':attribute',attribute).replace(':min',parameters[0]))
+                            this.$options.validators[n].greaterThanOrEqualTo(parameters[0],msg[datatype].replace(':attribute',attribute).replace(':min',parameters[0]))
                             break
                     }
                     break
@@ -169,8 +212,9 @@ export default {
                         case 'string':
                             this.$options.validators[n].maxLength(parameters[0],msg['string'].replace(':attribute',attribute).replace(':max',parameters[0]))
                             break
+                        case 'integer':
                         case 'numeric':
-                            this.$options.validators[n].lessThan(parameters[0],msg['numeric'].replace(':attribute',attribute).replace(':max',parameters[0]))
+                            this.$options.validators[n].lessThanOrEqualTo(parameters[0],msg[datatype].replace(':attribute',attribute).replace(':max',parameters[0]))
                             break
                     }
                     break
@@ -178,14 +222,16 @@ export default {
                     switch(datatype){
                         case '':
                         case 'string':
-                            this.$options.validators[n].minLength(parameters[0],msg['string'].replace(':attribute',attribute).replace(':min',parameters[0]))
-                            this.$options.validators[n].maxLength(parameters[0],msg['string'].replace(':attribute',attribute).replace(':max',parameters[1]))
-                            break
-                        case 'numeric':
-                            this.$options.validators[n].integer().lengthBetween(
+                            this.$options.validators[n].lengthBetween(
                                 parameters[0],parameters[1],
-                                msg['numeric'].replace(':attribute',attribute).replace(':min',parameters[0]).replace(':max',parameters[1])
+                                msg['string'].replace(':attribute',attribute).replace(':min',parameters[0]).replace(':max',parameters[1])
                             )
+                            break
+                        case 'integer':
+                        case 'numeric':
+                            this.$options.validators[n].greaterThanOrEqualTo(parameters[0],msg[datatype].replace(':attribute',attribute).replace(':min',parameters[0]))
+                            this.$options.validators[n].lessThanOrEqualTo(parameters[1],msg[datatype].replace(':attribute',attribute).replace(':max',parameters[1]))
+                        
                     }
                     break
             }
