@@ -158,6 +158,7 @@
   </b-container>
 </template>
 <script>
+import DateRange from "./DateRange";
 import SearchSelectOptions from "./SearchSelectOptions";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
@@ -195,6 +196,7 @@ export default {
   },
   components: {
     SearchSelectOptions,
+    DateRange,
   },
   created() {
     this.Columns = JSON.parse(this.columns);
