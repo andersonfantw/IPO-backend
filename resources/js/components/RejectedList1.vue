@@ -93,7 +93,9 @@
             type="button"
             variant="danger"
             @click="refund(data.item.uuid)"
-            ><h5 class="mb-0"><i class="far fa-eye"></i> 退款</h5></b-button
+            ><h5 class="mb-0">
+              <i class="fas fa-hand-holding-usd"></i> 退款
+            </h5></b-button
           >
         </b-form>
       </template>
