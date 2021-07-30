@@ -52,6 +52,17 @@
         </b-input-group>
       </b-col>
     </b-row>
+    <b-row no-gutters>
+      <b-col>
+        <b-input-group prepend="已退款">
+          <b-form-select v-model="filters['已退款']" :options="已退款">
+          </b-form-select>
+        </b-input-group>
+      </b-col>
+      <b-col> </b-col>
+      <b-col> </b-col>
+      <b-col> </b-col>
+    </b-row>
     <b-row no-gutters class="mt-3">
       <b-col class="text-center">
         <b-pagination
@@ -82,21 +93,24 @@
       <template #cell(操作)="data">
         <b-form :action="view_client_url" method="post">
           <input type="hidden" name="redirect_route" value="RejectedList1" />
-          <b-button
-            name="uuid"
-            :value="data.item.uuid"
-            variant="success"
-            type="submit"
-            ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button
-          >
-          <b-button
-            type="button"
-            variant="danger"
-            @click="refund(data.item.uuid)"
-            ><h5 class="mb-0">
-              <i class="fas fa-hand-holding-usd"></i> 退款
-            </h5></b-button
-          >
+          <b-button-group>
+            <b-button
+              name="uuid"
+              :value="data.item.uuid"
+              variant="success"
+              type="submit"
+              ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button
+            >
+            <b-button
+              v-if="data.item.已退款 == '否'"
+              type="button"
+              variant="danger"
+              @click="refund(data.item.uuid)"
+              ><h5 class="mb-0">
+                <i class="fas fa-hand-holding-usd"></i> 退款
+              </h5></b-button
+            >
+          </b-button-group>
         </b-form>
       </template>
       <template #empty="scope">
@@ -148,6 +162,11 @@ export default {
         { value: "是", text: "是" },
         { value: "否", text: "否" },
       ],
+      已退款: [
+        { value: null, text: "全部" },
+        { value: "是", text: "是" },
+        { value: "否", text: "否" },
+      ],
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -174,6 +193,19 @@ export default {
   methods: {
     refund(uuid) {
       const self = this;
+      axios
+        .post("api/RejectedList1/refund", {
+          uuid: uuid,
+        })
+        .then((res) => {
+          console.log(res);
+          self.data = [];
+          self.loading = true;
+          self.loadData(1);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     loadData(pageNumber) {
       const self = this;

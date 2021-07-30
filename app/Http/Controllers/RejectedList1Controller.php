@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\ClientDepositProof;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,7 @@ class RejectedList1Controller extends HomeController
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '證件號碼', 'sortable' => true],
             ['key' => '已入金', 'sortable' => true],
+            ['key' => '已退款', 'sortable' => true],
             ['key' => '手機號碼', 'sortable' => true],
             ['key' => '所在地', 'sortable' => true],
             ['key' => '郵箱', 'sortable' => true],
@@ -34,6 +36,7 @@ class RejectedList1Controller extends HomeController
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
             '已入金' => 'equals',
+            '已退款' => 'equals',
             '手機號碼' => 'startsWith',
             '所在地' => 'equals',
             '郵箱' => 'startsWith',
@@ -58,6 +61,7 @@ class RejectedList1Controller extends HomeController
             $row['客户姓名'] = $Client->IDCard->name_c;
             $row['證件號碼'] = $Client->IDCard->idcard_no;
             $row['已入金'] = is_object($Client->ClientDepositProof) ? '是' : '否';
+            $row['已退款'] = is_object($Client->ClientDepositProof) && $Client->ClientDepositProof->status == 'refunded' ? '是' : '否';
             if (is_object($Client->ClientAddressProof)) {
                 $row['所在地'] = $Client->ClientAddressProof->address_text;
             } else {
@@ -72,5 +76,11 @@ class RejectedList1Controller extends HomeController
         return json_encode([
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function refund(Request $request)
+    {
+        $ClientDepositProof = ClientDepositProof::where('uuid', $request->input('uuid'))->update(['status' => 'refunded']);
+        return ['success' => $ClientDepositProof > 0];
     }
 }

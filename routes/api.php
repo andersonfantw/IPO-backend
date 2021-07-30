@@ -51,6 +51,7 @@ Route::prefix('UnauditedList2')->group(function () {
 Route::prefix('RejectedList1')->group(function () {
     Route::any('/all_data', 'RejectedList1Controller@getData');
     Route::any('/NoOfNews', 'RejectedList1Controller@getNoOfNews');
+    Route::any('/refund', 'RejectedList1Controller@refund');
 });
 
 Route::prefix('ReauditList1')->group(function () {
@@ -150,14 +151,14 @@ Route::resource('notify_client', 'NotificationRecordController');
 Route::resource('notify_group', 'NotificationGroupController');
 Route::resource('system_notification_list', 'NotificationRecordController');
 
-Route::get('/notify_group/{id}/list/','NotificationGroupController@list')->where(['id' => '[0-9]+']);
+Route::get('/notify_group/{id}/list/', 'NotificationGroupController@list')->where(['id' => '[0-9]+']);
 // Route::post('/notify_client/{id}/send/', 'NotificationRecordController@send')->where(['id' => '[0-9]+']);
 Route::post('/notify_group/{id}/SendAll/', 'NotificationGroupController@sendAll')->where(['id' => '[0-9]+']);
 Route::post('/notify_group/{id}/store/{client_id}/', 'NotificationGroupController@addClient')->where(['id' => '[0-9]+', 'client_id' => '[0-9]+']);
 
-Route::get('forbidden_words','VueController@ForbiddenWords');
-Route::get('template_list','VueController@NotificationTemplateList');
-Route::get('client_info','VueController@ClientInfo');
+Route::get('forbidden_words', 'VueController@ForbiddenWords');
+Route::get('template_list', 'VueController@NotificationTemplateList');
+Route::get('client_info', 'VueController@ClientInfo');
 
 // Route::resource('NotificationSummary', 'NotificationGroupController');
 // Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
