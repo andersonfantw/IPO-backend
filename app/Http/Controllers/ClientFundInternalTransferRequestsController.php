@@ -42,7 +42,6 @@ class ClientFundInternalTransferRequestsController extends HomeController
 
     public function getData(Request $request)
     {
-        // $Clients = Client::has('ClientFundInternalTransferRequests')->orderBy('created_at', 'asc')->get();
         $ClientFundInternalTransferRequests = ClientFundInternalTransferRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->orderBy('updated_at', 'desc')->get();
         $rows = [];

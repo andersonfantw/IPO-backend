@@ -43,7 +43,8 @@ class ClientOverseasFundOutRequestsController extends HomeController
     public function getData(Request $request)
     {
         $ClientOverseasFundOutRequests = ClientOverseasFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-            ->orderBy('updated_at', 'desc')->get();
+            ->orderBy('updated_at', 'desc')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientOverseasFundOutRequests as $ClientOverseasFundOutRequest) {
             $Client = $ClientOverseasFundOutRequest->Client;
@@ -62,12 +63,9 @@ class ClientOverseasFundOutRequestsController extends HomeController
             $row['id'] = $ClientOverseasFundOutRequest->id;
             $rows[] = $row;
         }
-        return encrypt(json_encode([
+        return json_encode([
             'data' => $rows,
-        ], JSON_UNESCAPED_UNICODE));
-        // return json_encode([
-        //     'data' => $rows,
-        // ], JSON_UNESCAPED_UNICODE);
+        ], JSON_UNESCAPED_UNICODE);
     }
 
     public function downloadAyersImportData(Request $request)
