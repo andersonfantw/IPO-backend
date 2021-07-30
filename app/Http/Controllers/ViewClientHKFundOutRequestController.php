@@ -13,25 +13,28 @@ class ViewClientHKFundOutRequestController extends HomeController
     {
         $parameters = parent::setViewParameters($request);
         $input = $request->all();
-        $ClientHKFundOutRequest = ClientHKFundOutRequest::find($input['id']);
+        $ClientHKFundOutRequest = ClientHKFundOutRequest::with(['Client', 'Client.IDCard', 'Client.AyersAccounts'])
+            ->find($input['id']);
         if (is_object($ClientHKFundOutRequest)) {
+            $client_HK_fund_out_request = [];
             foreach ($ClientHKFundOutRequest->getAttributes() as $key => $value) {
-                $ClientHKFundOutRequest->{$key} = addslashes($value);
+                // $ClientHKFundOutRequest->{$key} = addslashes($value);
+                $client_HK_fund_out_request[$key] = addslashes($value);
             }
-        }
-        $parameters['Request'] = $ClientHKFundOutRequest->toJson(JSON_UNESCAPED_UNICODE);
+            $parameters['Request'] = json_encode($client_HK_fund_out_request, JSON_UNESCAPED_UNICODE);
 
-        $Client = $ClientHKFundOutRequest->Client;
+            $Client = $ClientHKFundOutRequest->Client;
 
-        $ClientIDCard = $Client->IDCard;
-        if (is_object($ClientIDCard)) {
-            $ClientIDCard->idcard_face = null;
-            $ClientIDCard->idcard_back = null;
-            foreach ($ClientIDCard->getAttributes() as $key => $value) {
-                $ClientIDCard->{$key} = addslashes($value);
+            $ClientIDCard = $Client->IDCard;
+            if (is_object($ClientIDCard)) {
+                $ClientIDCard->idcard_face = null;
+                $ClientIDCard->idcard_back = null;
+                foreach ($ClientIDCard->getAttributes() as $key => $value) {
+                    $ClientIDCard->{$key} = addslashes($value);
+                }
             }
+            $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
         }
-        $parameters['ClientIDCard'] = $ClientIDCard->toJson(JSON_UNESCAPED_UNICODE);
 
         if (is_object($Client)) {
             foreach ($Client->getAttributes() as $key => $value) {

@@ -1,5 +1,9 @@
 <template>
   <b-container fluid class="p-0">
+    <h1 class="text-warning text-center">
+      客戶香港出款申請
+      <b-spinner v-if="loading" variant="warning"></b-spinner>
+    </h1>
     <b-row no-gutters>
       <b-col>
         <b-input-group prepend="帳戶號碼">
@@ -66,7 +70,6 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="Loading"
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
@@ -153,12 +156,12 @@ export default {
     return {
       Columns: [],
       FilterMatchMode: {},
-      Loading: false,
+      loading: false,
       data: null,
       SelectedRequests: [],
       FilteredRequests: [],
       currentPage: 1,
-      perPage: 50,
+      perPage: 30,
       FilterType: {},
       totalRows: 0,
       DownloadingExcel: false,
@@ -186,8 +189,8 @@ export default {
   created() {
     this.Columns = JSON.parse(this.columns);
     this.FilterType = JSON.parse(this.filter_type);
-    this.Loading = true;
-    this.loadData();
+    this.loading = true;
+    this.loadData(1);
   },
   methods: {
     approve(id) {
@@ -202,7 +205,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.Auditing = false;
-          self.loadData();
+          self.loadData(1);
         })
         .catch((error) => {
           self.Auditing = false;
@@ -222,7 +225,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.Auditing = false;
-          self.loadData();
+          self.loadData(1);
         })
         .catch((error) => {
           self.Auditing = false;
@@ -230,15 +233,27 @@ export default {
           console.log(error);
         });
     },
-    loadData() {
+    loadData(pageNumber) {
       const self = this;
-      axios.post("api/ClientHKFundOutRequests/all_data").then((res) => {
-        const json = self.getDecryptedJsonObject(res.data);
-        self.data = json.data;
-        self.FilteredRequests = self.data;
-        self.totalRows = self.data.length;
-        self.Loading = false;
-      });
+      axios
+        .post("api/ClientHKFundOutRequests/all_data", {
+          perPage: self.perPage,
+          pageNumber: pageNumber,
+        })
+        .then((res) => {
+          console.log(res);
+          const data = res.data.data;
+          self.data = self.data.concat(data);
+          self.totalRows = self.data.length;
+          if (data.length >= self.perPage) {
+            self.loadData(pageNumber + 1);
+          } else {
+            self.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFiltered(filteredItems) {
       this.SelectedRequests = [];

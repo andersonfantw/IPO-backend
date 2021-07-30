@@ -49,7 +49,8 @@ class ClientFundInRequestsController extends HomeController
     public function getData(Request $request)
     {
         $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-            ->orderBy('updated_at', 'desc')->get();
+            ->orderBy('updated_at', 'desc')
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
             $Client = $ClientFundInRequest->Client;
@@ -78,7 +79,6 @@ class ClientFundInRequestsController extends HomeController
 
     public function downloadAyersImportData(Request $request)
     {
-        // $clients = $request->input('clients');
         return $this->exportClientFundInRequests();
     }
 
