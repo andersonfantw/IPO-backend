@@ -60,11 +60,11 @@ class SendingEmailListController extends HomeController
             $row['證件號碼'] = $Client->IDCard->idcard_no;
             // $row['手機號碼'] = $Client->mobile;
             $row['電郵'] = $Client->email;
-            $SentEmailRecord = $Client->SentEmailRecords->first();
-            if (is_object($SentEmailRecord)) {
+            $NotificationRecord = $Client->NotificationRecord->where('status', 'success')->where('title', '帳戶開戶通知書')->first();
+            if (is_object($NotificationRecord)) {
                 $row['狀態'] = '已發送';
-                $row['電郵發送時間'] = date_format($SentEmailRecord->updated_at, "Y-m-d H:i:s");
-                $row['電郵發送者'] = $SentEmailRecord->sent_by;
+                $row['電郵發送時間'] = date_format($NotificationRecord->updated_at, "Y-m-d H:i:s");
+                $row['電郵發送者'] = $NotificationRecord->issued_by;
             } else {
                 $row['狀態'] = '未發送';
                 $row['電郵發送時間'] = null;

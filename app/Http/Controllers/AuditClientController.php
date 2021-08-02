@@ -345,7 +345,6 @@ class AuditClientController extends ViewClientController
             $add = false;
         }
         $Client->count_of_audits++;
-        $Client->save();
         if ($request->has(['駁回工作狀態']) && $request->filled(['駁回工作狀態'])) {
             $Client->ClientWorkingStatus->status = 'rejected';
             $Client->ClientWorkingStatus->remark = $input['駁回工作狀態'];
@@ -469,6 +468,13 @@ class AuditClientController extends ViewClientController
         }
         if ($rejected) {
             $this->sendRejectionSMS($Client);
+        } else {
+            if ($input['next_status'] == 'audited1') {
+                $Client->auditor1 = auth()->user()->name;
+            } elseif ($input['next_status'] == 'audited2') {
+                $Client->auditor2 = auth()->user()->name;
+            }
+            $Client->save();
         }
         return redirect()->route($input['redirect_route']);
     }

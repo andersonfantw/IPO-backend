@@ -144,6 +144,11 @@ class Client extends Model
         return $this->hasMany('App\ClientAyersAccount', 'uuid', 'uuid')->orderBy('account_no', 'asc');
     }
 
+    public function NotificationRecord()
+    {
+        return $this->hasMany('App\NotificationRecord', 'email', 'email')->orderBy('created_at', 'desc');
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
