@@ -15,7 +15,7 @@ class ChunkReadEmails implements ToCollection, WithChunkReading
         foreach ($rows as $row) {
             if (!$found && $row[0] == '3115108') {
                 $found = true;
-                continue;
+                // continue;
             }
             if ($found) {
                 dump($row);
