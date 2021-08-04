@@ -577,7 +577,7 @@
         </tr>
       </thead>
       <tbody>
-        <td colspan="4">
+        <td colspan="4" class="bg-light">
           <img style="width: 300px" :src="ClientSignature.image" />
         </td>
         <td width="20%">
