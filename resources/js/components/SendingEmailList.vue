@@ -4,7 +4,7 @@
       開戶信發送清單
       <b-spinner v-if="loading" variant="warning"></b-spinner>
     </h1>
-    <b-row no-gutters>
+    <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="帳戶號碼">
           <b-form-input
@@ -35,9 +35,15 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row no-gutters>
-      <b-col cols="6">
-        <DateRange :name="'投遞日期'" v-model="filters['投遞日期']" />
+    <b-row class="mb-3">
+      <b-col>
+        <!-- <DateRange :name="'投遞日期'" v-model="filters['投遞日期']" /> -->
+        <date-picker
+          name="'投遞日期'"
+          v-model="filters['投遞日期']"
+          range
+          placeholder="投遞日期"
+        />
       </b-col>
       <b-col>
         <b-input-group prepend="狀態">
@@ -53,10 +59,13 @@
           ></b-form-input>
         </b-input-group>
       </b-col>
-    </b-row>
-    <b-row no-gutters>
-      <b-col cols="6">
-        <DateRange :name="'電郵發送時間'" v-model="filters['電郵發送時間']" />
+      <b-col>
+        <date-picker
+          name="'電郵發送時間'"
+          v-model="filters['電郵發送時間']"
+          range
+          placeholder="電郵發送時間"
+        />
       </b-col>
     </b-row>
     <b-button variant="success" @click="sendEmails"
@@ -118,7 +127,7 @@
   </b-container>
 </template>
 <script>
-import DateRange from "./DateRange";
+// import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -156,7 +165,7 @@ export default {
     user: String,
   },
   components: {
-    DateRange,
+    // DateRange,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);

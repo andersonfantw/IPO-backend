@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="p-0">
-    <b-row no-gutters>
+    <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="客户姓名">
           <b-form-input
@@ -31,9 +31,15 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row no-gutters>
-      <b-col cols="6">
-        <DateRange :name="'更新時間'" v-model="filters['更新時間']" />
+    <b-row>
+      <b-col>
+        <!-- <DateRange :name="'更新時間'" v-model="filters['更新時間']" /> -->
+        <date-picker
+          name="'更新時間'"
+          v-model="filters['更新時間']"
+          range
+          placeholder="更新時間"
+        />
       </b-col>
       <b-col>
         <b-input-group prepend="AE">
@@ -44,6 +50,7 @@
       <b-col>
         <b-button @click="query" variant="success">查詢</b-button>
       </b-col>
+      <b-col> </b-col>
     </b-row>
     <b-row v-if="loading">
       <b-col class="text-center">
@@ -88,7 +95,7 @@
   </b-container>
 </template>
 <script>
-import DateRange from "./DateRange";
+// import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -123,7 +130,7 @@ export default {
     },
   },
   components: {
-    DateRange,
+    // DateRange,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);

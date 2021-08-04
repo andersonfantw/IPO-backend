@@ -38,7 +38,12 @@
     <b-row>
       <b-col>
         <!-- <DateRange :name="'提交時間'" v-model="filters['提交時間']" /> -->
-        <date-picker :name="'提交時間'" v-model="filters['提交時間']" range />
+        <date-picker
+          name="'提交時間'"
+          v-model="filters['提交時間']"
+          range
+          placeholder="提交時間"
+        />
       </b-col>
       <b-col>
         <b-input-group prepend="AE">

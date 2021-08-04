@@ -4,7 +4,7 @@
       一審資料再審核清單
       <b-spinner v-if="loading" variant="warning"></b-spinner>
     </h1>
-    <b-row no-gutters>
+    <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="客户姓名">
           <b-form-input
@@ -35,9 +35,15 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row no-gutters>
-      <b-col cols="6">
-        <DateRange :name="'提交時間'" v-model="filters['提交時間']" />
+    <b-row>
+      <b-col>
+        <!-- <DateRange :name="'提交時間'" v-model="filters['提交時間']" /> -->
+        <date-picker
+          name="'提交時間'"
+          v-model="filters['提交時間']"
+          range
+          placeholder="提交時間"
+        />
       </b-col>
       <b-col>
         <b-input-group prepend="AE">
@@ -51,6 +57,7 @@
           </b-form-select>
         </b-input-group>
       </b-col>
+      <b-col></b-col>
     </b-row>
     <b-row no-gutters class="mt-3">
       <b-col class="text-center">
@@ -115,7 +122,7 @@
   </b-container>
 </template>
 <script>
-import DateRange from "./DateRange";
+// import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -156,7 +163,7 @@ export default {
     audit_client_url: String,
   },
   components: {
-    DateRange,
+    // DateRange,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);

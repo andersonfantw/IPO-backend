@@ -4,7 +4,7 @@
       二審資料可投遞清單
       <b-spinner v-if="loading" variant="warning"></b-spinner>
     </h1>
-    <b-row no-gutters>
+    <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="帳戶號碼">
           <b-form-input
@@ -36,7 +36,7 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row no-gutters>
+    <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="手機號碼">
           <b-form-input
@@ -50,18 +50,25 @@
           <b-form-input type="search" v-model="filters['郵箱']"></b-form-input>
         </b-input-group>
       </b-col>
-      <b-col cols="6">
-        <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" />
+      <b-col>
+        <!-- <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" /> -->
+        <date-picker
+          name="'開戶時間'"
+          v-model="filters['開戶時間']"
+          range
+          placeholder="開戶時間"
+        />
+      </b-col>
+      <b-col>
+        <date-picker
+          name="'帳戶生成時間'"
+          v-model="filters['帳戶生成時間']"
+          range
+          placeholder="帳戶生成時間"
+        />
       </b-col>
     </b-row>
-    <b-row no-gutters>
-      <b-col cols="6">
-        <DateRange :name="'帳戶生成時間'" v-model="filters['帳戶生成時間']" />
-      </b-col>
-      <b-col></b-col>
-      <b-col></b-col>
-    </b-row>
-    <b-row no-gutters>
+    <b-row>
       <b-col>
         <b-button variant="primary" @click="generateAccounts"
           ><i class="far fa-user"></i> 產生Ayers帳號</b-button
@@ -134,7 +141,7 @@
   </b-container>
 </template>
 <script>
-import DateRange from "./DateRange";
+// import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -176,7 +183,7 @@ export default {
     generate_ayers_account_url: String,
   },
   components: {
-    DateRange,
+    // DateRange,
   },
   created() {
     this.columns = JSON.parse(this.p_columns);
