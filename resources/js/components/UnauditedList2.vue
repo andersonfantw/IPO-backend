@@ -59,6 +59,16 @@
       </b-col>
       <b-col> </b-col>
     </b-row>
+    <b-row v-if="loading" class="mt-3">
+      <b-col>
+        <b-progress :max="100" show-progress animated variant="success">
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress.toFixed(2)}%`"
+          ></b-progress-bar>
+        </b-progress>
+      </b-col>
+    </b-row>
     <b-row no-gutters class="mt-3">
       <b-col class="text-center">
         <b-pagination
@@ -148,6 +158,7 @@ export default {
         { value: "是", text: "是" },
         { value: "否", text: "否" },
       ],
+      progress: 0,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -179,11 +190,17 @@ export default {
           perPage: self.perPage,
           pageNumber: pageNumber,
         })
-        .then(function (res) {
+        .then((res) => {
           console.log(res);
           const data = res.data.data;
+          const total = res.data.total;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
+          if (total <= self.perPage) {
+            self.progress = 100;
+          } else {
+            self.progress += (self.perPage / total) * 100;
+          }
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {
