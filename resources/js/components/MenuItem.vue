@@ -1,6 +1,6 @@
 <template>
   <a
-    class="list-group-item list-group-item-action list-group-item-dark d-flex w-100 justify-content-between"
+    class="list-group-item list-group-item-action list-group-item-info d-flex w-100 justify-content-between"
     :href="menu_item.url"
   >
     <h5 class="mb-0">
