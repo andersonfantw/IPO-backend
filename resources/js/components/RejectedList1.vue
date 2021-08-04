@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="p-0">
-    <h1 class="text-warning text-center">
-      資料駁回清單
-      <b-spinner v-if="loading" variant="warning"></b-spinner>
-    </h1>
+    <h1 class="text-warning text-center">資料駁回清單</h1>
     <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="客户姓名">
@@ -62,6 +59,16 @@
           <b-form-select v-model="filters['已退款']" :options="已退款">
           </b-form-select>
         </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row v-if="loading" class="mt-3">
+      <b-col>
+        <b-progress :max="100" show-progress animated variant="success">
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress.toFixed(2)}%`"
+          ></b-progress-bar>
+        </b-progress>
       </b-col>
     </b-row>
     <b-row no-gutters class="mt-3">
@@ -168,6 +175,7 @@ export default {
         { value: "是", text: "是" },
         { value: "否", text: "否" },
       ],
+      progress: 0,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -201,6 +209,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.data = [];
+          self.progress = 0;
           self.loading = true;
           self.loadData(1);
         })
@@ -218,8 +227,14 @@ export default {
         .then((res) => {
           console.log(res);
           const data = res.data.data;
+          const total = res.data.total;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
+          if (total <= self.perPage) {
+            self.progress = 100;
+          } else {
+            self.progress += (self.perPage / total) * 100;
+          }
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {

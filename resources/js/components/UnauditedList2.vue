@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="p-0">
-    <h1 class="text-warning text-center">
-      二審資料未審核清單
-      <b-spinner v-if="loading" variant="warning"></b-spinner>
-    </h1>
+    <h1 class="text-warning text-center">二審資料未審核清單</h1>
     <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="客户姓名">
