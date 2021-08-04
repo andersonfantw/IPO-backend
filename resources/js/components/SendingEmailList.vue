@@ -71,6 +71,16 @@
     <b-button variant="success" @click="sendEmails"
       ><i class="far fa-envelope"></i> 一鍵發送</b-button
     >
+    <b-row v-if="loading" class="mt-3">
+      <b-col>
+        <b-progress
+          :value="progress"
+          :max="100"
+          show-progress
+          animated
+        ></b-progress>
+      </b-col>
+    </b-row>
     <b-row no-gutters class="mt-3">
       <b-col class="text-center">
         <b-pagination
@@ -149,6 +159,7 @@ export default {
         { value: "未發送", text: "未發送" },
         { value: "已發送", text: "已發送" },
       ],
+      progress: 0,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -194,6 +205,7 @@ export default {
           .then((res) => {
             console.log(res);
             self.data = [];
+            self.progress = 0;
             self.loadData(1);
           })
           .catch((error) => {
@@ -213,9 +225,15 @@ export default {
         .then((res) => {
           console.log(res);
           const data = res.data.data;
+          const total = res.data.total;
           self.data = self.data.concat(data);
           self.filteredClients = self.data;
           self.totalRows = self.data.length;
+          if (total <= self.perPage) {
+            self.progress = 100;
+          } else {
+            self.progress += (self.perPage / total) * 100;
+          }
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {

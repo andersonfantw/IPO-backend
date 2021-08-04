@@ -48,6 +48,7 @@ class SendingEmailListController extends HomeController
             })->where('type', '拼一手')->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
+        $total = $Clients->total();
         foreach ($Clients as $Client) {
             $row = [];
             $AyersAccounts = [];
@@ -75,6 +76,7 @@ class SendingEmailListController extends HomeController
         }
         return json_encode([
             'data' => $rows,
+            'total' => $total,
         ], JSON_UNESCAPED_UNICODE);
     }
 }
