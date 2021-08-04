@@ -70,14 +70,12 @@
     >
     <b-row v-if="loading" class="mt-3">
       <b-col>
-        <b-progress
-          :value="progress"
-          :max="100"
-          show-progress
-          animated
-          :label="`${progress}%`"
-          variant="success"
-        ></b-progress>
+        <b-progress :max="100" show-progress animated variant="success">
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress}%`"
+          ></b-progress-bar>
+        </b-progress>
       </b-col>
     </b-row>
     <b-row no-gutters class="mt-3">
