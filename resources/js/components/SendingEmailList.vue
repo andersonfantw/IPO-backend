@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="p-0">
-    <h1 class="text-warning text-center">
-      開戶信發送清單
-      <b-spinner v-if="loading" variant="warning"></b-spinner>
-    </h1>
+    <h1 class="text-warning text-center">開戶信發送清單</h1>
     <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="帳戶號碼">
@@ -78,6 +75,8 @@
           :max="100"
           show-progress
           animated
+          :label="`${value}%`"
+          variant="success"
         ></b-progress>
       </b-col>
     </b-row>
