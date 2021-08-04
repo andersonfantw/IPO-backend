@@ -48,10 +48,14 @@ export const CommonFunctionMixin = {
             }
         },
         betweenDate(val, array) {
-            const date = this.formateDate(val);
-            const from = this.formateDate(array[0]);
-            const to = this.formateDate(array[1]);
-            return date >= from && date <= to;
+            if (array && array.length == 2 && array[0] && array[1]) {
+                const date = this.formateDate(val);
+                const from = this.formateDate(array[0]);
+                const to = this.formateDate(array[1]);
+                return date >= from && date <= to;
+            } else {
+                return true;
+            }
         },
         equals(val1, val2) {
             return val1 == val2;
