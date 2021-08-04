@@ -75,6 +75,7 @@ class DeliverableList2Controller extends HomeController
             })
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        $total = $Clients->total();
         $rows = [];
         foreach ($Clients as $Client) {
             if (count($Client->AyersAccounts) > 0) {
@@ -107,6 +108,7 @@ class DeliverableList2Controller extends HomeController
         }
         return json_encode([
             'data' => $rows,
+            'total' => $total,
         ], JSON_UNESCAPED_UNICODE);
     }
 

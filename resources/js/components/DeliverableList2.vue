@@ -1,9 +1,6 @@
 <template>
   <b-container fluid class="p-0">
-    <h1 class="text-warning text-center">
-      二審資料可投遞清單
-      <b-spinner v-if="loading" variant="warning"></b-spinner>
-    </h1>
+    <h1 class="text-warning text-center">二審資料可投遞清單</h1>
     <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="帳戶號碼">
@@ -85,6 +82,16 @@
         </b-button>
       </b-col>
     </b-row>
+    <b-row v-if="loading" class="mt-3">
+      <b-col>
+        <b-progress :max="100" show-progress animated variant="success">
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress.toFixed(2)}%`"
+          ></b-progress-bar>
+        </b-progress>
+      </b-col>
+    </b-row>
     <b-row no-gutters class="mt-3">
       <b-col class="text-center">
         <b-pagination
@@ -164,6 +171,7 @@ export default {
         { value: "現金賬戶", text: "現金賬戶" },
         { value: "全權委託賬戶", text: "全權委託賬戶" },
       ],
+      progress: 0,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -270,6 +278,7 @@ export default {
           .then((response) => {
             console.log(response);
             self.data = [];
+            self.progress = 0;
             self.loadData(1);
           })
           .catch((error) => {
@@ -289,9 +298,15 @@ export default {
         .then((res) => {
           console.log(res);
           const data = res.data.data;
+          const total = res.data.total;
           self.data = self.data.concat(data);
           self.filteredClients = self.data;
           self.totalRows = self.data.length;
+          if (total <= self.perPage) {
+            self.progress = 100;
+          } else {
+            self.progress += (self.perPage / total) * 100;
+          }
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {
