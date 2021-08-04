@@ -73,7 +73,7 @@
         <b-progress :max="100" show-progress animated variant="success">
           <b-progress-bar
             :value="progress"
-            :label="`${progress}%`"
+            :label="`${progress.toFixed(2)}%`"
           ></b-progress-bar>
         </b-progress>
       </b-col>
