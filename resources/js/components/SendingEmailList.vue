@@ -182,9 +182,10 @@ export default {
             clients: self.selectedClients,
             User: self.User,
           })
-          .then((response) => {
-            console.log(response);
-            self.loadData();
+          .then((res) => {
+            console.log(res);
+            self.data = [];
+            self.loadData(1);
           })
           .catch((error) => {
             console.log(error);
