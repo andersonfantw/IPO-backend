@@ -75,7 +75,7 @@
           :max="100"
           show-progress
           animated
-          :label="`${value}%`"
+          :label="`${progress}%`"
           variant="success"
         ></b-progress>
       </b-col>
