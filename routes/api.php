@@ -25,6 +25,7 @@ Route::prefix('ClientProgress')->group(function () {
 Route::prefix('Client')->group(function () {
     Route::any('/details', 'ViewClientController@getClientDetails');
     Route::post('/audit', 'AuditClientController@audit1');
+    Route::post('/setCanClose', 'AuditClientController@setCanClose');
 });
 
 Route::prefix('AE')->group(function () {

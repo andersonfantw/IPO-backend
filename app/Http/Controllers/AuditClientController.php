@@ -486,4 +486,10 @@ class AuditClientController extends ViewClientController
         return $parameters;
     }
 
+    public function setCanClose(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->update(['can_close' => 1]);
+        return ['success' => $Client > 0];
+    }
+
 }

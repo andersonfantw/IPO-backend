@@ -24,8 +24,11 @@ class ClientProgressController extends HomeController
             ['key' => '流程', 'sortable' => true],
             ['key' => '開戶進度', 'sortable' => true],
             ['key' => '狀態', 'sortable' => true],
+            ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '郵箱', 'sortable' => true],
             ['key' => '更新時間', 'sortable' => true],
+            ['key' => '銷戶時間', 'sortable' => true],
+            ['key' => '操作'],
         ];
         $FilterType = [
             'AE' => 'equals',
@@ -35,8 +38,10 @@ class ClientProgressController extends HomeController
             '流程' => 'equals',
             '開戶進度' => 'equals',
             '狀態' => 'equals',
+            '帳戶號碼' => 'contains',
             '郵箱' => 'startsWith',
             '更新時間' => 'betweenDate',
+            '銷戶時間' => 'betweenDate',
         ];
         $parameters['columns'] = json_encode($columns);
         $parameters['FilterType'] = json_encode($FilterType);
@@ -47,7 +52,7 @@ class ClientProgressController extends HomeController
     {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'EditableSteps' => function ($query) {
             $query->where('reason', 'correction');
-        }])
+        }, 'AyersAccounts'])
             ->where('type', '拼一手')
             ->where(function (Builder $query) use ($request) {
                 $query->whereHasMorph('IDCard', [
@@ -114,9 +119,16 @@ class ClientProgressController extends HomeController
             } else {
                 $row['狀態'] = $Client->status;
             }
+            $AyersAccounts = [];
+            foreach ($Client->AyersAccounts as $AyersAccount) {
+                $AyersAccounts[] = $AyersAccount->account_no;
+            }
+            $row['帳戶號碼'] = implode(', ', $AyersAccounts);
             $row['郵箱'] = $Client->email;
             $row['更新時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
+            $row['銷戶時間'] = $Client->closed_at ? date_format($Client->closed_at, "Y-m-d H:i:s") : null;
             $row['uuid'] = $Client->uuid;
+            $row['can_close'] = $Client->can_close;
             $rows[] = $row;
         }
         return json_encode([

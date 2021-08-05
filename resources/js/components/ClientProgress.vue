@@ -83,6 +83,17 @@
           <b-spinner class="align-middle"></b-spinner>
         </div>
       </template>
+      <template #cell(操作)="data">
+        <b-button
+          v-if="!data.item.can_close && data.item.帳戶號碼 != ''"
+          type="button"
+          variant="danger"
+          @click="setCanCloseAC(data.item.uuid)"
+          ><h5 class="mb-0">
+            <i class="far fa-window-close"></i> 可銷戶
+          </h5></b-button
+        >
+      </template>
     </b-table>
     <b-pagination
       v-if="totalRows > 0"
@@ -139,6 +150,22 @@ export default {
     // this.loadData(1);
   },
   methods: {
+    setCanCloseAC(uuid) {
+      const self = this;
+      axios
+        .post("api/Client/setCanClose", {
+          uuid: uuid,
+        })
+        .then((res) => {
+          console.log(res);
+          self.data = [];
+          self.loading = true;
+          self.loadData(1);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     query() {
       const self = this;
       self.loading = true;
