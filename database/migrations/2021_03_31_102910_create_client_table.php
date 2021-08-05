@@ -35,7 +35,7 @@ class CreateClientTable extends Migration
                 $table->string('status',100)->nullable(false)->default('unaudited');
                 $table->text('remark',100)->nullable();
                 $table->integer('count_of_audits')->nullable(false)->default('0');
-                $table->dateTime('closed_at')->nullable(false);
+                // $table->dateTime('closed_at')->nullable(false);
                 $table->timestamps();
                 $table->unique(['country_code','mobile']);
             });

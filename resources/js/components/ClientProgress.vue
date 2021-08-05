@@ -85,12 +85,29 @@
       </template>
       <template #cell(操作)="data">
         <b-button
-          v-if="!data.item.can_close && data.item.帳戶號碼 != ''"
+          v-if="
+            data.item.帳戶號碼 != '' &&
+            (!data.item['08銷戶時間'] || !data.item['13銷戶時間']) &&
+            !data.item.can_close
+          "
           type="button"
           variant="danger"
           @click="setCanCloseAC(data.item.uuid)"
           ><h5 class="mb-0">
             <i class="far fa-window-close"></i> 可銷戶
+          </h5></b-button
+        >
+        <b-button
+          v-if="
+            data.item.帳戶號碼 != '' &&
+            (!data.item['08銷戶時間'] || !data.item['13銷戶時間']) &&
+            data.item.can_close
+          "
+          type="button"
+          variant="success"
+          @click="cancelCanCloseAC(data.item.uuid)"
+          ><h5 class="mb-0">
+            <i class="far fa-window-close"></i> 取消銷戶
           </h5></b-button
         >
       </template>
@@ -154,6 +171,22 @@ export default {
       const self = this;
       axios
         .post("api/Client/setCanClose", {
+          uuid: uuid,
+        })
+        .then((res) => {
+          console.log(res);
+          self.data = [];
+          self.loading = true;
+          self.loadData(1);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    cancelCanCloseAC(uuid) {
+      const self = this;
+      axios
+        .post("api/Client/cancelCanCloseAC", {
           uuid: uuid,
         })
         .then((res) => {

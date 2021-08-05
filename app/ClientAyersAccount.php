@@ -13,6 +13,7 @@ class ClientAyersAccount extends Model
         'type',
         'client_type',
         'status',
+        'closed_at',
     ];
 
     public function Client()
