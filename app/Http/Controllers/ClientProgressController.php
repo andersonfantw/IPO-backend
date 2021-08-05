@@ -23,6 +23,7 @@ class ClientProgressController extends HomeController
             ['key' => '手機號碼', 'sortable' => true],
             ['key' => '流程', 'sortable' => true],
             ['key' => '開戶進度', 'sortable' => true],
+            ['key' => '狀態', 'sortable' => true],
             ['key' => '郵箱', 'sortable' => true],
             ['key' => '更新時間', 'sortable' => true],
         ];
@@ -33,6 +34,7 @@ class ClientProgressController extends HomeController
             '手機號碼' => 'startsWith',
             '流程' => 'equals',
             '開戶進度' => 'equals',
+            '狀態' => 'equals',
             '郵箱' => 'startsWith',
             '更新時間' => 'betweenDate',
         ];
@@ -43,7 +45,9 @@ class ClientProgressController extends HomeController
 
     public function query(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard'])
+        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'EditableSteps' => function ($query) {
+            $query->where('reason', 'correction');
+        }])
             ->where('type', '拼一手')
             ->where(function (Builder $query) use ($request) {
                 $query->whereHasMorph('IDCard', [
@@ -105,6 +109,11 @@ class ClientProgressController extends HomeController
             }
             $row['流程'] = $流程;
             $row['開戶進度'] = "$Client->progress/$max_progress";
+            if (count($Client->EditableSteps) > 0) {
+                $row['狀態'] = 'rejected';
+            } else {
+                $row['狀態'] = $Client->status;
+            }
             $row['郵箱'] = $Client->email;
             $row['更新時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
             $row['uuid'] = $Client->uuid;
