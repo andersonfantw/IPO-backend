@@ -6,6 +6,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keyup.enter="query"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -14,6 +15,7 @@
           <b-form-input
             type="search"
             v-model="filters['證件號碼']"
+            @keyup.enter="query"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -22,12 +24,17 @@
           <b-form-input
             type="search"
             v-model="filters['手機號碼']"
+            @keyup.enter="query"
           ></b-form-input>
         </b-input-group>
       </b-col>
       <b-col>
         <b-input-group prepend="郵箱">
-          <b-form-input type="search" v-model="filters['郵箱']" />
+          <b-form-input
+            type="search"
+            v-model="filters['郵箱']"
+            @keyup.enter="query"
+          />
         </b-input-group>
       </b-col>
     </b-row>
