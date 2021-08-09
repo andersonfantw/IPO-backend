@@ -94,8 +94,11 @@
             {{ ClientIDCard.name_c }}
           </td>
           <th width="20%">英文名</th>
-          <td width="20%" class="text-warning">
+          <td v-if="ClientIDCard.name_en" width="20%" class="text-warning">
             {{ ClientIDCard.name_en }}
+          </td>
+          <td v-else width="20%" class="text-warning">
+            {{ ClientIDCard.surname }} {{ ClientIDCard.given_name }}
           </td>
           <td width="20%" rowspan="6">
             <b-form-textarea
@@ -124,20 +127,18 @@
           <td class="text-warning">
             {{ ClientIDCard.birthday }}
           </td>
-          <th>證件類型</th>
+          <th>住址</th>
           <td class="text-warning">
-            {{ ClientIDCard.passport_type }}
+            {{ ClientIDCard.idcard_address }}
           </td>
         </tr>
         <tr>
-          <th>住址</th>
-          <td class="text-warning">
-            {{ ClientIDCard.address }}
-          </td>
           <th>證件號碼</th>
           <td class="text-warning">
             {{ ClientIDCard.idcard_no }}
           </td>
+          <th></th>
+          <td></td>
         </tr>
         <tr>
           <td colspan="2">
