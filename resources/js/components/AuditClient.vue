@@ -197,10 +197,14 @@
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行卡號
             </div>
-            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">
+              銀行代碼-分行代碼-銀行卡號
+            </div>
           </th>
           <td width="20%" class="text-warning">
-            {{ 銀行卡.account_no }}
+            {{ 銀行卡.bank_code }}-{{ 銀行卡.branch_code }}-{{
+              銀行卡.account_no
+            }}
           </td>
           <td width="20%" rowspan="2">
             <b-form-textarea
@@ -231,6 +235,73 @@
               style="width: 300px"
               :src="other_backcard_face"
             />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientDepositProof" class="table table-bordered text-light">
+      <thead>
+        <tr>
+          <th colspan="4" scope="col">
+            <h5 class="mb-0"><i class="fas fa-dollar-sign"></i> 存款證明</h5>
+          </th>
+          <th scope="col">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回存款證明"
+                v-model="駁回.存款證明"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>入金帳戶</th>
+          <td class="text-warning">
+            {{ ClientDepositProof.deposit_account }}
+          </td>
+          <th>入金金額</th>
+          <td class="text-warning">
+            HK${{ ClientDepositProof.deposit_amount }}
+          </td>
+          <td width="20%" rowspan="3">
+            <b-form-textarea
+              class="bg-secondary text-white"
+              v-if="駁回.存款證明"
+              name="駁回存款證明"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="10"
+              v-model="ClientDepositProof.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>入金銀行</th>
+          <td class="text-warning">
+            {{ ClientDepositProof.deposit_bank }}
+          </td>
+          <th>入金方法</th>
+          <td class="text-warning">
+            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
+              {{ ClientDepositProof.other_deposit_method }}
+            </div>
+            <div v-else class="mb-0">
+              {{ ClientDepositProof.deposit_method }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <img style="width: 500px" :src="deposit_proof" />
+          </td>
+          <th>轉帳時間</th>
+          <td class="text-warning">
+            {{ ClientDepositProof.transfer_time }}
           </td>
         </tr>
       </tbody>
@@ -603,73 +674,6 @@
             {{ ClientBusinessType.direct_promotion }}
           </h5>
         </td>
-      </tbody>
-    </table>
-    <table v-if="ClientDepositProof" class="table table-bordered text-light">
-      <thead>
-        <tr>
-          <th colspan="4" scope="col">
-            <h5 class="mb-0"><i class="fas fa-dollar-sign"></i> 存款證明</h5>
-          </th>
-          <th scope="col">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                id="駁回存款證明"
-                v-model="駁回.存款證明"
-                :value="true"
-                :unchecked-value="false"
-                >駁回
-              </b-form-checkbox>
-            </h5>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>入金帳戶</th>
-          <td class="text-warning">
-            {{ ClientDepositProof.deposit_account }}
-          </td>
-          <th>入金金額</th>
-          <td class="text-warning">
-            HK${{ ClientDepositProof.deposit_amount }}
-          </td>
-          <td width="20%" rowspan="3">
-            <b-form-textarea
-              class="bg-secondary text-white"
-              v-if="駁回.存款證明"
-              name="駁回存款證明"
-              style="width: 100%"
-              placeholder="請寫駁回理由"
-              rows="10"
-              v-model="ClientDepositProof.remark"
-            ></b-form-textarea>
-          </td>
-        </tr>
-        <tr>
-          <th>入金銀行</th>
-          <td class="text-warning">
-            {{ ClientDepositProof.deposit_bank }}
-          </td>
-          <th>入金方法</th>
-          <td class="text-warning">
-            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
-              {{ ClientDepositProof.other_deposit_method }}
-            </div>
-            <div v-else class="mb-0">
-              {{ ClientDepositProof.deposit_method }}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <img style="width: 500px" :src="deposit_proof" />
-          </td>
-          <th>轉帳時間</th>
-          <td class="text-warning">
-            {{ ClientDepositProof.transfer_time }}
-          </td>
-        </tr>
       </tbody>
     </table>
     <div class="text-center mb-5">
