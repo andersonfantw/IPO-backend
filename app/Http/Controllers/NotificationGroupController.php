@@ -223,7 +223,7 @@ class NotificationGroupController extends HomeController
     }
 
     public function list($id, Request $request){
-        $NotificationRecord = NotificationRecord::ofParent($id);
+        $NotificationRecord = NotificationRecord::ofParentID($id);
         $request->whenFilled('client_id',function($input) use($NotificationRecord){
             $NotificationRecord->where('client_id','like',$input.'%');
         });
@@ -289,7 +289,7 @@ class NotificationGroupController extends HomeController
         $NotificationGroup = NotificationGroup::findOrFail($id);
         // 匯入可能包含額外的變數，匯入的任務不可添加人員
         if(!is_null($NotificationGroup->import_list)) return ['ok'=>false];
-        $NotificationRecord = NotificationRecord::ofParent($id)->where('client_id','=',$client_id)->first();
+        $NotificationRecord = NotificationRecord::ofParentID($id)->where('client_id','=',$client_id)->first();
         if(!is_null($NotificationRecord)) return ['ok'=>false];
         NotificationRecord::create(
             (new NotifyMessage)->clientId($client_id)
