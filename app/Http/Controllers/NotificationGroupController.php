@@ -135,7 +135,10 @@ class NotificationGroupController extends HomeController
                     }
                 }
                 if(array_key_exists($client_id, $hash)) $NotifyMessage->rowClientInfo($hash[$client_id]);
-                $data[] = $NotifyMessage->toData($params);
+                $data[] = array_merge(
+                    $NotifyMessage->toData($params),
+                    ['notification_group_id'=>$NotificationGroup->id]
+                );
                 unset($NotifyMessage);
             }
 
