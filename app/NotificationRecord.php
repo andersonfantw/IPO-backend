@@ -11,7 +11,7 @@ class NotificationRecord extends Model
     use Notifiable;
 
     protected $fillable = ['notification_group_id','route','notification_template_id','client_id','name','phone','email','title','content','status','remark','issued_by'];
-    public function scopeOfParent(Builder $query, $id){
+    public function scopeOfParentID(Builder $query, $id){
         return $query->where('notification_group_id','=',$id);
     }
 

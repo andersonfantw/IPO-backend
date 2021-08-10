@@ -274,9 +274,9 @@ class NotificationGroupController extends HomeController
     public function destroy($id)
     {
         // 已經發送過的需要留紀錄不可刪除
-        $hasSend = NotificationRecord::ofParent($id)->where('status','=','success')->get();
+        $hasSend = NotificationRecord::ofParentID($id)->where('status','=','success')->get();
         if($hasSend->count()>0) return ['ok'=>false];
-        NotificationRecord::ofParent($id)->delete();
+        NotificationRecord::ofParentID($id)->delete();
         NotificationGroup::destroy($id);
         return ['ok'=>true];
     }
