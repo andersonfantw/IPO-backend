@@ -216,7 +216,7 @@ export default {
         send_all(){
             let _this = this
             this.myPost(function(response){
-
+                _this.index()
             },null,this.url(this.form.id+'/SendAll/'))
         },
         add_to_list(client){

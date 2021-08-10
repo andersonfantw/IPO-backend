@@ -283,6 +283,7 @@ class NotificationGroupController extends HomeController
 
     public function sendAll($id){
         dispatch(new SendNotificationJobCreate($id));
+        return ['ok'=>true];
     }
 
     public function addClient($id,$client_id){
