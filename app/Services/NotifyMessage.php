@@ -116,7 +116,6 @@ class NotifyMessage{
             'email' => $this->email??$_params['[email]']??null,
             'title' => strtr($this->title,$_params),
             'content' => strtr($this->content,$_params),
-            'status' => 'pending',
             'issued_by' => 'admin', //auth()->user()->name, 
         ];
     }
