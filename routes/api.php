@@ -127,6 +127,10 @@ Route::prefix('ClientAddressProofUpdates')->group(function () {
     Route::any('/all_data', 'ClientAddressProofUpdatesController@getData');
 });
 
+Route::prefix('Permission')->group(function () {
+    Route::any('/list', 'PermissionController@list');
+});
+
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');

@@ -120,6 +120,8 @@ Vue.component('client-credit-cards', require('./components/ClientCreditCards.vue
 
 Vue.component('audit-client-credit-card', require('./components/AuditClientCreditCard.vue').default);
 
+Vue.component('permission', require('./components/Permission.vue').default);
+
 // Anderson start
 import VueBus from 'vue-bus';
 Vue.use(VueBus);
@@ -153,6 +155,7 @@ Vue.component('send-email-task', require('./components/v_send_email_task.vue').d
 Vue.component('send-account-overview-task', require('./components/v_send_account_overview_task.vue').default);
 
 Vue.component('notification-import-excel-format-example', require('./components/v_notification_import_excel_format_example.vue').default);
+
 // Anderson end
 
 /**
