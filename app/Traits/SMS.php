@@ -73,8 +73,7 @@ trait SMS
         $introducer_uuid = $Client->introducer_uuid;
 
         $contents = <<<TEXT
-[中國銀盛國際證券]
-閣下所提交的證券戶口開戶資料未能通過審核，請重新掃瞄二維碼（QR Code）或點擊以下開戶連結（https://pys.chinayss.hk）進入開戶流程，根據開戶流程中的指示修正或更新相應資料，所有資料修正完畢後頁面會跳到最後一個步驟，代表開戶資料已成功重新提交。謝謝您的耐心配合。
+【銀盛證券】尊敬的客戶，您開戶未能通過審核，請于5日内點擊以下鏈接(https://pys.chinayss.hk)登入開戶界面，並根據提示更新相應資料。感謝使用銀盛證券服務！
 TEXT;
 
         (new NotifyService)->notify((new NotifyMessage)->mobile("$country_code$recipient")->content($contents));
