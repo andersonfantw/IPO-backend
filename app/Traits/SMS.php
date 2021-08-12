@@ -100,11 +100,12 @@ TEXT;
         $EditableSteps = EditableSteps::leftJoin('client','editable_steps.uuid','=','client.uuid')
             ->where('reason','=','correction')
             ->groupBy('editable_steps.uuid')
-            ->havingRaw('datediff(now(),min(editable_steps.created_at))=14')
+            ->havingRaw('datediff(now(),min(editable_steps.created_at))=5')
             ->select('email')
             ->selectRaw('concat(client.country_code,client.mobile) as mobile')
             ->selectRaw('count(*) as Rejected')->get();
         foreach($EditableSteps as $row){
+            dd((new NotifyMessage)->mobile($row->mobile)->templateId(9)->toData());
             //(new NotifyService)->notify((new NotifyMessage)->mobile($row->mobile)->templateId(9));
             (new NotifyService)->notify((new NotifyMessage)->mobile('85255984928')->templateId(9));
         }
