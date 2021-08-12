@@ -139,10 +139,9 @@ class NotifyMessage{
         }
 
         // 有設定Template未設定content，將content設定為模板訊息
-        if($this->template_id>0 && ($this->content=='' || $this->title)){
+        if($this->template_id>0 && $this->content==''){
             $NotificationTemplate = NotificationTemplate::findOrFail($this->template_id);
-            $this->title = $this->title??$NotificationTemplate->title;
-            $this->content = $this->content??$NotificationTemplate->content;
+            $this->content = $this->content??$NotificationTemplate->template;
         }
 
         $_params = [];
