@@ -102,7 +102,7 @@ TEXT;
             ->groupBy('editable_steps.uuid')
             ->havingRaw('datediff(now(),min(editable_steps.created_at))=14')
             ->select('email')
-            ->selectRaw('concat(editable_steps.country_code,editable_steps.mobile) as mobile')
+            ->selectRaw('concat(client.country_code,client.mobile) as mobile')
             ->selectRaw('count(*) as Rejected')->get();
         foreach($EditableSteps as $row){
             //(new NotifyService)->notify((new NotifyMessage)->mobile($row->mobile)->templateId(9));
