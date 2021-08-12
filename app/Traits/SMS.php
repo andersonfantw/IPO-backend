@@ -100,7 +100,7 @@ TEXT;
         $EditableSteps = EditableSteps::leftJoin('client','editable_steps.uuid','=','client.uuid')
             ->where('reason','=','correction')
             ->groupBy('editable_steps.uuid')
-            ->havingRaw('datediff(now(),min(es.created_at))=14')
+            ->havingRaw('datediff(now(),min(editable_steps.created_at))=14')
             ->select('email')
             ->selectRaw('concat(editable_steps.country_code,editable_steps.mobile) as mobile')
             ->selectRaw('count(*) as Rejected')->get();
