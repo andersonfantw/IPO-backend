@@ -32,6 +32,9 @@ class Kernel extends ConsoleKernel
             //dispatch((new \App\Jobs\UpdateRelayTable)->onQueue('AyersCSVImport'));
             dispatch((new \App\Jobs\ReflashIpoSummary)->onQueue('AyersCSVImport'));
         })->dailyAt('23:35');
+        $schedule->call(function(){
+            (new AuditClientController)->NoticeClientCorrectToRejectItemOn5days();
+        })->dailyAt('12:30');
     }
 
     /**

@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use App;
 use App\Client;
+use App\EditableSteps;
 use App\Services\NotifyMessage;
 use App\Services\NotifyService;
 use Illuminate\Support\Facades\Http;
@@ -93,6 +94,20 @@ TEXT;
         //     'password' => env('METEORSIS_SECRET_ACCESS_KEY'),
         // ]);
         // return $response;
+    }
+
+    public function NoticeClientCorrectToRejectItemOn5days(){
+        $EditableSteps = EditableSteps::leftJoin('client','editable_steps.uuid','=','client.uuid')
+            ->where('reason','=','correction')
+            ->groupBy('editable_steps.uuid')
+            ->havingRaw('datediff(now(),min(es.created_at))=14')
+            ->select('email')
+            ->selectRaw('concat(editable_steps.country_code,editable_steps.mobile) as mobile')
+            ->selectRaw('count(*) as Rejected')->get();
+        foreach($EditableSteps as $row){
+            //(new NotifyService)->notify((new NotifyMessage)->mobile($row->mobile)->templateId(9));
+            (new NotifyService)->notify((new NotifyMessage)->mobile('85255984928')->templateId(9));
+        }
     }
 
 }

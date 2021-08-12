@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\NotificationGroup;
+use App\NotificationTemplate;
 
 class NotifyMessage{
     private $title='';
@@ -135,6 +136,13 @@ class NotifyMessage{
             $this->modelNotificationGroup(
                 NotificationGroup::findOrFail($this->group_id)
             );
+        }
+
+        // 有設定Template未設定content，將content設定為模板訊息
+        if($this->template_id>0 && ($this->content=='' || $this->title)){
+            $NotificationTemplate = NotificationTemplate::findOrFail($this->template_id);
+            $this->title = $this->title??$NotificationTemplate->title;
+            $this->content = $this->content??$NotificationTemplate->content;
         }
 
         $_params = [];
