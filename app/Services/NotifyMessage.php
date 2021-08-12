@@ -8,8 +8,8 @@ use App\NotificationGroup;
 use App\NotificationTemplate;
 
 class NotifyMessage{
-    private $title='';
-    private $content='';
+    private $title=null;
+    private $content=null;
     private $record_id=0;
     private $template_id=0;
     private $group_id=0;
