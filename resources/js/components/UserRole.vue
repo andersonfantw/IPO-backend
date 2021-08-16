@@ -93,10 +93,8 @@ export default {
       const self = this;
       if (self.name) {
         axios
-          .get(`api/Role/create`, {
-            params: {
-              name: self.name,
-            },
+          .post(`api/Role`, {
+            name: self.name,
           })
           .then((res) => {
             console.log(res);

@@ -98,10 +98,8 @@ export default {
       const self = this;
       if (self.name) {
         axios
-          .get(`api/Function/create`, {
-            params: {
-              name: self.name,
-            },
+          .post(`api/Function`, {
+            name: self.name,
           })
           .then((res) => {
             console.log(res);

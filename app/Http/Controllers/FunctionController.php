@@ -23,11 +23,8 @@ class FunctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        _Function::create([
-            'name' => $request->input('name'),
-        ]);
     }
 
     /**
@@ -38,7 +35,9 @@ class FunctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        _Function::create([
+            'name' => $request->input('name'),
+        ]);
     }
 
     /**

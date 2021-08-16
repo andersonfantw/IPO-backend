@@ -24,11 +24,8 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        Role::create([
-            'name' => $request->input('name'),
-        ]);
     }
 
     /**
@@ -39,7 +36,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Role::create([
+            'name' => $request->input('name'),
+        ]);
     }
 
     /**
