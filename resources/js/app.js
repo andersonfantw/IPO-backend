@@ -120,7 +120,7 @@ Vue.component('client-credit-cards', require('./components/ClientCreditCards.vue
 
 Vue.component('audit-client-credit-card', require('./components/AuditClientCreditCard.vue').default);
 
-Vue.component('permission', require('./components/Permission.vue').default);
+Vue.component('user-role', require('./components/UserRole.vue').default);
 
 // Anderson start
 import VueBus from 'vue-bus';

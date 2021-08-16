@@ -127,9 +127,19 @@ Route::prefix('ClientAddressProofUpdates')->group(function () {
     Route::any('/all_data', 'ClientAddressProofUpdatesController@getData');
 });
 
-Route::prefix('Permission')->group(function () {
-    Route::any('/list', 'PermissionController@list');
+Route::prefix('UserRole')->group(function () {
+    Route::any('/list', 'UserRoleController@list');
+    // Route::any('/create', 'UserRoleController@create');
+    // Route::any('/destroy/{id}/', 'UserRoleController@destroy')->where(['id' => '[0-9]+']);
 });
+
+Route::prefix('RoleFunctionPermission')->group(function () {
+    Route::any('/list', 'RoleFunctionPermissionController@list');
+});
+
+Route::resource('Role', 'RoleController');
+Route::resource('UserRole', 'UserRoleController');
+Route::resource('RoleFunctionPermission', 'RoleFunctionPermissionController');
 
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
