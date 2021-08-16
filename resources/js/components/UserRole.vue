@@ -136,7 +136,7 @@ export default {
           .then((res) => {
             console.log(res);
             self.loadUserRoles();
-            self.$emit("reload");
+            // self.$emit("reload");
           })
           .catch((error) => {
             console.log(error);
@@ -147,7 +147,7 @@ export default {
           .then((res) => {
             console.log(res);
             self.loadUserRoles();
-            self.$emit("reload");
+            // self.$emit("reload");
           })
           .catch((error) => {
             console.log(error);
