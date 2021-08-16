@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\RoleFunctionPermission;
 use App\UserRole;
 use Illuminate\Http\Request;
 
@@ -85,5 +86,6 @@ class RoleController extends Controller
     {
         Role::destroy($id);
         UserRole::where('role_id', $id)->delete();
+        RoleFunctionPermission::where('role_id', $id)->delete();
     }
 }
