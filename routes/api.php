@@ -139,6 +139,7 @@ Route::prefix('RoleFunctionPermission')->group(function () {
 
 Route::resource('Role', 'RoleController');
 Route::resource('UserRole', 'UserRoleController');
+Route::resource('Function', 'FunctionController');
 Route::resource('RoleFunctionPermission', 'RoleFunctionPermissionController');
 
 // Anderson 2021-05-31 start

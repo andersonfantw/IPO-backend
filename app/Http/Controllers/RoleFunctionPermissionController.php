@@ -73,7 +73,7 @@ class RoleFunctionPermissionController extends HomeController
         }
         return json_encode([
             'Functions' => $functions,
-            'RoleFunctionHeaders' => $columns,
+            'fields' => $columns,
             'RoleFunctionPermissions' => $RoleFunctionPermissions,
         ], JSON_UNESCAPED_UNICODE);
     }
@@ -145,6 +145,6 @@ class RoleFunctionPermissionController extends HomeController
      */
     public function destroy($id)
     {
-        //
+        RoleFunctionPermission::destroy($id);
     }
 }

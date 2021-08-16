@@ -13,7 +13,8 @@ class HomeController extends Controller
     use CountRecords, Image;
 
     protected $name = 'Home';
-    private $menu;
+    private $menus;
+    private $acl;
     /**
      * Create a new controller instance.
      *
@@ -22,7 +23,16 @@ class HomeController extends Controller
     public function __construct()
     {
         // $this->middleware('auth');
-        $this->menu = [
+        $this->menus = [
+            [
+                'label' => "中台使用者",
+                'items' => [
+                    [
+                        'label' => "權限管理",
+                        'url' => secure_url('Permission'),
+                    ],
+                ],
+            ],
             [
                 'label' => "開戶處理",
                 'items' => [
@@ -33,32 +43,26 @@ class HomeController extends Controller
                     [
                         'label' => "一審資料未審核清單",
                         'url' => route('UnauditedList1'),
-                        // 'no_of_news' => $this->countNewUnauditedClients1(),
                     ],
                     [
                         'label' => "一審資料再審核清單",
                         'url' => route('ReauditList1'),
-                        // 'no_of_news' => $this->countNewReauditClients(),
                     ],
                     [
                         'label' => "資料駁回清單",
                         'url' => route('RejectedList1'),
-                        // 'no_of_news' => $this->countNewRejectedClients1(),
                     ],
                     [
                         'label' => "二審資料未審核清單",
                         'url' => route('UnauditedList2'),
-                        // 'no_of_news' => $this->countNewUnauditedClients2(),
                     ],
                     [
                         'label' => "二審資料可投遞清單",
                         'url' => route('DeliverableList2'),
-                        // 'no_of_news' => $this->countNewDeliverableClients(),
                     ],
                     [
                         'label' => "開戶信發送清單",
                         'url' => route('SendingEmailList'),
-                        // 'no_of_news' => $this->countNewSendingEmailClients(),
                     ],
                     [
                         'label' => "年度通知書發送清單",
@@ -111,27 +115,22 @@ class HomeController extends Controller
                     [
                         'label' => "存款申請",
                         'url' => route('ClientFundInRequests'),
-                        // 'no_of_news' => $this->countNewClientFundInRequests(),
                     ],
                     [
                         'label' => "香港出款申請",
                         'url' => route('ClientHKFundOutRequests'),
-                        // 'no_of_news' => $this->countNewClientHKFundOutRequests(),
                     ],
                     [
                         'label' => "海外出款申請",
                         'url' => route('ClientOverseasFundOutRequests'),
-                        // 'no_of_news' => $this->countNewClientOverseasFundOutRequests(),
                     ],
                     [
                         'label' => "內部轉帳申請",
                         'url' => route('ClientFundInternalTransferRequests'),
-                        // 'no_of_news' => $this->countNewClientFundInternalTransferRequests(),
                     ],
                     [
                         'label' => "銀盛信用卡出款申請",
                         'url' => route('ClientCreditCardFundOutRequests'),
-                        // 'no_of_news' => $this->countNewClientCreditCardFundOutRequests(),
                     ],
                 ],
             ],
@@ -141,16 +140,15 @@ class HomeController extends Controller
                     [
                         'label' => "住址證明修改申請",
                         'url' => route('ClientAddressProofUpdates'),
-                        // 'no_of_news' => $this->countNewClientAddressProofUpdates(),
                     ],
                 ],
             ],
         ];
     }
 
-    protected function getMenu()
+    protected function getMenus()
     {
-        return $this->menu;
+        return $this->menus;
     }
     /**
      * Show the application dashboard.
@@ -164,8 +162,36 @@ class HomeController extends Controller
 
     protected function setViewParameters(Request $request)
     {
+        $functions = [];
+        $UserRoles = auth()->user()->UserRole;
+        foreach ($UserRoles as $UserRole) {
+            $Role = $UserRole->Role;
+            $RoleFunctionPermissions = $Role->RoleFunctionPermission;
+            foreach ($RoleFunctionPermissions as $RoleFunctionPermission) {
+                $Permission = $RoleFunctionPermission->Permission;
+                if ($Permission->name == 'R') {
+                    $Function = $RoleFunctionPermission->_Function;
+                    $functions[] = $Function->name;
+                }
+            }
+        }
+        $filtered_menus = [];
+        foreach ($this->getMenus() as $menu) {
+            $filtered_items = [];
+            foreach ($menu['items'] as $item) {
+                if (in_array($item['label'], $functions)) {
+                    $filtered_items[] = $item;
+                }
+            }
+            if (!empty($filtered_items)) {
+                $filtered_menus[] = [
+                    'label' => $menu['label'],
+                    'items' => $filtered_items,
+                ];
+            }
+        }
         return [
-            'menu' => json_encode($this->getMenu(), JSON_UNESCAPED_UNICODE),
+            'menu' => json_encode($filtered_menus, JSON_UNESCAPED_UNICODE),
         ];
     }
 

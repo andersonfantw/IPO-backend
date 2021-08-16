@@ -135,7 +135,7 @@ Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
     Route::any('/LoadCreditCard', 'ViewClientCreditCardController@loadCreditCard')->name('LoadCreditCard');
     // });
 
-    Route::resource('Permission', 'UserRoleController');
+    Route::resource('Permission', 'PermissionController');
 
 });
 

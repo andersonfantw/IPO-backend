@@ -18,25 +18,7 @@ class UserRoleController extends HomeController
      */
     // public function index(Request $request)
     // {
-    //     return parent::index($request);
     // }
-
-    protected function setViewParameters(Request $request)
-    {
-        $parameters = parent::setViewParameters($request);
-        $Roles = Role::get();
-        $columns = [
-            ['key' => '用户姓名', 'sortable' => false],
-        ];
-        foreach ($Roles as $Role) {
-            $columns[] = [
-                'key' => $Role->name,
-                'sortable' => false,
-            ];
-        }
-        $parameters['columns'] = json_encode($columns);
-        return $parameters;
-    }
 
     function list() {
         $Roles = Role::get();
@@ -79,7 +61,7 @@ class UserRoleController extends HomeController
         }
         return json_encode([
             'Roles' => $roles,
-            'UserRoleHeaders' => $columns,
+            'fields' => $columns,
             'UserRoles' => $UserRoles,
         ], JSON_UNESCAPED_UNICODE);
     }
