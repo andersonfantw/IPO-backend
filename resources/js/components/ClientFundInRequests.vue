@@ -217,6 +217,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.Auditing = false;
+          self.data = [];
           self.loadData(1);
         })
         .catch((error) => {
@@ -237,6 +238,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.Auditing = false;
+          self.data = [];
           self.loadData(1);
         })
         .catch((error) => {
