@@ -56,6 +56,7 @@
               )
             "
             inline
+            switch
             >{{ propertyName }}</b-form-checkbox
           >
         </div>

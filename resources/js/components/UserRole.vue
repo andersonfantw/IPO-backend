@@ -52,6 +52,7 @@
               $event
             )
           "
+          switch
         >
         </b-form-checkbox>
         <span v-else :key="field.id">{{ data.value }}</span>
