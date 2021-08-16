@@ -37,7 +37,7 @@ class HomeController extends Controller
                 'label' => "開戶處理",
                 'items' => [
                     [
-                        'label' => "開戶進度",
+                        'label' => "查看開戶進度",
                         'url' => route('ClientProgress'),
                     ],
                     [
