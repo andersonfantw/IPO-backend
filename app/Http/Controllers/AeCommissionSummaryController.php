@@ -6,9 +6,11 @@ use App\AE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Traits\PDF;
 
 class AeCommissionSummaryController extends HomeController
 {
+    use PDF;
     protected $name = 'AeCommissionSummary';
 
     public function indexView(Request $request){
@@ -59,6 +61,8 @@ class AeCommissionSummaryController extends HomeController
                 'uuid' => $v['uuid'],
                 'type' => '銷售代表',
                 'month' => '2021-08',
+                'start_date' => $start_date,
+                'end_date' => $end_date,
                 'qualified' => $hash['principal']['num'],
                 'excitation' => $hash['principal']['bonus_application'],
                 'commission1' => $hash['fee08']['bonus_application']

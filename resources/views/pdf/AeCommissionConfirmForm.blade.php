@@ -227,7 +227,7 @@
                 </div>
                 <div class="row">
                     <div class="col col-2"><h4>業務編碼</h4></div>
-                    <div class="col col-8">{{$data['name']}}</div>
+                    <div class="col col-8">{{$data['codes']}}</div>
                 </div>
                 <br />
                 <table class="border w-100">
