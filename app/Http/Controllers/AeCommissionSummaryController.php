@@ -157,11 +157,7 @@ class AeCommissionSummaryController extends HomeController
     public function aeConfirm(string $uuid, Request $request){
         $input = $request->only('start','end');
 
-        return view('pdf/AeCommissionConfirmForm',[
-            'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
-            'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
-            'data' => $this->aeConfirmData($uuid,$input['start'],$input['end']),
-        ]);
+        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['start'],$input['end']));
     }
     public function aeConfirmReport(string $uuid, Request $request){
         $input = $request->only('start','end');
@@ -208,6 +204,10 @@ class AeCommissionSummaryController extends HomeController
             + $result['sell08']['ae_application_cost'] + $result['sell13']['ae_application_cost'];
         //$result['reservations'] = $result['subtitle']/10;
         //$result['commission'] = $result['subtitle']-$result['reservations'];
-        return $result;
+        return [
+            'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
+            'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
+            'data'=>$result
+        ];
     }
 }
