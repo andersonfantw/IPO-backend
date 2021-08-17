@@ -157,7 +157,7 @@ class AeCommissionSummaryController extends HomeController
         $AE = AE::select('uuid','name')
             ->selectRaw('group_concat(code) as codes')
             ->where('uuid','=',$uuid)
-            ->groupBy('uuid','name')->get();
+            ->groupBy('uuid','name')->first();
         // $ae = [
         //     'LSH01'=>'LSH01,AELSH',
         // ];
