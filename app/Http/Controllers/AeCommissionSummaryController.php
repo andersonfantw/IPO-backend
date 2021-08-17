@@ -166,8 +166,8 @@ class AeCommissionSummaryController extends HomeController
     public function aeConfirmReport(string $uuid, Request $request){
         $input = $request->only('start','end');
 
-        $pdf = PDF::loadView('pdf.AeCommissionSummaryController', $this->aeConfirmData($uuid,$input['start'],$input['end']));
-        return $pdf->stream('AccountOpeningForm.pdf');
+        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['start'],$input['end']));
+        return $pdf->stream('AeCommissionConfirmForm.pdf');
         // $pdf->setOptions(['isPhpEnabled' => true]);
         // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
     }

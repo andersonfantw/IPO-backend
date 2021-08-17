@@ -289,7 +289,7 @@ export default {
             })
         },
         showPdf(){
-            window.open('AeCommissionSummary/detail/showPdf/'+this.target_item.uuid+'?start='+this.target_item.start_date+'&end='+this.target_item.end_date)
+            window.open('AeCommissionSummary/detail/ShowPdf/'+this.target_item.uuid+'?start='+this.target_item.start_date+'&end='+this.target_item.end_date)
         }
     }
 }
