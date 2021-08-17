@@ -111,7 +111,7 @@
         <b-sidebar id="detail" title="AE確認表" shadodw>
             <b-button size="sm" variant="success" class="m-2 float-right"><i class="fas fa-file-download"></i> 下載AE確認表</b-button>
             <b-button size="sm" variant="success" class="m-2 float-right"><i class="far fa-eye"></i> 檢視PDF報表</b-button>
-            <b-embed type="iframe" aspect="1by1" scrolling="no" src="/AeCommissionSummary/detail/7fff6132-4bcc-4932-a630-358a21a7bef4"></b-embed>
+            <b-embed type="iframe" aspect="1by1" scrolling="no" src="AeCommissionSummary/detail/7fff6132-4bcc-4932-a630-358a21a7bef4"></b-embed>
         </b-sidebar>
 
         <!-- del confirm -->

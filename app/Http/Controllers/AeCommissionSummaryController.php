@@ -52,7 +52,7 @@ class AeCommissionSummaryController extends HomeController
         }
         foreach($AE as $v){
             $hash = $arr; 
-            foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$v['codes'],$start_date,$end_date)) as $r) $hash[$r['cate']] = $r;
+            foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$v['codes'],$start_date,$end_date)) as $r) $hash[$r->cate] = $r->toArray();
             $arr1 = array(
                 'id' => 0,
                 'name' => $v['name'],
