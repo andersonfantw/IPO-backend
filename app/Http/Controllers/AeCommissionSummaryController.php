@@ -154,7 +154,10 @@ class AeCommissionSummaryController extends HomeController
 
     public function aeConfirm($uuid){
         $result = []; $hash = [];
-        $AE = AE::select('uuid','name')->selectRaw('group_concat(code) as codes')->where('uuid','=',$uuid)->groupBy('uuid','name')->get();
+        $AE = AE::select('uuid','name')
+            ->selectRaw('group_concat(code) as codes')
+            ->where('uuid','=',$uuid)
+            ->groupBy('uuid','name')->get();
         // $ae = [
         //     'LSH01'=>'LSH01,AELSH',
         // ];
@@ -168,7 +171,7 @@ class AeCommissionSummaryController extends HomeController
         foreach(DB::select(sprintf("call sp_ae_commission('%s','2021-06-01','2021-07-31')",$AE->codes)) as $r) $hash[$r->cate] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
-            'name' => $k,
+            'name' => $AE->name,
             'type' => '銷售代表',
             'month' => '2021-08',
         ],$hash);
