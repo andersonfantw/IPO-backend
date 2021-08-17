@@ -38,8 +38,6 @@
                 <b-col cols="8">
                     <b-button class="mb-3" variant="success" v-b-modal.add :disabled="filter.month==''"><i class="fas fa-user-plus"></i> 添加員工</b-button>
                     <b-button class="mb-3" variant="success" v-if="has_pdf" :disabled="filter.month==''"><i class="far fa-eye"></i> 檢視PDF報表</b-button>
-                    <b-button class="mb-3" variant="success" v-else :disabled="filter.month==''"><i class="fas fa-file-pdf"></i> 製作本月份PDF報表</b-button>
-                    <b-button class="mb-3" variant="success" v-if="has_pdf" :disabled="filter.month==''"><i class="fas fa-file-download"></i> 下載佣金總表</b-button>
                 </b-col>
                 <b-col cols="4">
                 </b-col>
@@ -57,7 +55,13 @@
                 <template #head(status)>
                     <b-form-select id="sending_status" :options="status_options" v-model="filter.status" @change="index"></b-form-select>
                 </template>
-
+                
+                <template #cell(excitation)="row">
+                    <v-money :value="row.item.excitation"></v-money>
+                </template>
+                <template #cell(commission)="row">
+                    <v-money :value="row.item.commission"></v-money>
+                </template>
                 <template #cell(content)="row">
                     <span v-if="row.item.content!=''">{{ row.item.content }}</span>
                     <table v-else>
@@ -71,10 +75,10 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ row.item.commission1 }}</td>
-                                <td>{{ row.item.commission2 }}</td>
-                                <td>{{ row.item.subtitle }}</td>
-                                <td>{{ row.item.reservations }}</td>
+                                <td><v-money :value="row.item.commission1"></v-money></td>
+                                <td><v-money :value="row.item.commission2"></v-money></td>
+                                <td><v-money :value="row.item.subtitle"></v-money></td>
+                                <td><v-money :value="row.item.reservations"></v-money></td>
                             </tr>
                         </tbody>
                     </table>
@@ -109,7 +113,6 @@
 
         <!-- ae commission confirm -->
         <b-sidebar id="detail" title="AE確認表" shadodw>
-            <b-button size="sm" variant="success" class="m-2 float-right"><i class="fas fa-file-download"></i> 下載AE確認表</b-button>
             <b-button size="sm" variant="success" class="m-2 float-right" @click="showPdf"><i class="far fa-eye"></i> 檢視PDF報表</b-button>
             <b-embed type="iframe" aspect="1by1" scrolling="no" :src="(Object.keys(target_item).length==0)?'':'AeCommissionSummary/detail/'+target_item.uuid+'?start='+target_item.start_date+'&end='+target_item.end_date"></b-embed>
         </b-sidebar>
