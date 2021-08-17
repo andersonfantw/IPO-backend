@@ -312,7 +312,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <br />
+                <br /><br />
                 <table class="border w-100">
                     <tbody>
                         <tr>
