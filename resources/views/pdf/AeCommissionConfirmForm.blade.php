@@ -350,7 +350,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <br /><br />
+                <br />
                 <table class="border w-100">
                     <tr>
                         <td style="width:30%">本期佣金可發放金額</td>
