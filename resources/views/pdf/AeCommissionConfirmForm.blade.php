@@ -244,57 +244,57 @@
                         <tr>
                             <td>新股申購(收入項)</td>
                             <td>申購手續費</td>
-                            <td class="text-right">{{$data['fee08']['application_fee']+$data['fee13']['application_fee']}}</td>
-                            <td class="text-right">{{$data['fee08']['bonus_application']+$data['fee13']['bonus_application']}}</td>
+                            <td class="text-right">${{number_format($data['fee08']['application_fee']+$data['fee13']['application_fee'],2)}}</td>
+                            <td class="text-right">${{number_format($data['fee08']['bonus_application']+$data['fee13']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>利息收入</td>
-                            <td class="text-right">{{$data['interest08']['application_fee']+$data['interest13']['application_fee']}}</td>
-                            <td class="text-right">{{$data['interest08']['bonus_application']+$data['interest13']['bonus_application']}}</td>
+                            <td class="text-right">${{number_format($data['interest08']['application_fee']+$data['interest13']['application_fee'],2)}}</td>
+                            <td class="text-right">${{number_format($data['interest08']['bonus_application']+$data['interest13']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>中簽佣金</td>
-                            <td class="text-right">{{$data['alloted08']['application_fee']+$data['alloted13']['application_fee']}}</td>
-                            <td class="text-right">{{$data['alloted08']['bonus_application']+$data['alloted13']['bonus_application']}}</td>
+                            <td class="text-right">${{number_format($data['alloted08']['application_fee']+$data['alloted13']['application_fee'],2)}}</td>
+                            <td class="text-right">${{number_format($data['alloted08']['bonus_application']+$data['alloted13']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>新股申購(成本項)</td>
                             <td>申購成本</td>
-                            <td class="text-right">{{$data['fee08']['application_cost']+$data['fee13']['application_cost']}}</td>
-                            <td class="text-right">{{$data['fee08']['ae_application_cost']+$data['fee13']['ae_application_cost']}}</td>
+                            <td class="text-right">${{number_format($data['fee08']['application_cost']+$data['fee13']['application_cost'],2)}}</td>
+                            <td class="text-right">${{number_format($data['fee08']['ae_application_cost']+$data['fee13']['ae_application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>利息成本</td>
-                            <td class="text-right">{{$data['interest08']['application_cost']+$data['interest13']['application_cost']}}</td>
-                            <td class="text-right">{{$data['interest08']['ae_application_cost']+$data['interest13']['ae_application_cost']}}</td>
+                            <td class="text-right">${{number_format($data['interest08']['application_cost']+$data['interest13']['application_cost'],2)}}</td>
+                            <td class="text-right">${{number_format($data['interest08']['ae_application_cost']+$data['interest13']['ae_application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>二級市場佣金</td>
                             <td>手續費收入</td>
-                            <td class="text-right">{{$data['sell08']['application_fee']+$data['sell13']['application_fee']}}</td>
-                            <td class="text-right">{{$data['sell08']['application_cost']+$data['sell13']['application_cost']}}</td>
+                            <td class="text-right">${{number_format($data['sell08']['application_fee']+$data['sell13']['application_fee'],2)}}</td>
+                            <td class="text-right">${{number_format($data['sell08']['application_cost']+$data['sell13']['application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>專戶開戶獎金</td>
                             <td>開戶獎金</td>
-                            <td class="text-right">{{$data['principal']['bonus_application']}}</td>
-                            <td class="text-right">{{$data['principal']['bonus_application1']}}</td>
+                            <td class="text-right">${{number_format($data['principal']['bonus_application'],2)}}</td>
+                            <td class="text-right">${{number_format($data['principal']['bonus_application1'],2)}}</td>
                             <td class="text-right"><small>{{$data['principal']['num']}}個帳戶過冷靜期</small></td>
                         </tr>
                         <tr>
                             <td><b>佣金小計</b></td>
                             <td></td>
                             <td class="text-right"></td>
-                            <td class="text-right">{{$data['subtitle']}}</td>
+                            <td class="text-right">${{number_format($data['subtitle'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                     </tbody>
@@ -313,7 +313,7 @@
                             <td>本期提撥準備</td>
                             <td class="text-right">10%</td>
                             <td class="text-right"></td>
-                            <td class="text-right">{{$data['subtitle'] * 0.1}}</td>
+                            <td class="text-right">${{number_format($data['subtitle'] * 0.1,2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
@@ -341,7 +341,7 @@
                             <td>扣減項小計</td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>
-                            <td class="text-right">{{$data['subtitle'] * 0.1}}</td>
+                            <td class="text-right">${{number_format($data['subtitle'] * 0.1,2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                     </tbody>
@@ -350,7 +350,7 @@
                 <table class="border w-100">
                     <tr>
                         <td style="width:30%">本期佣金可發放金額</td>
-                        <td style="width:43%" class="text-right">{{$data['subtitle'] * 0.9}}</td>
+                        <td style="width:43%" class="text-right">${{number_format($data['subtitle'] * 0.9,2)}}</td>
                         <td style="width:27%" class="text-right"></td>
                     </tr>
                 </table>
