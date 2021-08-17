@@ -156,7 +156,7 @@ export default {
   methods: {
     loadData() {
       const self = this;
-      axios.post("api/ClientCreditCardFundOutRequests/all_data").then((res) => {
+      axios.post("api/ClientCreditCardFundOutRequests/list").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         self.FilteredRequests = self.data;

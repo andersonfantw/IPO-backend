@@ -37,7 +37,7 @@ class ClientAddressProofUpdatesController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientAddressProofUpdates = ClientAddressProofUpdate::orderBy('created_at', 'asc')->get();
         $rows = [];

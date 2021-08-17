@@ -141,7 +141,7 @@ class ClientProgressController extends HomeController
         ], JSON_UNESCAPED_UNICODE);
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'EditableSteps' => function ($query) {
             $query->where('reason', 'correction');

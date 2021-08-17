@@ -47,7 +47,7 @@ class RejectedList1Controller extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
             ->whereHas('EditableSteps', function (Builder $query) {

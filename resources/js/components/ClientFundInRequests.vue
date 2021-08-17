@@ -258,7 +258,7 @@ export default {
       const self = this;
       self.loading = true;
       axios
-        .post("api/ClientFundInRequests/all_data", {
+        .post("api/ClientFundInRequests/list", {
           perPage: self.perPage,
           pageNumber: pageNumber,
         })

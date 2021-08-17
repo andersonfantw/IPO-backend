@@ -182,7 +182,7 @@ export default {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/ClientCreditCards/all_data", {
+        .post("api/ClientCreditCards/list", {
           perPage: self.perPage,
           pageNumber: pageNumber,
         })

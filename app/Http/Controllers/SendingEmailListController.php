@@ -40,7 +40,7 @@ class SendingEmailListController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $Clients = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
             ->whereHas('AyersAccounts', function (Builder $query) {

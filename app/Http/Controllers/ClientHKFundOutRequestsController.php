@@ -46,7 +46,7 @@ class ClientHKFundOutRequestsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         // $yesterday = today()->subDays(3)->toDateString();
         $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])

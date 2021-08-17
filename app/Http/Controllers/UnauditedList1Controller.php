@@ -46,8 +46,7 @@ class UnauditedList1Controller extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
-    {
+    function list(Request $request) {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
             ->has('ClientBusinessType')->whereHasMorph('IDCard', [
             ClientCNIDCard::class,
@@ -71,7 +70,10 @@ class UnauditedList1Controller extends HomeController
             ->orWhere(function (Builder $query) {
                 $query->where('status', 'unaudited')
                     ->where('progress', 16)
-                    ->where('idcard_type', 'App\ClientOtherIDCard');
+                    ->where('idcard_type', 'App\ClientOtherIDCard')
+                    ->whereHas('ClientAddressProof', function (Builder $query) {
+                        $query->where('status', 'unaudited');
+                    });
             })
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));

@@ -18,9 +18,11 @@ Route::any('/TestRoute', 'Controller@TestRoute');
 Route::middleware('auth:api')->get('/user', 'Controller@user');
 
 Route::prefix('ClientProgress')->group(function () {
-    Route::any('/all_data', 'ClientProgressController@getData');
+    Route::any('/list', 'ClientProgressController@list');
     Route::any('/query', 'ClientProgressController@query');
 });
+
+Route::resource('Client', 'ClientController');
 
 Route::prefix('Client')->group(function () {
     Route::any('/details', 'ViewClientController@getClientDetails');
@@ -41,29 +43,29 @@ Route::prefix('Email')->group(function () {
 });
 
 Route::prefix('UnauditedList1')->group(function () {
-    Route::any('/all_data', 'UnauditedList1Controller@getData');
-    Route::any('/NoOfNews', 'UnauditedList1Controller@getNoOfNews');
+    Route::any('/list', 'UnauditedList1Controller@list');
+    // Route::any('/NoOfNews', 'UnauditedList1Controller@getNoOfNews');
 });
 
 Route::prefix('UnauditedList2')->group(function () {
-    Route::any('/all_data', 'UnauditedList2Controller@getData');
-    Route::any('/NoOfNews', 'UnauditedList2Controller@getNoOfNews');
+    Route::any('/list', 'UnauditedList2Controller@list');
+    // Route::any('/NoOfNews', 'UnauditedList2Controller@getNoOfNews');
 });
 
 Route::prefix('RejectedList1')->group(function () {
-    Route::any('/all_data', 'RejectedList1Controller@getData');
-    Route::any('/NoOfNews', 'RejectedList1Controller@getNoOfNews');
+    Route::any('/list', 'RejectedList1Controller@list');
+    // Route::any('/NoOfNews', 'RejectedList1Controller@getNoOfNews');
     Route::any('/refund', 'RejectedList1Controller@refund');
 });
 
 Route::prefix('ReauditList1')->group(function () {
-    Route::any('/all_data', 'ReauditList1Controller@getData');
-    Route::any('/NoOfNews', 'ReauditList1Controller@getNoOfNews');
+    Route::any('/list', 'ReauditList1Controller@list');
+    // Route::any('/NoOfNews', 'ReauditList1Controller@getNoOfNews');
 });
 
 Route::prefix('DeliverableList2')->group(function () {
-    Route::any('/all_data', 'DeliverableList2Controller@getData');
-    Route::any('/NoOfNews', 'DeliverableList2Controller@getNoOfNews');
+    Route::any('/list', 'DeliverableList2Controller@list');
+    // Route::any('/NoOfNews', 'DeliverableList2Controller@getNoOfNews');
     Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
     Route::any('/DownloadFilesForOpeningAccount', 'DeliverableList2Controller@downloadFilesForOpeningAccount');
 });
@@ -78,8 +80,8 @@ Route::prefix('AyersAccount')->group(function () {
 });
 
 Route::prefix('SendingEmailList')->group(function () {
-    Route::any('/all_data', 'SendingEmailListController@getData');
-    Route::any('/NoOfNews', 'SendingEmailListController@getNoOfNews');
+    Route::any('/list', 'SendingEmailListController@list');
+    // Route::any('/NoOfNews', 'SendingEmailListController@getNoOfNews');
 });
 
 Route::prefix('OpenAccountEmail')->group(function () {
@@ -87,44 +89,44 @@ Route::prefix('OpenAccountEmail')->group(function () {
 });
 
 Route::prefix('ClientFundInRequests')->group(function () {
-    Route::any('/all_data', 'ClientFundInRequestsController@getData');
+    Route::any('/list', 'ClientFundInRequestsController@list');
     Route::any('/DownloadAyersImportData', 'ClientFundInRequestsController@downloadAyersImportData');
     Route::any('/DownloadAyersImportData2', 'ClientFundInRequestsController@downloadAyersImportData2');
     Route::any('/Audit', 'AuditClientFundInRequestController@fastAudit');
 });
 
 Route::prefix('ClientHKFundOutRequests')->group(function () {
-    Route::any('/all_data', 'ClientHKFundOutRequestsController@getData');
+    Route::any('/list', 'ClientHKFundOutRequestsController@list');
     Route::any('/DownloadAyersImportData', 'ClientHKFundOutRequestsController@downloadAyersImportData');
     Route::any('/DownloadAyersImportData2', 'ClientHKFundOutRequestsController@downloadAyersImportData2');
     Route::any('/Audit', 'AuditClientHKFundOutRequestController@fastAudit');
 });
 
 Route::prefix('ClientFundInternalTransferRequests')->group(function () {
-    Route::any('/all_data', 'ClientFundInternalTransferRequestsController@getData');
+    Route::any('/list', 'ClientFundInternalTransferRequestsController@list');
     Route::any('/DownloadClientFundInternalTransferFundInRequests', 'ClientFundInternalTransferRequestsController@downloadClientFundInternalTransferFundInRequests');
     Route::any('/DownloadClientFundInternalTransferFundOutRequests', 'ClientFundInternalTransferRequestsController@downloadClientFundInternalTransferFundOutRequests');
 });
 
 Route::prefix('ClientOverseasFundOutRequests')->group(function () {
-    Route::any('/all_data', 'ClientOverseasFundOutRequestsController@getData');
+    Route::any('/list', 'ClientOverseasFundOutRequestsController@list');
     Route::any('/DownloadAyersImportData', 'ClientOverseasFundOutRequestsController@downloadAyersImportData');
 });
 
 Route::prefix('ClientCreditCardFundOutRequests')->group(function () {
-    Route::any('/all_data', 'ClientCreditCardFundOutRequestsController@getData');
+    Route::any('/list', 'ClientCreditCardFundOutRequestsController@list');
 });
 
 Route::prefix('ClientBankCards')->group(function () {
-    Route::any('/all_data', 'ClientBankCardsController@getData');
+    Route::any('/list', 'ClientBankCardsController@list');
 });
 
 Route::prefix('ClientCreditCards')->group(function () {
-    Route::any('/all_data', 'ClientCreditCardsController@getData');
+    Route::any('/list', 'ClientCreditCardsController@list');
 });
 
 Route::prefix('ClientAddressProofUpdates')->group(function () {
-    Route::any('/all_data', 'ClientAddressProofUpdatesController@getData');
+    Route::any('/list', 'ClientAddressProofUpdatesController@list');
 });
 
 Route::prefix('UserRole')->group(function () {

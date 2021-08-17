@@ -46,7 +46,7 @@ class ClientFundInRequestsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->orderBy('updated_at', 'desc')

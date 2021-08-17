@@ -46,7 +46,7 @@ class DeliverableList2Controller extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $Clients = Client::with(['AyersAccounts', 'IDCard'])
             ->whereHasMorph('IDCard', [

@@ -41,7 +41,7 @@ class ClientCreditCardFundOutRequestsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientCreditCardFundOutRequests = ClientCreditCardFundOutRequest::whereHas('ClientCreditCard', function (Builder $query) {
             $query->where('status', 'approved');

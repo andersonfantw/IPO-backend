@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'ResetPreviewingBy' => \App\Http\Middleware\ResetPreviewingBy::class,
         'PreviewClientBankCard' => \App\Http\Middleware\PreviewClientBankCard::class,
         'cors' => \App\Http\Middleware\Cors::class,
+        'CheckPermission' => \App\Http\Middleware\CheckPermission::class,
     ];
 }

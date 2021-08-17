@@ -220,7 +220,7 @@ export default {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/RejectedList1/all_data", {
+        .post("api/RejectedList1/list", {
           perPage: self.perPage,
           pageNumber: pageNumber,
         })
