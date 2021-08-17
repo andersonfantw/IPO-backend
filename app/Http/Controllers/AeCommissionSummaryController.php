@@ -59,7 +59,6 @@ class AeCommissionSummaryController extends HomeController
                 'name' => $v['name'],
                 'uuid' => $v['uuid'],
                 'type' => '銷售代表',
-                'month' => '2021-08',
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'qualified' => $hash['principal']['num'],
@@ -155,21 +154,25 @@ class AeCommissionSummaryController extends HomeController
         return AE::select('name as text')->selectRaw('group_concat(code) as value')->groupBy('name')->get();
     }
 
-    public function aeConfirm($uuid){
+    public function aeConfirm(string $uuid, Request $request){
+        $input = $request->only('start_date','end_date');
+
         return view('pdf/AeCommissionConfirmForm',[
             'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
             'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
-            'data' => $this->aeConfirmData($uuid),
+            'data' => $this->aeConfirmData($uuid,$input['start_date'],$input['end_date']),
         ]);
     }
-    public function aeConfirmReport($uuid){
-        $pdf = PDF::loadView('pdf.AeCommissionSummaryController', $this->aeConfirmData($uuid));
+    public function aeConfirmReport(string $uuid, Request $request){
+        $input = $request->only('start_date','end_date');
+
+        $pdf = PDF::loadView('pdf.AeCommissionSummaryController', $this->aeConfirmData($uuid,$input['start_date'],$input['end_date']));
         return $pdf->stream('AccountOpeningForm.pdf');
         // $pdf->setOptions(['isPhpEnabled' => true]);
         // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
     }
 
-    private function aeConfirmData($uuid): array
+    private function aeConfirmData($uuid, $start_date, $end_date): array
     {
         $result = []; $hash = [];
         $AE = AE::select('uuid','name')
@@ -185,13 +188,27 @@ class AeCommissionSummaryController extends HomeController
             foreach(['application_fee','bonus_application','application_cost','ae_application_cost','bonus_application1','num'] as $j) $arr[$i][$j] = 0;
         }
 
+        if($month==''){
+            $start_date = Carbon::today()->format('Y-m').'-01';
+            $end_date = Carbon::today()->endOfMonth()->format('Y-m-d');
+        }elseif($month=='2021-07'){
+            $start_date = '2021-04-01';
+            $end_date = '2021-07-31';
+        }else{
+            $d = explode('-',$month);
+            $start_date = Carbon::create($d[0],$d[1],1)->format('Y-m-d');
+            $end_date = Carbon::create($d[0],$d[1],1)->endOfMonth()->format('Y-m-d');
+        }
+
         $hash = $arr;
         foreach(DB::select(sprintf("call sp_ae_commission('%s','2021-06-01','2021-07-31')",$AE->codes)) as $r) $hash[$r->cate] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
             'name' => $AE->name,
             'type' => '銷售代表',
-            'month' => '2021-08',
+            'uuid' => $AE->uuid,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ],$hash);
         $result['subtitle'] = $result['principal']['bonus_application1']
             + $result['fee08']['bonus_application'] + $result['fee13']['bonus_application']
