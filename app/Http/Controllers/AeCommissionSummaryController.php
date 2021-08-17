@@ -60,8 +60,7 @@ class AeCommissionSummaryController extends HomeController
                 'month' => '2021-08',
                 'qualified' => $hash['principal']['num'],
                 'excitation' => $hash['principal']['bonus_application'],
-                'commission1' => $hash['principal']['bonus_application']
-                    +$hash['fee08']['bonus_application']
+                'commission1' => $hash['fee08']['bonus_application']
                     +$hash['fee13']['bonus_application']
                     +$hash['interest08']['bonus_application']
                     +$hash['interest13']['bonus_application']
