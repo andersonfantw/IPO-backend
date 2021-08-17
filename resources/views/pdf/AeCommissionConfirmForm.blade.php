@@ -265,8 +265,8 @@
                         <tr>
                             <td>新股申購(成本項)</td>
                             <td>申購成本</td>
-                            <td class="text-right">{{$data['alloted08']['application_cost']+$data['alloted13']['application_cost']}}</td>
-                            <td class="text-right">{{$data['alloted08']['ae_application_cost']+$data['alloted13']['ae_application_cost']}}</td>
+                            <td class="text-right">{{$data['fee08']['application_cost']+$data['fee13']['application_cost']}}</td>
+                            <td class="text-right">{{$data['fee08']['ae_application_cost']+$data['fee13']['ae_application_cost']}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
@@ -279,8 +279,8 @@
                         <tr>
                             <td>二級市場佣金</td>
                             <td>手續費收入</td>
+                            <td class="text-right">{{$data['sell08']['application_fee']+$data['sell13']['application_fee']}}</td>
                             <td class="text-right">{{$data['sell08']['application_cost']+$data['sell13']['application_cost']}}</td>
-                            <td class="text-right">{{$data['sell08']['ae_application_cost']+$data['sell13']['ae_application_cost']}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>

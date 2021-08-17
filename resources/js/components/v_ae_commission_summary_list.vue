@@ -219,7 +219,7 @@ export default {
             }
           ],
           filter:{
-              month: '',
+              month: '2021-07',
               ae: 'all',
           },
           target_item:{}
