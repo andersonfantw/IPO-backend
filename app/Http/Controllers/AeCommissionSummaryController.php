@@ -194,6 +194,7 @@ class AeCommissionSummaryController extends HomeController
             'id' => 0,
             'name' => $AE->name,
             'type' => '銷售代表',
+            'codes' => $AE->codes,
             'uuid' => $AE->uuid,
             'start_date' => $start_date,
             'end_date' => $end_date,
