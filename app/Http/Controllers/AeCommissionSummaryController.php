@@ -6,7 +6,7 @@ use App\AE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Traits\PDF;
+use App\Traits\PDF;
 
 class AeCommissionSummaryController extends HomeController
 {
@@ -157,6 +157,21 @@ class AeCommissionSummaryController extends HomeController
     }
 
     public function aeConfirm($uuid){
+        return view('pdf/AeCommissionConfirmForm',[
+            'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
+            'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
+            'data' => $this->aeConfirmData($uuid),
+        ]);
+    }
+    public function aeConfirmReport($uuid){
+        $pdf = PDF::loadView('pdf.AeCommissionSummaryController', $this->aeConfirmData($uuid));
+        return $pdf->stream('AccountOpeningForm.pdf');
+        // $pdf->setOptions(['isPhpEnabled' => true]);
+        // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
+    }
+
+    private function aeConfirmData($uuid): array
+    {
         $result = []; $hash = [];
         $AE = AE::select('uuid','name')
             ->selectRaw('group_concat(code) as codes')
@@ -188,10 +203,6 @@ class AeCommissionSummaryController extends HomeController
             + $result['sell08']['ae_application_cost'] + $result['sell13']['ae_application_cost'];
         //$result['reservations'] = $result['subtitle']/10;
         //$result['commission'] = $result['subtitle']-$result['reservations'];
-        return view('pdf/AeCommissionConfirmForm',[
-            'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
-            'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
-            'data' => $result,
-        ]);
+        return $result;
     }
 }

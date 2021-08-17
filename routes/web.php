@@ -172,7 +172,9 @@ Route::middleware(['auth'])->group(function () {
     //});
 
     Route::get('/AeCommissionSummary', 'AeCommissionSummaryController@indexView')->name('AeCommissionSummary');
+    Route::get('/AeCommissionSummary/ShowPdf', 'AeCommissionSummaryController@aeCommissionReport')->name('AeCommissionReport');
     Route::get('/AeCommissionSummary/detail/{ae:uuid}', 'AeCommissionSummaryController@aeConfirm')->name('AeCommissionDetail');
+    Route::get('/AeCommissionSummary/detail/ShowPdf/{ae:uuid}', 'AeCommissionSummaryController@aeConfirmReport')->name('AeCommissionConfirmReport');
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
 });
 // Anderson 2021-05-31 end
