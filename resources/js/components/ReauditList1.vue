@@ -175,7 +175,7 @@ export default {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/ReauditList1/all_data", {
+        .post("api/ReauditList1/list", {
           perPage: self.perPage,
           pageNumber: pageNumber,
         })

@@ -40,7 +40,7 @@ class ClientFundInternalTransferRequestsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientFundInternalTransferRequests = ClientFundInternalTransferRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->orderBy('updated_at', 'desc')->get();

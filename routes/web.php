@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth', 'ResetPreviewingBy'])->group(function () {
+Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(function () {
     Route::get('/ClientProgress', 'ClientProgressController@index')->name('ClientProgress');
 
     Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');

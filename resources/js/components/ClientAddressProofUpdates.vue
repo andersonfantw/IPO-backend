@@ -119,7 +119,7 @@ export default {
     loadData() {
       const self = this;
       axios
-        .post("api/ClientAddressProofUpdates/all_data")
+        .post("api/ClientAddressProofUpdates/list")
         .then((res) => {
           console.log(res);
           self.data = res.data.data;

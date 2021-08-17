@@ -168,15 +168,13 @@ export default {
   methods: {
     loadData() {
       const self = this;
-      axios
-        .post("api/ClientFundInternalTransferRequests/all_data")
-        .then((res) => {
-          const json = self.getDecryptedJsonObject(res.data);
-          self.data = json.data;
-          self.FilteredRequests = self.data;
-          self.totalRows = self.data.length;
-          self.Loading = false;
-        });
+      axios.post("api/ClientFundInternalTransferRequests/list").then((res) => {
+        const json = self.getDecryptedJsonObject(res.data);
+        self.data = json.data;
+        self.FilteredRequests = self.data;
+        self.totalRows = self.data.length;
+        self.Loading = false;
+      });
     },
     onFiltered(filteredItems) {
       this.SelectedRequests = [];

@@ -189,7 +189,7 @@ export default {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/ClientOverseasFundOutRequests/all_data", {
+        .post("api/ClientOverseasFundOutRequests/list", {
           perPage: self.perPage,
           pageNumber: pageNumber,
         })

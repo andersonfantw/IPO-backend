@@ -41,7 +41,7 @@ class ClientBankCardsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->where('type', '拼一手')->whereIn('status', ['pending', 'approved'])

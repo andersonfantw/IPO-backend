@@ -42,7 +42,7 @@ class ClientCreditCardsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientCreditCards = ClientCreditCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->whereHas('Client', function (Builder $query) {

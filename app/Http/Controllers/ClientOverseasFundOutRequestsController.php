@@ -40,7 +40,7 @@ class ClientOverseasFundOutRequestsController extends HomeController
         return $parameters;
     }
 
-    public function getData(Request $request)
+    public function list(Request $request)
     {
         $ClientOverseasFundOutRequests = ClientOverseasFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->orderBy('updated_at', 'desc')
