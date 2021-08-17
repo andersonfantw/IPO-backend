@@ -188,20 +188,8 @@ class AeCommissionSummaryController extends HomeController
             foreach(['application_fee','bonus_application','application_cost','ae_application_cost','bonus_application1','num'] as $j) $arr[$i][$j] = 0;
         }
 
-        if($month==''){
-            $start_date = Carbon::today()->format('Y-m').'-01';
-            $end_date = Carbon::today()->endOfMonth()->format('Y-m-d');
-        }elseif($month=='2021-07'){
-            $start_date = '2021-04-01';
-            $end_date = '2021-07-31';
-        }else{
-            $d = explode('-',$month);
-            $start_date = Carbon::create($d[0],$d[1],1)->format('Y-m-d');
-            $end_date = Carbon::create($d[0],$d[1],1)->endOfMonth()->format('Y-m-d');
-        }
-
         $hash = $arr;
-        foreach(DB::select(sprintf("call sp_ae_commission('%s','2021-06-01','2021-07-31')",$AE->codes)) as $r) $hash[$r->cate] = collect($r)->toArray();
+        foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$AE->codes,$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
             'name' => $AE->name,
