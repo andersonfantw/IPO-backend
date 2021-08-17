@@ -43,9 +43,9 @@
         .p-5{
             padding: 3rem !important;
         }
-        .py-3{
-            padding-top: 1rem !important;
-            padding-bottom: 1rem !important;
+        .py-4{
+            padding-top: 1.5rem !important;
+            padding-bottom: 1.5rem !important;
         }
         .px-5{
             padding-left: 3rem !important;
@@ -229,7 +229,7 @@
     <h2>銷售人員個人銷售業績確認表</h2>
     <div class="container border">
         <div class="row">
-            <div class="col px-5 py-3">
+            <div class="col px-5 py-4">
                 <table>
                     <tbody>
                         <tr>
