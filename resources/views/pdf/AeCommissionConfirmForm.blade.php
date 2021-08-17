@@ -23,7 +23,7 @@
             margin: 0;
         }
         table{
-            border-bottom: solid 2px #000;
+            
         }
         thead th{
             border-bottom: solid 2px #000;
@@ -221,14 +221,18 @@
     <div class="container border">
         <div class="row">
             <div class="col p-5">
-                <div class="row">
-                    <div class="col col-2"><h4>業務</h4></div>
-                    <div class="col col-8">{{$data['name']}}</div>
-                </div>
-                <div class="row">
-                    <div class="col col-2"><h4>業務編碼</h4></div>
-                    <div class="col col-8">{{$data['codes']}}</div>
-                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="width:150px;"><h4>業務</h4></td>
+                            <td>{{$data['name']}}</td>
+                        </tr>
+                        <tr>
+                            <td><h4>業務編碼</h4></td>
+                            <td>{{$data['codes']}}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <br />
                 <table class="border w-100">
                     <thead>
