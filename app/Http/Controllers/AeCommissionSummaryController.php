@@ -152,20 +152,20 @@ class AeCommissionSummaryController extends HomeController
         return AE::select('name as text')->selectRaw('group_concat(code) as value')->groupBy('name')->get();
     }
 
-    public function aeConfirm(){
+    public function aeConfirm($uuid){
         $result = []; $hash = [];
-        $ae = [
-            'LSH01'=>'LSH01,AELSH',
-        ];
+        $AE = AE::select('uuid','name')->selectRaw('group_concat(code) as codes')->where('uuid','=',$uuid)->groupBy('uuid','name')->get();
+        // $ae = [
+        //     'LSH01'=>'LSH01,AELSH',
+        // ];
         $arr = [];
         foreach(['alloted08','alloted13','fee08','fee13','interest08','interest13','principal','sell08','sell13'] as $i){
             $arr[$i]['cate'] = $i;
             foreach(['application_fee','bonus_application','application_cost','ae_application_cost','bonus_application1','num'] as $j) $arr[$i][$j] = 0;
         }
 
-        $k = 'LSH01';
         $hash = $arr;
-        foreach(DB::select(sprintf("call sp_ae_commission('%s','2021-06-01','2021-07-31')",$ae[$k])) as $r) $hash[$r->cate] = collect($r)->toArray();
+        foreach(DB::select(sprintf("call sp_ae_commission('%s','2021-06-01','2021-07-31')",$AE->codes)) as $r) $hash[$r->cate] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
             'name' => $k,
