@@ -6,11 +6,10 @@ use App\AE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Traits\PDF;
+use PDF;
 
 class AeCommissionSummaryController extends HomeController
 {
-    use PDF;
     protected $name = 'AeCommissionSummary';
 
     public function indexView(Request $request){
