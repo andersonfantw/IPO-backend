@@ -293,7 +293,7 @@
                             <td>二級市場佣金</td>
                             <td>手續費收入</td>
                             <td class="text-right">${{number_format($data['sell08']['application_fee']+$data['sell13']['application_fee'],2)}}</td>
-                            <td class="text-right">${{number_format($data['sell08']['application_cost']+$data['sell13']['application_cost'],2)}}</td>
+                            <td class="text-right">${{number_format($data['sell08']['bonus_application']+$data['sell13']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
