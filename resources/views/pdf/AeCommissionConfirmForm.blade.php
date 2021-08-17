@@ -43,8 +43,17 @@
         .p-5{
             padding: 3rem !important;
         }
+        .py-3{
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+        }
+        .px-5{
+            padding-left: 3rem !important;
+            padding-right: 3rem !important;
+        }
         .mx-4{
-            margin: 0 1.5rem !important;
+            margin-left: 1.5rem !important;
+            margin-right: 1.5rem !important;
         }
         .dashed td{
             border-bottom: dashed 1px #000;
@@ -220,7 +229,7 @@
     <h2>銷售人員個人銷售業績確認表</h2>
     <div class="container border">
         <div class="row">
-            <div class="col p-5">
+            <div class="col px-5 py-3">
                 <table>
                     <tbody>
                         <tr>
