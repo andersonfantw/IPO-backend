@@ -155,18 +155,18 @@ class AeCommissionSummaryController extends HomeController
     }
 
     public function aeConfirm(string $uuid, Request $request){
-        $input = $request->only('start_date','end_date');
+        $input = $request->only('start','end');
 
         return view('pdf/AeCommissionConfirmForm',[
             'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
             'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
-            'data' => $this->aeConfirmData($uuid,$input['start_date'],$input['end_date']),
+            'data' => $this->aeConfirmData($uuid,$input['start'],$input['end']),
         ]);
     }
     public function aeConfirmReport(string $uuid, Request $request){
-        $input = $request->only('start_date','end_date');
+        $input = $request->only('start','end');
 
-        $pdf = PDF::loadView('pdf.AeCommissionSummaryController', $this->aeConfirmData($uuid,$input['start_date'],$input['end_date']));
+        $pdf = PDF::loadView('pdf.AeCommissionSummaryController', $this->aeConfirmData($uuid,$input['start'],$input['end']));
         return $pdf->stream('AccountOpeningForm.pdf');
         // $pdf->setOptions(['isPhpEnabled' => true]);
         // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
