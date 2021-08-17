@@ -56,6 +56,7 @@ class AeCommissionSummaryController extends HomeController
             $arr1 = array(
                 'id' => 0,
                 'name' => $v['name'],
+                'uuid' => $v['uuid'],
                 'type' => '銷售代表',
                 'month' => '2021-08',
                 'qualified' => $hash['principal']['num'],
