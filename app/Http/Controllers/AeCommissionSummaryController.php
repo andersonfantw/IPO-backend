@@ -24,7 +24,7 @@ class AeCommissionSummaryController extends HomeController
         $input = $request->only('month','ae');
 
         $result = []; $hash = [];
-        $AE = AE::select('name')->selectRaw("group_concat(code) as codes");
+        $AE = AE::select('uuid','name')->selectRaw("group_concat(code) as codes");
         if($input['ae']!='all'){
             $AE->where('uuid','=',$input['ae']);
         }
