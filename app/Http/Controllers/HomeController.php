@@ -162,24 +162,20 @@ class HomeController extends Controller
 
     protected function setViewParameters(Request $request)
     {
-        $functions = [];
+        $menu_items = [];
         $UserRoles = auth()->user()->UserRole;
         foreach ($UserRoles as $UserRole) {
             $Role = $UserRole->Role;
-            $RoleFunctionPermissions = $Role->RoleFunctionPermission;
-            foreach ($RoleFunctionPermissions as $RoleFunctionPermission) {
-                $Permission = $RoleFunctionPermission->Permission;
-                if ($Permission->name == 'R') {
-                    $Function = $RoleFunctionPermission->_Function;
-                    $functions[] = $Function->name;
-                }
+            $RoleMenuItems = $Role->RoleMenuItem;
+            foreach ($RoleMenuItems as $RoleMenuItem) {
+                $menu_items[] = $RoleMenuItem->MenuItem->name;
             }
         }
         $filtered_menus = [];
         foreach ($this->getMenus() as $menu) {
             $filtered_items = [];
             foreach ($menu['items'] as $item) {
-                if (in_array($item['label'], $functions)) {
+                if (in_array($item['label'], $menu_items)) {
                     $filtered_items[] = $item;
                 }
             }

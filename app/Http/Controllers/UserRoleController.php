@@ -42,7 +42,7 @@ class UserRoleController extends HomeController
             ];
         }
         $Users = User::with(['UserRole', 'UserRole.Role'])->get();
-        $UserRoles = [];
+        $items = [];
         foreach ($Users as $User) {
             $user_cols = ['用户姓名' => $User->name];
             foreach ($Roles as $Role) {
@@ -57,12 +57,12 @@ class UserRoleController extends HomeController
                 $user_cols[$UserRole->Role->name]['id'] = $UserRole->id;
                 $user_cols[$UserRole->Role->name]['grant'] = true;
             }
-            $UserRoles[] = $user_cols;
+            $items[] = $user_cols;
         }
         return json_encode([
             'Roles' => $roles,
             'fields' => $columns,
-            'UserRoles' => $UserRoles,
+            'items' => $items,
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -71,12 +71,8 @@ class UserRoleController extends HomeController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        UserRole::create([
-            'user_id' => $request->input('user_id'),
-            'role_id' => $request->input('role_id'),
-        ]);
     }
 
     /**
@@ -87,7 +83,10 @@ class UserRoleController extends HomeController
      */
     public function store(Request $request)
     {
-        //
+        UserRole::create([
+            'user_id' => $request->input('user_id'),
+            'role_id' => $request->input('role_id'),
+        ]);
     }
 
     /**

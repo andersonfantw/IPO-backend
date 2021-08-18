@@ -32,7 +32,7 @@
       hover
       bordered
       dark
-      :items="UserRoles"
+      :items="items"
       :fields="fields"
       show-empty
       empty-filtered-text="沒有找到記錄"
@@ -45,7 +45,7 @@
           :checked="data.value.grant"
           :key="field.id"
           @change="
-            updateUserRole(
+            update(
               data.value.id,
               data.value.user_id,
               data.value.role_id,
@@ -78,15 +78,15 @@ export default {
     return {
       fields: [],
       Roles: [],
-      UserRoles: [],
+      SelectedRoles: [],
+      items: [],
       busy: true,
       name: null,
-      SelectedRoles: [],
     };
   },
   props: {},
   created() {
-    this.loadUserRoles();
+    this.reload();
   },
   methods: {
     createRole() {
@@ -98,7 +98,7 @@ export default {
           })
           .then((res) => {
             console.log(res);
-            self.loadUserRoles();
+            self.reload();
             self.$emit("reload");
           })
           .catch((error) => {
@@ -113,7 +113,7 @@ export default {
           .delete(`api/Role/${role_id}`)
           .then((res) => {
             console.log(res);
-            self.loadUserRoles();
+            self.reload();
             self.$emit("reload");
           })
           .catch((error) => {
@@ -122,19 +122,17 @@ export default {
       });
       self.SelectedRoles = [];
     },
-    updateUserRole(id, user_id, role_id, grant) {
+    update(id, user_id, role_id, grant) {
       const self = this;
       if (grant) {
         axios
-          .get(`api/UserRole/create`, {
-            params: {
-              user_id: user_id,
-              role_id: role_id,
-            },
+          .get(`api/UserRole`, {
+            user_id: user_id,
+            role_id: role_id,
           })
           .then((res) => {
             console.log(res);
-            self.loadUserRoles();
+            self.reload();
             // self.$emit("reload");
           })
           .catch((error) => {
@@ -145,7 +143,7 @@ export default {
           .delete(`api/UserRole/${id}`)
           .then((res) => {
             console.log(res);
-            self.loadUserRoles();
+            self.reload();
             // self.$emit("reload");
           })
           .catch((error) => {
@@ -153,7 +151,7 @@ export default {
           });
       }
     },
-    loadUserRoles() {
+    reload() {
       const self = this;
       this.busy = true;
       axios
@@ -162,7 +160,7 @@ export default {
           console.log(res);
           self.Roles = res.data.Roles;
           self.fields = res.data.fields;
-          self.UserRoles = res.data.UserRoles;
+          self.items = res.data.items;
           self.busy = false;
         })
         .catch((error) => {

@@ -17,7 +17,7 @@ class CheckPermission
     public function handle($request, Closure $next)
     {
         // $User = auth()->user();
-        // $User->User->UserRole->Role;
+        // $User->UserRole->Role;
         // $CurrentRoute = Route::getCurrentRoute();
         // $Controller = $CurrentRoute->getController();
         // $ActionMethod = $CurrentRoute->getActionMethod();

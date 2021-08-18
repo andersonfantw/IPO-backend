@@ -1,21 +1,25 @@
 <template>
   <b-container fluid class="text-warning">
     <h1 class="text-center">權限管理</h1>
-    <UserRole ref="UserRole" @reload="reloadRoleFunctionPermission" />
-    <RoleFunctionPermission ref="RoleFunctionPermission" />
+    <UserRole ref="UserRole" @reload="reloadRoleControllerPermission" />
+    <RoleMenuItem ref="RoleMenuItem" />
+    <RoleControllerPermission ref="RoleControllerPermission" />
   </b-container>
 </template>
 <script>
-import UserRole from "./UserRole.vue";
-import RoleFunctionPermission from "./RoleFunctionPermission.vue";
+import UserRole from "./UserRole";
+import RoleControllerPermission from "./RoleControllerPermission";
+import RoleMenuItem from "./RoleMenuItem";
 export default {
   components: {
     UserRole,
-    RoleFunctionPermission,
+    RoleControllerPermission,
+    RoleMenuItem,
   },
   methods: {
-    reloadRoleFunctionPermission() {
-      this.$refs.RoleFunctionPermission.loadRoleFunctionPermissions();
+    reloadRoleControllerPermission() {
+      this.$refs.RoleMenuItem.reload();
+      this.$refs.RoleControllerPermission.reload();
     },
   },
 };
