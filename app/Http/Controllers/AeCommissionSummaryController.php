@@ -39,7 +39,7 @@ class AeCommissionSummaryController extends HomeController
             $start_date = Carbon::today()->format('Y-m').'-01';
             $end_date = Carbon::today()->endOfMonth()->format('Y-m-d');
         }elseif($input['month']=='2021-07'){
-            $start_date = '2021-04-01';
+            $start_date = '2021-03-01';
             $end_date = '2021-07-31';
         }else{
             $d = explode('-',$input['month']);
