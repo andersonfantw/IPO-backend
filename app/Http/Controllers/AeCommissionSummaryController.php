@@ -199,9 +199,9 @@ class AeCommissionSummaryController extends HomeController
             + $result['fee08']['bonus_application'] + $result['fee13']['bonus_application']
             + $result['interest08']['bonus_application'] + $result['interest13']['bonus_application']
             + $result['alloted08']['bonus_application'] + $result['alloted13']['bonus_application']
-            + $result['alloted08']['application_cost'] + $result['alloted13']['application_cost']
-            + $result['interest08']['application_cost'] + $result['interest13']['application_cost']
-            + $result['sell08']['ae_application_cost'] + $result['sell13']['ae_application_cost'];
+            + $result['fee08']['ae_application_cost'] + $result['fee13']['ae_application_cost']
+            + $result['interest08']['ae_application_cost'] + $result['interest13']['ae_application_cost']
+            + $result['sell08']['bonus_application'] + $result['sell13']['bonus_application'];
         //$result['reservations'] = $result['subtitle']/10;
         //$result['commission'] = $result['subtitle']-$result['reservations'];
         return [
