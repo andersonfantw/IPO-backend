@@ -185,4 +185,10 @@ Route::get('client_info', 'VueController@ClientInfo');
 
 // Route::resource('NotificationSummary', 'NotificationGroupController');
 // Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
+
+//ae獎金計算
+Route::resource('ae_commission_summary', 'AeCommissionSummaryController');
+Route::resource('ipo_interest_list', 'IpoInterestListController');
+Route::resource('ipo_interest_import', 'IpoInterestImportController');
+Route::get('ae_list','AeCommissionSummaryController@aeList');
 // Anderson 2021-05-31 end

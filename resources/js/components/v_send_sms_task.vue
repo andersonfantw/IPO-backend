@@ -1,5 +1,11 @@
 <template>
-    <b-modal :id="id" size="lg" centered>
+    <b-modal
+    :id="id"
+    size="lg"
+    @ok="$emit('ok')"
+    @cancel="$emit('cancel')"
+    @close="$emit('close')"
+    centered>
         <template #modal-header>
             <h3 class="mb-0"><i class="fas fa-sms"></i> 發送簡訊</h3>
         </template>

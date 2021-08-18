@@ -122,6 +122,7 @@ Vue.component('audit-client-credit-card', require('./components/AuditClientCredi
 
 Vue.component('permission', require('./components/Permission.vue').default);
 
+Vue.component('v-money', require('./components/v_money.vue').default);
 // Anderson start
 import VueBus from 'vue-bus';
 Vue.use(VueBus);
@@ -155,6 +156,12 @@ Vue.component('send-email-task', require('./components/v_send_email_task.vue').d
 Vue.component('send-account-overview-task', require('./components/v_send_account_overview_task.vue').default);
 
 Vue.component('notification-import-excel-format-example', require('./components/v_notification_import_excel_format_example.vue').default);
+
+Vue.component('ae-commission-summary', require('./components/AeCommissionSummary.vue').default);
+Vue.component('ae-commission-summary-list', require('./components/v_ae_commission_summary_list.vue').default);
+Vue.component('ipo-interest-list', require('./components/v_ipo_interest_list.vue').default);
+Vue.component('ipo-interest-import', require('./components/v_ipo_interest_import.vue').default);
+Vue.component('ipo-interest-setting', require('./components/v_ipo_interest_setting.vue').default);
 
 // Anderson end
 

@@ -165,5 +165,16 @@ Route::middleware(['auth'])->group(function () {
     //Route::get('/NotificationRecords', 'NotificationRecordController@indexView');
     //Route::get('/test_db_notification','NotificationRecordController@notifyDb');
     //Route::get('/list_db_notification','NotificationRecordController@unread');
+    // Route::get('test',function(){
+    //    (new App\Services\NotifyService)->notify(
+    //        (new App\Services\NotifyMessage)->route('email')->templateId(7)->clientId('200001')->title('測試發送訊息')
+    //    );
+    //});
+
+    Route::get('/AeCommissionSummary', 'AeCommissionSummaryController@indexView')->name('AeCommissionSummary');
+    Route::get('/AeCommissionSummary/ShowPdf', 'AeCommissionSummaryController@aeCommissionReport')->name('AeCommissionReport');
+    Route::get('/AeCommissionSummary/detail/{ae:uuid}', 'AeCommissionSummaryController@aeConfirm')->name('AeCommissionDetail');
+    Route::get('/AeCommissionSummary/detail/ShowPdf/{ae:uuid}', 'AeCommissionSummaryController@aeConfirmReport')->name('AeCommissionConfirmReport');
+    Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
 });
 // Anderson 2021-05-31 end
