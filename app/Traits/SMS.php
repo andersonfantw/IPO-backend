@@ -72,19 +72,20 @@ trait SMS
         $recipient = $Client->mobile;
         $country_code = config("locale.CountryCode.$Client->nationality");
         $introducer_uuid = $Client->introducer_uuid;
-        (new NotifyService)->notify((new NotifyMessage)->mobile("$country_code$recipient")->templateId(8)->params(['uuid'=>$row->introducer_uuid]));
+        (new NotifyService)->notify((new NotifyMessage)->mobile("$country_code$recipient")->templateId(8)->params(['uuid' => $Client->introducer_uuid]));
     }
 
-    public function NoticeClientCorrectToRejectItemOn5days(){
-        $EditableSteps = EditableSteps::leftJoin('client','editable_steps.uuid','=','client.uuid')
-            ->where('reason','=','correction')
+    public function NoticeClientCorrectToRejectItemOn5days()
+    {
+        $EditableSteps = EditableSteps::leftJoin('client', 'editable_steps.uuid', '=', 'client.uuid')
+            ->where('reason', '=', 'correction')
             ->groupBy('editable_steps.uuid')
             ->havingRaw('datediff(now(),min(editable_steps.created_at))=17')
-            ->select('email','introducer_uuid')
+            ->select('email', 'introducer_uuid')
             ->selectRaw('concat(client.country_code,client.mobile) as mobile')
             ->selectRaw('count(*) as Rejected')->get();
-        foreach($EditableSteps as $row){
-            (new NotifyService)->notify((new NotifyMessage)->mobile($row->mobile)->templateId(9)->params(['uuid'=>$row->introducer_uuid]));
+        foreach ($EditableSteps as $row) {
+            (new NotifyService)->notify((new NotifyMessage)->mobile($row->mobile)->templateId(9)->params(['uuid' => $row->introducer_uuid]));
         }
     }
 
