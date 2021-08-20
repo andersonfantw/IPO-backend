@@ -18,7 +18,8 @@ class AProductInfoImport implements ToModel, WithBatchInserts, WithChunkReading,
 
     public function model(array $row)
     {
-        $row['listing_date'] = Carbon::createFromFormat('m/d/Y H:i:s',$row['listing_date'])->toDateString();
+        if(substr(trim($row['listing_date']),0,1)=='/') $row['listing_date']=null;
+        else $row['listing_date'] = Carbon::createFromFormat('m/d/Y H:i:s',$row['listing_date'])->toDateString();
         if(substr(trim($row['warrant_expiry_date']),0,1)=='/') $row['warrant_expiry_date']=null;
         else $row['warrant_expiry_date'] = Carbon::createFromFormat('m/d/Y H:i:s',$row['warrant_expiry_date'])->toDateString();
         return new CysislProductInfo($row);
