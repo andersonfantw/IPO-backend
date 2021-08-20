@@ -320,7 +320,7 @@
                             <td style="width:23%"></td>
                             <td style="width:10%" class="text-right"></td>
                             <td style="width:10%" class="text-right"></td>
-                            <td style="width:28%" class="text-right"></td>
+                            <td style="width:27%" class="text-right"></td>
                         </tr>
                         <tr>
                             <td>本期提撥準備</td>
