@@ -38,9 +38,6 @@ class AeCommissionSummaryController extends HomeController
         if($input['month']==''){
             $start_date = Carbon::today()->format('Y-m').'-01';
             $end_date = Carbon::today()->endOfMonth()->format('Y-m-d');
-        }elseif($input['month']=='2021-07'){
-            $start_date = '2021-03-01';
-            $end_date = '2021-07-31';
         }else{
             $d = explode('-',$input['month']);
             $start_date = Carbon::create($d[0],$d[1],1)->format('Y-m-d');
@@ -53,6 +50,10 @@ class AeCommissionSummaryController extends HomeController
         }
         foreach($AE as $v){
             $hash = $arr; 
+            if($v['name']=='梧桐花開'){
+                $v['name']='王浩進';
+                $v['codes'] = array_merge($v['codes'],'AEWHC');
+            }
             foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$v['codes'],$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
             $arr1 = array(
                 'id' => 0,
@@ -174,10 +175,14 @@ class AeCommissionSummaryController extends HomeController
         $AE = AE::select('uuid','name')
             ->selectRaw('group_concat(code) as codes')
             ->where('uuid','=',$uuid)
-            ->groupBy('uuid','name')->first();
+            ->groupBy('uuid','name')->first()->toArray();
         // $ae = [
         //     'LSH01'=>'LSH01,AELSH',
         // ];
+        if($AE['name']=='梧桐花開'){
+            $AE['name']='王浩進';
+            $AE['codes'] = array_merge($AE['codes'],'AEWHC');
+        }
         $arr = [];
         foreach(['alloted08','alloted13','fee08','fee13','interest08','interest13','principal','sell08','sell13'] as $i){
             $arr[$i]['cate'] = $i;
@@ -185,13 +190,13 @@ class AeCommissionSummaryController extends HomeController
         }
 
         $hash = $arr;
-        foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$AE->codes,$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
+        foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$AE['codes'],$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
-            'name' => $AE->name,
+            'name' => $AE['name'],
             'type' => '銷售代表',
-            'codes' => $AE->codes,
-            'uuid' => $AE->uuid,
+            'codes' => $AE['codes'],
+            'uuid' => $AE['uuid'],
             'start_date' => $start_date,
             'end_date' => $end_date,
         ],$hash);
