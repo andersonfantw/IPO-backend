@@ -52,7 +52,7 @@ class AeCommissionSummaryController extends HomeController
             $hash = $arr; 
             if($v['name']=='梧桐花開'){
                 $v['name']='王浩進';
-                $v['codes'] = array_merge($v['codes'],'AEWHC');
+                $v['codes'] = $v['codes'].',AEWHC';
             }
             foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$v['codes'],$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
             $arr1 = array(
@@ -181,7 +181,7 @@ class AeCommissionSummaryController extends HomeController
         // ];
         if($AE['name']=='梧桐花開'){
             $AE['name']='王浩進';
-            $AE['codes'] = array_merge($AE['codes'],'AEWHC');
+            $AE['codes'] = $AE['codes'].',AEWHC';
         }
         $arr = [];
         foreach(['alloted08','alloted13','fee08','fee13','interest08','interest13','principal','sell08','sell13'] as $i){
