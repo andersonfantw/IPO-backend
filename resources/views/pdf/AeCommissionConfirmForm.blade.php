@@ -301,7 +301,7 @@
                             <td>開戶獎金</td>
                             <td class="text-right">HK${{number_format($data['principal']['bonus_application'],2)}}</td>
                             <td class="text-right">HK${{number_format($data['principal']['bonus_application'],2)}}</td>
-                            <td class="text-right"><small>{{$data['principal']['num']}}個帳戶過冷靜期</small></td>
+                            <td class="text-right"><small>{{$data['principal']['transaction_number']}}個帳戶過冷靜期</small></td>
                         </tr>
                         <tr>
                             <td><b>佣金小計</b></td>
