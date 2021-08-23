@@ -54,7 +54,7 @@ class AeCommissionSummaryController extends HomeController
                 $v['name']='王浩進';
                 $v['codes'] = $v['codes'].',AEWHC';
             }
-            foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$v['codes'],$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
+            foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date',$start_date)->get()->toArray() as $r) $hash[$r->cate] = collect($r)->toArray();
             $arr1 = array(
                 'id' => 0,
                 'name' => $v['name'],
@@ -190,7 +190,7 @@ class AeCommissionSummaryController extends HomeController
         }
 
         $hash = $arr;
-        foreach(DB::select(sprintf("call sp_ae_commission('%s','%s','%s')",$AE['codes'],$start_date,$end_date)) as $r) $hash[$r->cate] = collect($r)->toArray();
+        foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date',$start_date)->get()->toArray() as $r) $hash[$r->cate] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
             'name' => $AE['name'],
