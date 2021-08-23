@@ -18,7 +18,7 @@ class CreateRolesTable extends Migration
             echo "$table_name table already exist!\n";
         } else {
             Schema::create($table_name, function (Blueprint $table) {
-                $table->id()->primary();
+                $table->id();
                 $table->string('name', 100);
                 $table->timestamps();
             });

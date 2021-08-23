@@ -18,7 +18,7 @@ class CreateRoleControllerPermissionsTable extends Migration
             echo "$table_name table already exist!\n";
         } else {
             Schema::create($table_name, function (Blueprint $table) {
-                $table->id()->primary();
+                $table->id();
                 $table->integer('role_id');
                 $table->integer('controller_id');
                 $table->integer('permission_id');

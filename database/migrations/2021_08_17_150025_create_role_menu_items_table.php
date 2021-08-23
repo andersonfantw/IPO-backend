@@ -18,7 +18,7 @@ class CreateRoleMenuItemsTable extends Migration
             echo "$table_name table already exist!\n";
         } else {
             Schema::create($table_name, function (Blueprint $table) {
-                $table->id()->primary();
+                $table->id();
                 $table->integer('role_id');
                 $table->integer('menu_item_id');
                 $table->timestamps();
