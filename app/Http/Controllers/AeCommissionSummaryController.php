@@ -55,7 +55,7 @@ class AeCommissionSummaryController extends HomeController
                 $v['name']='王浩進';
                 $v['codes'] = $v['codes'].',AEWHC';
             }
-            foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date',$start_date)->get()->toArray() as $r) $hash[$r->cate] = collect($r)->toArray();
+            foreach(AeCommissionSummary::where('ae_codes','=',$v['codes'])->where('buss_date',$start_date)->get()->toArray() as $r) $hash[$r->cate] = collect($r)->toArray();
             $arr1 = array(
                 'id' => 0,
                 'name' => $v['name'],
