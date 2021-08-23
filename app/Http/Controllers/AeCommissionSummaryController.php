@@ -187,7 +187,7 @@ class AeCommissionSummaryController extends HomeController
         $arr = [];
         foreach(['alloted08','alloted13','fee08','fee13','interest08','interest13','principal','sell08','sell13'] as $i){
             $arr[$i]['cate'] = $i;
-            foreach(['application_fee','bonus_application','application_cost','ae_application_cost','bonus_application1','num'] as $j) $arr[$i][$j] = 0;
+            foreach(['application_fee','bonus_application','application_cost','ae_application_cost','transaction_number'] as $j) $arr[$i][$j] = 0;
         }
 
         $hash = $arr;
@@ -201,7 +201,7 @@ class AeCommissionSummaryController extends HomeController
             'start_date' => $start_date,
             'end_date' => $end_date,
         ],$hash);
-        $result['subtitle'] = $result['principal']['bonus_application1']
+        $result['subtitle'] = $result['principal']['bonus_application']
             + $result['fee08']['bonus_application'] + $result['fee13']['bonus_application']
             + $result['interest08']['bonus_application'] + $result['interest13']['bonus_application']
             + $result['alloted08']['bonus_application'] + $result['alloted13']['bonus_application']
