@@ -300,7 +300,7 @@
                             <td>專戶開戶獎金</td>
                             <td>開戶獎金</td>
                             <td class="text-right">HK${{number_format($data['principal']['bonus_application'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['principal']['bonus_application1'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['principal']['bonus_application'],2)}}</td>
                             <td class="text-right"><small>{{$data['principal']['num']}}個帳戶過冷靜期</small></td>
                         </tr>
                         <tr>
