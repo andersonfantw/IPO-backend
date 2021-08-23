@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AE;
+use App\AeCommissionSummary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
