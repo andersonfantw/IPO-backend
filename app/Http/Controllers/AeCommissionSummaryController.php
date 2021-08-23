@@ -191,7 +191,7 @@ class AeCommissionSummaryController extends HomeController
         }
 
         $hash = $arr;
-        foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date','=',$start_date)->get()->toArray() as $r) $hash[$r->cate] = collect($r)->toArray();
+        foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date','=',$start_date)->get()->toArray() as $r) $hash[$r['cate']] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
             'name' => $AE['name'],
