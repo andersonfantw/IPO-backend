@@ -63,7 +63,7 @@ class AeCommissionSummaryController extends HomeController
                 'type' => '銷售代表',
                 'start_date' => $start_date,
                 'end_date' => $end_date,
-                'qualified' => $hash['principal']['num'],
+                'qualified' => $hash['principal']['transaction_number'],
                 'excitation' => $hash['principal']['bonus_application'],
                 'commission1' => $hash['fee08']['bonus_application']
                     +$hash['fee13']['bonus_application']
