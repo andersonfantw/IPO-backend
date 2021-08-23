@@ -23,7 +23,7 @@ class CreateRoleControllerPermissionsTable extends Migration
                 $table->integer('controller_id');
                 $table->integer('permission_id');
                 $table->timestamps();
-                $table->unique(['role_id', 'controller_id', 'permission_id']);
+                $table->unique(['role_id', 'controller_id', 'permission_id'], 'role_id_controller_id_permission_id');
             });
         }
     }
