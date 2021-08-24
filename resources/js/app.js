@@ -14,6 +14,23 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+
+import Permission from "./components/Permission.vue";
+import ClientProgress from "./components/ClientProgress.vue";
+import UnauditedList1 from "./components/UnauditedList1.vue";
+
+const routes = [
+    { path: '/Permission', component: Permission },
+    { path: '/ClientProgress', component: ClientProgress },
+    { path: '/UnauditedList1', component: UnauditedList1 }
+];
+
+const router = new VueRouter({
+    routes // short for `routes: routes`
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -49,6 +66,21 @@ Vue.use(ProgressPlugin)
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -122,6 +154,8 @@ Vue.component('audit-client-credit-card', require('./components/AuditClientCredi
 
 Vue.component('permission', require('./components/Permission.vue').default);
 
+Vue.component('panel', require('./components/Panel.vue').default);
+
 Vue.component('v-money', require('./components/v_money.vue').default);
 // Anderson start
 import VueBus from 'vue-bus';
@@ -176,4 +210,5 @@ import store from "./store";
 
 const app = new Vue({
     store,
+    router,
 }).$mount('#app');

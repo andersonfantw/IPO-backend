@@ -17,9 +17,9 @@ Route::get('/', 'Controller@welcome');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+
     Route::get('/ClientProgress', 'ClientProgressController@index')->name('ClientProgress');
 
     Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');
@@ -136,6 +136,15 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     // });
 
     Route::resource('Permission', 'PermissionController');
+    Route::resource('Client', 'ClientController');
+    Route::resource('MenuItem', 'MenuItemController');
+    Route::resource('ClientProgress', 'ClientProgressController');
+    Route::resource('UnauditedList1', 'UnauditedList1Controller');
+    Route::resource('UserRole', 'UserRoleController');
+    Route::resource('RoleMenuItem', 'RoleMenuItemController');
+    Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');
+    Route::resource('Role', 'RoleController');
+    Route::resource('Controller', 'ControllerController');
 
 });
 

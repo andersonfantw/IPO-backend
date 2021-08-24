@@ -22,8 +22,6 @@ Route::prefix('ClientProgress')->group(function () {
     Route::any('/query', 'ClientProgressController@query');
 });
 
-Route::resource('Client', 'ClientController');
-
 Route::prefix('Client')->group(function () {
     Route::any('/details', 'ViewClientController@getClientDetails');
     Route::post('/audit', 'AuditClientController@audit1');
@@ -129,25 +127,6 @@ Route::prefix('ClientAddressProofUpdates')->group(function () {
     Route::any('/list', 'ClientAddressProofUpdatesController@list');
 });
 
-Route::prefix('UserRole')->group(function () {
-    Route::any('/list', 'UserRoleController@list');
-});
-
-Route::prefix('RoleMenuItem')->group(function () {
-    Route::any('/list', 'RoleMenuItemController@list');
-});
-
-Route::prefix('RoleControllerPermission')->group(function () {
-    Route::any('/list', 'RoleControllerPermissionController@list');
-});
-
-Route::resource('Role', 'RoleController');
-Route::resource('UserRole', 'UserRoleController');
-Route::resource('Controller', 'ControllerController');
-Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');
-Route::resource('MenuItem', 'MenuItemController');
-Route::resource('RoleMenuItem', 'RoleMenuItemController');
-
 // Anderson 2021-05-31 start
 Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
 Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
@@ -191,5 +170,5 @@ Route::resource('ae_commission_summary', 'AeCommissionSummaryController');
 Route::resource('ae_commission_detail', 'AeCommissionDetailController');
 Route::resource('ipo_interest_list', 'IpoInterestListController');
 Route::resource('ipo_interest_import', 'IpoInterestImportController');
-Route::get('ae_list','AeCommissionSummaryController@aeList');
+Route::get('ae_list', 'AeCommissionSummaryController@aeList');
 // Anderson 2021-05-31 end
