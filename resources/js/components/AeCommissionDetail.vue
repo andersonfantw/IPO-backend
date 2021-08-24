@@ -432,6 +432,7 @@ export default {
             this.crudShow(this.uuid, function(response){
                 _this.calculate_form = response.calculate
                 _this.form = response.modify
+                _this.dirty=false
             },{month: this.month})
         },
         update(){
