@@ -27,7 +27,7 @@
                 <b-col cols="4">
                     <b-button-group v-if="dirty" class="float-right">
                         <b-button class="mb-3" @click="reset"><i class="fas fa-door-open"></i>取消</b-button>
-                        <b-button class="mb-3" variant="success"><i class="far fa-save"></i>儲存</b-button>
+                        <b-button class="mb-3" variant="success" @click="update"><i class="far fa-save"></i>儲存</b-button>
                     </b-button-group>
                 </b-col>
             </b-row>
@@ -383,7 +383,7 @@ export default {
     },
     watch: {
         uuid(){
-            this.show()
+            this.edit()
         },
         form: {
             deep: true,
@@ -393,7 +393,7 @@ export default {
         }
     },
     created() {
-        this.show()
+        this.edit()
     },
     methods: {
         // alert
@@ -427,9 +427,9 @@ export default {
                 _this.index()
             }, formdata);
         },
-        show(){
+        edit(){
             let _this = this
-            this.crudShow(this.uuid, function(response){
+            this.crudEdit(this.uuid, function(response){
                 _this.calculate_form = response.calculate
                 _this.form = response.modify
                 _this.dirty=false
@@ -438,9 +438,9 @@ export default {
         },
         update(){
             let formdata = this.getFormData();
-            this.crudUpdate(this.form.id, function(response){
+            this.crudUpdate(this.uuid, function(response){
 
-            }, formdata);
+            }, {month: this.month}, this.url(this.name));
         },
         del(){
             let _this = this

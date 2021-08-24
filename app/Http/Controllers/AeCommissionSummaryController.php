@@ -101,7 +101,18 @@ class AeCommissionSummaryController extends HomeController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id, Request $request)
     {
         $input = $request->only('month');
         $result = $this->aeConfirmData($id,$input['month']);
@@ -131,17 +142,6 @@ class AeCommissionSummaryController extends HomeController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -150,7 +150,7 @@ class AeCommissionSummaryController extends HomeController
      */
     public function update(Request $request, $id)
     {
-        //
+        AeCommissionSummary
     }
 
     /**
