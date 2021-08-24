@@ -115,6 +115,7 @@ class AeCommissionSummaryController extends HomeController
                 'sell'=>$result['data']['sell']['application_fee'],
                 'principal'=>$result['data']['principal']['bonus_application'],
                 'principal_number'=>$result['data']['principal']['transaction_number'],
+                'accumulated_provision'=>0,
             ],
             'modify' => [
                 'fee'=>$result['data']['fee']['application_fee_correction'],
