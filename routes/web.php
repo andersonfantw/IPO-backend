@@ -138,8 +138,8 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('Permission', 'PermissionController');
     Route::resource('Client', 'ClientController');
     Route::resource('MenuItem', 'MenuItemController');
-    Route::resource('ClientProgress', 'ClientProgressController');
-    Route::resource('UnauditedList1', 'UnauditedList1Controller');
+    // Route::resource('ClientProgress', 'ClientProgressController');
+    // Route::resource('UnauditedList1', 'UnauditedList1Controller');
     Route::resource('UserRole', 'UserRoleController');
     Route::resource('RoleMenuItem', 'RoleMenuItemController');
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');
