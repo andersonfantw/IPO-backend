@@ -45,7 +45,7 @@ class AeCommissionSummaryController extends HomeController
             $end_date = Carbon::create($d[0],$d[1],1)->endOfMonth()->format('Y-m-d');
         }
         $arr = [];
-        foreach(['alloted08','alloted13','fee08','fee13','interest08','interest13','principal','sell08','sell13'] as $i){
+        foreach(['principal','alloted','fee','interest','sell'] as $i){
             $arr[$i]['cate'] = $i;
             foreach(['application_fee','bonus_application','application_cost','ae_application_cost','bonus_application1','num'] as $j) $arr[$i][$j] = 0;
         }
