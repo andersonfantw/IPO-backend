@@ -374,7 +374,7 @@ export default {
                 +parseFloat((this.form.alloted)?this.form.alloted:this.calculate_form.alloted)
                 +parseFloat((this.form.fee_cost)?this.form.fee_cost:this.calculate_form.fee_cost)
                 +parseFloat((this.form.interest_cost)?this.form.interest_cost:this.calculate_form.interest_cost)
-                +parseFloat((this.form.sell)?this.cform.sell:this.calculate_form.sell)) * 0.6
+                +parseFloat((this.form.sell)?this.form.sell:this.calculate_form.sell)) * 0.6
                 +parseFloat((this.form.principal_number)?this.form.principal_number*450:this.calculate_form.principal)
         },
         subtitle(){
