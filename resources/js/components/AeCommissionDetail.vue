@@ -384,7 +384,7 @@ export default {
     },
     watch: {
         uuid(){
-            this.index()
+            this.show()
         },
         form: {
             deep: true,
@@ -420,11 +420,6 @@ export default {
             this.index()
         },
         index(){
-            let _this = this
-            this.crudIndex(function(response){
-                _this.calculate_form = response.calculate
-                _this.form = response.modity
-            },'/'+this.$options.name, {uuid: this.uuid, month: this.month});
         },
         store(){
             let _this = this
