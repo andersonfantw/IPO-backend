@@ -172,12 +172,12 @@ class AeCommissionSummaryController extends HomeController
     public function aeConfirm(string $uuid, Request $request){
         $input = $request->only('month');
 
-        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['month'],$input['end']));
+        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['month']));
     }
     public function aeConfirmReport(string $uuid, Request $request){
         $input = $request->only('month');
 
-        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['month'],$input['end']));
+        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['month']));
         return $pdf->stream('AeCommissionConfirmForm.pdf');
         // $pdf->setOptions(['isPhpEnabled' => true]);
         // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
