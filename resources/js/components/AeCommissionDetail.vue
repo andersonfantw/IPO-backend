@@ -333,14 +333,14 @@ export default {
               accumulated_provision: 0
           },
           form:{
-              fee: 2692.00,
-              interest: 3981.19,
-              alloted: 4725.50,
-              fee_cost: -2780.00,
-              interest_cost: -11154.02,
-              sell: 3659.79,
-              principal_number: 3,
-              other: 0
+              fee: '',
+              interest: '',
+              alloted: '',
+              fee_cost: '',
+              interest_cost: '',
+              sell: '',
+              principal_number: '',
+              other: ''
           },
 
           fields:[
