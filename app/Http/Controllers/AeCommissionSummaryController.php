@@ -150,7 +150,16 @@ class AeCommissionSummaryController extends HomeController
      */
     public function update(Request $request, $id)
     {
-        AeCommissionSummary
+        $AE = AE::select('uuid','name')
+            ->selectRaw("group_concat(code) as codes")
+            ->where('uuid','=',$input['ae'])
+            ->groupBy('uuid','name')
+            ->first()->toArray();
+        if($AE['name']=='梧桐花開'){
+            $AE['name']='王浩進';
+            $AE['codes'] = $AE['codes'].',AEWHC';
+        }
+        AeCommissionSummary::where('codes','=',$AE['codes']);
     }
 
     /**
