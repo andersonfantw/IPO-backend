@@ -257,43 +257,43 @@
                         <tr>
                             <td>新股申購(收入項)</td>
                             <td>申購手續費</td>
-                            <td class="text-right">HK${{number_format($data['fee08']['application_fee']+$data['fee13']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['fee08']['bonus_application']+$data['fee13']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>利息收入</td>
-                            <td class="text-right">HK${{number_format($data['interest08']['application_fee']+$data['interest13']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['interest08']['bonus_application']+$data['interest13']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>中簽佣金</td>
-                            <td class="text-right">HK${{number_format($data['alloted08']['application_fee']+$data['alloted13']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['alloted08']['bonus_application']+$data['alloted13']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['alloted']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['alloted']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>新股申購(成本項)</td>
                             <td>申購成本</td>
-                            <td class="text-right">HK${{number_format($data['fee08']['application_cost']+$data['fee13']['application_cost'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['fee08']['ae_application_cost']+$data['fee13']['ae_application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['ae_application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>利息成本</td>
-                            <td class="text-right">HK${{number_format($data['interest08']['application_cost']+$data['interest13']['application_cost'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['interest08']['ae_application_cost']+$data['interest13']['ae_application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['ae_application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>二級市場佣金</td>
                             <td>手續費收入</td>
-                            <td class="text-right">HK${{number_format($data['sell08']['application_fee']+$data['sell13']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['sell08']['bonus_application']+$data['sell13']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['sell']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['sell']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
