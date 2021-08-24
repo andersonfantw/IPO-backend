@@ -40,7 +40,7 @@ class AeCommissionSummaryController extends HomeController
         $arr = [];
         foreach(['principal','alloted','fee','interest','sell'] as $i){
             $arr[$i]['cate'] = $i;
-            foreach(['application_fee','bonus_application','application_cost','ae_application_cost','bonus_application1','num'] as $j) $arr[$i][$j] = 0;
+            foreach(['application_fee','bonus_application','application_cost','ae_application_cost','transaction_number'] as $j) $arr[$i][$j] = 0;
         }
         foreach($AE as $v){
             $hash = $arr; 
@@ -56,14 +56,14 @@ class AeCommissionSummaryController extends HomeController
                 'codes' => $v['codes'],
                 'type' => '銷售代表',
                 'month' => $month,
-                'qualified' => $hash['principal']['transaction_number'],
-                'excitation' => $hash['principal']['bonus_application'],
-                'commission1' => $hash['fee']['bonus_application']
-                    +$hash['interest']['bonus_application']
-                    +$hash['alloted']['bonus_application']
-                    +$hash['fee']['ae_application_cost']
-                    +$hash['interest']['ae_application_cost'],
-                'commission2' => $hash['sell']['bonus_application'],
+                'qualified' => $hash['principal']['transaction_number_correction']??$hash['principal']['transaction_number'],
+                'excitation' => $hash['principal']['bonus_application_correction']??$hash['principal']['bonus_application'],
+                'commission1' => $hash['fee']['bonus_application_correction']??$hash['fee']['bonus_application']
+                    +$hash['interest']['bonus_application_correction']??$hash['interest']['bonus_application']
+                    +$hash['alloted']['bonus_application_correction']??$hash['alloted']['bonus_application']
+                    +$hash['fee']['ae_application_cost_correction']??$hash['fee']['ae_application_cost']
+                    +$hash['interest']['ae_application_cost_correction']??hash['interest']['ae_application_cost'],
+                'commission2' => $hash['sell']['bonus_application_correction'],
                 'content' => '',
             );
             $arr1['subtitle'] = $arr1['excitation'] + $arr1['commission1'] + $arr1['commission2'];
