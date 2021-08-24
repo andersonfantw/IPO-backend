@@ -378,7 +378,7 @@ export default {
                 +parseFloat((this.form.principal_number)?this.form.principal_number*450:this.calculate_form.principal)) * 0.6
         },
         subtitle(){
-            return parseFloat(this.commission_subtitle)+parseFloat((this.form.other)?0:this.form.other)
+            return this.commission_subtitle+parseFloat((this.form.other)?this.form.other:0)
         }
     },
     watch: {
