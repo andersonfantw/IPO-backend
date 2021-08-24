@@ -63,7 +63,7 @@ class AeCommissionSummaryController extends HomeController
                     +$hash['alloted']['bonus_application_correction']??$hash['alloted']['bonus_application']
                     +$hash['fee']['ae_application_cost_correction']??$hash['fee']['ae_application_cost']
                     +$hash['interest']['ae_application_cost_correction']??hash['interest']['ae_application_cost'],
-                'commission2' => $hash['sell']['bonus_application_correction'],
+                'commission2' => $hash['sell']['bonus_application_correction']??$hash['sell']['bonus_application'],
                 'content' => '',
             );
             $arr1['subtitle'] = $arr1['excitation'] + $arr1['commission1'] + $arr1['commission2'];
