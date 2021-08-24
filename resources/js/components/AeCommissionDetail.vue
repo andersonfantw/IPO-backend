@@ -215,8 +215,8 @@
                         <b-td class="text-center">10%</b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right"><v-money :value="commission_calculate_subtitle*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="commission_subtitle*0.6"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="commission_calculate_subtitle*0.1"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="commission_subtitle*0.1"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
