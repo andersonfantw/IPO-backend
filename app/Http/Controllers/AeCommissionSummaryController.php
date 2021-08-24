@@ -36,14 +36,7 @@ class AeCommissionSummaryController extends HomeController
         //     'LSH01'=>'LSH01,AELSH',
         //     'WHC01'=>'WHC01,AEWHC,AEWHC1'
         // ];
-        if($input['month']==''){
-            $start_date = Carbon::today()->format('Y-m').'-01';
-            $end_date = Carbon::today()->endOfMonth()->format('Y-m-d');
-        }else{
-            $d = explode('-',$input['month']);
-            $start_date = Carbon::create($d[0],$d[1],1)->format('Y-m-d');
-            $end_date = Carbon::create($d[0],$d[1],1)->endOfMonth()->format('Y-m-d');
-        }
+        $month = ($input['month']=='')?Carbon::today()->format('Y-m').'-01':$input['month'].'-01';
         $arr = [];
         foreach(['principal','alloted','fee','interest','sell'] as $i){
             $arr[$i]['cate'] = $i;
@@ -55,15 +48,14 @@ class AeCommissionSummaryController extends HomeController
                 $v['name']='王浩進';
                 $v['codes'] = $v['codes'].',AEWHC';
             }
-            foreach(AeCommissionSummary::where('ae_codes','=',$v['codes'])->where('buss_date','=',$start_date)->get()->toArray() as $r) $hash[$r['cate']] = collect($r)->toArray();
+            foreach(AeCommissionSummary::where('ae_codes','=',$v['codes'])->where('buss_date','=',$month)->get()->toArray() as $r) $hash[$r['cate']] = collect($r)->toArray();
             $arr1 = array(
                 'id' => 0,
                 'name' => $v['name'],
                 'uuid' => $v['uuid'],
                 'codes' => $v['codes'],
                 'type' => '銷售代表',
-                'start_date' => $start_date,
-                'end_date' => $end_date,
+                'month' => $month,
                 'qualified' => $hash['principal']['transaction_number'],
                 'excitation' => $hash['principal']['bonus_application'],
                 'commission1' => $hash['fee']['bonus_application']
@@ -109,9 +101,10 @@ class AeCommissionSummaryController extends HomeController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $input = $request->only('month');
+        $this->aeConfirmData($id,$input['month']);
     }
 
     /**
@@ -152,21 +145,22 @@ class AeCommissionSummaryController extends HomeController
         return AE::select('name as text')->selectRaw('group_concat(code) as value')->groupBy('name')->get();
     }
 
-    public function aeConfirm(string $uuid, Request $request){
-        $input = $request->only('start','end');
 
-        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['start'],$input['end']));
+    public function aeConfirm(string $uuid, Request $request){
+        $input = $request->only('month');
+
+        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['month'],$input['end']));
     }
     public function aeConfirmReport(string $uuid, Request $request){
-        $input = $request->only('start','end');
+        $input = $request->only('month');
 
-        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['start'],$input['end']));
+        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['month'],$input['end']));
         return $pdf->stream('AeCommissionConfirmForm.pdf');
         // $pdf->setOptions(['isPhpEnabled' => true]);
         // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
     }
 
-    private function aeConfirmData($uuid, $start_date, $end_date): array
+    private function aeConfirmData($uuid, $month): array
     {
         $result = []; $hash = [];
         $AE = AE::select('uuid','name')
@@ -187,15 +181,14 @@ class AeCommissionSummaryController extends HomeController
         }
 
         $hash = $arr;
-        foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date','=',$start_date)->get()->toArray() as $r) $hash[$r['cate']] = collect($r)->toArray();
+        foreach(AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('buss_date','=',$month)->get()->toArray() as $r) $hash[$r['cate']] = collect($r)->toArray();
         $result = array_merge([
             'id' => 0,
             'name' => $AE['name'],
             'type' => '銷售代表',
             'codes' => $AE['codes'],
             'uuid' => $AE['uuid'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'month' => $month,
         ],$hash);
         $result['subtitle'] = $result['principal']['bonus_application']
             + $result['fee']['bonus_application']

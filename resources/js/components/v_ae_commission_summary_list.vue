@@ -112,8 +112,8 @@
         </b-modal>
 
         <!-- ae commission confirm -->
-        <b-sidebar id="detail" :title="target_item.name + ' AE確認表'" shadodw right>
-            <ae-commission-detail :uuid="target_item.uuid" :start="target_item.start_date" :end="target_item.end_date" ></ae-commission-detail>
+        <b-sidebar id="detail" :title="target_item.name + ' AE確認表'" lazy shadodw right>
+            <ae-commission-detail :uuid="target_item.uuid" :month="target_item.month" ></ae-commission-detail>
         </b-sidebar>
 
         <!-- del confirm -->
@@ -159,8 +159,10 @@ export default {
                 id:1,
                 name: '梧桐花開',
                 type: '銷售代表',
+                uuid: 'e550be72-fcb1-4779-980f-f255ff6eb041',
                 codes: 'AEWHC1,WHC01,AEWHC',
-                month: '2021-08',
+                start_date: '2021-07-01',
+                end_date: '2021-07-31',
                 qualified: 5,
                 excitation: 2250,
                 commission1: 11595.39,
@@ -176,8 +178,10 @@ export default {
                 id:2,
                 name: '劉素惠',
                 type: '銷售代表',
+                uuid: '7fff6132-4bcc-4932-a630-358a21a7bef4',
                 codes: 'AELSH,LSH01',
-                month: '2021-08',
+                start_date: '2021-07-01',
+                end_date: '2021-07-31',
                 qualified: 16,
                 excitation: 7200,
                 commission1: 201.42,
@@ -193,7 +197,8 @@ export default {
                 id:3,
                 name: '張冬梅',
                 type: '持牌員工',
-                month: '2021-08',
+                start_date: '2021-07-01',
+                end_date: '2021-07-31',
                 qualified: 2,
                 excitation: 1400,
                 commission1: 201.42,
@@ -209,7 +214,8 @@ export default {
                 id:4,
                 name: '范焜華',
                 type: '非持牌員工',
-                month: '2021-08',
+                start_date: '2021-07-01',
+                end_date: '2021-07-31',
                 qualified: 1,
                 excitation: 700,
                 commission1: 201.42,

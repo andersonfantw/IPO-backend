@@ -42,11 +42,11 @@ export default {
     crudStore(successCallback, formdata, name, failCallback){
         this.myPost(successCallback, formdata, this.url(name), failCallback)
     },
-    crudShow(id, successCallback, name, failCallback){
-        this.myGet(successCallback, {}, this.url(name,id), failCallback)
+    crudShow(id, successCallback, formdata, name, failCallback){
+        this.myGet(successCallback, formdata, this.url(name,id), failCallback)
     },
-    crudEdit(id, successCallback, name, failCallback){
-        this.myGet(successCallback, {}, this.url(name,id,'edit'), failCallback)
+    crudEdit(id, successCallback, formdata, name, failCallback){
+        this.myGet(successCallback, formdata, this.url(name,id,'edit'), failCallback)
     },
     crudUpdate(id, successCallback, formdata, name, failCallback){
         this.myPut(successCallback, formdata, this.url(name,id), failCallback)

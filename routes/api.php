@@ -188,6 +188,7 @@ Route::get('client_info', 'VueController@ClientInfo');
 
 //ae獎金計算
 Route::resource('ae_commission_summary', 'AeCommissionSummaryController');
+Route::resource('ae_commission_detail', 'AeCommissionDetailController');
 Route::resource('ipo_interest_list', 'IpoInterestListController');
 Route::resource('ipo_interest_import', 'IpoInterestImportController');
 Route::get('ae_list','AeCommissionSummaryController@aeList');

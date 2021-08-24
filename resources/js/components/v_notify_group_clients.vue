@@ -144,7 +144,7 @@ export default {
             this.crudShow(this.group_id, function(response){
                 _this.form = response
                 console.log(response)
-            },'/'+this.name)
+            },{},'/'+this.name)
         },
         index(){
             let _this = this
