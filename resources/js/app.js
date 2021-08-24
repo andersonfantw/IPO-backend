@@ -162,6 +162,7 @@ Vue.component('ae-commission-summary-list', require('./components/v_ae_commissio
 Vue.component('ipo-interest-list', require('./components/v_ipo_interest_list.vue').default);
 Vue.component('ipo-interest-import', require('./components/v_ipo_interest_import.vue').default);
 Vue.component('ipo-interest-setting', require('./components/v_ipo_interest_setting.vue').default);
+Vue.component('ae-commission-detail', require('./components/AeCommissionDetail.vue').default);
 
 // Anderson end
 
