@@ -360,13 +360,13 @@ export default {
     },
     computed: {
         commission_calculate_subtitle(){
-            return (this.calculate_form.fee
-                +this.calculate_form.interest
-                +this.calculate_form.alloted
-                +this.calculate_form.fee_cost
-                +this.calculate_form.interest_cost
-                +this.calculate_form.sell
-                +this.calculate_form.principal) * 0.6
+            return (parseFloat(this.calculate_form.fee)
+                +parseFloat(this.calculate_form.interest)
+                +parseFloat(this.calculate_form.alloted)
+                +parseFloat(this.calculate_form.fee_cost)
+                +parseFloat(this.calculate_form.interest_cost)
+                +parseFloat(this.calculate_form.sell)
+                +parseFloat(this.calculate_form.principal)) * 0.6
         },
         commission_subtitle(){
             return (parseFloat((this.form.fee=='')?this.calculate_form.fee:this.form.fee)
