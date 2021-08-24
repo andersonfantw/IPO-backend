@@ -369,16 +369,16 @@ export default {
                 +parseFloat(this.calculate_form.principal)) * 0.6
         },
         commission_subtitle(){
-            return (parseFloat((this.form.fee=='')?this.calculate_form.fee:this.form.fee)
-                +parseFloat((this.form.interest=='')?this.calculate_form.interest:this.form.interest)
-                +parseFloat((this.form.alloted=='')?this.calculate_form.alloted:this.form.alloted)
-                +parseFloat((this.form.fee_cost=='')?this.calculate_form.fee_cost:this.form.fee_cost)
-                +parseFloat((this.form.interest_cost=='')?this.calculate_form.interest_cost:this.form.interest_cost)
-                +parseFloat((this.form.sell=='')?this.calculate_form.sell:this.form.sell)
-                +parseFloat((this.form.principal_number=='')?this.calculate_form.principal:this.form.principal_number)*450) * 0.6
+            return (parseFloat((this.form.fee)?this.calculate_form.fee:this.form.fee)
+                +parseFloat((this.form.interest)?this.calculate_form.interest:this.form.interest)
+                +parseFloat((this.form.alloted)?this.calculate_form.alloted:this.form.alloted)
+                +parseFloat((this.form.fee_cost)?this.calculate_form.fee_cost:this.form.fee_cost)
+                +parseFloat((this.form.interest_cost)?this.calculate_form.interest_cost:this.form.interest_cost)
+                +parseFloat((this.form.sell)?this.calculate_form.sell:this.form.sell)
+                +parseFloat((this.form.principal_number)?this.calculate_form.principal:this.form.principal_number)*450) * 0.6
         },
         subtitle(){
-            return parseFloat(this.commission_subtitle)+parseFloat((this.form.other=='')?0:this.form.other)
+            return parseFloat(this.commission_subtitle)+parseFloat((this.form.other)?0:this.form.other)
         }
     },
     watch: {
