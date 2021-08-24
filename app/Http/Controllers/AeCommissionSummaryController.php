@@ -104,7 +104,29 @@ class AeCommissionSummaryController extends HomeController
     public function show($id, Request $request)
     {
         $input = $request->only('month');
-        $this->aeConfirmData($id,$input['month']);
+        $result = $this->aeConfirmData($id,$input['month']);
+        return [
+            'calculate' => [
+                'fee'=>$result['data']['fee']['application_fee'],
+                'interest'=>$result['data']['interest']['application_fee'],
+                'alloted'=>$result['data']['alloted']['application_fee'],
+                'fee_cost'=>$result['data']['fee']['application_cost'],
+                'interest_cost'=>$result['data']['interest']['application_cost'],
+                'sell'=>$result['data']['sell']['application_fee'],
+                'principal'=>$result['data']['principal']['bonus_application'],
+                'principal_number'=>$result['data']['principal']['transaction_number'],
+            ],
+            'modify' => [
+                'fee'=>$result['data']['fee']['application_fee_correction'],
+                'interest'=>$result['data']['interest']['application_fee_correction'],
+                'alloted'=>$result['data']['alloted']['application_fee_correction'],
+                'fee_cost'=>$result['data']['fee']['application_cost_correction'],
+                'interest_cost'=>$result['data']['interest']['application_cost_correction'],
+                'sell'=>$result['data']['sell']['application_fee_correction'],
+                'principal_number'=>$result['data']['principal']['transaction_number_correction'],
+                'other'=>$result['data']['other']['application_fee_correction']??'',
+            ],
+        ];
     }
 
     /**

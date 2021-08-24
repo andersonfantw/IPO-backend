@@ -306,9 +306,8 @@
 
 <script>
 import axios from "../mixins/mixin_post"
-import validator from "../mixins/mixin_validators";
 export default {
-    mixins:[axios,validator],
+    mixins:[axios],
     name:'ae_commission_summary',
     props: ['uuid','month'],
     data(){
@@ -330,7 +329,7 @@ export default {
               interest_cost: -11154.02,
               sell: 3659.79,
               principal: 1350.00,
-              principal_number: 3,
+              principal_number: '3',
               accumulated_provision: 0
           },
           form:{
@@ -394,7 +393,7 @@ export default {
         }
     },
     created() {
-        this.index()
+        this.show()
     },
     methods: {
         // alert
@@ -432,7 +431,7 @@ export default {
             let _this = this
             this.crudShow(this.uuid, function(response){
                 _this.calculate_form = response.calculate
-                _this.form = response.modity
+                _this.form = response.modify
             },{month: this.month})
         },
         update(){

@@ -125,9 +125,8 @@
 
 <script>
 import axios from "../mixins/mixin_post"
-import validator from "../mixins/mixin_validators";
 export default {
-    mixins:[axios,validator],
+    mixins:[axios],
     name:'ae_commission_summary',
     data(){
         return {
@@ -161,8 +160,7 @@ export default {
                 type: '銷售代表',
                 uuid: 'e550be72-fcb1-4779-980f-f255ff6eb041',
                 codes: 'AEWHC1,WHC01,AEWHC',
-                start_date: '2021-07-01',
-                end_date: '2021-07-31',
+                month: '2021-07-01',
                 qualified: 5,
                 excitation: 2250,
                 commission1: 11595.39,
@@ -180,8 +178,7 @@ export default {
                 type: '銷售代表',
                 uuid: '7fff6132-4bcc-4932-a630-358a21a7bef4',
                 codes: 'AELSH,LSH01',
-                start_date: '2021-07-01',
-                end_date: '2021-07-31',
+                month: '2021-07-01',
                 qualified: 16,
                 excitation: 7200,
                 commission1: 201.42,
@@ -197,8 +194,7 @@ export default {
                 id:3,
                 name: '張冬梅',
                 type: '持牌員工',
-                start_date: '2021-07-01',
-                end_date: '2021-07-31',
+                month: '2021-07-01',
                 qualified: 2,
                 excitation: 1400,
                 commission1: 201.42,
@@ -214,8 +210,7 @@ export default {
                 id:4,
                 name: '范焜華',
                 type: '非持牌員工',
-                start_date: '2021-07-01',
-                end_date: '2021-07-31',
+                month: '2021-07-01',
                 qualified: 1,
                 excitation: 700,
                 commission1: 201.42,
@@ -299,7 +294,7 @@ export default {
             })
         },
         showPdf(){
-            window.open('AeCommissionSummary/detail/ShowPdf/'+this.target_item.uuid+'?start='+this.target_item.start_date+'&end='+this.target_item.end_date)
+            window.open('AeCommissionSummary/ShowPdf/'+this.target_item.uuid+'?month='+this.target_item.month)
         }
     }
 }
