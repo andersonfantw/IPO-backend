@@ -114,7 +114,7 @@ class AeCommissionSummaryController extends HomeController
                 'interest_cost'=>$result['data']['interest']['application_cost'],
                 'sell'=>$result['data']['sell']['application_fee'],
                 'principal'=>$result['data']['principal']['bonus_application'],
-                'principal_number'=>$result['data']['principal']['transaction_number'],
+                'principal_number'=>(string)$result['data']['principal']['transaction_number'],
                 'accumulated_provision'=>0,
             ],
             'modify' => [
@@ -124,7 +124,7 @@ class AeCommissionSummaryController extends HomeController
                 'fee_cost'=>$result['data']['fee']['application_cost_correction'],
                 'interest_cost'=>$result['data']['interest']['application_cost_correction'],
                 'sell'=>$result['data']['sell']['application_fee_correction'],
-                'principal_number'=>$result['data']['principal']['transaction_number_correction'],
+                'principal_number'=>(string)$result['data']['principal']['transaction_number_correction'],
                 'other'=>$result['data']['other']['application_fee_correction']??'',
             ],
         ];
