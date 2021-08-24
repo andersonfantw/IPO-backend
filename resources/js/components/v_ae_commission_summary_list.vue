@@ -113,7 +113,7 @@
 
         <!-- ae commission confirm -->
         <b-sidebar id="detail" :title="target_item.name + ' AE確認表'" shadodw right>
-            <ae-commission-detail :codes="target_item.codes" ></ae-commission-detail>
+            <ae-commission-detail :uuid="target_item.uuid" :start="target_item.start_date" :end="target_item.end_date" ></ae-commission-detail>
         </b-sidebar>
 
         <!-- del confirm -->
