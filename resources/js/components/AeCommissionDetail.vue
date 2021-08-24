@@ -433,7 +433,7 @@ export default {
                 _this.calculate_form = response.calculate
                 _this.form = response.modify
                 _this.dirty=false
-                _this.$nextTick(() => this.dirty = false)
+                _this.$nextTick(() => _this.dirty = false)
             },{month: this.month})
         },
         update(){
