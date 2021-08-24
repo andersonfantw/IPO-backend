@@ -112,8 +112,8 @@
         </b-modal>
 
         <!-- ae commission confirm -->
-        <b-sidebar id="detail" title="AE確認表" shadodw right>
-            <ae-commission-detail></ae-commission-detail>
+        <b-sidebar id="detail" :title="target_item.name + ' AE確認表'" shadodw right>
+            <ae-commission-detail :codes="target_item.codes" ></ae-commission-detail>
         </b-sidebar>
 
         <!-- del confirm -->
@@ -159,6 +159,7 @@ export default {
                 id:1,
                 name: '梧桐花開',
                 type: '銷售代表',
+                codes: 'AEWHC1,WHC01,AEWHC',
                 month: '2021-08',
                 qualified: 5,
                 excitation: 2250,
@@ -175,6 +176,7 @@ export default {
                 id:2,
                 name: '劉素惠',
                 type: '銷售代表',
+                codes: 'AELSH,LSH01',
                 month: '2021-08',
                 qualified: 16,
                 excitation: 7200,
@@ -312,12 +314,6 @@ export default {
     margin: -20px 3px 0 0;
 }
 #detail{
-    width: 70%;
-}
-#detail .embed-responsive{
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    width: 80%;
 }
 </style>

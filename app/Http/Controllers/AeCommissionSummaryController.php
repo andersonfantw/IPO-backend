@@ -60,6 +60,7 @@ class AeCommissionSummaryController extends HomeController
                 'id' => 0,
                 'name' => $v['name'],
                 'uuid' => $v['uuid'],
+                'codes' => $v['codes'],
                 'type' => '銷售代表',
                 'start_date' => $start_date,
                 'end_date' => $end_date,
