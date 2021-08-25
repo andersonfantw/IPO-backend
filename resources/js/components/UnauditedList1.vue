@@ -2,7 +2,10 @@
   <b-container fluid>
     <h1 class="text-warning text-center">
       一審資料未審核清單
-      <b-spinner v-if="busy" variant="warning"></b-spinner>
+      <b-spinner
+        v-if="busy"
+        variant="warning"
+      ></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
@@ -31,7 +34,10 @@
       </b-col>
       <b-col>
         <b-input-group prepend="郵箱">
-          <b-form-input type="search" v-model="filters['郵箱']" />
+          <b-form-input
+            type="search"
+            v-model="filters['郵箱']"
+          />
         </b-input-group>
       </b-col>
     </b-row>
@@ -47,19 +53,28 @@
       </b-col>
       <b-col>
         <b-input-group prepend="AE">
-          <b-form-select v-model="filters['AE']" :options="aes">
+          <b-form-select
+            v-model="filters['AE']"
+            :options="aes"
+          >
           </b-form-select>
         </b-input-group>
       </b-col>
       <b-col>
         <b-input-group prepend="已入金">
-          <b-form-select v-model="filters['已入金']" :options="已入金">
+          <b-form-select
+            v-model="filters['已入金']"
+            :options="已入金"
+          >
           </b-form-select>
         </b-input-group>
       </b-col>
       <b-col> </b-col>
     </b-row>
-    <b-row no-gutters class="mt-3">
+    <b-row
+      no-gutters
+      class="mt-3"
+    >
       <b-col class="text-center">
         <b-pagination
           v-if="totalRows > 0"
@@ -91,8 +106,9 @@
           variant="warning"
           type="button"
           @click="showClientDetails(data.item.uuid)"
-          ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
         >
+          <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
+        </b-button>
         <!-- <b-form :action="audit_client_url" method="post">
           <input type="hidden" name="redirect_route" value="UnauditedList1" />
           <input type="hidden" name="next_status" value="audited1" />
@@ -196,7 +212,7 @@ export default {
     load(pageNumber) {
       const self = this;
       axios
-        .get("api/UnauditedList1", {
+        .get("UnauditedList1", {
           params: {
             perPage: self.perPage,
             pageNumber: pageNumber,
