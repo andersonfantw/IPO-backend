@@ -165,7 +165,7 @@ export default {
   methods: {
     loadData() {
       const self = this;
-      axios.get("ClientFundInternalTransferRequests").then((res) => {
+      axios.get("ClientInternalTransferRequests").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
         self.fields = res.data.fields;

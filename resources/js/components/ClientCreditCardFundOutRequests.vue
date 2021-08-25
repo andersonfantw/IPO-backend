@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="p-0">
+  <b-container fluid>
     <b-row no-gutters>
       <b-col>
         <b-input-group prepend="帳戶號碼">
@@ -43,7 +43,7 @@
       bordered
       dark
       :items="data"
-      :fields="Columns"
+      :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
       :filter="filters"
@@ -51,7 +51,7 @@
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
-      :busy="Loading"
+      :busy="busy"
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
@@ -70,10 +70,15 @@
             :value="data.item.id"
             variant="warning"
             type="submit"
-            ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
           >
+            <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
+          </b-button>
         </b-form>
-        <b-form v-else :action="view_request_url" method="post">
+        <b-form
+          v-else
+          :action="view_request_url"
+          method="post"
+        >
           <input
             type="hidden"
             name="redirect_route"
@@ -84,8 +89,9 @@
             :value="data.item.id"
             variant="success"
             type="submit"
-            ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button
           >
+            <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+          </b-button>
         </b-form>
       </template>
       <template #empty="scope">
@@ -118,9 +124,9 @@ import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
-      Columns: [],
+      fields: [],
       FilterMatchMode: {},
-      Loading: false,
+      busy: false,
       data: null,
       SelectedRequests: [],
       FilteredRequests: [],
@@ -133,14 +139,6 @@ export default {
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
-    columns: {
-      type: String,
-      required: true,
-    },
-    filter_type: {
-      type: String,
-      required: true,
-    },
     audit_request_url: String,
     view_request_url: String,
   },
@@ -148,20 +146,20 @@ export default {
     SearchSelectOptions,
   },
   created() {
-    this.Columns = JSON.parse(this.columns);
-    this.FilterType = JSON.parse(this.filter_type);
-    this.Loading = true;
+    this.busy = true;
     this.loadData();
   },
   methods: {
     loadData() {
       const self = this;
-      axios.post("api/ClientCreditCardFundOutRequests/list").then((res) => {
+      axios.get("ClientCreditCardFundOutRequests").then((res) => {
         const json = self.getDecryptedJsonObject(res.data);
         self.data = json.data;
+        self.fields = res.data.fields;
+        self.FilterType = res.data.filter_type;
         self.FilteredRequests = self.data;
         self.totalRows = self.data.length;
-        self.Loading = false;
+        self.busy = false;
       });
     },
     onFiltered(filteredItems) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\ClientHKFundOutRequest;
 use App\Traits\Excel;
 use Illuminate\Http\Request;
@@ -80,6 +81,21 @@ class ClientHKFundOutRequestsController extends Controller
             'filter_type' => $this->filter_type,
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $ClientHKFundOutRequest1 = ClientHKFundOutRequest::find($id);
+        $ClientHKFundOutRequest2 = clone $ClientHKFundOutRequest1;
+        $Client = clone $ClientHKFundOutRequest1->Client;
+        $AyersAccounts = $ClientHKFundOutRequest1->Client->AyersAccounts;
+        $IDCard = $ClientHKFundOutRequest1->Client->IDCard;
     }
 
     public function downloadAyersImportData(Request $request)

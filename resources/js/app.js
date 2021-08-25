@@ -30,6 +30,8 @@ import ClientCreditCards from "./components/ClientCreditCards.vue";
 import ClientFundInRequests from "./components/ClientFundInRequests.vue";
 import ClientHKFundOutRequests from "./components/ClientHKFundOutRequests.vue";
 import ClientFundInternalTransferRequests from "./components/ClientFundInternalTransferRequests.vue";
+import ClientOverseasFundOutRequests from "./components/ClientOverseasFundOutRequests.vue";
+import ClientCreditCardFundOutRequests from "./components/ClientCreditCardFundOutRequests.vue";
 import AccountReportSendingSummary from "./components/AccountReportSendingSummary.vue";
 import NotificationSummary from "./components/NotificationSummary.vue";
 
@@ -47,6 +49,8 @@ const routes = [
     { path: '/ClientFundInRequests', component: ClientFundInRequests },
     { path: '/ClientHKFundOutRequests', component: ClientHKFundOutRequests },
     { path: '/ClientFundInternalTransferRequests', component: ClientFundInternalTransferRequests },
+    { path: '/ClientOverseasFundOutRequests', component: ClientOverseasFundOutRequests },
+    { path: '/ClientCreditCardFundOutRequests', component: ClientCreditCardFundOutRequests },
     { path: '/AccountReportSendingSummary', component: AccountReportSendingSummary },
     { path: '/NotificationSummary', component: NotificationSummary },
 ];

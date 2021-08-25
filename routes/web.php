@@ -108,7 +108,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     // Route::any('/ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController@index')->name('ClientFundInternalTransferRequests');
 
-    Route::any('/ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController@index')->name('ClientCreditCardFundOutRequests');
+    // Route::any('/ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController@index')->name('ClientCreditCardFundOutRequests');
 
     Route::any('/ClientAddressProofUpdates', 'ClientAddressProofUpdatesController@index')->name('ClientAddressProofUpdates');
 
@@ -148,8 +148,9 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('ClientCreditCards', 'ClientCreditCardsController');
     Route::resource('ClientFundInRequests', 'ClientFundInRequestsController');
     Route::resource('ClientHKFundOutRequests', 'ClientHKFundOutRequestsController');
-    Route::resource('ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController');
+    Route::resource('ClientInternalTransferRequests', 'ClientFundInternalTransferRequestsController');
     Route::resource('ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController');
+    Route::resource('ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController');
     Route::resource('UserRole', 'UserRoleController');
     Route::resource('RoleMenuItem', 'RoleMenuItemController');
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');
