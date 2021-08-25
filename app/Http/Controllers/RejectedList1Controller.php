@@ -7,19 +7,15 @@ use App\ClientDepositProof;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class RejectedList1Controller extends HomeController
+class RejectedList1Controller extends Controller
 {
     protected $name = 'RejectedList1';
+    private $fields = null;
+    private $filter_type = null;
 
     public function __construct()
     {
-        parent::__construct();
-    }
-
-    protected function setViewParameters(Request $request)
-    {
-        $parameters = parent::setViewParameters($request);
-        $columns = [
+        $this->fields = [
             ['key' => 'AE', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '證件號碼', 'sortable' => true],
@@ -31,7 +27,7 @@ class RejectedList1Controller extends HomeController
             ['key' => '提交時間', 'sortable' => true],
             ['key' => '操作'],
         ];
-        $FilterType = [
+        $this->FilterType = [
             'AE' => 'equals',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
@@ -42,12 +38,14 @@ class RejectedList1Controller extends HomeController
             '郵箱' => 'startsWith',
             '提交時間' => 'betweenDate',
         ];
-        $parameters['columns'] = json_encode($columns);
-        $parameters['FilterType'] = json_encode($FilterType);
-        return $parameters;
     }
 
-    public function list(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
             ->whereHas('EditableSteps', function (Builder $query) {
@@ -75,6 +73,8 @@ class RejectedList1Controller extends HomeController
             $rows[] = $row;
         }
         return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
             'data' => $rows,
             'total' => $total,
         ], JSON_UNESCAPED_UNICODE);

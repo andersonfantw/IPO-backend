@@ -20,15 +20,15 @@ Auth::routes();
 Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('/ClientProgress', 'ClientProgressController@index')->name('ClientProgress');
+    // Route::get('/ClientProgress', 'ClientProgressController@index')->name('ClientProgress');
 
-    Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');
+    // Route::get('/UnauditedList1', 'UnauditedList1Controller@index')->name('UnauditedList1');
 
-    Route::get('/UnauditedList2', 'UnauditedList2Controller@index')->name('UnauditedList2');
+    // Route::get('/UnauditedList2', 'UnauditedList2Controller@index')->name('UnauditedList2');
 
     Route::get('/RejectedList1', 'RejectedList1Controller@index')->name('RejectedList1');
 
-    Route::get('/ReauditList1', 'ReauditList1Controller@index')->name('ReauditList1');
+    // Route::get('/ReauditList1', 'ReauditList1Controller@index')->name('ReauditList1');
 
     Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient')->middleware([
         'PreviewClient',
@@ -140,6 +140,8 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('MenuItem', 'MenuItemController');
     Route::resource('ClientProgress', 'ClientProgressController');
     Route::resource('UnauditedList1', 'UnauditedList1Controller');
+    Route::resource('ReauditList1', 'ReauditList1Controller');
+    Route::resource('UnauditedList2', 'UnauditedList2Controller');
     Route::resource('UserRole', 'UserRoleController');
     Route::resource('RoleMenuItem', 'RoleMenuItemController');
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');

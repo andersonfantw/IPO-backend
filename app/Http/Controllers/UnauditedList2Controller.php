@@ -9,14 +9,15 @@ use App\ClientOtherIDCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class UnauditedList2Controller extends HomeController
+class UnauditedList2Controller extends Controller
 {
     protected $name = 'UnauditedList2';
+    private $fields = null;
+    private $filter_type = null;
 
-    protected function setViewParameters(Request $request)
+    public function __construct()
     {
-        $parameters = parent::setViewParameters($request);
-        $columns = [
+        $this->fields = [
             ['key' => 'AE', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '證件號碼', 'sortable' => true],
@@ -27,7 +28,7 @@ class UnauditedList2Controller extends HomeController
             ['key' => '提交時間', 'sortable' => true],
             ['key' => '操作'],
         ];
-        $FilterType = [
+        $this->FilterType = [
             'AE' => 'equals',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
@@ -37,12 +38,15 @@ class UnauditedList2Controller extends HomeController
             '郵箱' => 'startsWith',
             '提交時間' => 'betweenDate',
         ];
-        $parameters['columns'] = json_encode($columns);
-        $parameters['FilterType'] = json_encode($FilterType);
-        return $parameters;
     }
 
-    function list(Request $request) {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
             ->whereHasMorph('IDCard', [
                 ClientCNIDCard::class,
@@ -95,6 +99,8 @@ class UnauditedList2Controller extends HomeController
             $rows[] = $row;
         }
         return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
             'data' => $rows,
             'total' => $total,
         ], JSON_UNESCAPED_UNICODE);

@@ -42,19 +42,19 @@ class MenuItemController extends Controller
                     ],
                     [
                         'label' => "一審資料再審核清單",
-                        'url' => route('ReauditList1'),
+                        'url' => '/ReauditList1',
                     ],
                     [
                         'label' => "資料駁回清單",
-                        'url' => route('RejectedList1'),
+                        'url' => '/RejectedList1',
                     ],
                     [
                         'label' => "二審資料未審核清單",
-                        'url' => route('UnauditedList2'),
+                        'url' => '/UnauditedList2',
                     ],
                     [
                         'label' => "二審資料可投遞清單",
-                        'url' => route('DeliverableList2'),
+                        'url' => '/DeliverableList2',
                     ],
                     [
                         'label' => "開戶信發送清單",
