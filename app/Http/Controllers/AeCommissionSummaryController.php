@@ -101,7 +101,18 @@ class AeCommissionSummaryController extends HomeController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id, Request $request)
     {
         $input = $request->only('month');
         $result = $this->aeConfirmData($id,$input['month']);
@@ -131,17 +142,6 @@ class AeCommissionSummaryController extends HomeController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -150,7 +150,16 @@ class AeCommissionSummaryController extends HomeController
      */
     public function update(Request $request, $id)
     {
-        //
+        $AE = AE::select('uuid','name')
+            ->selectRaw("group_concat(code) as codes")
+            ->where('uuid','=',$input['ae'])
+            ->groupBy('uuid','name')
+            ->first()->toArray();
+        if($AE['name']=='梧桐花開'){
+            $AE['name']='王浩進';
+            $AE['codes'] = $AE['codes'].',AEWHC';
+        }
+        AeCommissionSummary::where('codes','=',$AE['codes']);
     }
 
     /**
@@ -172,12 +181,12 @@ class AeCommissionSummaryController extends HomeController
     public function aeConfirm(string $uuid, Request $request){
         $input = $request->only('month');
 
-        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['month'],$input['end']));
+        return view('pdf/AeCommissionConfirmForm',$this->aeConfirmData($uuid,$input['month']));
     }
     public function aeConfirmReport(string $uuid, Request $request){
         $input = $request->only('month');
 
-        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['month'],$input['end']));
+        $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', $this->aeConfirmData($uuid,$input['month']));
         return $pdf->stream('AeCommissionConfirmForm.pdf');
         // $pdf->setOptions(['isPhpEnabled' => true]);
         // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
