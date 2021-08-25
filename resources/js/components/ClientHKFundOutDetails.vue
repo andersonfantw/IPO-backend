@@ -239,17 +239,15 @@
         </tr>
       </tbody>
     </table>
-    <b-row>
-      <b-col class="text-center">
-        <b-button
-          v-if="Request && Request.status=='pending'"
-          variant="success"
-          @click="submit"
-        >
-          提交審核
-        </b-button>
-      </b-col>
-    </b-row>
+    <template #modal-footer="">
+      <b-button
+        v-if="Request && Request.status=='pending'"
+        variant="success"
+        @click="submit"
+      >
+        提交審核
+      </b-button>
+    </template>
   </b-modal>
 </template>
 <script>
