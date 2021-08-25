@@ -93,7 +93,7 @@ export default {
       const self = this;
       if (self.name) {
         axios
-          .post(`api/Role`, {
+          .post(`Role`, {
             name: self.name,
           })
           .then((res) => {
@@ -110,7 +110,7 @@ export default {
       const self = this;
       self.SelectedRoles.forEach((role_id) => {
         axios
-          .delete(`api/Role/${role_id}`)
+          .delete(`Role/${role_id}`)
           .then((res) => {
             console.log(res);
             self.reload();
@@ -126,7 +126,7 @@ export default {
       const self = this;
       if (grant) {
         axios
-          .get(`api/UserRole`, {
+          .post(`UserRole`, {
             user_id: user_id,
             role_id: role_id,
           })
@@ -140,7 +140,7 @@ export default {
           });
       } else {
         axios
-          .delete(`api/UserRole/${id}`)
+          .delete(`UserRole/${id}`)
           .then((res) => {
             console.log(res);
             self.reload();
@@ -155,7 +155,7 @@ export default {
       const self = this;
       this.busy = true;
       axios
-        .post("api/UserRole/list")
+        .get(`UserRole`)
         .then((res) => {
           console.log(res);
           self.Roles = res.data.Roles;

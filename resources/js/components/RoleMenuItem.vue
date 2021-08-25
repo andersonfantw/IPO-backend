@@ -93,7 +93,7 @@ export default {
       const self = this;
       if (self.name) {
         axios
-          .post(`api/MenuItem`, {
+          .post(`MenuItem`, {
             name: self.name,
           })
           .then((res) => {
@@ -110,7 +110,7 @@ export default {
       const self = this;
       self.SelectedMenuItems.forEach((menu_item_id) => {
         axios
-          .delete(`api/MenuItem/${menu_item_id}`)
+          .delete(`MenuItem/${menu_item_id}`)
           .then((res) => {
             console.log(res);
             self.reload();
@@ -126,7 +126,7 @@ export default {
       const self = this;
       if (granted) {
         axios
-          .post(`api/RoleMenuItem`, {
+          .post(`RoleMenuItem`, {
             role_id: role_id,
             menu_item_id: menu_item_id,
           })
@@ -140,7 +140,7 @@ export default {
           });
       } else {
         axios
-          .delete(`api/RoleMenuItem/${id}`)
+          .delete(`RoleMenuItem/${id}`)
           .then((res) => {
             console.log(res);
             self.reload();
@@ -155,7 +155,7 @@ export default {
       const self = this;
       this.busy = true;
       axios
-        .post("api/RoleMenuItem/list")
+        .get(`RoleMenuItem`)
         .then((res) => {
           console.log(res);
           self.MenuItems = res.data.MenuItems;

@@ -8,7 +8,7 @@ use App\Role;
 use App\RoleControllerPermission;
 use Illuminate\Http\Request;
 
-class RoleControllerPermissionController extends HomeController
+class RoleControllerPermissionController extends Controller
 {
     protected $name = 'RoleControllerPermission';
 
@@ -17,11 +17,8 @@ class RoleControllerPermissionController extends HomeController
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    // }
-
-    function list() {
+    public function index()
+    {
         $Roles = Role::with(['RoleControllerPermission', 'RoleControllerPermission.Controller', 'RoleControllerPermission.Permission'])->get();
         $Controllers = Controller::orderBy('name', 'asc')->get();
         $columns = [

@@ -7,7 +7,7 @@ use App\Role;
 use App\RoleMenuItem;
 use Illuminate\Http\Request;
 
-class RoleMenuItemController extends HomeController
+class RoleMenuItemController extends Controller
 {
     protected $name = 'RoleMenuItem';
 
@@ -16,11 +16,8 @@ class RoleMenuItemController extends HomeController
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    // }
-
-    function list() {
+    public function index()
+    {
         $MenuItems = MenuItem::get();
         //create checkbox items
         $menu_items = [];

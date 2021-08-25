@@ -100,7 +100,7 @@ export default {
       const self = this;
       if (self.name) {
         axios
-          .post(`api/Controller`, {
+          .post(`Controller`, {
             name: self.name,
           })
           .then((res) => {
@@ -117,7 +117,7 @@ export default {
       const self = this;
       self.SelectedControllers.forEach((controller_id) => {
         axios
-          .delete(`api/Controller/${controller_id}`)
+          .delete(`Controller/${controller_id}`)
           .then((res) => {
             console.log(res);
             self.reload();
@@ -139,7 +139,7 @@ export default {
       const self = this;
       if (granted) {
         axios
-          .post(`api/RoleControllerPermission`, {
+          .post(`RoleControllerPermission`, {
             role_id: role_id,
             controller_id: controller_id,
             permission_id: permission_id,
@@ -153,7 +153,7 @@ export default {
           });
       } else {
         axios
-          .delete(`api/RoleControllerPermission/${id}`)
+          .delete(`RoleControllerPermission/${id}`)
           .then((res) => {
             console.log(res);
             self.reload();
@@ -167,7 +167,7 @@ export default {
       const self = this;
       this.busy = true;
       axios
-        .post("api/RoleControllerPermission/list")
+        .get(`RoleControllerPermission`)
         .then((res) => {
           console.log(res);
           self.Controllers = res.data.Controllers;

@@ -7,7 +7,7 @@ use App\User;
 use App\UserRole;
 use Illuminate\Http\Request;
 
-class UserRoleController extends HomeController
+class UserRoleController extends Controller
 {
     protected $name = 'UserRole';
 
@@ -16,11 +16,8 @@ class UserRoleController extends HomeController
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index(Request $request)
-    // {
-    // }
-
-    function list() {
+    public function index(Request $request)
+    {
         $Roles = Role::get();
         //create checkbox items
         $roles = [];
