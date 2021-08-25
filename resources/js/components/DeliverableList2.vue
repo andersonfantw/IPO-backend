@@ -1,153 +1,124 @@
 <template>
-  <b-row no-gutters class="justify-content-center text-warning">
-    <b-col cols="2">
-      <slot name="menu"></slot>
-    </b-col>
-    <b-col cols="10">
-      <b-container fluid>
-        <h1 class="text-warning text-center">二審資料可投遞清單</h1>
-        <b-row class="mb-3">
-          <b-col>
-            <b-input-group prepend="帳戶號碼">
-              <b-form-input
-                type="search"
-                v-model="filters['帳戶號碼']"
-              ></b-form-input>
-            </b-input-group>
-          </b-col>
-          <b-col>
-            <b-input-group prepend="開通賬戶類型">
-              <b-form-select
-                v-model="filters['開通賬戶類型']"
-                :options="options"
-              >
-              </b-form-select>
-            </b-input-group>
-          </b-col>
-          <b-col>
-            <b-input-group prepend="客户姓名">
-              <b-form-input
-                type="search"
-                v-model="filters['客户姓名']"
-              ></b-form-input>
-            </b-input-group>
-          </b-col>
-          <b-col>
-            <b-input-group prepend="證件號碼">
-              <b-form-input
-                type="search"
-                v-model="filters['證件號碼']"
-              ></b-form-input>
-            </b-input-group>
-          </b-col>
-        </b-row>
-        <b-row class="mb-3">
-          <b-col>
-            <b-input-group prepend="手機號碼">
-              <b-form-input
-                type="search"
-                v-model="filters['手機號碼']"
-              ></b-form-input>
-            </b-input-group>
-          </b-col>
-          <b-col>
-            <b-input-group prepend="郵箱">
-              <b-form-input
-                type="search"
-                v-model="filters['郵箱']"
-              ></b-form-input>
-            </b-input-group>
-          </b-col>
-          <b-col>
-            <!-- <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" /> -->
-            <date-picker
-              name="'開戶時間'"
-              v-model="filters['開戶時間']"
-              range
-              placeholder="開戶時間"
-            />
-          </b-col>
-          <b-col>
-            <date-picker
-              name="'帳戶生成時間'"
-              v-model="filters['帳戶生成時間']"
-              range
-              placeholder="帳戶生成時間"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-button variant="primary" @click="generateAccounts"
-              ><i class="far fa-user"></i> 產生Ayers帳號</b-button
-            >
-            <b-button variant="success" @click="downloadExcel">
-              <i class="fas fa-download"></i> 開戶Excel下載<b-spinner
-                v-if="DownloadingExcel"
-                label="Spinning"
-                small
-              />
-            </b-button>
-            <b-button variant="warning" @click="downloadFilesForOpeningAccount">
-              <i class="fas fa-download"></i> 協議及開戶資料下載
-            </b-button>
-          </b-col>
-        </b-row>
-        <b-row v-if="loading" class="mt-3">
-          <b-col>
-            <b-progress :max="100" show-progress animated variant="success">
-              <b-progress-bar
-                :value="progress"
-                :label="`${progress.toFixed(2)}%`"
-              ></b-progress-bar>
-            </b-progress>
-          </b-col>
-        </b-row>
-        <b-row no-gutters class="mt-3">
-          <b-col class="text-center">
-            <b-pagination
-              v-if="totalRows > 0"
-              v-model="currentPage"
-              :total-rows="totalRows"
-              :per-page="perPage"
-              align="center"
-            >
-            </b-pagination>
-          </b-col>
-        </b-row>
-        <b-table
-          hover
-          bordered
-          dark
-          :items="data"
-          :fields="columns"
-          :current-page="currentPage"
-          :per-page="perPage"
-          :filter="filters"
-          :filter-function="filter"
-          show-empty
-          empty-filtered-text="沒有找到記錄"
-          empty-text="沒有找到記錄"
-          @filtered="onFiltered"
+  <b-container fluid>
+    <h1 class="text-warning text-center">二審資料可投遞清單</h1>
+    <b-row class="mb-3">
+      <b-col>
+        <b-input-group prepend="帳戶號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['帳戶號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="開通賬戶類型">
+          <b-form-select
+            v-model="filters['開通賬戶類型']"
+            :options="options"
+          >
+          </b-form-select>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="客户姓名">
+          <b-form-input
+            type="search"
+            v-model="filters['客户姓名']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="證件號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['證件號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row class="mb-3">
+      <b-col>
+        <b-input-group prepend="手機號碼">
+          <b-form-input
+            type="search"
+            v-model="filters['手機號碼']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <b-input-group prepend="郵箱">
+          <b-form-input
+            type="search"
+            v-model="filters['郵箱']"
+          ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col>
+        <!-- <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" /> -->
+        <date-picker
+          name="'開戶時間'"
+          v-model="filters['開戶時間']"
+          range
+          placeholder="開戶時間"
+        />
+      </b-col>
+      <b-col>
+        <date-picker
+          name="'帳戶生成時間'"
+          v-model="filters['帳戶生成時間']"
+          range
+          placeholder="帳戶生成時間"
+        />
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-button
+          variant="primary"
+          @click="generateAccounts"
+        ><i class="far fa-user"></i> 產生Ayers帳號</b-button>
+        <b-button
+          variant="success"
+          @click="downloadExcel"
         >
-          <template #head(操作)>
-            <b-form-checkbox v-model="checked" @change="selectAll" />
-          </template>
-          <template #cell(操作)="data">
-            <b-form-checkbox v-model="selectedClients" :value="data.item" />
-          </template>
-          <template #empty="scope">
-            {{ scope.emptyText }}
-          </template>
-          <template #emptyfiltered="scope">
-            {{ scope.emptyFilteredText }}
-          </template>
-          <template #table-busy>
-            <div class="text-center text-warning">
-              <b-spinner class="align-middle"></b-spinner>
-            </div>
-          </template>
-        </b-table>
+          <i class="fas fa-download"></i> 開戶Excel下載
+          <b-spinner
+            v-if="DownloadingExcel"
+            label="Spinning"
+            small
+          />
+        </b-button>
+        <b-button
+          variant="warning"
+          @click="downloadFilesForOpeningAccount"
+        >
+          <i class="fas fa-download"></i> 協議及開戶資料下載
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-row
+      v-if="busy"
+      class="mt-3"
+    >
+      <b-col>
+        <b-progress
+          :max="100"
+          show-progress
+          animated
+          variant="success"
+        >
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress.toFixed(2)}%`"
+          ></b-progress-bar>
+        </b-progress>
+      </b-col>
+    </b-row>
+    <b-row
+      no-gutters
+      class="mt-3"
+    >
+      <b-col class="text-center">
         <b-pagination
           v-if="totalRows > 0"
           v-model="currentPage"
@@ -156,9 +127,56 @@
           align="center"
         >
         </b-pagination>
-      </b-container>
-    </b-col>
-  </b-row>
+      </b-col>
+    </b-row>
+    <b-table
+      hover
+      bordered
+      dark
+      :items="data"
+      :fields="fields"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :filter="filters"
+      :filter-function="filter"
+      show-empty
+      empty-filtered-text="沒有找到記錄"
+      empty-text="沒有找到記錄"
+      @filtered="onFiltered"
+    >
+      <template #head(操作)>
+        <b-form-checkbox
+          v-model="checked"
+          @change="selectAll"
+        />
+      </template>
+      <template #cell(操作)="data">
+        <b-form-checkbox
+          v-model="selectedClients"
+          :value="data.item"
+        />
+      </template>
+      <template #empty="scope">
+        {{ scope.emptyText }}
+      </template>
+      <template #emptyfiltered="scope">
+        {{ scope.emptyFilteredText }}
+      </template>
+      <template #table-busy>
+        <div class="text-center text-warning">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
+    </b-table>
+    <b-pagination
+      v-if="totalRows > 0"
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="center"
+    >
+    </b-pagination>
+  </b-container>
 </template>
 <script>
 // import DateRange from "./DateRange";
@@ -168,8 +186,8 @@ import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
-      columns: [],
-      loading: false,
+      fields: [],
+      busy: false,
       data: [],
       selectedClients: [],
       filteredClients: [],
@@ -189,27 +207,13 @@ export default {
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
-    view_client_url: {
-      type: String,
-      required: true,
-    },
-    p_columns: {
-      type: String,
-      required: true,
-    },
-    filter_type: {
-      type: String,
-      required: true,
-    },
     generate_ayers_account_url: String,
   },
   components: {
     // DateRange,
   },
   created() {
-    this.columns = JSON.parse(this.p_columns);
-    this.FilterType = JSON.parse(this.filter_type);
-    this.loading = true;
+    this.busy = true;
     this.loadData(1);
   },
   methods: {
@@ -285,7 +289,7 @@ export default {
     generateAccounts() {
       const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
-        self.loading = true;
+        self.busy = true;
         axios
           .post("api/AyersAccount/generate", { clients: self.selectedClients })
           .then((response) => {
@@ -304,14 +308,18 @@ export default {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/DeliverableList2/list", {
-          perPage: self.perPage,
-          pageNumber: pageNumber,
+        .get("DeliverableList2", {
+          params: {
+            perPage: self.perPage,
+            pageNumber: pageNumber,
+          },
         })
         .then((res) => {
           console.log(res);
           const data = res.data.data;
           const total = res.data.total;
+          self.fields = res.data.fields;
+          self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.filteredClients = self.data;
           self.totalRows = self.data.length;
@@ -323,7 +331,7 @@ export default {
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {
-            self.loading = false;
+            self.busy = false;
           }
         })
         .catch((error) => {

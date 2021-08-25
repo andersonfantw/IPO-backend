@@ -25,7 +25,7 @@ class MenuItemController extends Controller
                 'items' => [
                     [
                         'label' => "權限管理",
-                        'url' => '/Permission',
+                        'url' => 'Permission',
                     ],
                 ],
             ],
@@ -34,35 +34,35 @@ class MenuItemController extends Controller
                 'items' => [
                     [
                         'label' => "查看開戶進度",
-                        'url' => '/ClientProgress',
+                        'url' => 'ClientProgress',
                     ],
                     [
                         'label' => "一審資料未審核清單",
-                        'url' => '/UnauditedList1',
+                        'url' => 'UnauditedList1',
                     ],
                     [
                         'label' => "一審資料再審核清單",
-                        'url' => '/ReauditList1',
+                        'url' => 'ReauditList1',
                     ],
                     [
                         'label' => "資料駁回清單",
-                        'url' => '/RejectedList1',
+                        'url' => 'RejectedList1',
                     ],
                     [
                         'label' => "二審資料未審核清單",
-                        'url' => '/UnauditedList2',
+                        'url' => 'UnauditedList2',
                     ],
                     [
                         'label' => "二審資料可投遞清單",
-                        'url' => '/DeliverableList2',
+                        'url' => 'DeliverableList2',
                     ],
                     [
                         'label' => "開戶信發送清單",
-                        'url' => route('SendingEmailList'),
+                        'url' => 'SendingEmailList',
                     ],
                     [
                         'label' => "年度通知書發送清單",
-                        'url' => route('AccountReportSendingSummary'),
+                        'url' => 'AccountReportSendingSummary',
                     ],
                 ],
             ],
@@ -71,7 +71,7 @@ class MenuItemController extends Controller
                 'items' => [
                     [
                         'label' => "通知發出記錄",
-                        'url' => route('NotificationSummary'),
+                        'url' => 'NotificationSummary',
                     ],
                 ],
             ],
@@ -97,11 +97,11 @@ class MenuItemController extends Controller
                     ],
                     [
                         'label' => "添加銀行卡申請",
-                        'url' => route('ClientBankCards'),
+                        'url' => 'ClientBankCards',
                     ],
                     [
                         'label' => "添加信用卡申請",
-                        'url' => route('ClientCreditCards'),
+                        'url' => 'ClientCreditCards',
                     ],
                 ],
             ],
@@ -110,23 +110,23 @@ class MenuItemController extends Controller
                 'items' => [
                     [
                         'label' => "存款申請",
-                        'url' => route('ClientFundInRequests'),
+                        'url' => 'ClientFundInRequests',
                     ],
                     [
                         'label' => "香港出款申請",
-                        'url' => route('ClientHKFundOutRequests'),
+                        'url' => 'ClientHKFundOutRequests',
                     ],
                     [
                         'label' => "海外出款申請",
-                        'url' => route('ClientOverseasFundOutRequests'),
+                        'url' => 'ClientOverseasFundOutRequests',
                     ],
                     [
                         'label' => "內部轉帳申請",
-                        'url' => route('ClientFundInternalTransferRequests'),
+                        'url' => 'ClientFundInternalTransferRequests',
                     ],
                     [
                         'label' => "銀盛信用卡出款申請",
-                        'url' => route('ClientCreditCardFundOutRequests'),
+                        'url' => 'ClientCreditCardFundOutRequests',
                     ],
                 ],
             ],
@@ -135,7 +135,7 @@ class MenuItemController extends Controller
                 'items' => [
                     [
                         'label' => "住址證明修改申請",
-                        'url' => route('ClientAddressProofUpdates'),
+                        'url' => 'ClientAddressProofUpdates',
                     ],
                 ],
             ],

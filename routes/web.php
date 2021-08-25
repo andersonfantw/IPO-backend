@@ -94,9 +94,9 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     Route::any('/audit1', 'AuditClientController@audit1')->name('audit1');
 
-    Route::any('/DeliverableList2', 'DeliverableList2Controller@index')->name('DeliverableList2');
+    // Route::any('/DeliverableList2', 'DeliverableList2Controller@index')->name('DeliverableList2');
 
-    Route::any('/SendingEmailList', 'SendingEmailListController@index')->name('SendingEmailList');
+    // Route::any('/SendingEmailList', 'SendingEmailListController@index')->name('SendingEmailList');
 
     Route::any('/GenerateAyersAccount', 'AyersAccountController@generate')->name('GenerateAyersAccount');
 
@@ -114,7 +114,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     Route::any('/AuditClientAddressProofUpdate', 'AuditClientAddressProofUpdateController@audit')->name('AuditClientAddressProofUpdate');
 
-    Route::any('/ClientBankCards', 'ClientBankCardsController@index')->name('ClientBankCards');
+    // Route::any('/ClientBankCards', 'ClientBankCardsController@index')->name('ClientBankCards');
 
     Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
 
@@ -142,6 +142,9 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('UnauditedList1', 'UnauditedList1Controller');
     Route::resource('ReauditList1', 'ReauditList1Controller');
     Route::resource('UnauditedList2', 'UnauditedList2Controller');
+    Route::resource('DeliverableList2', 'DeliverableList2Controller');
+    Route::resource('SendingEmailList', 'SendingEmailListController');
+    Route::resource('ClientBankCards', 'ClientBankCardsController');
     Route::resource('UserRole', 'UserRoleController');
     Route::resource('RoleMenuItem', 'RoleMenuItemController');
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');

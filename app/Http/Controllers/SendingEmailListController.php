@@ -6,14 +6,15 @@ use App\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class SendingEmailListController extends HomeController
+class SendingEmailListController extends Controller
 {
     protected $name = 'SendingEmailList';
+    private $fields = null;
+    private $filter_type = null;
 
-    protected function setViewParameters(Request $request)
+    public function __construct()
     {
-        $parameters = parent::setViewParameters($request);
-        $columns = [
+        $this->fields = [
             ['key' => '操作'],
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
@@ -24,7 +25,7 @@ class SendingEmailListController extends HomeController
             ['key' => '電郵發送者', 'sortable' => true],
             ['key' => '電郵發送時間', 'sortable' => true],
         ];
-        $FilterType = [
+        $this->FilterType = [
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
@@ -34,13 +35,14 @@ class SendingEmailListController extends HomeController
             '電郵發送者' => 'startsWith',
             '電郵發送時間' => 'betweenDate',
         ];
-        $parameters['columns'] = json_encode($columns);
-        $parameters['FilterType'] = json_encode($FilterType);
-        $parameters['User'] = auth()->user()->toJson(JSON_UNESCAPED_UNICODE);
-        return $parameters;
     }
 
-    public function list(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
         $Clients = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
             ->whereHas('AyersAccounts', function (Builder $query) {
@@ -75,6 +77,8 @@ class SendingEmailListController extends HomeController
             $rows[] = $row;
         }
         return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
             'data' => $rows,
             'total' => $total,
         ], JSON_UNESCAPED_UNICODE);

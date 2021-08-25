@@ -23,6 +23,9 @@ import UnauditedList1 from "./components/UnauditedList1.vue";
 import ReauditList1 from "./components/ReauditList1.vue";
 import RejectedList1 from "./components/RejectedList1.vue";
 import UnauditedList2 from "./components/UnauditedList2.vue";
+import DeliverableList2 from "./components/DeliverableList2.vue";
+import SendingEmailList from "./components/SendingEmailList.vue";
+import ClientBankCards from "./components/ClientBankCards.vue";
 
 const routes = [
     { path: '/Permission', component: Permission },
@@ -31,6 +34,9 @@ const routes = [
     { path: '/ReauditList1', component: ReauditList1 },
     { path: '/RejectedList1', component: RejectedList1 },
     { path: '/UnauditedList2', component: UnauditedList2 },
+    { path: '/DeliverableList2', component: DeliverableList2 },
+    { path: '/SendingEmailList', component: SendingEmailList },
+    { path: '/ClientBankCards', component: ClientBankCards },
 ];
 
 const router = new VueRouter({

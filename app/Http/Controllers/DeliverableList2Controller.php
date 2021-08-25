@@ -10,17 +10,18 @@ use App\Traits\Excel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class DeliverableList2Controller extends HomeController
+class DeliverableList2Controller extends Controller
 {
 
     use Excel;
 
     protected $name = 'DeliverableList2';
+    private $fields = null;
+    private $filter_type = null;
 
-    protected function setViewParameters(Request $request)
+    public function __construct()
     {
-        $parameters = parent::setViewParameters($request);
-        $columns = [
+        $this->fields = [
             ['key' => '操作'],
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '開通賬戶類型', 'sortable' => true],
@@ -31,7 +32,7 @@ class DeliverableList2Controller extends HomeController
             ['key' => '開戶時間', 'sortable' => true],
             ['key' => '帳戶生成時間', 'sortable' => true],
         ];
-        $FilterType = [
+        $this->FilterType = [
             '帳戶號碼' => 'startsWith',
             '開通賬戶類型' => 'equals',
             '客户姓名' => 'startsWith',
@@ -41,12 +42,14 @@ class DeliverableList2Controller extends HomeController
             '開戶時間' => 'betweenDate',
             '帳戶生成時間' => 'betweenDate',
         ];
-        $parameters['columns'] = json_encode($columns);
-        $parameters['FilterType'] = json_encode($FilterType);
-        return $parameters;
     }
 
-    public function list(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
         $Clients = Client::with(['AyersAccounts', 'IDCard'])
             ->whereHasMorph('IDCard', [
@@ -107,6 +110,8 @@ class DeliverableList2Controller extends HomeController
             }
         }
         return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
             'data' => $rows,
             'total' => $total,
         ], JSON_UNESCAPED_UNICODE);

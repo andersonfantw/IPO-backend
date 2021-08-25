@@ -5,15 +5,26 @@
         <h2>角色-功能-權限</h2>
       </b-col>
       <b-col class="text-right">
-        <b-button v-b-modal.modal-role-controller-permission variant="success"
-          ><i class="fas fa-edit"></i>新增/刪除</b-button
+        <b-button
+          v-b-modal.modal-role-controller-permission
+          variant="success"
+        ><i class="fas fa-edit"></i>新增/刪除</b-button>
+        <b-modal
+          id="modal-role-controller-permission"
+          title="角色-功能-權限"
         >
-        <b-modal id="modal-role-controller-permission" title="角色-功能-權限">
-          <b-input-group prepend="功能名稱" class="mb-3">
-            <b-form-input type="search" v-model="name"></b-form-input>
-            <b-button variant="success" @click="createController"
-              >新增</b-button
-            >
+          <b-input-group
+            prepend="功能名稱"
+            class="mb-3"
+          >
+            <b-form-input
+              type="search"
+              v-model="name"
+            ></b-form-input>
+            <b-button
+              variant="success"
+              @click="createController"
+            >新增</b-button>
           </b-input-group>
           <b-form-checkbox-group
             v-model="SelectedControllers"
@@ -25,8 +36,7 @@
             v-if="SelectedControllers.length"
             variant="danger"
             @click="deleteController"
-            >刪除</b-button
-          >
+          >刪除</b-button>
         </b-modal>
       </b-col>
     </b-row>
@@ -42,8 +52,14 @@
       :busy="busy"
       responsive
     >
-      <template v-for="field in fields" #[`cell(${field.key})`]="data">
-        <div v-if="field.key != '功能'" :key="field.id">
+      <template
+        v-for="field in fields"
+        #[`cell(${field.key})`]="data"
+      >
+        <div
+          v-if="field.key != '功能'"
+          :key="field.id"
+        >
           <b-form-checkbox
             v-for="(value, propertyName) in data.value.permissions"
             :key="value.id"
@@ -59,10 +75,12 @@
             "
             inline
             switch
-            >{{ propertyName }}</b-form-checkbox
-          >
+          >{{ propertyName }}</b-form-checkbox>
         </div>
-        <span v-else :key="field.id">{{ data.value }}</span>
+        <span
+          v-else
+          :key="field.id"
+        >{{ data.value }}</span>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
