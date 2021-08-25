@@ -104,7 +104,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     // Route::any('/ClientHKFundOutRequests', 'ClientHKFundOutRequestsController@index')->name('ClientHKFundOutRequests');
 
-    Route::any('/ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController@index')->name('ClientOverseasFundOutRequests');
+    // Route::any('/ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController@index')->name('ClientOverseasFundOutRequests');
 
     // Route::any('/ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController@index')->name('ClientFundInternalTransferRequests');
 
@@ -149,6 +149,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('ClientFundInRequests', 'ClientFundInRequestsController');
     Route::resource('ClientHKFundOutRequests', 'ClientHKFundOutRequestsController');
     Route::resource('ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController');
+    Route::resource('ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController');
     Route::resource('UserRole', 'UserRoleController');
     Route::resource('RoleMenuItem', 'RoleMenuItemController');
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');

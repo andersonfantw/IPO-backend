@@ -30,6 +30,8 @@ import ClientCreditCards from "./components/ClientCreditCards.vue";
 import ClientFundInRequests from "./components/ClientFundInRequests.vue";
 import ClientHKFundOutRequests from "./components/ClientHKFundOutRequests.vue";
 import ClientFundInternalTransferRequests from "./components/ClientFundInternalTransferRequests.vue";
+import AccountReportSendingSummary from "./components/AccountReportSendingSummary.vue";
+import NotificationSummary from "./components/NotificationSummary.vue";
 
 const routes = [
     { path: '/Permission', component: Permission },
@@ -45,6 +47,8 @@ const routes = [
     { path: '/ClientFundInRequests', component: ClientFundInRequests },
     { path: '/ClientHKFundOutRequests', component: ClientHKFundOutRequests },
     { path: '/ClientFundInternalTransferRequests', component: ClientFundInternalTransferRequests },
+    { path: '/AccountReportSendingSummary', component: AccountReportSendingSummary },
+    { path: '/NotificationSummary', component: NotificationSummary },
 ];
 
 const router = new VueRouter({
