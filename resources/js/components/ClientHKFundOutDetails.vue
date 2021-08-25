@@ -203,9 +203,12 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered text-light">
+    <table
+      v-if="Request && Request.status != 'approved'"
+      class="table table-bordered text-light"
+    >
       <thead>
-        <tr>
+        <tr v-if="Request.status == 'pending'">
           <th scope="col">
             <h5 class="mb-0">
               <b-form-checkbox
@@ -223,18 +226,30 @@
         <tr v-if="Request">
           <td>
             <b-form-textarea
-              v-if="駁回"
+              v-if="駁回 || Request.status == 'rejected'"
               name="駁回信息"
               size="lg"
               class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
-              rows="7"
+              rows="5"
+              :disabled="Request.status == 'rejected'"
               v-model="Request.remark"
             ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
+    <b-row>
+      <b-col class="text-center">
+        <b-button
+          v-if="Request && Request.status=='pending'"
+          variant="success"
+          @click="submit"
+        >
+          提交審核
+        </b-button>
+      </b-col>
+    </b-row>
   </b-modal>
 </template>
 <script>
@@ -255,6 +270,21 @@ export default {
     title: String,
   },
   methods: {
+    submit() {
+      const self = this;
+      let data = {};
+      data["駁回信息"] = self.Request.remark;
+      axios
+        .put(`ClientHKFundOutRequests/${self.id}`, data)
+        .then((res) => {
+          console.log(res);
+          self.$emit("audited");
+          self.hideModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     showModal(id) {
       const self = this;
       self.id = id;
@@ -262,12 +292,19 @@ export default {
         .get(`ClientHKFundOutRequests/${id}`)
         .then((res) => {
           console.log(res);
+          self.Request = res.data.Request;
+          self.Client = res.data.Client;
+          self.AyersAccounts = res.data.AyersAccounts;
+          self.ClientIDCard = res.data.IDCard;
           self.$refs.modal.show();
         })
         .catch((error) => {
           console.log(error);
           self.$refs.modal.show();
         });
+    },
+    hideModal() {
+      this.$refs.modal.hide();
     },
   },
 };

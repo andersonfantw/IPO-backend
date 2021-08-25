@@ -15,8 +15,8 @@ class ClientHKFundOutRequest extends Model
         'bank',
         'account_in',
         'status',
-        'transfer_time',
-        'timezone',
+        'issued_by',
+        'remark',
         'previewing_by',
     ];
 

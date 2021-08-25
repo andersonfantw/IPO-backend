@@ -96,6 +96,40 @@ class ClientHKFundOutRequestsController extends Controller
         $Client = clone $ClientHKFundOutRequest1->Client;
         $AyersAccounts = $ClientHKFundOutRequest1->Client->AyersAccounts;
         $IDCard = $ClientHKFundOutRequest1->Client->IDCard;
+        $IDCard->idcard_face = null;
+        $IDCard->idcard_back = null;
+        return json_encode([
+            'Request' => $ClientHKFundOutRequest2,
+            'Client' => $Client,
+            'AyersAccounts' => $AyersAccounts,
+            'IDCard' => $IDCard,
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
+            $remark = $request->input('駁回信息');
+            $issued_by = auth()->user()->name;
+            ClientHKFundOutRequest::find($id)->update([
+                'status' => 'rejected',
+                'issued_by' => $issued_by,
+                'remark' => $remark,
+            ]);
+        } else {
+            ClientHKFundOutRequest::find($id)->update([
+                'status' => 'approved',
+                'issued_by' => auth()->user()->name,
+                'remark' => null,
+            ]);
+        }
     }
 
     public function downloadAyersImportData(Request $request)

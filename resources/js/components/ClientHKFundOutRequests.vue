@@ -168,6 +168,7 @@
     <ClientHKFundOutDetails
       ref="ClientHKFundOutDetails"
       :title="'客戶香港出款申請'"
+      @audited="reload"
     />
   </b-container>
 </template>
@@ -255,6 +256,11 @@ export default {
           alert(error);
           console.log(error);
         });
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.loadData(1);
     },
     loadData(pageNumber) {
       const self = this;
