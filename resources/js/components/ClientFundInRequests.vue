@@ -118,43 +118,32 @@
             ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
           >
         </b-form> -->
-        <b-form
-          :action="view_request_url"
-          method="post"
+        <b-button
+          :disabled="Auditing"
+          v-if="data.item.狀態 == 'pending'"
+          type="button"
+          variant="success"
+          @click="approve(data.item.id)"
         >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="ClientFundInRequests"
-          />
-          <b-button
-            :disabled="Auditing"
-            v-if="data.item.狀態 == 'pending'"
-            type="button"
-            variant="success"
-            @click="approve(data.item.id)"
-          >
-            <h5 class="mb-0"><i class="fas fa-check"></i> 通過</h5>
-          </b-button>
-          <b-button
-            :disabled="Auditing"
-            v-if="data.item.狀態 == 'pending'"
-            type="button"
-            variant="danger"
-            @click="reject(data.item.id)"
-          >
-            <h5 class="mb-0"><i class="fas fa-times"></i> 駁回</h5>
-          </b-button>
-          <b-button
-            :disabled="Auditing"
-            name="id"
-            :value="data.item.id"
-            variant="warning"
-            type="submit"
-          >
-            <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
-          </b-button>
-        </b-form>
+          <h5 class="mb-0"><i class="fas fa-check"></i> 通過</h5>
+        </b-button>
+        <b-button
+          :disabled="Auditing"
+          v-if="data.item.狀態 == 'pending'"
+          type="button"
+          variant="danger"
+          @click="reject(data.item.id)"
+        >
+          <h5 class="mb-0"><i class="fas fa-times"></i> 駁回</h5>
+        </b-button>
+        <b-button
+          :disabled="Auditing"
+          variant="warning"
+          type="button"
+          @click="showDetails(data.item.id)"
+        >
+          <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+        </b-button>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -176,6 +165,11 @@
       align="center"
     >
     </b-pagination>
+    <ClientFundInDetails
+      ref="ClientFundInDetails"
+      :title="'客戶存款申請'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>
@@ -184,6 +178,7 @@ import SearchSelectOptions from "./SearchSelectOptions";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
+import ClientFundInDetails from "./ClientFundInDetails";
 export default {
   data() {
     return {
@@ -210,12 +205,16 @@ export default {
   components: {
     SearchSelectOptions,
     DateRange,
+    ClientFundInDetails,
   },
   created() {
     this.busy = true;
     this.loadData(1);
   },
   methods: {
+    showDetails(id) {
+      this.$refs.ClientFundInDetails.showModal(id);
+    },
     approve(id) {
       const self = this;
       self.Auditing = true;
@@ -264,6 +263,11 @@ export default {
       } else {
         this.SelectedRequests = [];
       }
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.loadData(1);
     },
     loadData(pageNumber) {
       const self = this;

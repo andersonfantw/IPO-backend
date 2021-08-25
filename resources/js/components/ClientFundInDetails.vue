@@ -131,7 +131,7 @@
           <td colspan="3">
             <img
               style="width: 300px"
-              :src="bank_card"
+              :src="FundInBankCard"
             />
           </td>
         </tr>
@@ -152,6 +152,7 @@
             scope="row"
           >經手人</th>
           <td
+            v-if="Request"
             width="20%"
             class="text-warning"
           >
@@ -164,6 +165,7 @@
             scope="row"
           >轉帳時間</th>
           <td
+            v-if="Request"
             width="20%"
             class="text-warning"
           >
@@ -174,6 +176,7 @@
             scope="row"
           >申請發送時間</th>
           <td
+            v-if="Request"
             width="20%"
             class="text-warning"
           >
@@ -188,15 +191,18 @@
           <td colspan="3">
             <img
               style="width: 500px"
-              :src="receipt"
+              :src="FundInReceipt"
             />
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered text-light">
+    <table
+      v-if="Request && Request.status != 'approved'"
+      class="table table-bordered text-light"
+    >
       <thead>
-        <tr>
+        <tr v-if="Request.status == 'pending'">
           <th scope="col">
             <h5 class="mb-0">
               <b-form-checkbox
@@ -211,23 +217,95 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="Request">
           <td>
             <b-form-textarea
-              v-if="駁回"
+              v-if="駁回 || Request.status == 'rejected'"
               name="駁回信息"
               size="lg"
               class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
-              rows="7"
+              rows="5"
+              :disabled="Request.status == 'rejected'"
               v-model="Request.remark"
             ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
+    <template #modal-footer="">
+      <b-button
+        v-if="Request && Request.status=='pending'"
+        variant="success"
+        @click="submit"
+      >
+        提交審核
+      </b-button>
+    </template>
   </b-modal>
 </template>
 <script>
-export default {};
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
+export default {
+  data() {
+    return {
+      id: null,
+      駁回: false,
+      Request: null,
+      Client: null,
+      AyersAccounts: null,
+      ClientIDCard: null,
+    };
+  },
+  mixins: [CommonFunctionMixin],
+  props: {
+    title: String,
+  },
+  methods: {
+    submit() {
+      const self = this;
+      let data = {};
+      data["駁回信息"] = self.Request.remark;
+      axios
+        .put(`ClientFundInRequests/${self.id}`, data)
+        .then((res) => {
+          console.log(res);
+          self.$emit("audited");
+          self.hideModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    showModal(id) {
+      const self = this;
+      self.id = id;
+      axios
+        .get(`ClientFundInRequests/${id}`)
+        .then((res) => {
+          console.log(res);
+          self.Request = res.data.Request;
+          self.Client = res.data.Client;
+          self.AyersAccounts = res.data.AyersAccounts;
+          self.ClientIDCard = res.data.IDCard;
+          self.$refs.modal.show();
+        })
+        .catch((error) => {
+          console.log(error);
+          self.$refs.modal.show();
+        });
+    },
+    hideModal() {
+      this.$refs.modal.hide();
+    },
+  },
+  computed: {
+    FundInBankCard() {
+      return "LoadFundInBankCard?id=" + this.id;
+    },
+    FundInReceipt() {
+      return "LoadFundInReceipt?id=" + this.id;
+    },
+  },
+};
 </script>
