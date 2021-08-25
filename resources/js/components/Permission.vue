@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="text-warning">
+  <b-container fluid>
     <h1 class="text-center">權限管理</h1>
     <UserRole ref="UserRole" @reload="reloadRoleControllerPermission" />
     <RoleMenuItem ref="RoleMenuItem" />

@@ -1,5 +1,6 @@
 <template>
-  <b-container fluid class="p-0">
+  <b-container fluid>
+    <h1 class="text-center">查看開戶進度</h1>
     <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="客户姓名">
@@ -38,7 +39,7 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="mb-3">
       <b-col>
         <!-- <DateRange :name="'更新時間'" v-model="filters['更新時間']" /> -->
         <date-picker
@@ -59,17 +60,12 @@
       </b-col>
       <b-col> </b-col>
     </b-row>
-    <b-row v-if="loading">
-      <b-col class="text-center">
-        <b-spinner variant="warning"></b-spinner>
-      </b-col>
-    </b-row>
     <b-table
       hover
       bordered
       dark
       :items="data"
-      :fields="columns"
+      :fields="Columns"
       :current-page="currentPage"
       :per-page="perPage"
       :filter="filters"
@@ -78,6 +74,7 @@
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
       @filtered="onFiltered"
+      :busy="busy"
     >
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -137,9 +134,9 @@ import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
-      columns: [],
+      Columns: [],
       filterMatchMode: {},
-      loading: false,
+      busy: false,
       data: [],
       selectedClients: null,
       currentPage: 1,
@@ -155,22 +152,22 @@ export default {
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
-    p_columns: {
-      type: String,
-      required: true,
-    },
-    filter_type: {
-      type: String,
-      required: true,
-    },
+    // p_columns: {
+    //   type: String,
+    //   required: true,
+    // },
+    // filter_type: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   components: {
     // DateRange,
   },
   created() {
-    this.columns = JSON.parse(this.p_columns);
-    this.FilterType = JSON.parse(this.filter_type);
-    // this.loading = true;
+    // this.Columns = JSON.parse(this.p_columns);
+    // this.FilterType = JSON.parse(this.filter_type);
+    // this.busy = true;
     // this.loadData(1);
   },
   methods: {
@@ -183,7 +180,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.data = [];
-          self.loading = true;
+          self.busy = true;
           self.loadData(1);
         })
         .catch((error) => {
@@ -199,7 +196,7 @@ export default {
         .then((res) => {
           console.log(res);
           self.data = [];
-          self.loading = true;
+          self.busy = true;
           self.loadData(1);
         })
         .catch((error) => {
@@ -208,7 +205,7 @@ export default {
     },
     query() {
       const self = this;
-      self.loading = true;
+      self.busy = true;
       let data = {
         客户姓名: self.filters["客户姓名"],
         證件號碼: self.filters["證件號碼"],
@@ -221,12 +218,16 @@ export default {
         data["至更新時間"] = self.filters["更新時間"][1];
       }
       axios
-        .post("api/ClientProgress/query", data)
+        .get("api/ClientProgress", {
+          params: data,
+        })
         .then((res) => {
           console.log(res);
+          self.Columns = res.data.columns;
+          self.FilterType = res.data.filter_type;
           self.data = res.data.data;
           self.totalRows = self.data.length;
-          self.loading = false;
+          self.busy = false;
         })
         .catch((error) => {
           console.log(error);
@@ -248,7 +249,7 @@ export default {
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {
-            self.loading = false;
+            self.busy = false;
           }
         })
         .catch((error) => {

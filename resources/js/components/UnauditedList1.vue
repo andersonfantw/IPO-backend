@@ -1,8 +1,8 @@
 <template>
-  <b-container fluid class="p-0">
+  <b-container fluid>
     <h1 class="text-warning text-center">
       一審資料未審核清單
-      <b-spinner v-if="loading" variant="warning"></b-spinner>
+      <b-spinner v-if="busy" variant="warning"></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
@@ -76,7 +76,7 @@
       bordered
       dark
       :items="data"
-      :fields="columns"
+      :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
       :filter="filters"
@@ -87,13 +87,13 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <!-- <b-button
+        <b-button
           variant="warning"
           type="button"
           @click="showClientDetails(data.item.uuid)"
           ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
-        > -->
-        <b-form :action="audit_client_url" method="post">
+        >
+        <!-- <b-form :action="audit_client_url" method="post">
           <input type="hidden" name="redirect_route" value="UnauditedList1" />
           <input type="hidden" name="next_status" value="audited1" />
           <b-button
@@ -103,7 +103,7 @@
             type="submit"
             ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
           >
-        </b-form>
+        </b-form> -->
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -129,7 +129,7 @@
       ref="ClientDetails"
       :base_url="base_url"
       :title="'一審客戶信息'"
-      @audited="loadData(1)"
+      @audited="load(1)"
     />
   </b-container>
 </template>
@@ -142,9 +142,9 @@ import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
-      columns: [],
+      fields: [],
       filterMatchMode: {},
-      loading: false,
+      busy: false,
       data: [],
       selectedClients: null,
       currentPage: 1,
@@ -165,14 +165,14 @@ export default {
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
-    p_columns: {
-      type: String,
-      required: true,
-    },
-    filter_type: {
-      type: String,
-      required: true,
-    },
+    // p_columns: {
+    //   type: String,
+    //   required: true,
+    // },
+    // filter_type: {
+    //   type: String,
+    //   required: true,
+    // },
     audit_client_url: String,
     base_url: String,
   },
@@ -181,10 +181,10 @@ export default {
     ClientDetails,
   },
   created() {
-    this.columns = JSON.parse(this.p_columns);
-    this.FilterType = JSON.parse(this.filter_type);
-    this.loading = true;
-    this.loadData(1);
+    // this.fields = JSON.parse(this.p_columns);
+    // this.FilterType = JSON.parse(this.filter_type);
+    this.busy = true;
+    this.load(1);
   },
   methods: {
     showClientDetails(uuid) {
@@ -193,23 +193,27 @@ export default {
     hideClientDetails() {
       this.$refs.ClientDetails.hideModal();
     },
-    loadData(pageNumber) {
+    load(pageNumber) {
       const self = this;
       axios
-        .post("api/UnauditedList1/list", {
-          perPage: self.perPage,
-          pageNumber: pageNumber,
+        .get("api/UnauditedList1", {
+          params: {
+            perPage: self.perPage,
+            pageNumber: pageNumber,
+          },
         })
         .then((res) => {
           // const json = self.getDecryptedJsonObject(res.data);
           console.log(res);
           const data = res.data.data;
+          self.fields = res.data.fields;
+          self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
-            self.loading = false;
+            self.busy = false;
           }
         })
         .catch((error) => {

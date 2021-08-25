@@ -66,6 +66,12 @@ export const CommonFunctionMixin = {
             } else {
                 return false;
             }
+        },
+        checkLogin(res) {
+            if (res.response.status === 401) {
+                // redirect to login page
+                window.location.href = "/login";
+            }
         }
     }
 }

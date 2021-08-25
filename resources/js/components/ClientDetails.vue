@@ -1,6 +1,12 @@
 <template>
-  <b-modal ref="modal" size="xl" :title="title">
-    <table class="table table-bordered">
+  <b-modal
+    ref="modal"
+    size="xl"
+    :title="title"
+    body-bg-variant="dark"
+    body-text-variant="light"
+  >
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="6">
@@ -23,13 +29,26 @@
         </tr>
       </tbody>
     </table>
-    <table v-if="ClientAddressProof" class="table table-bordered">
+    <table v-if="ClientAddressProof" class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="3">
             <h5 class="mb-0"><i class="fas fa-map-marked-alt"></i> 住址證明</h5>
           </th>
-          <th scope="col">
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>地址</th>
+          <td class="">
+            {{ ClientAddressProof.address_text }}
+          </td>
+          <td class="text-center">
+            <img style="width: 500px" :src="AddressProof" />
+          </td>
+        </tr>
+        <tr>
+          <th scope="col" colspan="3">
             <h5 class="mb-0">
               <b-form-checkbox
                 id="駁回住址證明"
@@ -41,69 +60,37 @@
             </h5>
           </th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th width="20%">地址</th>
-          <td width="20%" class="">
-            {{ ClientAddressProof.address_text }}
-          </td>
-          <td width="40%">
-            <img style="width: 500px" :src="AddressProof" />
-          </td>
-          <td width="20%" rowspan="6">
+        <tr v-if="駁回.住址證明">
+          <td colspan="3">
             <b-form-textarea
-              class=""
-              v-if="駁回.住址證明"
+              class="text-light bg-dark"
               name="駁回住址證明"
               style="width: 100%"
               placeholder="請寫駁回理由"
-              rows="7"
+              rows="5"
               v-model="ClientAddressProof.remark"
             ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
             <h5 class="mb-0"><i class="far fa-id-card"></i> 身份證信息</h5>
           </th>
-          <th scope="col">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                id="駁回身份證信息"
-                v-model="駁回.身份證信息"
-                :value="true"
-                :unchecked-value="false"
-                >駁回
-              </b-form-checkbox>
-            </h5>
-          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th width="20%">姓名</th>
-          <td v-if="ClientIDCard" width="20%" class="">
+          <th>姓名</th>
+          <td v-if="ClientIDCard" class="">
             {{ ClientIDCard.name_c }}
           </td>
-          <th width="20%">英文名</th>
-          <td v-if="ClientIDCard" width="20%" class="">
+          <th>英文名</th>
+          <td v-if="ClientIDCard" class="">
             {{ ClientIDCard.name_en }}
-          </td>
-          <td v-if="ClientIDCard" width="20%" rowspan="6">
-            <b-form-textarea
-              class=""
-              v-if="駁回.身份證信息"
-              name="駁回身份證信息"
-              style="width: 100%"
-              placeholder="請寫駁回理由"
-              v-model="ClientIDCard.remark"
-              rows="10"
-            ></b-form-textarea>
           </td>
         </tr>
         <tr>
@@ -137,11 +124,104 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2">
+          <td colspan="2" class="text-center">
             <img style="width: 300px" :src="IDCardFace" />
           </td>
-          <td colspan="2">
+          <td colspan="2" class="text-center">
             <img style="width: 300px" :src="IDCardBack" />
+          </td>
+        </tr>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回身份證信息"
+                v-model="駁回.身份證信息"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+        <tr v-if="駁回.身份證信息">
+          <td v-if="ClientIDCard" colspan="4">
+            <b-form-textarea
+              class="text-light bg-dark"
+              name="駁回身份證信息"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              v-model="ClientIDCard.remark"
+              rows="5"
+            ></b-form-textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientDepositProof" class="table table-bordered text-light">
+      <thead>
+        <tr>
+          <th colspan="4" scope="col">
+            <h5 class="mb-0"><i class="fas fa-dollar-sign"></i> 存款證明</h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>入金帳戶</th>
+          <td class="">
+            {{ ClientDepositProof.deposit_account }}
+          </td>
+          <th>入金金額</th>
+          <td class="">HK${{ ClientDepositProof.deposit_amount }}</td>
+        </tr>
+        <tr>
+          <th>入金銀行</th>
+          <td class="">
+            {{ ClientDepositProof.deposit_bank }}
+          </td>
+          <th>入金方法</th>
+          <td class="">
+            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
+              {{ ClientDepositProof.other_deposit_method }}
+            </div>
+            <div v-else class="mb-0">
+              {{ ClientDepositProof.deposit_method }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="text-center">
+            <img style="width: 500px" :src="DepositProof" />
+          </td>
+          <th>轉帳時間</th>
+          <td class="">
+            {{ ClientDepositProof.transfer_time }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回存款證明"
+                v-model="駁回.存款證明"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+        <tr v-if="駁回.存款證明">
+          <td colspan="4">
+            <b-form-textarea
+              class="text-light bg-dark"
+              name="駁回存款證明"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="ClientDepositProof.remark"
+            ></b-form-textarea>
           </td>
         </tr>
       </tbody>
@@ -149,7 +229,7 @@
     <table
       v-for="銀行卡 in 銀行卡s"
       :key="銀行卡.id"
-      class="table table-bordered"
+      class="table table-bordered text-light"
     >
       <thead>
         <tr>
@@ -164,22 +244,11 @@
               <i class="fas fa-money-check-alt"></i> 銀行卡信息
             </h5>
           </th>
-          <th scope="col">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                :id="'駁回' + 銀行卡.lcid + '銀行卡信息'"
-                v-model="駁回[銀行卡.lcid + '銀行卡信息']"
-                :value="true"
-                :unchecked-value="false"
-                >駁回
-              </b-form-checkbox>
-            </h5>
-          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td width="40%" rowspan="2">
+          <td rowspan="2" class="text-center">
             <img
               v-if="銀行卡.lcid == 'zh-hk'"
               style="width: 300px"
@@ -196,20 +265,44 @@
               :src="OtherBankcardFace"
             />
           </td>
-          <th width="20%">
+          <th>
             <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行名</div>
             <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
               大陸銀行名
             </div>
             <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行名</div>
           </th>
-          <td width="20%" class="">
-            {{ 銀行卡.bank_name }} ({{ 銀行卡.bank_code }})
+          <td>{{ 銀行卡.bank_name }} ({{ 銀行卡.bank_code }})</td>
+        </tr>
+        <tr>
+          <th>
+            <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡號</div>
+            <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
+              大陸銀行卡號
+            </div>
+            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
+          </th>
+          <td>
+            {{ 銀行卡.account_no }}
           </td>
-          <td width="20%" rowspan="2">
+        </tr>
+        <tr>
+          <th scope="col" colspan="3">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                :id="'駁回' + 銀行卡.lcid + '銀行卡信息'"
+                v-model="駁回[銀行卡.lcid + '銀行卡信息']"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+        <tr v-if="駁回[銀行卡.lcid + '銀行卡信息']">
+          <td colspan="3">
             <b-form-textarea
-              class=""
-              v-if="駁回[銀行卡.lcid + '銀行卡信息']"
+              class="text-light bg-dark"
               :name="'駁回' + 銀行卡.lcid + '銀行卡信息'"
               style="width: 100%"
               placeholder="請寫駁回理由"
@@ -218,27 +311,25 @@
             ></b-form-textarea>
           </td>
         </tr>
-        <tr>
-          <th width="20%">
-            <div v-if="銀行卡.lcid == 'zh-hk'" class="mb-0">香港銀行卡號</div>
-            <div v-else-if="銀行卡.lcid == 'zh-cn'" class="mb-0">
-              大陸銀行卡號
-            </div>
-            <div v-else-if="銀行卡.lcid == 'others'" class="mb-0">銀行卡號</div>
-          </th>
-          <td width="20%" class="">
-            {{ 銀行卡.account_no }}
-          </td>
-        </tr>
       </tbody>
     </table>
-    <table v-if="Client" class="table table-bordered">
+    <table v-if="Client" class="table table-bordered text-light">
       <thead>
         <tr>
-          <th scope="col" colspan="4">
+          <th scope="col" colspan="2">
             <h5 class="mb-0"><i class="fas fa-user-plus"></i> 客戶補充資料</h5>
           </th>
-          <th scope="col">
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>教育程度</th>
+          <td>
+            {{ Client.education_level }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="col" colspan="2">
             <h5 class="mb-0">
               <b-form-checkbox
                 id="駁回客戶補充資料"
@@ -250,43 +341,25 @@
             </h5>
           </th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th width="20%">教育程度</th>
-          <td colspan="3" class="">
-            {{ Client.education_level }}
-          </td>
-          <td width="20%" rowspan="2">
+        <tr v-if="駁回.客戶補充資料">
+          <td colspan="2">
             <b-form-textarea
-              class=""
-              v-if="駁回.客戶補充資料"
+              class="text-light bg-dark"
               name="駁回客戶補充資料"
               style="width: 100%"
               placeholder="請寫駁回理由"
-              rows="3"
+              rows="5"
               v-model="Client.remark"
             ></b-form-textarea>
           </td>
         </tr>
       </tbody>
     </table>
-    <table v-if="ClientWorkingStatus" class="table table-bordered">
+    <table v-if="ClientWorkingStatus" class="table table-bordered text-light">
       <thead>
         <tr>
           <th scope="col" colspan="4">
             <h5 class="mb-0"><i class="fas fa-briefcase"></i> 工作狀態</h5>
-          </th>
-          <th scope="col">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                id="駁回工作狀態"
-                v-model="駁回.工作狀態"
-                :value="true"
-                :unchecked-value="false"
-                >駁回
-              </b-form-checkbox>
-            </h5>
           </th>
         </tr>
       </thead>
@@ -299,17 +372,6 @@
           <th width="20%">雇主名稱</th>
           <td width="20%" class="">
             {{ ClientWorkingStatus.company_name }}
-          </td>
-          <td width="20%" rowspan="4">
-            <b-form-textarea
-              class=""
-              v-if="駁回.工作狀態"
-              name="駁回工作狀態"
-              style="width: 100%"
-              placeholder="請寫駁回理由"
-              rows="10"
-              v-model="ClientWorkingStatus.remark"
-            ></b-form-textarea>
           </td>
         </tr>
         <tr>
@@ -330,25 +392,16 @@
         </tr>
         <tr>
           <th>名片</th>
-          <td colspan="3">
+          <td colspan="3" class="text-center">
             <img style="width: 300px" :src="NameCardFace" />
           </td>
         </tr>
-      </tbody>
-    </table>
-    <table v-if="ClientFinancialStatus" class="table table-bordered">
-      <thead>
         <tr>
           <th scope="col" colspan="4">
             <h5 class="mb-0">
-              <i class="fas fa-hand-holding-usd"></i> 財政狀況
-            </h5>
-          </th>
-          <th scope="col">
-            <h5 class="mb-0">
               <b-form-checkbox
-                id="駁回財政狀況"
-                v-model="駁回.財政狀況"
+                id="駁回工作狀態"
+                v-model="駁回.工作狀態"
                 :value="true"
                 :unchecked-value="false"
                 >駁回
@@ -356,27 +409,39 @@
             </h5>
           </th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th width="20%">資金來源</th>
-          <td width="20%" class="">
-            {{ ClientFinancialStatus.fund_source }}
-          </td>
-          <th width="20%">其他資金來源</th>
-          <td width="20%" class="">
-            {{ ClientFinancialStatus.other_fund_source }}
-          </td>
-          <td width="20%" rowspan="3">
+        <tr v-if="駁回.工作狀態">
+          <td colspan="4">
             <b-form-textarea
-              class=""
-              v-if="駁回.財政狀況"
-              name="駁回財政狀況"
+              class="text-light bg-dark"
+              name="駁回工作狀態"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="5"
-              v-model="ClientFinancialStatus.remark"
+              v-model="ClientWorkingStatus.remark"
             ></b-form-textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-if="ClientFinancialStatus" class="table table-bordered text-light">
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <i class="fas fa-hand-holding-usd"></i> 財政狀況
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>資金來源</th>
+          <td class="">
+            {{ ClientFinancialStatus.fund_source }}
+          </td>
+          <th>其他資金來源</th>
+          <td class="">
+            {{ ClientFinancialStatus.other_fund_source }}
           </td>
         </tr>
         <tr>
@@ -395,21 +460,12 @@
             {{ ClientFinancialStatus.net_assets }}
           </td>
         </tr>
-      </tbody>
-    </table>
-    <table v-if="ClientInvestmentExperience" class="table table-bordered">
-      <thead>
         <tr>
           <th scope="col" colspan="4">
             <h5 class="mb-0">
-              <i class="fas fa-chart-line"></i> 投資經驗及衍生產品認識
-            </h5>
-          </th>
-          <th scope="col">
-            <h5 class="mb-0">
               <b-form-checkbox
-                id="駁回投資經驗及衍生產品認識"
-                v-model="駁回.投資經驗及衍生產品認識"
+                id="駁回財政狀況"
+                v-model="駁回.財政狀況"
                 :value="true"
                 :unchecked-value="false"
                 >駁回
@@ -417,27 +473,42 @@
             </h5>
           </th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th width="20%">投資目標</th>
-          <td width="20%" class="">
-            {{ ClientInvestmentExperience.investment_objective }}
-          </td>
-          <th width="20%">股票</th>
-          <td width="20%" class="">
-            {{ ClientInvestmentExperience.stock }}
-          </td>
-          <td width="20%" rowspan="4">
+        <tr v-if="駁回.財政狀況">
+          <td colspan="4">
             <b-form-textarea
-              class=""
-              v-if="駁回.投資經驗及衍生產品認識"
-              name="駁回投資經驗及衍生產品認識"
+              class="text-light bg-dark"
+              name="駁回財政狀況"
               style="width: 100%"
               placeholder="請寫駁回理由"
               rows="5"
-              v-model="ClientInvestmentExperience.remark"
+              v-model="ClientFinancialStatus.remark"
             ></b-form-textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      v-if="ClientInvestmentExperience"
+      class="table table-bordered text-light"
+    >
+      <thead>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-line"></i> 投資經驗及衍生產品認識
+            </h5>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>投資目標</th>
+          <td class="">
+            {{ ClientInvestmentExperience.investment_objective }}
+          </td>
+          <th>股票</th>
+          <td class="">
+            {{ ClientInvestmentExperience.stock }}
           </td>
         </tr>
         <tr>
@@ -468,9 +539,37 @@
           <th></th>
           <td></td>
         </tr>
+        <tr>
+          <th scope="col" colspan="4">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回投資經驗及衍生產品認識"
+                v-model="駁回.投資經驗及衍生產品認識"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </th>
+        </tr>
+        <tr v-if="駁回.投資經驗及衍生產品認識">
+          <td colspan="4">
+            <b-form-textarea
+              class="text-light bg-dark"
+              name="駁回投資經驗及衍生產品認識"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="ClientInvestmentExperience.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
       </tbody>
     </table>
-    <table v-if="ClientEvaluationResults" class="table table-bordered">
+    <table
+      v-if="ClientEvaluationResults"
+      class="table table-bordered text-light"
+    >
       <thead>
         <tr>
           <th colspan="3" scope="col">
@@ -486,11 +585,11 @@
       </thead>
       <tbody>
         <tr v-for="(score, index) of ClientScore" :key="index">
-          <th colspan="3" width="40%">{{ score.question_text }}?</th>
-          <td colspan="3" width="40%" class="">
+          <th colspan="3">{{ score.question_text }}?</th>
+          <td colspan="3" class="">
             {{ score.answer }}
           </td>
-          <td colspan="3" width="20%" class="">
+          <td colspan="1" class="">
             {{ score.score }}
           </td>
         </tr>
@@ -515,26 +614,6 @@
           <td>
             <h5 class="mb-0">{{ 風險承受程度 }}</h5>
           </td>
-          <td rowspan="2" width="20%">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                id="駁回問卷調查"
-                v-model="駁回.問卷調查"
-                :value="true"
-                :unchecked-value="false"
-                >駁回
-              </b-form-checkbox>
-            </h5>
-            <b-form-textarea
-              class=""
-              v-if="駁回.問卷調查"
-              name="駁回問卷調查"
-              style="width: 100%"
-              placeholder="請寫駁回理由"
-              rows="3"
-              v-model="ClientEvaluationResults.remark"
-            ></b-form-textarea>
-          </td>
         </tr>
         <tr>
           <th>
@@ -552,14 +631,48 @@
             </h5>
           </td>
         </tr>
+        <tr>
+          <td colspan="7">
+            <h5 class="mb-0">
+              <b-form-checkbox
+                id="駁回問卷調查"
+                v-model="駁回.問卷調查"
+                :value="true"
+                :unchecked-value="false"
+                >駁回
+              </b-form-checkbox>
+            </h5>
+          </td>
+        </tr>
+        <tr v-if="駁回.問卷調查">
+          <td colspan="7">
+            <b-form-textarea
+              class="text-light bg-dark"
+              name="駁回問卷調查"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="ClientEvaluationResults.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
       </tbody>
     </table>
-    <table v-if="ClientSignature" class="table table-bordered">
+    <table v-if="ClientSignature" class="table table-bordered text-light">
       <thead>
         <tr>
-          <th colspan="4" scope="col">
+          <th scope="col">
             <h5 class="mb-0"><i class="fas fa-signature"></i> 簽名</h5>
           </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bg-light text-center">
+            <img style="width: 300px" :src="ClientSignature.image" />
+          </td>
+        </tr>
+        <tr>
           <th scope="col">
             <h5 class="mb-0">
               <b-form-checkbox
@@ -572,25 +685,21 @@
             </h5>
           </th>
         </tr>
-      </thead>
-      <tbody>
-        <td colspan="4">
-          <img style="width: 300px" :src="ClientSignature.image" />
-        </td>
-        <td width="20%">
-          <b-form-textarea
-            class=""
-            v-if="駁回.簽名"
-            name="駁回簽名"
-            style="width: 100%"
-            placeholder="請寫駁回理由"
-            rows="10"
-            v-model="ClientSignature.remark"
-          ></b-form-textarea>
-        </td>
+        <tr v-if="駁回.簽名">
+          <td>
+            <b-form-textarea
+              class="text-light bg-dark"
+              name="駁回簽名"
+              style="width: 100%"
+              placeholder="請寫駁回理由"
+              rows="5"
+              v-model="ClientSignature.remark"
+            ></b-form-textarea>
+          </td>
+        </tr>
       </tbody>
     </table>
-    <table v-if="ClientBusinessType" class="table table-bordered">
+    <!-- <table v-if="ClientBusinessType" class="table table-bordered">
       <tbody>
         <th width="17%">
           <h5 class="mb-0"><i class="fas fa-mail-bulk"></i> 直接促銷</h5>
@@ -601,72 +710,7 @@
           </h5>
         </td>
       </tbody>
-    </table>
-    <table v-if="ClientDepositProof" class="table table-bordered">
-      <thead>
-        <tr>
-          <th colspan="4" scope="col">
-            <h5 class="mb-0"><i class="fas fa-dollar-sign"></i> 存款證明</h5>
-          </th>
-          <th scope="col">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                id="駁回存款證明"
-                v-model="駁回.存款證明"
-                :value="true"
-                :unchecked-value="false"
-                >駁回
-              </b-form-checkbox>
-            </h5>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>入金帳戶</th>
-          <td class="">
-            {{ ClientDepositProof.deposit_account }}
-          </td>
-          <th>入金金額</th>
-          <td class="">HK${{ ClientDepositProof.deposit_amount }}</td>
-          <td width="20%" rowspan="3">
-            <b-form-textarea
-              class=""
-              v-if="駁回.存款證明"
-              name="駁回存款證明"
-              style="width: 100%"
-              placeholder="請寫駁回理由"
-              rows="10"
-              v-model="ClientDepositProof.remark"
-            ></b-form-textarea>
-          </td>
-        </tr>
-        <tr>
-          <th>入金銀行</th>
-          <td class="">
-            {{ ClientDepositProof.deposit_bank }}
-          </td>
-          <th>入金方法</th>
-          <td class="">
-            <div v-if="ClientDepositProof.other_deposit_method" class="mb-0">
-              {{ ClientDepositProof.other_deposit_method }}
-            </div>
-            <div v-else class="mb-0">
-              {{ ClientDepositProof.deposit_method }}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <img style="width: 500px" :src="DepositProof" />
-          </td>
-          <th>轉帳時間</th>
-          <td class="">
-            {{ ClientDepositProof.transfer_time }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    </table> -->
     <template #modal-footer="">
       <b-button variant="success" @click="submit"> 提交審核 </b-button>
     </template>
@@ -754,9 +798,7 @@ export default {
       const self = this;
       self.uuid = uuid;
       axios
-        .post("api/Client/details", {
-          uuid: uuid,
-        })
+        .get(`api/Client/${uuid}`)
         .then((res) => {
           // const json = self.getDecryptedJsonObject(res.data);
           console.log(res);
@@ -828,28 +870,28 @@ export default {
       return this.ClientEvaluationResults.agree ? "是" : "否";
     },
     AddressProof() {
-      return this.base_url + "/LoadAddressProof?uuid=" + this.uuid;
+      return `LoadAddressProof?uuid=${this.uuid}`;
     },
     IDCardFace() {
-      return this.base_url + "/LoadIDCardFace?uuid=" + this.uuid;
+      return "/LoadIDCardFace?uuid=" + this.uuid;
     },
     IDCardBack() {
-      return this.base_url + "/LoadIDCardBack?uuid=" + this.uuid;
+      return "/LoadIDCardBack?uuid=" + this.uuid;
     },
     HKBankcardFace() {
-      return this.base_url + "/LoadHKBankCard?uuid=" + this.uuid;
+      return "/LoadHKBankCard?uuid=" + this.uuid;
     },
     CNBankcardFace() {
-      return this.base_url + "/LoadCNBankCard?uuid=" + this.uuid;
+      return "/LoadCNBankCard?uuid=" + this.uuid;
     },
     OtherBankcardFace() {
-      return this.base_url + "/LoadOtherBankCard?uuid=" + this.uuid;
+      return "/LoadOtherBankCard?uuid=" + this.uuid;
     },
     NameCardFace() {
-      return this.base_url + "/LoadNameCard?uuid=" + this.uuid;
+      return "/LoadNameCard?uuid=" + this.uuid;
     },
     DepositProof() {
-      return this.base_url + "/LoadDepositProof?uuid=" + this.uuid;
+      return "/LoadDepositProof?uuid=" + this.uuid;
     },
   },
 };

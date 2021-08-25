@@ -1,99 +1,153 @@
 <template>
-  <b-container fluid class="p-0">
-    <h1 class="text-warning text-center">二審資料可投遞清單</h1>
-    <b-row class="mb-3">
-      <b-col>
-        <b-input-group prepend="帳戶號碼">
-          <b-form-input
-            type="search"
-            v-model="filters['帳戶號碼']"
-          ></b-form-input>
-        </b-input-group>
-      </b-col>
-      <b-col>
-        <b-input-group prepend="開通賬戶類型">
-          <b-form-select v-model="filters['開通賬戶類型']" :options="options">
-          </b-form-select>
-        </b-input-group>
-      </b-col>
-      <b-col>
-        <b-input-group prepend="客户姓名">
-          <b-form-input
-            type="search"
-            v-model="filters['客户姓名']"
-          ></b-form-input>
-        </b-input-group>
-      </b-col>
-      <b-col>
-        <b-input-group prepend="證件號碼">
-          <b-form-input
-            type="search"
-            v-model="filters['證件號碼']"
-          ></b-form-input>
-        </b-input-group>
-      </b-col>
-    </b-row>
-    <b-row class="mb-3">
-      <b-col>
-        <b-input-group prepend="手機號碼">
-          <b-form-input
-            type="search"
-            v-model="filters['手機號碼']"
-          ></b-form-input>
-        </b-input-group>
-      </b-col>
-      <b-col>
-        <b-input-group prepend="郵箱">
-          <b-form-input type="search" v-model="filters['郵箱']"></b-form-input>
-        </b-input-group>
-      </b-col>
-      <b-col>
-        <!-- <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" /> -->
-        <date-picker
-          name="'開戶時間'"
-          v-model="filters['開戶時間']"
-          range
-          placeholder="開戶時間"
-        />
-      </b-col>
-      <b-col>
-        <date-picker
-          name="'帳戶生成時間'"
-          v-model="filters['帳戶生成時間']"
-          range
-          placeholder="帳戶生成時間"
-        />
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-button variant="primary" @click="generateAccounts"
-          ><i class="far fa-user"></i> 產生Ayers帳號</b-button
+  <b-row no-gutters class="justify-content-center text-warning">
+    <b-col cols="2">
+      <slot name="menu"></slot>
+    </b-col>
+    <b-col cols="10">
+      <b-container fluid>
+        <h1 class="text-warning text-center">二審資料可投遞清單</h1>
+        <b-row class="mb-3">
+          <b-col>
+            <b-input-group prepend="帳戶號碼">
+              <b-form-input
+                type="search"
+                v-model="filters['帳戶號碼']"
+              ></b-form-input>
+            </b-input-group>
+          </b-col>
+          <b-col>
+            <b-input-group prepend="開通賬戶類型">
+              <b-form-select
+                v-model="filters['開通賬戶類型']"
+                :options="options"
+              >
+              </b-form-select>
+            </b-input-group>
+          </b-col>
+          <b-col>
+            <b-input-group prepend="客户姓名">
+              <b-form-input
+                type="search"
+                v-model="filters['客户姓名']"
+              ></b-form-input>
+            </b-input-group>
+          </b-col>
+          <b-col>
+            <b-input-group prepend="證件號碼">
+              <b-form-input
+                type="search"
+                v-model="filters['證件號碼']"
+              ></b-form-input>
+            </b-input-group>
+          </b-col>
+        </b-row>
+        <b-row class="mb-3">
+          <b-col>
+            <b-input-group prepend="手機號碼">
+              <b-form-input
+                type="search"
+                v-model="filters['手機號碼']"
+              ></b-form-input>
+            </b-input-group>
+          </b-col>
+          <b-col>
+            <b-input-group prepend="郵箱">
+              <b-form-input
+                type="search"
+                v-model="filters['郵箱']"
+              ></b-form-input>
+            </b-input-group>
+          </b-col>
+          <b-col>
+            <!-- <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" /> -->
+            <date-picker
+              name="'開戶時間'"
+              v-model="filters['開戶時間']"
+              range
+              placeholder="開戶時間"
+            />
+          </b-col>
+          <b-col>
+            <date-picker
+              name="'帳戶生成時間'"
+              v-model="filters['帳戶生成時間']"
+              range
+              placeholder="帳戶生成時間"
+            />
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <b-button variant="primary" @click="generateAccounts"
+              ><i class="far fa-user"></i> 產生Ayers帳號</b-button
+            >
+            <b-button variant="success" @click="downloadExcel">
+              <i class="fas fa-download"></i> 開戶Excel下載<b-spinner
+                v-if="DownloadingExcel"
+                label="Spinning"
+                small
+              />
+            </b-button>
+            <b-button variant="warning" @click="downloadFilesForOpeningAccount">
+              <i class="fas fa-download"></i> 協議及開戶資料下載
+            </b-button>
+          </b-col>
+        </b-row>
+        <b-row v-if="loading" class="mt-3">
+          <b-col>
+            <b-progress :max="100" show-progress animated variant="success">
+              <b-progress-bar
+                :value="progress"
+                :label="`${progress.toFixed(2)}%`"
+              ></b-progress-bar>
+            </b-progress>
+          </b-col>
+        </b-row>
+        <b-row no-gutters class="mt-3">
+          <b-col class="text-center">
+            <b-pagination
+              v-if="totalRows > 0"
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              align="center"
+            >
+            </b-pagination>
+          </b-col>
+        </b-row>
+        <b-table
+          hover
+          bordered
+          dark
+          :items="data"
+          :fields="columns"
+          :current-page="currentPage"
+          :per-page="perPage"
+          :filter="filters"
+          :filter-function="filter"
+          show-empty
+          empty-filtered-text="沒有找到記錄"
+          empty-text="沒有找到記錄"
+          @filtered="onFiltered"
         >
-        <b-button variant="success" @click="downloadExcel">
-          <i class="fas fa-download"></i> 開戶Excel下載<b-spinner
-            v-if="DownloadingExcel"
-            label="Spinning"
-            small
-          />
-        </b-button>
-        <b-button variant="warning" @click="downloadFilesForOpeningAccount">
-          <i class="fas fa-download"></i> 協議及開戶資料下載
-        </b-button>
-      </b-col>
-    </b-row>
-    <b-row v-if="loading" class="mt-3">
-      <b-col>
-        <b-progress :max="100" show-progress animated variant="success">
-          <b-progress-bar
-            :value="progress"
-            :label="`${progress.toFixed(2)}%`"
-          ></b-progress-bar>
-        </b-progress>
-      </b-col>
-    </b-row>
-    <b-row no-gutters class="mt-3">
-      <b-col class="text-center">
+          <template #head(操作)>
+            <b-form-checkbox v-model="checked" @change="selectAll" />
+          </template>
+          <template #cell(操作)="data">
+            <b-form-checkbox v-model="selectedClients" :value="data.item" />
+          </template>
+          <template #empty="scope">
+            {{ scope.emptyText }}
+          </template>
+          <template #emptyfiltered="scope">
+            {{ scope.emptyFilteredText }}
+          </template>
+          <template #table-busy>
+            <div class="text-center text-warning">
+              <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </template>
+        </b-table>
         <b-pagination
           v-if="totalRows > 0"
           v-model="currentPage"
@@ -102,50 +156,9 @@
           align="center"
         >
         </b-pagination>
-      </b-col>
-    </b-row>
-    <b-table
-      hover
-      bordered
-      dark
-      :items="data"
-      :fields="columns"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filters"
-      :filter-function="filter"
-      show-empty
-      empty-filtered-text="沒有找到記錄"
-      empty-text="沒有找到記錄"
-      @filtered="onFiltered"
-    >
-      <template #head(操作)>
-        <b-form-checkbox v-model="checked" @change="selectAll" />
-      </template>
-      <template #cell(操作)="data">
-        <b-form-checkbox v-model="selectedClients" :value="data.item" />
-      </template>
-      <template #empty="scope">
-        {{ scope.emptyText }}
-      </template>
-      <template #emptyfiltered="scope">
-        {{ scope.emptyFilteredText }}
-      </template>
-      <template #table-busy>
-        <div class="text-center text-warning">
-          <b-spinner class="align-middle"></b-spinner>
-        </div>
-      </template>
-    </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="center"
-    >
-    </b-pagination>
-  </b-container>
+      </b-container>
+    </b-col>
+  </b-row>
 </template>
 <script>
 // import DateRange from "./DateRange";

@@ -11,16 +11,22 @@ use App\Traits\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class UnauditedList1Controller extends HomeController
+class UnauditedList1Controller extends Controller
 {
     use Report, CountRecords;
 
     protected $name = 'UnauditedList1';
+    private $fields = null;
+    private $filter_type = null;
 
-    protected function setViewParameters(Request $request)
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $parameters = parent::setViewParameters($request);
-        $columns = [
+        $this->fields = [
             ['key' => 'AE', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '證件號碼', 'sortable' => true],
@@ -31,7 +37,7 @@ class UnauditedList1Controller extends HomeController
             ['key' => '提交時間', 'sortable' => true],
             ['key' => '操作'],
         ];
-        $FilterType = [
+        $this->filter_type = [
             'AE' => 'equals',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
@@ -41,12 +47,23 @@ class UnauditedList1Controller extends HomeController
             '郵箱' => 'startsWith',
             '提交時間' => 'betweenDate',
         ];
-        $parameters['columns'] = json_encode($columns);
-        $parameters['FilterType'] = json_encode($FilterType);
-        return $parameters;
     }
 
-    function list(Request $request) {
+    // protected function setViewParameters(Request $request)
+    // {
+    //     $parameters = parent::setViewParameters($request);
+    //     $parameters['fields'] = json_encode($fields);
+    //     $parameters['filter_type'] = json_encode($filter_type);
+    //     return $parameters;
+    // }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
         $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
             ->has('ClientBusinessType')->whereHasMorph('IDCard', [
             ClientCNIDCard::class,
@@ -96,6 +113,8 @@ class UnauditedList1Controller extends HomeController
             $rows[] = $row;
         }
         return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
     }

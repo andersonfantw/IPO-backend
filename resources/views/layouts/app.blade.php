@@ -23,7 +23,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -78,14 +78,15 @@
 
         <main class="">
             <div class="container-fluid px-0">
-                <div class="row justify-content-center no-gutters">
+                {{-- <div class="row justify-content-center no-gutters">
                     <div class="col-2">
                         <Side-Menu :menus="{{ $menu }}" :current_url="'{{ url()->current() }}'"></Side-Menu>
                     </div>
                     <div class="col-10">
                         @yield('content')
                     </div>
-                </div>
+                </div> --}}
+                <panel />
             </div>
         </main>
     </div>
