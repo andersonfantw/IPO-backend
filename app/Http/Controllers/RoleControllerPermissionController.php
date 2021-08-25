@@ -139,8 +139,8 @@ class RoleControllerPermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        RoleControllerPermission::find($id)->delete();
-    }
+    // public function destroy($id)
+    // {
+    //     RoleControllerPermission::destroy($id);
+    // }
 }
