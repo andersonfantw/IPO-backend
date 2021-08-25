@@ -141,6 +141,6 @@ class RoleControllerPermissionController extends Controller
      */
     public function destroy($id)
     {
-        RoleControllerPermission::destroy($id);
+        RoleControllerPermission::find($id)->delete();
     }
 }
