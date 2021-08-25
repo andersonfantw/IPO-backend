@@ -26,6 +26,10 @@ import UnauditedList2 from "./components/UnauditedList2.vue";
 import DeliverableList2 from "./components/DeliverableList2.vue";
 import SendingEmailList from "./components/SendingEmailList.vue";
 import ClientBankCards from "./components/ClientBankCards.vue";
+import ClientCreditCards from "./components/ClientCreditCards.vue";
+import ClientFundInRequests from "./components/ClientFundInRequests.vue";
+import ClientHKFundOutRequests from "./components/ClientHKFundOutRequests.vue";
+import ClientFundInternalTransferRequests from "./components/ClientFundInternalTransferRequests.vue";
 
 const routes = [
     { path: '/Permission', component: Permission },
@@ -37,6 +41,10 @@ const routes = [
     { path: '/DeliverableList2', component: DeliverableList2 },
     { path: '/SendingEmailList', component: SendingEmailList },
     { path: '/ClientBankCards', component: ClientBankCards },
+    { path: '/ClientCreditCards', component: ClientCreditCards },
+    { path: '/ClientFundInRequests', component: ClientFundInRequests },
+    { path: '/ClientHKFundOutRequests', component: ClientHKFundOutRequests },
+    { path: '/ClientFundInternalTransferRequests', component: ClientFundInternalTransferRequests },
 ];
 
 const router = new VueRouter({

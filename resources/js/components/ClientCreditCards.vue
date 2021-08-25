@@ -1,8 +1,14 @@
 <template>
-  <b-container fluid class="p-0">
+  <b-container
+    fluid
+    class="p-0"
+  >
     <h1 class="text-warning text-center">
       添加信用卡申請
-      <b-spinner v-if="loading" variant="warning"></b-spinner>
+      <b-spinner
+        v-if="busy"
+        variant="warning"
+      ></b-spinner>
     </h1>
 
     <b-row no-gutters>
@@ -32,21 +38,33 @@
       </b-col>
       <b-col>
         <b-input-group prepend="卡號">
-          <b-form-input type="search" v-model="filters['卡號']"></b-form-input>
+          <b-form-input
+            type="search"
+            v-model="filters['卡號']"
+          ></b-form-input>
         </b-input-group>
       </b-col>
     </b-row>
 
     <b-row no-gutters>
       <b-col>
-        <DateRange :name="'發送時間'" v-model="filters['發送時間']" />
+        <DateRange
+          :name="'發送時間'"
+          v-model="filters['發送時間']"
+        />
       </b-col>
       <b-col>
-        <DateRange :name="'審批時間'" v-model="filters['審批時間']" />
+        <DateRange
+          :name="'審批時間'"
+          v-model="filters['審批時間']"
+        />
       </b-col>
     </b-row>
 
-    <b-row no-gutters class="mt-3">
+    <b-row
+      no-gutters
+      class="mt-3"
+    >
       <b-col class="text-center">
         <b-pagination
           v-if="totalRows > 0"
@@ -63,7 +81,7 @@
       bordered
       dark
       :items="data"
-      :fields="Columns"
+      :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
       :filter="filters"
@@ -89,10 +107,15 @@
             :value="data.item.id"
             variant="warning"
             type="submit"
-            ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
           >
+            <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
+          </b-button>
         </b-form>
-        <b-form v-else :action="view_request_url" method="post">
+        <b-form
+          v-else
+          :action="view_request_url"
+          method="post"
+        >
           <input
             type="hidden"
             name="redirect_route"
@@ -103,8 +126,9 @@
             :value="data.item.id"
             variant="success"
             type="submit"
-            ><h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5></b-button
           >
+            <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+          </b-button>
         </b-form>
       </template>
       <template #empty="scope">
@@ -137,9 +161,9 @@ import DateRange from "./DateRange";
 export default {
   data() {
     return {
-      Columns: [],
+      fields: [],
       FilterMatchMode: {},
-      loading: false,
+      busy: false,
       data: [],
       SelectedCreditCards: [],
       FilteredCreditCards: [],
@@ -151,14 +175,6 @@ export default {
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
-    columns: {
-      type: String,
-      required: true,
-    },
-    filter_type: {
-      type: String,
-      required: true,
-    },
     audit_request_url: String,
     view_request_url: String,
   },
@@ -166,9 +182,7 @@ export default {
     DateRange,
   },
   created() {
-    this.Columns = JSON.parse(this.columns);
-    this.FilterType = JSON.parse(this.filter_type);
-    this.loading = true;
+    this.busy = true;
     this.loadData(1);
   },
   methods: {
@@ -182,19 +196,23 @@ export default {
     loadData(pageNumber) {
       const self = this;
       axios
-        .post("api/ClientCreditCards/list", {
-          perPage: self.perPage,
-          pageNumber: pageNumber,
+        .get("ClientCreditCards", {
+          params: {
+            perPage: self.perPage,
+            pageNumber: pageNumber,
+          },
         })
         .then((res) => {
           console.log(res);
           const data = res.data.data;
+          self.fields = res.data.fields;
+          self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           if (data.length >= self.perPage) {
             self.loadData(pageNumber + 1);
           } else {
-            self.loading = false;
+            self.busy = false;
           }
         })
         .catch((error) => {

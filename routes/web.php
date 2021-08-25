@@ -100,13 +100,13 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     Route::any('/GenerateAyersAccount', 'AyersAccountController@generate')->name('GenerateAyersAccount');
 
-    Route::any('/ClientFundInRequests', 'ClientFundInRequestsController@index')->name('ClientFundInRequests');
+    // Route::any('/ClientFundInRequests', 'ClientFundInRequestsController@index')->name('ClientFundInRequests');
 
-    Route::any('/ClientHKFundOutRequests', 'ClientHKFundOutRequestsController@index')->name('ClientHKFundOutRequests');
+    // Route::any('/ClientHKFundOutRequests', 'ClientHKFundOutRequestsController@index')->name('ClientHKFundOutRequests');
 
     Route::any('/ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController@index')->name('ClientOverseasFundOutRequests');
 
-    Route::any('/ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController@index')->name('ClientFundInternalTransferRequests');
+    // Route::any('/ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController@index')->name('ClientFundInternalTransferRequests');
 
     Route::any('/ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController@index')->name('ClientCreditCardFundOutRequests');
 
@@ -116,7 +116,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     // Route::any('/ClientBankCards', 'ClientBankCardsController@index')->name('ClientBankCards');
 
-    Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
+    // Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
 
     // Route::middleware(['cors'])->group(function () {
     Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
@@ -145,6 +145,10 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('DeliverableList2', 'DeliverableList2Controller');
     Route::resource('SendingEmailList', 'SendingEmailListController');
     Route::resource('ClientBankCards', 'ClientBankCardsController');
+    Route::resource('ClientCreditCards', 'ClientCreditCardsController');
+    Route::resource('ClientFundInRequests', 'ClientFundInRequestsController');
+    Route::resource('ClientHKFundOutRequests', 'ClientHKFundOutRequestsController');
+    Route::resource('ClientFundInternalTransferRequests', 'ClientFundInternalTransferRequestsController');
     Route::resource('UserRole', 'UserRoleController');
     Route::resource('RoleMenuItem', 'RoleMenuItemController');
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');

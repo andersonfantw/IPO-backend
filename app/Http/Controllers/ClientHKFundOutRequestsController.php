@@ -6,16 +6,17 @@ use App\ClientHKFundOutRequest;
 use App\Traits\Excel;
 use Illuminate\Http\Request;
 
-class ClientHKFundOutRequestsController extends HomeController
+class ClientHKFundOutRequestsController extends Controller
 {
     use Excel;
 
     protected $name = 'ClientHKFundOutRequests';
+    private $fields = null;
+    private $filter_type = null;
 
-    protected function setViewParameters(Request $request)
+    public function __construct()
     {
-        $parameters = parent::setViewParameters($request);
-        $columns = [
+        $this->fields = [
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '手機號碼', 'sortable' => true],
@@ -28,7 +29,7 @@ class ClientHKFundOutRequestsController extends HomeController
             ['key' => '審批時間', 'sortable' => true],
             ['key' => '操作'],
         ];
-        $FilterType = [
+        $this->FilterType = [
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '手機號碼' => 'startsWith',
@@ -40,13 +41,14 @@ class ClientHKFundOutRequestsController extends HomeController
             '經手人' => 'startsWith',
             '審批時間' => 'betweenDate',
         ];
-        $parameters['columns'] = json_encode($columns);
-        $parameters['FilterType'] = json_encode($FilterType);
-        $parameters['User'] = auth()->user()->toJson(JSON_UNESCAPED_UNICODE);
-        return $parameters;
     }
 
-    public function list(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
         // $yesterday = today()->subDays(3)->toDateString();
         $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
@@ -74,6 +76,8 @@ class ClientHKFundOutRequestsController extends HomeController
             $rows[] = $row;
         }
         return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
     }
