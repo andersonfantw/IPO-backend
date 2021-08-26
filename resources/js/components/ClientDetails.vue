@@ -917,10 +917,13 @@
   </b-modal>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
+      id: null,
       uuid: null,
+      next_status: null,
       駁回: {
         身份證信息: false,
         "zh-hk銀行卡信息": false,
@@ -966,10 +969,11 @@ export default {
       const self = this;
       let data = {};
       data["uuid"] = self.uuid;
+      data["next_status"] = self.next_status;
       data["駁回身份證信息"] = self.ClientIDCard.remark;
       data["駁回住址證明"] = self.ClientAddressProof.remark;
       self.銀行卡s.forEach(function (bankcard) {
-        data["駁回" + bankcard.lcid + "銀行卡信息"] = bankcard.remark;
+        data[`駁回${bankcard.lcid}銀行卡信息`] = bankcard.remark;
       });
       data["駁回客戶補充資料"] = self.Client.remark;
       data["駁回工作狀態"] = self.ClientWorkingStatus.remark;
@@ -980,45 +984,38 @@ export default {
       data["駁回簽名"] = self.ClientSignature.remark;
       data["駁回存款證明"] = self.ClientDepositProof.remark;
       axios
-        .post("api/Client/audit", data)
+        .put(`AuditClient/${self.uuid}`, data)
         .then((res) => {
           console.log(res);
-          if (res.data.success) {
-            self.$emit("audited");
-            self.hideModal();
-          }
+          self.$emit("audited");
+          self.hideModal();
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    showModal(uuid) {
+    showModal(uuid, next_status) {
       const self = this;
       self.uuid = uuid;
+      self.next_status = next_status;
       axios
-        .get(`api/Client/${uuid}`)
+        .get(`Client/${uuid}`)
         .then((res) => {
           // const json = self.getDecryptedJsonObject(res.data);
           console.log(res);
-          self.Client = JSON.parse(res.data.Client);
-          self.ClientIDCard = JSON.parse(res.data.ClientIDCard);
-          self.ClientAddressProof = JSON.parse(res.data.ClientAddressProof);
-          self.銀行卡s = JSON.parse(res.data.ClientBankCards);
-          self.ClientWorkingStatus = JSON.parse(res.data.ClientWorkingStatus);
-          self.ClientFinancialStatus = JSON.parse(
-            res.data.ClientFinancialStatus
-          );
-          self.ClientInvestmentExperience = JSON.parse(
-            res.data.ClientInvestmentExperience
-          );
-          self.ClientEvaluationResults = JSON.parse(
-            res.data.ClientEvaluationResults
-          );
-          self.ClientScore = JSON.parse(res.data.ClientScore);
-          self.ClientSignature = JSON.parse(res.data.ClientSignature);
-          self.ClientBusinessType = JSON.parse(res.data.ClientBusinessType);
-          self.ClientDepositProof = JSON.parse(res.data.ClientDepositProof);
-          self.Introducer = JSON.parse(res.data.Introducer);
+          self.Client = res.data.Client;
+          self.ClientIDCard = res.data.ClientIDCard;
+          self.ClientAddressProof = res.data.ClientAddressProof;
+          self.銀行卡s = res.data.ClientBankCards;
+          self.ClientWorkingStatus = res.data.ClientWorkingStatus;
+          self.ClientFinancialStatus = res.data.ClientFinancialStatus;
+          self.ClientInvestmentExperience = res.data.ClientInvestmentExperience;
+          self.ClientEvaluationResults = res.data.ClientEvaluationResults;
+          self.ClientScore = res.data.ClientScore;
+          self.ClientSignature = res.data.ClientSignature;
+          self.ClientBusinessType = res.data.ClientBusinessType;
+          self.ClientDepositProof = res.data.ClientDepositProof;
+          self.Introducer = res.data.Introducer;
           self.$refs.modal.show();
         })
         .catch((error) => {
@@ -1071,25 +1068,25 @@ export default {
       return `LoadAddressProof?uuid=${this.uuid}`;
     },
     IDCardFace() {
-      return "/LoadIDCardFace?uuid=" + this.uuid;
+      return `LoadIDCardFace?uuid=${this.uuid}`;
     },
     IDCardBack() {
-      return "/LoadIDCardBack?uuid=" + this.uuid;
+      return `LoadIDCardBack?uuid=${this.uuid}`;
     },
     HKBankcardFace() {
-      return "/LoadHKBankCard?uuid=" + this.uuid;
+      return `LoadHKBankCard?uuid=${this.uuid}`;
     },
     CNBankcardFace() {
-      return "/LoadCNBankCard?uuid=" + this.uuid;
+      return `LoadCNBankCard?uuid=${this.uuid}`;
     },
     OtherBankcardFace() {
-      return "/LoadOtherBankCard?uuid=" + this.uuid;
+      return `LoadOtherBankCard?uuid=${this.uuid}`;
     },
     NameCardFace() {
-      return "/LoadNameCard?uuid=" + this.uuid;
+      return `LoadNameCard?uuid=${this.uuid}`;
     },
     DepositProof() {
-      return "/LoadDepositProof?uuid=" + this.uuid;
+      return `LoadDepositProof?uuid=${this.uuid}`;
     },
   },
 };

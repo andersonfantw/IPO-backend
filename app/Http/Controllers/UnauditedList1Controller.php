@@ -110,6 +110,7 @@ class UnauditedList1Controller extends Controller
             $row['郵箱'] = $Client->email;
             $row['提交時間'] = date_format($Client->updated_at, "Y-m-d H:i:s");
             $row['uuid'] = $Client->uuid;
+            $row['id'] = $Client->id;
             $rows[] = $row;
         }
         return json_encode([

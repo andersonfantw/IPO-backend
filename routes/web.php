@@ -30,9 +30,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     // Route::get('/ReauditList1', 'ReauditList1Controller@index')->name('ReauditList1');
 
-    Route::any('/AuditClient', 'AuditClientController@index')->name('AuditClient')->middleware([
-        'PreviewClient',
-    ]);
+    // Route::post('AuditClient', 'AuditClientController@audit')->name('AuditClient');
 
     Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest')->middleware([
         'PreviewClientFundInRequest',
@@ -119,15 +117,15 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     // Route::any('/ClientCreditCards', 'ClientCreditCardsController@index')->name('ClientCreditCards');
 
     // Route::middleware(['cors'])->group(function () {
-    Route::any('/LoadIDCardFace', 'AuditClientController@loadIDCardFace')->name('LoadIDCardFace');
-    Route::any('/LoadIDCardBack', 'AuditClientController@loadIDCardBack')->name('LoadIDCardBack');
-    Route::any('/LoadHKBankCard', 'AuditClientController@loadHKBankCard')->name('LoadHKBankCard');
-    Route::any('/LoadCNBankCard', 'AuditClientController@loadCNBankCard')->name('LoadCNBankCard');
-    Route::any('/LoadOtherBankCard', 'AuditClientController@loadOtherBankCard')->name('LoadOtherBankCard');
-    Route::any('/LoadNameCard', 'AuditClientController@loadNameCard')->name('LoadNameCard');
-    Route::any('/LoadSignature', 'AuditClientController@loadSignature')->name('LoadSignature');
-    Route::any('/LoadDepositProof', 'AuditClientController@loadDepositProof')->name('LoadDepositProof');
-    Route::any('/LoadAddressProof', 'AuditClientController@loadAddressProof')->name('LoadAddressProof');
+    Route::any('/LoadIDCardFace', 'ClientController@loadIDCardFace')->name('LoadIDCardFace');
+    Route::any('/LoadIDCardBack', 'ClientController@loadIDCardBack')->name('LoadIDCardBack');
+    Route::any('/LoadHKBankCard', 'ClientController@loadHKBankCard')->name('LoadHKBankCard');
+    Route::any('/LoadCNBankCard', 'ClientController@loadCNBankCard')->name('LoadCNBankCard');
+    Route::any('/LoadOtherBankCard', 'ClientController@loadOtherBankCard')->name('LoadOtherBankCard');
+    Route::any('/LoadNameCard', 'ClientController@loadNameCard')->name('LoadNameCard');
+    Route::any('/LoadSignature', 'ClientController@loadSignature')->name('LoadSignature');
+    Route::any('/LoadDepositProof', 'ClientController@loadDepositProof')->name('LoadDepositProof');
+    Route::any('/LoadAddressProof', 'ClientController@loadAddressProof')->name('LoadAddressProof');
     Route::any('/LoadAddressProofUpdate', 'ViewClientAddressProofUpdateController@loadAddressProofUpdate')->name('LoadAddressProofUpdate');
     Route::any('/LoadFundInReceipt', 'ViewClientFundInRequestController@loadReceipt')->name('LoadFundInReceipt');
     Route::any('/LoadFundInBankCard', 'ViewClientFundInRequestController@loadBankcard')->name('LoadFundInBankCard');
@@ -156,6 +154,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('RoleControllerPermission', 'RoleControllerPermissionController');
     Route::resource('Role', 'RoleController');
     Route::resource('Controller', 'ControllerController');
+    Route::resource('AuditClient', 'AuditClientController');
 
 });
 

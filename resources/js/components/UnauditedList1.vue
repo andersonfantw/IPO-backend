@@ -145,7 +145,7 @@
       ref="ClientDetails"
       :base_url="base_url"
       :title="'一審客戶信息'"
-      @audited="load(1)"
+      @audited="reload"
     />
   </b-container>
 </template>
@@ -177,6 +177,7 @@ export default {
         { value: "是", text: "是" },
         { value: "否", text: "否" },
       ],
+      next_status: "audited1",
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -204,10 +205,15 @@ export default {
   },
   methods: {
     showClientDetails(uuid) {
-      this.$refs.ClientDetails.showModal(uuid);
+      this.$refs.ClientDetails.showModal(uuid, this.next_status);
     },
     hideClientDetails() {
       this.$refs.ClientDetails.hideModal();
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
     },
     load(pageNumber) {
       const self = this;

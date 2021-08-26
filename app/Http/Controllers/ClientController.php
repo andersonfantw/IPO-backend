@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Traits\ImageLoader;
 use App\Traits\Score;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    use Score;
+    use Score, ImageLoader;
     /**
      * Display a listing of the resource.
      *
@@ -127,11 +128,11 @@ class ClientController extends Controller
         $details['uuid'] = $Client->uuid;
         $Client->IDCard->idcard_face = null;
         $Client->IDCard->idcard_back = null;
-        $details['ClientIDCard'] = $Client->IDCard->toJson(JSON_UNESCAPED_UNICODE);
+        $details['ClientIDCard'] = $Client->IDCard;
         if (is_object($Client->ClientAddressProof)) {
             $Client->ClientAddressProof->image = null;
-            $Client->ClientAddressProof->detailed_address = addslashes($Client->ClientAddressProof->detailed_address);
-            $details['ClientAddressProof'] = $Client->ClientAddressProof->toJson(JSON_UNESCAPED_UNICODE);
+            // $Client->ClientAddressProof->detailed_address = addslashes($Client->ClientAddressProof->detailed_address);
+            $details['ClientAddressProof'] = $Client->ClientAddressProof;
             // $Client->ClientAddressProof->detailed_address = stripslashes($Client->ClientAddressProof->detailed_address);
         } else {
             $details['ClientAddressProof'] = null;
@@ -139,33 +140,34 @@ class ClientController extends Controller
         foreach ($Client->ClientBankCards as &$ClientBankCard) {
             $ClientBankCard->bankcard_blob = null;
         }
-        $details['ClientBankCards'] = $Client->ClientBankCards->toJson(JSON_UNESCAPED_UNICODE);
+        $details['ClientBankCards'] = $Client->ClientBankCards;
         if ($Client->ClientWorkingStatus->name_card_face) {
             $Client->ClientWorkingStatus->name_card_face = null;
         }
-        $details['ClientWorkingStatus'] = $Client->ClientWorkingStatus->toJson(JSON_UNESCAPED_UNICODE);
-        $Client->ClientFinancialStatus->fund_source = addslashes($Client->ClientFinancialStatus->fund_source);
-        $details['ClientFinancialStatus'] = $Client->ClientFinancialStatus->toJson(JSON_UNESCAPED_UNICODE);
-        $details['ClientInvestmentExperience'] = $Client->ClientInvestmentExperience->toJson(JSON_UNESCAPED_UNICODE);
-        $details['ClientScore'] = json_encode($this->calculateClientScore($Client), JSON_UNESCAPED_UNICODE);
-        $details['ClientEvaluationResults'] = $Client->ClientEvaluationResults->toJson(JSON_UNESCAPED_UNICODE);
-        $details['ClientSignature'] = $Client->ClientSignature->toJson(JSON_UNESCAPED_UNICODE);
-        $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
-        $details['ClientBusinessType'] = $Client->ClientBusinessType->toJson(JSON_UNESCAPED_UNICODE);
+        $details['ClientWorkingStatus'] = $Client->ClientWorkingStatus;
+        // $Client->ClientFinancialStatus->fund_source = addslashes($Client->ClientFinancialStatus->fund_source);
+        $details['ClientFinancialStatus'] = $Client->ClientFinancialStatus;
+        $details['ClientInvestmentExperience'] = $Client->ClientInvestmentExperience;
+        $details['ClientScore'] = $this->calculateClientScore($Client);
+        $details['ClientEvaluationResults'] = $Client->ClientEvaluationResults;
+        $details['ClientSignature'] = $Client->ClientSignature;
+        // $Client->ClientBusinessType->direct_promotion = addslashes($Client->ClientBusinessType->direct_promotion);
+        $details['ClientBusinessType'] = $Client->ClientBusinessType;
         if (is_object($Client->ClientDepositProof)) {
             $Client->ClientDepositProof->image = null;
-            $details['ClientDepositProof'] = $Client->ClientDepositProof->toJson(JSON_UNESCAPED_UNICODE);
+            $details['ClientDepositProof'] = $Client->ClientDepositProof;
         } else {
             $details['ClientDepositProof'] = null;
         }
-        $details['Introducer'] = $Client->ViewIntroducer->toJson(JSON_UNESCAPED_UNICODE);
+        $details['Introducer'] = $Client->ViewIntroducer;
         $Client = Client::where('uuid', $uuid)->first();
-        $Client->idcard_type = addslashes($Client->idcard_type);
-        $Client->education_level = addslashes($Client->education_level);
-        $Client->selected_flow = addslashes($Client->selected_flow);
-        $details['Client'] = $Client->toJson(JSON_UNESCAPED_UNICODE);
+        // $Client->idcard_type = addslashes($Client->idcard_type);
+        // $Client->education_level = addslashes($Client->education_level);
+        // $Client->selected_flow = addslashes($Client->selected_flow);
+        $details['Client'] = $Client;
         // $Client->idcard_type = stripslashes($Client->idcard_type);
-        return $details;
+        // return $details;
+        return json_encode($details, JSON_UNESCAPED_UNICODE);
     }
 
     /**
