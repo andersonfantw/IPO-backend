@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\ClientHKFundOutRequest;
 use Illuminate\Http\Request;
 
-class AuditClientHKFundOutRequestController extends ViewClientHKFundOutRequestController
+class AuditClientHKFundOutRequestController extends Controller
 {
     protected $name = 'AuditClientHKFundOutRequest';
 
@@ -25,11 +25,18 @@ class AuditClientHKFundOutRequestController extends ViewClientHKFundOutRequestCo
         return redirect()->route('ClientHKFundOutRequests');
     }
 
-    public function fastAudit(Request $request)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
-        $ClientHKFundOutRequest = ClientHKFundOutRequest::find($request->input('id'));
+        $ClientHKFundOutRequest = ClientHKFundOutRequest::find($id);
         $ClientHKFundOutRequest->status = $request->input('status');
-        $ClientHKFundOutRequest->issued_by = $request->input('issued_by');
+        $ClientHKFundOutRequest->issued_by = auth()->user()->name;
         $ClientHKFundOutRequest->save();
     }
 }

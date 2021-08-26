@@ -44,9 +44,9 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     Route::any('/DoAuditClientFundInternalTransferRequest', 'AuditClientFundInternalTransferRequestController@audit')->name('DoAuditClientFundInternalTransferRequest');
 
-    Route::any('/AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@index')->name('AuditClientHKFundOutRequest')->middleware([
-        'PreviewClientHKFundOutRequest',
-    ]);
+    // Route::any('/AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@index')->name('AuditClientHKFundOutRequest')->middleware([
+    //     'PreviewClientHKFundOutRequest',
+    // ]);
 
     Route::any('/DoAuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController@audit')->name('DoAuditClientHKFundOutRequest');
 
@@ -155,6 +155,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('Role', 'RoleController');
     Route::resource('Controller', 'ControllerController');
     Route::resource('AuditClient', 'AuditClientController');
+    Route::resource('AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController');
 
 });
 

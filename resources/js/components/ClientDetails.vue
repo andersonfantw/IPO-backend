@@ -205,15 +205,16 @@
             <h5 class="mb-0">
               <b-form-checkbox
                 id="駁回身份證信息"
-                v-model="駁回.身份證信息"
+                v-model="駁回身份證信息"
                 :value="true"
                 :unchecked-value="false"
+                class="text-warning"
               >駁回
               </b-form-checkbox>
             </h5>
           </th>
         </tr>
-        <tr v-if="駁回.身份證信息">
+        <tr v-if="駁回身份證信息">
           <td
             v-if="ClientIDCard"
             colspan="4"
@@ -1042,10 +1043,40 @@ export default {
         });
     },
     hideModal() {
+      this.uuid = null;
+      this.next_status = null;
+      this.Client = null;
+      this.ClientIDCard = null;
+      this.ClientAddressProof = null;
+      this.銀行卡s = null;
+      this.ClientWorkingStatus = null;
+      this.ClientFinancialStatus = null;
+      this.ClientInvestmentExperience = null;
+      this.ClientEvaluationResults = null;
+      this.ClientScore = null;
+      this.ClientSignature = null;
+      this.ClientBusinessType = null;
+      this.ClientDepositProof = null;
+      this.Introducer = null;
       this.$refs.modal.hide();
     },
   },
   computed: {
+    駁回身份證信息: {
+      get() {
+        if (this.ClientIDCard) {
+          return (
+            this.駁回.身份證信息 ||
+            (this.ClientIDCard.remark != null && this.ClientIDCard.remark != "")
+          );
+        } else {
+          return this.駁回.身份證信息;
+        }
+      },
+      set(value) {
+        this.駁回.身份證信息 = value;
+      },
+    },
     評估結果() {
       let result = 0;
       this.ClientScore.forEach((score) => {

@@ -116,12 +116,10 @@ class ClientHKFundOutRequestsController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
-            $remark = $request->input('駁回信息');
-            $issued_by = auth()->user()->name;
             ClientHKFundOutRequest::find($id)->update([
                 'status' => 'rejected',
-                'issued_by' => $issued_by,
-                'remark' => $remark,
+                'issued_by' => auth()->user()->name,
+                'remark' => $request->input('駁回信息'),
             ]);
         } else {
             ClientHKFundOutRequest::find($id)->update([
