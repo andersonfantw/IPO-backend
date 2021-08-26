@@ -29,9 +29,10 @@
           </td>
           <th width="17%">開通賬戶</th>
           <td
+            v-if="ClientBusinessType"
             width="17%"
             class=""
-          >證券（現金）賬戶</td>
+          >{{ClientBusinessType.business_type}}</td>
           <th width="17%">介紹人</th>
           <td
             v-if="Introducer"
