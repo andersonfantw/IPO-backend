@@ -164,6 +164,7 @@
 </template>
 <script>
 // import DateRange from "./DateRange";
+import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -190,6 +191,7 @@ export default {
         { value: "否", text: "否" },
       ],
       progress: 0,
+      next_status: "audited2",
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -198,13 +200,25 @@ export default {
   },
   components: {
     // DateRange,
+    ClientDetails,
   },
   created() {
     this.busy = true;
-    this.loadData(1);
+    this.load(1);
   },
   methods: {
-    loadData(pageNumber) {
+    showClientDetails(uuid) {
+      this.$refs.ClientDetails.showModal(uuid, this.next_status);
+    },
+    hideClientDetails() {
+      this.$refs.ClientDetails.hideModal();
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    load(pageNumber) {
       const self = this;
       axios
         .get("UnauditedList2", {
@@ -227,7 +241,7 @@ export default {
             self.progress += (self.perPage / total) * 100;
           }
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
             self.busy = false;
           }

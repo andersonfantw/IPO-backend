@@ -970,19 +970,37 @@ export default {
       let data = {};
       data["uuid"] = self.uuid;
       data["next_status"] = self.next_status;
-      data["駁回身份證信息"] = self.ClientIDCard.remark;
-      data["駁回住址證明"] = self.ClientAddressProof.remark;
+      if (self.ClientIDCard) {
+        data["駁回身份證信息"] = self.ClientIDCard.remark;
+      }
+      if (self.ClientAddressProof) {
+        data["駁回住址證明"] = self.ClientAddressProof.remark;
+      }
       self.銀行卡s.forEach(function (bankcard) {
         data[`駁回${bankcard.lcid}銀行卡信息`] = bankcard.remark;
       });
-      data["駁回客戶補充資料"] = self.Client.remark;
-      data["駁回工作狀態"] = self.ClientWorkingStatus.remark;
-      data["駁回財政狀況"] = self.ClientFinancialStatus.remark;
-      data["駁回投資經驗及衍生產品認識"] =
-        self.ClientInvestmentExperience.remark;
-      data["駁回問卷調查"] = self.ClientEvaluationResults.remark;
-      data["駁回簽名"] = self.ClientSignature.remark;
-      data["駁回存款證明"] = self.ClientDepositProof.remark;
+      if (self.Client) {
+        data["駁回客戶補充資料"] = self.Client.remark;
+      }
+      if (self.ClientWorkingStatus) {
+        data["駁回工作狀態"] = self.ClientWorkingStatus.remark;
+      }
+      if (self.ClientFinancialStatus) {
+        data["駁回財政狀況"] = self.ClientFinancialStatus.remark;
+      }
+      if (self.ClientInvestmentExperience) {
+        data["駁回投資經驗及衍生產品認識"] =
+          self.ClientInvestmentExperience.remark;
+      }
+      if (self.ClientEvaluationResults) {
+        data["駁回問卷調查"] = self.ClientEvaluationResults.remark;
+      }
+      if (self.ClientSignature) {
+        data["駁回簽名"] = self.ClientSignature.remark;
+      }
+      if (self.ClientDepositProof) {
+        data["駁回存款證明"] = self.ClientDepositProof.remark;
+      }
       axios
         .put(`AuditClient/${self.uuid}`, data)
         .then((res) => {
