@@ -961,7 +961,6 @@ export default {
   },
   mounted() {},
   props: {
-    base_url: String,
     title: String,
   },
   methods: {

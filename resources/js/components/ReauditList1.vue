@@ -102,31 +102,15 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <b-form
-          :action="audit_client_url"
-          method="post"
+        <b-button
+          variant="warning"
+          type="button"
+          @click="showClientDetails(data.item.uuid)"
         >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="ReauditList1"
-          />
-          <input
-            type="hidden"
-            name="next_status"
-            value="audited1"
-          />
-          <b-button
-            name="uuid"
-            :value="data.item.uuid"
-            variant="warning"
-            type="submit"
-          >
-            <h5 class="mb-0">
-              <i class="far fa-edit"></i> 審核
-            </h5>
-          </b-button>
-        </b-form>
+          <h5 class="mb-0">
+            <i class="far fa-edit"></i> 審核
+          </h5>
+        </b-button>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -148,10 +132,16 @@
       align="center"
     >
     </b-pagination>
+    <ClientDetails
+      ref="ClientDetails"
+      :title="'客戶信息'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>
 // import DateRange from "./DateRange";
+import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -177,6 +167,7 @@ export default {
         { value: "是", text: "是" },
         { value: "否", text: "否" },
       ],
+      next_status: "audited1",
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -185,13 +176,25 @@ export default {
   },
   components: {
     // DateRange,
+    ClientDetails,
   },
   created() {
     this.busy = true;
-    this.loadData(1);
+    this.load(1);
   },
   methods: {
-    loadData(pageNumber) {
+    showClientDetails(uuid) {
+      this.$refs.ClientDetails.showModal(uuid, this.next_status);
+    },
+    hideClientDetails() {
+      this.$refs.ClientDetails.hideModal();
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    load(pageNumber) {
       const self = this;
       axios
         .get("ReauditList1", {
@@ -208,7 +211,7 @@ export default {
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
             self.busy = false;
           }

@@ -143,7 +143,6 @@
     </b-pagination>
     <ClientDetails
       ref="ClientDetails"
-      :base_url="base_url"
       :title="'一審客戶信息'"
       @audited="reload"
     />
