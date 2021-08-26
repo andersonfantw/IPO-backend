@@ -296,6 +296,11 @@ export default {
         });
     },
     hideModal() {
+      this.id = null;
+      this.Request = null;
+      this.Client = null;
+      this.AyersAccounts = null;
+      this.ClientIDCard = null;
       this.$refs.modal.hide();
     },
   },

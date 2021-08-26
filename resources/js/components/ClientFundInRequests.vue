@@ -209,7 +209,7 @@ export default {
   },
   created() {
     this.busy = true;
-    this.loadData(1);
+    this.load(1);
   },
   methods: {
     showDetails(id) {
@@ -219,16 +219,14 @@ export default {
       const self = this;
       self.Auditing = true;
       axios
-        .post("api/ClientFundInRequests/Audit", {
+        .put(`AuditClientFundInRequest/${id}`, {
           id: id,
           status: "approved",
-          issued_by: self.issued_by,
         })
         .then((res) => {
           console.log(res);
           self.Auditing = false;
-          self.data = [];
-          self.loadData(1);
+          self.reload();
         })
         .catch((error) => {
           self.Auditing = false;
@@ -240,16 +238,14 @@ export default {
       const self = this;
       self.Auditing = true;
       axios
-        .post("api/ClientFundInRequests/Audit", {
+        .put(`AuditClientFundInRequest/${id}`, {
           id: id,
           status: "rejected",
-          issued_by: self.issued_by,
         })
         .then((res) => {
           console.log(res);
           self.Auditing = false;
-          self.data = [];
-          self.loadData(1);
+          self.reload();
         })
         .catch((error) => {
           self.Auditing = false;
@@ -267,9 +263,9 @@ export default {
     reload() {
       this.data = [];
       this.busy = true;
-      this.loadData(1);
+      this.load(1);
     },
-    loadData(pageNumber) {
+    load(pageNumber) {
       const self = this;
       self.busy = true;
       axios
@@ -287,7 +283,7 @@ export default {
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
             self.busy = false;
           }

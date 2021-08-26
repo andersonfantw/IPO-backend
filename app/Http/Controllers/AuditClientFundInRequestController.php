@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\ClientFundInRequest;
 use Illuminate\Http\Request;
 
-class AuditClientFundInRequestController extends ViewClientFundInRequestController
+class AuditClientFundInRequestController extends Controller
 {
     protected $name = 'AuditClientFundInRequest';
 
@@ -25,11 +25,18 @@ class AuditClientFundInRequestController extends ViewClientFundInRequestControll
         return redirect()->route('ClientFundInRequests');
     }
 
-    public function fastAudit(Request $request)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
-        $ClientFundInRequest = ClientFundInRequest::find($request->input('id'));
+        $ClientFundInRequest = ClientFundInRequest::find($id);
         $ClientFundInRequest->status = $request->input('status');
-        $ClientFundInRequest->issued_by = $request->input('issued_by');
+        $ClientFundInRequest->issued_by = auth()->user()->name;
         $ClientFundInRequest->save();
     }
 }

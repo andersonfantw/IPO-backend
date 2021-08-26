@@ -32,9 +32,9 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
 
     // Route::post('AuditClient', 'AuditClientController@audit')->name('AuditClient');
 
-    Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest')->middleware([
-        'PreviewClientFundInRequest',
-    ]);
+    // Route::any('/AuditClientFundInRequest', 'AuditClientFundInRequestController@index')->name('AuditClientFundInRequest')->middleware([
+    //     'PreviewClientFundInRequest',
+    // ]);
 
     Route::any('/DoAuditClientFundInRequest', 'AuditClientFundInRequestController@audit')->name('DoAuditClientFundInRequest');
 
@@ -156,6 +156,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('Controller', 'ControllerController');
     Route::resource('AuditClient', 'AuditClientController');
     Route::resource('AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController');
+    Route::resource('AuditClientFundInRequest', 'AuditClientFundInRequestController');
 
 });
 
