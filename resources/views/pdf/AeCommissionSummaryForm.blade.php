@@ -288,9 +288,8 @@
         </tbody>
     </table>
 
-    @if ($licensed_staff)
     <br />
-
+    @if ($licensed_staff)
     <table style="width:100%">
         <thead>
             <tr>
@@ -317,9 +316,9 @@
     </table>
     @endif
 
-    @if ($no_license_staff)
     <br />
 
+    @if ($no_license_staff)
     <table style="width:100%">
         <thead>
             <tr>
