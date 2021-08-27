@@ -244,7 +244,7 @@
                 <h3>China Yinsheng International Securities Ltd.,</h3>
             </td>
             <td>日期:</td>
-            <td>2021/8/3</td>
+            <td>{{$buss_date}}</td>
             <td></td>
             <td></td>
         </tr>
@@ -253,9 +253,9 @@
                 <h3>銷售人員暨員工佣金\獎金發放表</h3>
             </td>
             <td>期間:</td>
-            <td>2021/7/1</td>
+            <td>{{$start_date}}</td>
             <td>-</td>
-            <td>2021/7/31</td>
+            <td>{{$end_date}}</td>
         </tr>
     </table>
     <hr />

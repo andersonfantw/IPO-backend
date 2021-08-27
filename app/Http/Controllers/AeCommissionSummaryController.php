@@ -265,6 +265,9 @@ class AeCommissionSummaryController extends HomeController
         $collect = collect($data);
         return view('pdf/AeCommissionSummaryForm',array_merge(
             [
+                'buss_date'=>Carbon::today()->format('Y/m/d'),
+                'start_date'=>Carbon::parse($buss_date)->format('Y/m/d'),
+                'end_date'=>Carbon::parse($buss_date)->endOfMonth()->format('Y/m/d'),
                 'ae'=>array_filter($data, function($row) use($ae_uuid){return in_array($row['uuid'],$ae_uuid);}),
                 'licensed_staff'=>array_filter($data, function($row) use($licensed_staff_uuid){return in_array($row['uuid'],$licensed_staff_uuid);}),
                 'no_license_staff'=>array_filter($data, function($row) use($no_license_staff_uuid){return in_array($row['uuid'],$no_license_staff_uuid);}),
@@ -294,6 +297,9 @@ class AeCommissionSummaryController extends HomeController
         $collect = collect($data);
         $pdf = PDF::loadView('pdf.AeCommissionSummaryForm', array_merge(
             [
+                'buss_date'=>Carbon::today()->format('Y/m/d'),
+                'start_date'=>Carbon::parse($buss_date)->format('Y/m/d'),
+                'end_date'=>Carbon::parse($buss_date)->endOfMonth()->format('Y/m/d'),
                 'ae'=>array_filter($data, function($row) use($ae_uuid){return in_array($row['uuid'],$ae_uuid);}),
                 'licensed_staff'=>array_filter($data, function($row) use($licensed_staff_uuid){return in_array($row['uuid'],$licensed_staff_uuid);}),
                 'no_license_staff'=>array_filter($data, function($row) use($no_license_staff_uuid){return in_array($row['uuid'],$no_license_staff_uuid);}),
