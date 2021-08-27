@@ -177,18 +177,11 @@ export default {
         { value: "否", text: "否" },
       ],
       next_status: "audited1",
+      source: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
   props: {
-    // p_columns: {
-    //   type: String,
-    //   required: true,
-    // },
-    // filter_type: {
-    //   type: String,
-    //   required: true,
-    // },
     audit_client_url: String,
     base_url: String,
   },
@@ -197,10 +190,12 @@ export default {
     ClientDetails,
   },
   created() {
-    // this.fields = JSON.parse(this.p_columns);
-    // this.FilterType = JSON.parse(this.filter_type);
+    this.source = axios.CancelToken.source();
     this.busy = true;
     this.load(1);
+  },
+  beforeDestroy() {
+    this.source.cancel("Operation canceled by the user.");
   },
   methods: {
     showClientDetails(uuid) {
@@ -222,6 +217,7 @@ export default {
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
+          cancelToken: self.source.token,
         })
         .then((res) => {
           // const json = self.getDecryptedJsonObject(res.data);
@@ -238,7 +234,11 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
+            console.log(error);
+          }
         });
     },
     onFiltered(filteredItems) {

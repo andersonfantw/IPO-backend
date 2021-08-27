@@ -194,6 +194,7 @@ export default {
       totalRows: 0,
       DownloadingExcel: false,
       Auditing: false,
+      source: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -208,8 +209,12 @@ export default {
     ClientHKFundOutDetails,
   },
   created() {
+    this.source = axios.CancelToken.source();
     this.busy = true;
     this.load(1);
+  },
+  beforeDestroy() {
+    this.source.cancel("Operation canceled by the user.");
   },
   methods: {
     showDetails(id) {
@@ -266,6 +271,7 @@ export default {
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
+          cancelToken: self.source.token,
         })
         .then((res) => {
           console.log(res);
@@ -281,7 +287,11 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
+            console.log(error);
+          }
         });
     },
     onFiltered(filteredItems) {

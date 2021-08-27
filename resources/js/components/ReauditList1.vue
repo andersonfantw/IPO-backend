@@ -168,6 +168,7 @@ export default {
         { value: "否", text: "否" },
       ],
       next_status: "audited1",
+      source: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -179,8 +180,12 @@ export default {
     ClientDetails,
   },
   created() {
+    this.source = axios.CancelToken.source();
     this.busy = true;
     this.load(1);
+  },
+  beforeDestroy() {
+    this.source.cancel("Operation canceled by the user.");
   },
   methods: {
     showClientDetails(uuid) {
@@ -202,6 +207,7 @@ export default {
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
+          cancelToken: self.source.token,
         })
         .then((res) => {
           console.log(res);
@@ -217,7 +223,11 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
+            console.log(error);
+          }
         });
     },
     onFiltered(filteredItems) {
