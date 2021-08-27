@@ -346,10 +346,10 @@
     @endif
 
     @if (!$licensed_staff)
-    <br /><br /><br />
+    <br /><br /><br /><br />
     @endif
     @if (!$no_license_staff)
-    <br /><br /><br />
+    <br /><br /><br /><br />
     @endif
 
     <br />
