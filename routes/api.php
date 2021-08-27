@@ -173,4 +173,5 @@ Route::get('/list/staff', 'VueController@getStaff');
 Route::resource('ae_commission_detail', 'AeCommissionDetailController');
 Route::resource('ipo_interest_list', 'IpoInterestListController');
 Route::resource('ipo_interest_import', 'IpoInterestImportController');
+
 // Anderson 2021-05-31 end

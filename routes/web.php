@@ -199,5 +199,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommissionSummary/Show/{ae:uuid}', 'AeCommissionSummaryController@aeConfirm')->name('AeCommissionConfirmReport');
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
+
 });
 // Anderson 2021-05-31 end
