@@ -310,13 +310,18 @@ export default {
     load(pageNumber) {
       const self = this;
       axios
-        .get("DeliverableList2", {
-          params: {
-            perPage: self.perPage,
-            pageNumber: pageNumber,
+        .get(
+          "DeliverableList2",
+          {
+            params: {
+              perPage: self.perPage,
+              pageNumber: pageNumber,
+            },
           },
-          cancelToken: self.source.token,
-        })
+          {
+            cancelToken: self.source.token,
+          }
+        )
         .then((res) => {
           console.log(res);
           const data = res.data.data;
