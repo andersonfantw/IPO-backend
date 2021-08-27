@@ -203,6 +203,10 @@ export default {
             this.crudIndex(function(response){
                 _this.items = response.data
 
+                // 如果畫面中有未完成的項目，每十秒更新一次
+                let result =  _this.items.filter(i => (i.total!=(i.success+i.fail)))
+                if(result.length>0) setTimeout(() => _this.index(), 10000)
+
                 _this.pagination.last_page = response.last_page
                 _this.pagination.base_url = response.path + '?page='
             },'/'+this.$options.name+'?page='+this.pagination.current_page, this.filter);
@@ -222,7 +226,7 @@ export default {
         add_to_list(client){
             let _this = this
             this.myPost(function(response){
-
+                _this.index()
             },null,this.url(this.form.id+'/store/'+client.client_id+'/'))
         }
     }
