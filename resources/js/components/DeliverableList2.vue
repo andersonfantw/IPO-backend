@@ -203,6 +203,7 @@ export default {
         { value: "全權委託賬戶", text: "全權委託賬戶" },
       ],
       progress: 0,
+      source: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -213,8 +214,9 @@ export default {
     // DateRange,
   },
   created() {
+    this.source = axios.CancelToken.source();
     this.busy = true;
-    this.loadData(1);
+    this.load(1);
   },
   methods: {
     selectAll(e) {
@@ -296,7 +298,7 @@ export default {
             console.log(response);
             self.data = [];
             self.progress = 0;
-            self.loadData(1);
+            self.load(1);
           })
           .catch((error) => {
             console.log(error);
@@ -305,7 +307,7 @@ export default {
         alert("請先選中客戶！");
       }
     },
-    loadData(pageNumber) {
+    load(pageNumber) {
       const self = this;
       axios
         .get("DeliverableList2", {
@@ -313,6 +315,7 @@ export default {
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
+          cancelToken: self.source.token,
         })
         .then((res) => {
           console.log(res);
@@ -329,13 +332,17 @@ export default {
             self.progress += (self.perPage / total) * 100;
           }
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
             self.busy = false;
           }
         })
         .catch((error) => {
-          console.log(error);
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
+            console.log(error);
+          }
         });
     },
     onFiltered(filteredItems) {
