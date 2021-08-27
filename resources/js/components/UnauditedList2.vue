@@ -114,31 +114,15 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <b-form
-          :action="audit_client_url"
-          method="post"
+        <b-button
+          variant="warning"
+          type="button"
+          @click="showClientDetails(data.item.uuid)"
         >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="UnauditedList2"
-          />
-          <input
-            type="hidden"
-            name="next_status"
-            value="audited2"
-          />
-          <b-button
-            name="uuid"
-            :value="data.item.uuid"
-            variant="warning"
-            type="submit"
-          >
-            <h5 class="mb-0">
-              <i class="far fa-edit"></i> 審核
-            </h5>
-          </b-button>
-        </b-form>
+          <h5 class="mb-0">
+            <i class="far fa-edit"></i> 審核
+          </h5>
+        </b-button>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -160,6 +144,11 @@
       align="center"
     >
     </b-pagination>
+    <ClientDetails
+      ref="ClientDetails"
+      :title="'客戶信息'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>

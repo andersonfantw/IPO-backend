@@ -96,6 +96,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientAddressProof.remark"
+              :disabled="!駁回.住址證明"
             ></b-form-textarea>
           </td>
         </tr>
@@ -205,7 +206,7 @@
             <h5 class="mb-0">
               <b-form-checkbox
                 id="駁回身份證信息"
-                v-model="駁回身份證信息"
+                v-model="駁回.身份證信息"
                 :value="true"
                 :unchecked-value="false"
                 class="text-warning"
@@ -214,7 +215,7 @@
             </h5>
           </th>
         </tr>
-        <tr v-if="駁回身份證信息">
+        <tr v-if="駁回.身份證信息">
           <td
             v-if="ClientIDCard"
             colspan="4"
@@ -226,6 +227,7 @@
               placeholder="請寫駁回理由"
               v-model="ClientIDCard.remark"
               rows="5"
+              :disabled="!駁回.身份證信息"
             ></b-form-textarea>
           </td>
         </tr>
@@ -315,6 +317,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientDepositProof.remark"
+              :disabled="!駁回.存款證明"
             ></b-form-textarea>
           </td>
         </tr>
@@ -438,6 +441,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="銀行卡.remark"
+              :disabled="!駁回[銀行卡.lcid + '銀行卡信息']"
             ></b-form-textarea>
           </td>
         </tr>
@@ -489,6 +493,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="Client.remark"
+              :disabled="!駁回.客戶補充資料"
             ></b-form-textarea>
           </td>
         </tr>
@@ -578,6 +583,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientWorkingStatus.remark"
+              :disabled="!駁回.工作狀態"
             ></b-form-textarea>
           </td>
         </tr>
@@ -651,6 +657,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientFinancialStatus.remark"
+              :disabled="!駁回.財政狀況"
             ></b-form-textarea>
           </td>
         </tr>
@@ -736,6 +743,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientInvestmentExperience.remark"
+              :disabled="!駁回.投資經驗及衍生產品認識"
             ></b-form-textarea>
           </td>
         </tr>
@@ -846,6 +854,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientEvaluationResults.remark"
+              :disabled="!駁回.問卷調查"
             ></b-form-textarea>
           </td>
         </tr>
@@ -893,6 +902,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientSignature.remark"
+              :disabled="!駁回.簽名"
             ></b-form-textarea>
           </td>
         </tr>
@@ -971,35 +981,37 @@ export default {
       let data = {};
       data["uuid"] = self.uuid;
       data["next_status"] = self.next_status;
-      if (self.ClientIDCard) {
+      if (self.駁回.身份證信息 && self.ClientIDCard) {
         data["駁回身份證信息"] = self.ClientIDCard.remark;
       }
-      if (self.ClientAddressProof) {
+      if (self.駁回.住址證明 && self.ClientAddressProof) {
         data["駁回住址證明"] = self.ClientAddressProof.remark;
       }
       self.銀行卡s.forEach(function (bankcard) {
-        data[`駁回${bankcard.lcid}銀行卡信息`] = bankcard.remark;
+        if (self.駁回[`${bankcard.lcid}銀行卡信息`]) {
+          data[`駁回${bankcard.lcid}銀行卡信息`] = bankcard.remark;
+        }
       });
-      if (self.Client) {
+      if (self.駁回.客戶補充資料 && self.Client) {
         data["駁回客戶補充資料"] = self.Client.remark;
       }
-      if (self.ClientWorkingStatus) {
+      if (self.駁回.工作狀態 && self.ClientWorkingStatus) {
         data["駁回工作狀態"] = self.ClientWorkingStatus.remark;
       }
-      if (self.ClientFinancialStatus) {
+      if (self.駁回.財政狀況 && self.ClientFinancialStatus) {
         data["駁回財政狀況"] = self.ClientFinancialStatus.remark;
       }
-      if (self.ClientInvestmentExperience) {
+      if (self.駁回.投資經驗及衍生產品認識 && self.ClientInvestmentExperience) {
         data["駁回投資經驗及衍生產品認識"] =
           self.ClientInvestmentExperience.remark;
       }
-      if (self.ClientEvaluationResults) {
+      if (self.駁回.問卷調查 && self.ClientEvaluationResults) {
         data["駁回問卷調查"] = self.ClientEvaluationResults.remark;
       }
-      if (self.ClientSignature) {
+      if (self.駁回.簽名 && self.ClientSignature) {
         data["駁回簽名"] = self.ClientSignature.remark;
       }
-      if (self.ClientDepositProof) {
+      if (self.駁回.存款證明 && self.ClientDepositProof) {
         data["駁回存款證明"] = self.ClientDepositProof.remark;
       }
       axios
@@ -1023,17 +1035,81 @@ export default {
           // const json = self.getDecryptedJsonObject(res.data);
           console.log(res);
           self.Client = res.data.Client;
+          if (self.Client && self.Client.remark && self.Client.remark != "") {
+            self.駁回.客戶補充資料 = true;
+          }
           self.ClientIDCard = res.data.ClientIDCard;
+          if (
+            self.ClientIDCard &&
+            self.ClientIDCard.remark &&
+            self.ClientIDCard.remark != ""
+          ) {
+            self.駁回.身份證信息 = true;
+          }
           self.ClientAddressProof = res.data.ClientAddressProof;
+          if (
+            self.ClientAddressProof &&
+            self.ClientAddressProof.remark &&
+            self.ClientAddressProof.remark != ""
+          ) {
+            self.駁回.住址證明 = true;
+          }
           self.銀行卡s = res.data.ClientBankCards;
+          self.銀行卡s.forEach(function (bankcard) {
+            if (bankcard.remark && bankcard.remark != "") {
+              self.駁回[`${bankcard.lcid}銀行卡信息`] = true;
+            }
+          });
           self.ClientWorkingStatus = res.data.ClientWorkingStatus;
+          if (
+            self.ClientWorkingStatus &&
+            self.ClientWorkingStatus.remark &&
+            self.ClientWorkingStatus.remark != ""
+          ) {
+            self.駁回.工作狀態 = true;
+          }
           self.ClientFinancialStatus = res.data.ClientFinancialStatus;
+          if (
+            self.ClientFinancialStatus &&
+            self.ClientFinancialStatus.remark &&
+            self.ClientFinancialStatus.remark != ""
+          ) {
+            self.駁回.財政狀況 = true;
+          }
           self.ClientInvestmentExperience = res.data.ClientInvestmentExperience;
+          if (
+            self.ClientInvestmentExperience &&
+            self.ClientInvestmentExperience.remark &&
+            self.ClientInvestmentExperience.remark != ""
+          ) {
+            self.駁回.投資經驗及衍生產品認識 = true;
+          }
           self.ClientEvaluationResults = res.data.ClientEvaluationResults;
+          if (
+            self.ClientEvaluationResults &&
+            self.ClientEvaluationResults.remark &&
+            self.ClientEvaluationResults.remark != ""
+          ) {
+            self.駁回.問卷調查 = true;
+          }
           self.ClientScore = res.data.ClientScore;
           self.ClientSignature = res.data.ClientSignature;
+          if (
+            self.ClientSignature &&
+            self.ClientSignature.remark &&
+            self.ClientSignature.remark != ""
+          ) {
+            self.駁回.簽名 = true;
+          }
           self.ClientBusinessType = res.data.ClientBusinessType;
           self.ClientDepositProof = res.data.ClientDepositProof;
+          if (
+            self.ClientDepositProof &&
+            self.ClientDepositProof.remark &&
+            self.ClientDepositProof.remark != ""
+          ) {
+            self.駁回.存款證明 = true;
+          }
           self.Introducer = res.data.Introducer;
           self.$refs.modal.show();
         })
@@ -1048,7 +1124,7 @@ export default {
       this.Client = null;
       this.ClientIDCard = null;
       this.ClientAddressProof = null;
-      this.銀行卡s = null;
+      this.銀行卡s = [];
       this.ClientWorkingStatus = null;
       this.ClientFinancialStatus = null;
       this.ClientInvestmentExperience = null;
@@ -1058,25 +1134,13 @@ export default {
       this.ClientBusinessType = null;
       this.ClientDepositProof = null;
       this.Introducer = null;
+      for (const property in this.駁回) {
+        this.駁回[property] = false;
+      }
       this.$refs.modal.hide();
     },
   },
   computed: {
-    駁回身份證信息: {
-      get() {
-        if (this.ClientIDCard) {
-          return (
-            this.駁回.身份證信息 ||
-            (this.ClientIDCard.remark != null && this.ClientIDCard.remark != "")
-          );
-        } else {
-          return this.駁回.身份證信息;
-        }
-      },
-      set(value) {
-        this.駁回.身份證信息 = value;
-      },
-    },
     評估結果() {
       let result = 0;
       this.ClientScore.forEach((score) => {

@@ -143,7 +143,7 @@
     </b-pagination>
     <ClientDetails
       ref="ClientDetails"
-      :title="'一審客戶信息'"
+      :title="'客戶信息'"
       @audited="reload"
     />
   </b-container>
