@@ -21,6 +21,7 @@ class CreateStaffTable extends Migration
                 $table->id();
                 $table->uuid('uuid')->nullable(false)->unique();
                 $table->string('name',100)->nullable(false);
+                $table->tinyInteger('has_license');
                 $table->timestamps();
             });
 

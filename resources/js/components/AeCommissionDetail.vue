@@ -20,7 +20,7 @@
             <b-row class="filter text-white">
                 <b-col cols="8">
                     <div>
-                        <b-button class="mb-3" variant="success" :disabled="dirty"><i class="fas fa-cogs"></i> 重製PDF報表</b-button>
+                        <!-- <b-button class="mb-3" variant="success" :disabled="dirty"><i class="fas fa-cogs"></i> 重製PDF報表</b-button> -->
                         <b-button class="mb-3" variant="success" :disabled="dirty" @click="showPdf"><i class="far fa-file-pdf"></i> 檢視PDF報表</b-button>
                     </div>
                 </b-col>
@@ -49,9 +49,10 @@
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.fee"></v-money></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.fee" placeholder="手動調整"></b-form-input>
+                                <b-col class="text-right">
+                                    <v-money v-if="calculate_form.pay_date && form.fee" :value="form.fee"></v-money>
+                                    <b-input-group size="sm" prepend="HK$" v-else-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.fee" placeholder="手動調整" :class="valid_number('+',form.fee)"></b-form-input>
                                     </b-input-group>
                                 </b-col>
                             </b-row>
@@ -70,9 +71,10 @@
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.interest"></v-money></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.interest" placeholder="手動調整"></b-form-input>
+                                <b-col class="text-right">
+                                    <v-money v-if="calculate_form.pay_date && form.interest" :value="form.interest"></v-money>
+                                    <b-input-group size="sm" prepend="HK$" v-else-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.interest" placeholder="手動調整" :class="valid_number('+',form.interest)"></b-form-input>
                                     </b-input-group>
                                 </b-col>
                             </b-row>
@@ -91,9 +93,10 @@
                           <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.alloted"></v-money></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.alloted" placeholder="手動調整"></b-form-input>
+                                <b-col class="text-right">
+                                    <v-money v-if="calculate_form.pay_date && form.alloted" :value="form.alloted"></v-money>
+                                    <b-input-group size="sm" prepend="HK$" v-else-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.alloted" placeholder="手動調整" :class="valid_number('+',form.alloted)"></b-form-input>
                                     </b-input-group>
                                 </b-col>
                             </b-row>
@@ -112,9 +115,10 @@
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.fee_cost"></v-money></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.fee_cost" placeholder="手動調整"></b-form-input>
+                                <b-col class="text-right">
+                                    <v-money v-if="calculate_form.pay_date && form.fee_cost" :value="form.fee_cost"></v-money>
+                                    <b-input-group size="sm" prepend="HK$" v-else-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.fee_cost" placeholder="手動調整" :class="valid_number('-',form.fee_cost)"></b-form-input>
                                     </b-input-group>
                                 </b-col>
                             </b-row>
@@ -133,9 +137,10 @@
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.interest_cost"></v-money></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.interest_cost" placeholder="手動調整"></b-form-input>
+                                <b-col class="text-right">
+                                    <v-money v-if="calculate_form.pay_date && form.interest_cost" :value="form.interest_cost"></v-money>
+                                    <b-input-group size="sm" prepend="HK$" v-else-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.interest_cost" placeholder="手動調整" :class="valid_number('-',form.interest_cost)"></b-form-input>
                                     </b-input-group>
                                 </b-col>
                             </b-row>
@@ -154,9 +159,10 @@
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.sell"></v-money></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.sell" placeholder="手動調整"></b-form-input>
+                                <b-col class="text-right">
+                                    <v-money v-if="calculate_form.pay_date && form.sell" :value="form.sell"></v-money>
+                                    <b-input-group size="sm" prepend="HK$" v-else-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.sell" placeholder="手動調整" :class="valid_number('+',form.sell)"></b-form-input>
                                     </b-input-group>
                                 </b-col>
                             </b-row>
@@ -175,16 +181,27 @@
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.principal"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="form.principal_number*450"></v-money></b-col>
+                                <b-col class="text-right">
+                                    <v-money v-if="form.principal_number" :value="form.principal_number*450"></v-money>
+                                    <v-money v-else :value="calculate_form.principal"></v-money>
+                                </b-col>
                             </b-row>
                         </b-td>
                         <b-td>
                             <b-row>
                                 <b-col class="text-right border-right"><v-money :value="calculate_form.principal"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="form.principal_number*450"></v-money></b-col>
+                                <b-col class="text-right">
+                                    <v-money v-if="form.principal_number" :value="form.principal_number*450"></v-money>
+                                    <v-money v-else-if="calculate_form.pay_date && form.principal" :value="calculate_form.principal"></v-money>
+                                </b-col>
                             </b-row>
                         </b-td>
-                        <b-td></b-td>
+                        <b-td class="text-right">
+                            <b-input-group size="sm" append="個帳戶過冷靜期" :prepend="calculate_form.principal_number" v-if="!calculate_form.pay_date">
+                                <b-form-input size="sm" class="text-right" v-model="form.principal_number" :class="valid_number('+',form.principal_number)"></b-form-input>
+                            </b-input-group>
+                            <span v-else>{{(form.principal_number)?form.principal_number:calculate_form.principal_number}}個帳戶過冷靜期</span>
+                        </b-td>
                     </b-tr>
                     <b-tr>
                         <b-th>佣金小計</b-th>
@@ -197,9 +214,6 @@
                             </b-row>
                         </b-td>
                         <b-td>
-                            <b-input-group size="sm" append="個帳戶過冷靜期" :prepend="calculate_form.principal_number">
-                                <b-form-input size="sm" class="text-right" v-model="form.principal_number"></b-form-input>
-                            </b-input-group>
                         </b-td>
                     </b-tr>
                     <b-tr>
@@ -215,8 +229,8 @@
                         <b-td class="text-center">10%</b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right"><v-money :value="commission_calculate_subtitle*0.1"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="commission_subtitle*0.1"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="-commission_calculate_subtitle*0.1"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="-commission_subtitle*0.1"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -246,14 +260,15 @@
                         <b-th>其他傭金扣減項</b-th>
                         <b-td></b-td>
                         <b-td>
-                            <b-row>
+                            <!-- <b-row>
                                 <b-col></b-col>
-                                <b-col>
-                                    <b-input-group size="sm" prepend="HK$">
-                                        <b-form-input size="sm" class="text-right" v-model="form.other"></b-form-input>
+                                <b-col class="text-right">
+                                    <b-input-group size="sm" prepend="HK$" v-if="!calculate_form.pay_date">
+                                        <b-form-input size="sm" class="text-right" v-model="form.other" :class="valid_number('-',form.other)"></b-form-input>
                                     </b-input-group>
+                                    <span v-else>HK${{form.other}}</span>
                                 </b-col>
-                            </b-row>
+                            </b-row> -->
                         </b-td>
                         <b-td></b-td>
                     </b-tr>
@@ -264,7 +279,7 @@
                         <b-td>
                             <b-row>
                                 <b-col></b-col>
-                                <b-col class="text-right"><v-money v-model="subtitle"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="-commission_subtitle*0.1"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -276,7 +291,7 @@
                         <b-td>
                             <b-row>
                                 <b-col></b-col>
-                                <b-col class="text-right"><v-money v-model="subtitle"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="subtitle"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -284,18 +299,6 @@
                 </b-tbody>
             </b-table-simple>
         </div>
-
-        <!-- add commission -->
-        <b-modal id="add" title="添加員工業績" @ok="store">
-            <span>職員</span>
-            <find-a-staff id="staff" v-model="form.user_id" showbutton="false"></find-a-staff>
-            <span>合格開戶數</span>
-            <b-form-input type="number" v-model="form.channel" placeholder="請輸入合格開戶數"></b-form-input>
-            <span>開戶激勵</span>
-            <b-form-input type="number" v-model="form.channel" placeholder="請輸入開戶激勵獎金"></b-form-input>
-            <span>說明</span>
-            <b-form-textarea></b-form-textarea>
-        </b-modal>
 
         <!-- del confirm -->
         <b-modal id="del" title="刪除發送任務" @ok="del">
@@ -322,14 +325,15 @@ export default {
               {value:'7fff6132-4bcc-4932-a630-358a21a7bef4', text:'劉素惠'},
           ],
           calculate_form:{
-              fee: 26920.00,
-              interest: 3981.19,
-              alloted: 4725.50,
-              fee_cost: -2780.00,
-              interest_cost: -11154.02,
-              sell: 3659.79,
-              principal: 1350.00,
-              principal_number: '3',
+              pay_date: '',
+              fee: 0,
+              interest: 0,
+              alloted: 0,
+              fee_cost: 0,
+              interest_cost: 0,
+              sell: 0,
+              principal: 0,
+              principal_number: '0',
               accumulated_provision: 0
           },
           form:{
@@ -378,7 +382,7 @@ export default {
                 +parseFloat((this.form.principal_number)?this.form.principal_number*450:this.calculate_form.principal)
         },
         subtitle(){
-            return this.commission_subtitle+parseFloat((this.form.other)?this.form.other:0)
+            return this.commission_subtitle*0.9+parseFloat((this.form.other)?this.form.other:0)
         }
     },
     watch: {
@@ -437,10 +441,12 @@ export default {
             },{month: this.month})
         },
         update(){
+            let _this = this
             let formdata = this.getFormData();
+            formdata.append('month',this.month)
             this.crudUpdate(this.uuid, function(response){
-
-            }, {month: this.month}, this.url(this.name));
+                if(response.ok) _this.dirty = false
+            },formdata);
         },
         del(){
             let _this = this
@@ -450,6 +456,11 @@ export default {
         },
         showPdf(){
             window.open('AeCommissionSummary/ShowPdf/'+this.uuid+'?month='+this.month)
+        },
+        valid_number(style, val){
+            if(val=='' || val===null) return '';
+            if(style=='+') return (val>0)?'border-success':'border-danger'
+            else if(style=='-') return (val>0)?'border-danger':'border-success'
         }
     }
 }

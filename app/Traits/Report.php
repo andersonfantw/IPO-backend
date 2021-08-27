@@ -308,4 +308,12 @@ trait Report
         }
         return str_replace(["\r\n", "\n", "\r"], "<br />", $s);
     }
+
+    public function StylingImages()
+    {
+        return [
+            'logo' => $this->imagePathToBase64(public_path('images/logo.png')),
+            'watermark' => $this->imagePathToBase64(public_path('images/ccyss-removebg-preview.png')),
+        ];
+    }
 }

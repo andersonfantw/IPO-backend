@@ -18,6 +18,7 @@
         h1, h2{
             text-align: center;
             margin-top: 0;
+            margin-bottom: 10px;
         }
         h4{
             margin: 0;
@@ -257,51 +258,51 @@
                         <tr>
                             <td>新股申購(收入項)</td>
                             <td>申購手續費</td>
-                            <td class="text-right">HK${{number_format($data['fee']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['fee']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['application_fee_correction']??$data['fee']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['bonus_application_correction']??$data['fee']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>利息收入</td>
-                            <td class="text-right">HK${{number_format($data['interest']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['interest']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['application_fee_correction']??$data['interest']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['bonus_application_correction']??$data['interest']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>中簽佣金</td>
-                            <td class="text-right">HK${{number_format($data['alloted']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['alloted']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['alloted']['application_fee_correction']??$data['alloted']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['alloted']['bonus_application_correction']??$data['alloted']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>新股申購(成本項)</td>
                             <td>申購成本</td>
-                            <td class="text-right">HK${{number_format($data['fee']['application_cost'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['fee']['ae_application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['application_cost_correction']??$data['fee']['application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['fee']['ae_application_cost_correction']??$data['fee']['ae_application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>利息成本</td>
-                            <td class="text-right">HK${{number_format($data['interest']['application_cost'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['interest']['ae_application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['application_cost_correction']??$data['interest']['application_cost'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['interest']['ae_application_cost_correction']??$data['interest']['ae_application_cost'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>二級市場佣金</td>
                             <td>手續費收入</td>
-                            <td class="text-right">HK${{number_format($data['sell']['application_fee'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['sell']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['sell']['application_fee_correction']??$data['sell']['application_fee'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['sell']['bonus_application_correction']??$data['sell']['bonus_application'],2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>專戶開戶獎金</td>
                             <td>開戶獎金</td>
-                            <td class="text-right">HK${{number_format($data['principal']['bonus_application'],2)}}</td>
-                            <td class="text-right">HK${{number_format($data['principal']['bonus_application'],2)}}</td>
-                            <td class="text-right"><small>{{$data['principal']['transaction_number']}}個帳戶過冷靜期</small></td>
+                            <td class="text-right">HK${{number_format($data['principal']['bonus_application_correction']??$data['principal']['bonus_application'],2)}}</td>
+                            <td class="text-right">HK${{number_format($data['principal']['bonus_application_correction']??$data['principal']['bonus_application'],2)}}</td>
+                            <td class="text-right"><small>{{$data['principal']['transaction_number_correction']??$data['principal']['transaction_number']}}個帳戶過冷靜期</small></td>
                         </tr>
                         <tr>
                             <td><b>佣金小計</b></td>
@@ -312,35 +313,35 @@
                         </tr>
                     </tbody>
                 </table>
-                <br /><br />
+                <br />
                 <table class="border w-100">
                     <tbody>
                         <tr>
-                            <td style="width:30%"><b>A.提撥準備數</b></td>
-                            <td style="width:23%"></td>
-                            <td style="width:10%" class="text-right"></td>
-                            <td style="width:10%" class="text-right"></td>
-                            <td style="width:27%" class="text-right"></td>
+                            <td style="width:25%"><b>A.提撥準備數</b></td>
+                            <td style="width:13%" class="text-right"></td>
+                            <td style="width:20%" class="text-right"></td>
+                            <td style="width:20%" class="text-right"></td>
+                            <td style="" class="text-right"></td>
                         </tr>
                         <tr>
                             <td>本期提撥準備</td>
                             <td class="text-right">10%</td>
                             <td class="text-right"></td>
-                            <td class="text-right">HK${{number_format($data['subtitle'] * 0.1,2)}}</td>
+                            <td class="text-right">HK${{number_format(-$data['subtitle'] * 0.1,2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>上期累計提撥準備金</td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>
-                            <td class="text-right"></td>
+                            <td class="text-right">HK${{number_format($data['accumulated_provision'] * 0.1,2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
                             <td>規定提撥準備上限</td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>
-                            <td class="text-right"></td>
+                            <td class="text-right">HK$50,000</td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
@@ -354,17 +355,17 @@
                             <td>扣減項小計</td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>
-                            <td class="text-right">HK${{number_format($data['subtitle'] * 0.1,2)}}</td>
+                            <td class="text-right">HK${{number_format(-$data['subtitle'] * 0.1,2)}}</td>
                             <td class="text-right"></td>
                         </tr>
                     </tbody>
                 </table>
-                <br /><br /><br />
+                <br /><br />
                 <table class="border w-100">
                     <tr>
                         <td style="width:30%">本期佣金可發放金額</td>
-                        <td style="width:43%" class="text-right">HK${{number_format($data['subtitle'] * 0.9,2)}}</td>
-                        <td style="width:27%" class="text-right"></td>
+                        <td style="width:48%" class="text-right">HK${{number_format($data['subtitle'] * 0.9,2)}}</td>
+                        <td style="width:22%" class="text-right"></td>
                     </tr>
                 </table>
             </div>

@@ -193,8 +193,10 @@ Route::middleware(['auth'])->group(function () {
     //});
 
     Route::get('/AeCommissionSummary', 'AeCommissionSummaryController@indexView')->name('AeCommissionSummary');
-    Route::get('/AeCommissionSummary/ShowPdf', 'AeCommissionSummaryController@aeCommissionReport')->name('AeCommissionReport');
-    Route::get('/AeCommissionSummary/ShowPdf/{ae:uuid}', 'AeCommissionSummaryController@aeConfirmReport')->name('AeCommissionConfirmReport');
+    Route::get('/AeCommissionSummary/ShowSummaryPdf/{ae_commission_summary:buss_date}', 'AeCommissionSummaryController@aeCommissionSummaryReport')->name('AeCommissionSummaryReport');
+    Route::get('/AeCommissionSummary/ShowSummary/{ae_commission_summary:buss_date}', 'AeCommissionSummaryController@aeCommissionSummary')->name('aeCommissionSummary');
+    Route::get('/AeCommissionSummary/ShowPdf/{ae:uuid}', 'AeCommissionSummaryController@aeConfirmReport')->name('AeCommissionConfirmReportPdf');
+    Route::get('/AeCommissionSummary/Show/{ae:uuid}', 'AeCommissionSummaryController@aeConfirm')->name('AeCommissionConfirmReport');
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
 });

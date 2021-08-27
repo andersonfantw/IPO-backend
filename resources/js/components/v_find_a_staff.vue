@@ -60,10 +60,10 @@ export default {
         find_staff(){
             let _this = this
             if(this.find_a_staff.staff_id){
-                if(this.find_a_staff.staff_id.length>3){
+                if(this.find_a_staff.staff_name.length>3){
                     this.myPost(function(response){
                         _this.find_staff_list = response
-                    },{acc_no:_this.find_a_staff.staff_id},this.url('/find/client'));
+                    },{acc_no:_this.find_a_staff.staff_id},this.url('/find/staff'));
                 }
             }
         }

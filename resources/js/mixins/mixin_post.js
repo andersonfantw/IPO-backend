@@ -104,7 +104,7 @@ export default {
         }).then( (response) => {
             successCallback(response.data)
         }).catch( (err) => {
-            console.error(err);
+            console.error(err)
             if(failCallback) failCallback( err )
         });
     },
@@ -113,7 +113,7 @@ export default {
         let formData = new FormData()
         let f = form?form:this.form
         for ( let k in f ) {
-            formData.append(k, f[k]);
+            formData.append(k, f[k])
         }
         return formData
     },

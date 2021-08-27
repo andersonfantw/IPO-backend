@@ -7,6 +7,8 @@ use App\Imports\ForbiddenWords;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Ae;
+use App\Staff;
 use App\CysislbGtsClientAcc;
 use App\NotificationTemplate;
 use App\Services\NotifyMessage;
@@ -16,6 +18,13 @@ use App\Services\NotifyMessage;
  */
 class VueController extends Controller
 {
+    public function getAe(){
+        //return AE::select('name as text')->selectRaw('group_concat(code) as value')->groupBy('name')->get();
+        return AE::select('name as text','uuid as value')->groupBy('name','uuid')->get();
+    }
+    public function getStaff(){
+        return Staff::select('name as text','uuid as value')->get();
+    }
 
     public function findClient(Request $request){
         $input = $request->only('acc_no');
