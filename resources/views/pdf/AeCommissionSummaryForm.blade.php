@@ -314,6 +314,8 @@
             @endforeach
         </tbody>
     </table>
+    @else
+    <br />
     @endif
 
     <br />
@@ -343,6 +345,8 @@
             @endforeach
         </tbody>
     </table>
+    @else
+    <br />
     @endif
 
     <br />
