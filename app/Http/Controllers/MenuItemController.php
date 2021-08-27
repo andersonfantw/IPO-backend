@@ -131,6 +131,15 @@ class MenuItemController extends Controller
                 ],
             ],
             [
+                'label' => "AE佣金",
+                'items' => [
+                    [
+                        'label' => "佣金總覽",
+                        'url' => 'AeCommissionSummary',
+                    ],
+                ],
+            ],
+            [
                 'label' => "帳戶資料修改申請",
                 'items' => [
                     [

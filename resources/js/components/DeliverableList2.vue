@@ -346,6 +346,7 @@ export default {
           } else {
             console.log(error);
           }
+          self.checkLogin(error);
         });
     },
     onFiltered(filteredItems) {
