@@ -301,8 +301,8 @@ class AeCommissionSummaryController extends HomeController
                 'reservations'=>$collect->sum('reservations'),
                 'commission'=>$collect->sum('commission'),
                 'performance'=>$collect->sum('performance'),
-                'total_group_open'=>$group['total_group_open'],
-                'total_group_commission'=>$group['total_group_commission'],
+                'total_group_open'=>$group['total_group_open']??null,
+                'total_group_commission'=>$group['total_group_commission']??null,
             ],
             $this->StylingImages(),
         ));
