@@ -345,10 +345,10 @@
     </table>
     @endif
 
-    @if ($licensed_staff)
+    @if (!$licensed_staff)
     <br /><br /><br />
     @endif
-    @if ($no_license_staff)
+    @if (!$no_license_staff)
     <br /><br /><br />
     @endif
 
