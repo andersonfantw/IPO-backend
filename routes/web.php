@@ -129,7 +129,7 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::any('/LoadAddressProofUpdate', 'ViewClientAddressProofUpdateController@loadAddressProofUpdate')->name('LoadAddressProofUpdate');
     Route::any('/LoadFundInReceipt', 'ViewClientFundInRequestController@loadReceipt')->name('LoadFundInReceipt');
     Route::any('/LoadFundInBankCard', 'ViewClientFundInRequestController@loadBankcard')->name('LoadFundInBankCard');
-    Route::any('/LoadBankCard', 'ViewClientBankCardController@loadBankCard')->name('LoadBankCard');
+    Route::any('/LoadBankCard', 'ClientBankCardsController@loadBankCard')->name('LoadBankCard');
     Route::any('/LoadCreditCard', 'ViewClientCreditCardController@loadCreditCard')->name('LoadCreditCard');
     // });
 

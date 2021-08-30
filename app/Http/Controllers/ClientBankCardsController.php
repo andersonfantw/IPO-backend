@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\ClientBankCard;
+use App\Traits\ImageLoader;
 use Illuminate\Http\Request;
 
 class ClientBankCardsController extends Controller
 {
+    use ImageLoader;
+
     protected $name = 'ClientBankCards';
     private $fields = null;
     private $filter_type = null;
@@ -77,5 +81,52 @@ class ClientBankCardsController extends Controller
             'filter_type' => $this->filter_type,
             'data' => $rows,
         ], JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $ClientBankCard1 = ClientBankCard::find($id);
+        $ClientBankCard2 = clone $ClientBankCard1;
+        $ClientBankCard2->backcard_face = null;
+        $ClientBankCard2->bankcard_blob = null;
+        $Client = clone $ClientBankCard1->Client;
+        $IDCard = $ClientBankCard1->Client->IDCard;
+        $IDCard->idcard_face = null;
+        $IDCard->idcard_back = null;
+        return json_encode([
+            'ClientBankCard' => $ClientBankCard2,
+            'Client' => $Client,
+            'IDCard' => $IDCard,
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        if ($request->has(['駁回信息']) && $request->filled(['駁回信息'])) {
+            ClientBankCard::find($id)->update([
+                'status' => 'rejected',
+                'issued_by' => auth()->user()->name,
+                'remark' => $request->input('駁回信息'),
+            ]);
+        } else {
+            ClientBankCard::find($id)->update([
+                'status' => 'approved',
+                'issued_by' => auth()->user()->name,
+                'remark' => null,
+            ]);
+        }
     }
 }

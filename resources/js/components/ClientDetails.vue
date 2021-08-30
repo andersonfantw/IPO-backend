@@ -930,6 +930,7 @@
 </template>
 <script>
 import axios from "axios";
+import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   data() {
     return {
@@ -966,6 +967,7 @@ export default {
       ClientScore: [],
     };
   },
+  mixins: [CommonFunctionMixin],
   created() {
     this.地區map["zh-hk"] = "香港";
     this.地區map["zh-cn"] = "中國";
@@ -1023,6 +1025,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          self.checkLogin(error);
         });
     },
     showModal(uuid, next_status) {
@@ -1115,7 +1118,8 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          self.$refs.modal.show();
+          self.checkLogin(error);
+          // self.$refs.modal.show();
         });
     },
     hideModal() {

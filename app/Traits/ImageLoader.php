@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Client;
+use App\ClientBankCard;
 use Illuminate\Http\Request;
 
 trait ImageLoader
@@ -42,6 +43,12 @@ trait ImageLoader
     {
         $Client = Client::where('uuid', $request->input('uuid'))->first();
         $ClientBankCard = $Client->ClientBankCards()->where('lcid', 'others')->first();
+        return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/jpeg');
+    }
+
+    public function loadBankCard(Request $request)
+    {
+        $ClientBankCard = ClientBankCard::find($request->input('id'));
         return response($ClientBankCard->bankcard_blob)->header('Content-Type', 'image/jpeg');
     }
 

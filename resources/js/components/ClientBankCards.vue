@@ -82,44 +82,22 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <b-form
+        <b-button
           v-if="data.item.狀態 == 'pending'"
-          :action="audit_request_url"
-          method="post"
+          variant="warning"
+          type="button"
+          @click="showDetails(data.item.id)"
         >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="ClientBankCards"
-          />
-          <b-button
-            name="id"
-            :value="data.item.id"
-            variant="warning"
-            type="submit"
-          >
-            <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
-          </b-button>
-        </b-form>
-        <b-form
+          <h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5>
+        </b-button>
+        <b-button
           v-else
-          :action="view_request_url"
-          method="post"
+          variant="success"
+          type="button"
+          @click="showDetails(data.item.id)"
         >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="ClientBankCards"
-          />
-          <b-button
-            name="id"
-            :value="data.item.id"
-            variant="success"
-            type="submit"
-          >
-            <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
-          </b-button>
-        </b-form>
+          <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+        </b-button>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -141,6 +119,11 @@
       align="center"
     >
     </b-pagination>
+    <ClientBankCardDetails
+      ref="ClientBankCardDetails"
+      :title="'添加銀行卡申請'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>
@@ -148,6 +131,7 @@ import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 import DateRange from "./DateRange";
+import ClientBankCardDetails from "./ClientBankCardDetails";
 export default {
   data() {
     return {
@@ -170,12 +154,16 @@ export default {
   },
   components: {
     DateRange,
+    ClientBankCardDetails,
   },
   created() {
     this.busy = true;
-    this.loadData(1);
+    this.load(1);
   },
   methods: {
+    showDetails(id) {
+      this.$refs.ClientBankCardDetails.showModal(id);
+    },
     selectAll(e) {
       if (e) {
         this.SelectedBankCards = this.FilteredBankCards;
@@ -183,7 +171,12 @@ export default {
         this.SelectedBankCards = [];
       }
     },
-    loadData(pageNumber) {
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    load(pageNumber) {
       const self = this;
       axios
         .get("ClientBankCards", {
@@ -200,7 +193,7 @@ export default {
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
             self.busy = false;
           }

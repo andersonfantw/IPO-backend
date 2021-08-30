@@ -275,6 +275,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          self.checkLogin(error);
         });
     },
     showModal(id) {
@@ -292,7 +293,8 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          self.$refs.modal.show();
+          self.checkLogin(error);
+          // self.$refs.modal.show();
         });
     },
     hideModal() {
@@ -306,10 +308,10 @@ export default {
   },
   computed: {
     FundInBankCard() {
-      return "LoadFundInBankCard?id=" + this.id;
+      return `LoadFundInBankCard?id=${this.id}`;
     },
     FundInReceipt() {
-      return "LoadFundInReceipt?id=" + this.id;
+      return `LoadFundInReceipt?id=${this.id}`;
     },
   },
 };

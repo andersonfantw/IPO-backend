@@ -52,163 +52,126 @@
             colspan="6"
           >
             <h5 class="mb-0">
-              <i class="far fa-user-circle"></i> 客戶帳戶資料
+              <i class="fas fa-money-check-alt"></i> 銀行卡資料
             </h5>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="AyersAccount in AyersAccounts"
-          :key="AyersAccount.account_no"
-        >
+        <tr>
+          <th
+            width="20%"
+            scope="row"
+          >銀行</th>
+          <td
+            v-if="ClientBankCard"
+            width="20%"
+            class="text-warning"
+          >
+            {{ ClientBankCard.bank_name }}
+          </td>
+          <th
+            width="20%"
+            scope="row"
+          >銀行碼</th>
+          <td
+            v-if="ClientBankCard"
+            width="20%"
+            class="text-warning"
+          >
+            {{ ClientBankCard.bank_code }}
+          </td>
+        </tr>
+        <tr>
           <th
             width="25%"
             scope="row"
           >帳戶號碼</th>
           <td
+            v-if="ClientBankCard"
             width="25%"
             class="text-warning"
           >
-            {{ AyersAccount.account_no }}
+            {{ ClientBankCard.account_no }}
           </td>
-          <th
-            width="25%"
-            scope="row"
-          >帳戶類型</th>
+          <th width="25%"></th>
           <td
             width="25%"
             class="text-warning"
-          >
-            {{ AyersAccount.type }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table class="table table-bordered text-light">
-      <thead>
-        <tr>
-          <th
-            scope="col"
-            colspan="6"
-          >
-            <h5 class="mb-0">
-              <i class="fas fa-money-check-alt"></i> 出金申請資料
-            </h5>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th
-            width="17%"
-            scope="row"
-          >出金帳戶</th>
-          <td
-            v-if="Request"
-            width="17%"
-            class="text-warning"
-          >
-            {{ Request.account_out }}
-          </td>
-          <th
-            width="17%"
-            scope="row"
-          >金額</th>
-          <td
-            v-if="Request"
-            width="17%"
-            class="text-warning"
-          >
-            {{ Request.amount }}
-          </td>
-          <th
-            width="17%"
-            scope="row"
-          ></th>
-          <td
-            width="17%"
-            scope="row"
           ></td>
         </tr>
         <tr>
           <th
-            width="17%"
+            width="20%"
             scope="row"
-          >入金帳戶</th>
-          <td
-            v-if="Request"
-            width="17%"
-            class="text-warning"
-          >
-            {{ Request.account_in }}
-          </td>
-          <th
-            width="17%"
-            scope="row"
-          >入金銀行</th>
-          <td
-            v-if="Request"
-            width="17%"
-            class="text-warning"
-          >
-            {{ Request.bank }}
-          </td>
-          <th
-            width="17%"
-            scope="row"
-          >入金方法</th>
-          <td
-            v-if="Request"
-            width="17%"
-            class="text-warning"
-          >
-            {{ Request.method }}
+          >銀行卡</th>
+          <td colspan="3">
+            <img
+              style="width: 300px"
+              :src="BankCard"
+            />
           </td>
         </tr>
         <tr>
           <th
-            width="17%"
+            width="20%"
             scope="row"
           >狀態</th>
           <td
-            v-if="Request"
-            width="17%"
-            :class="Request.status"
+            v-if="ClientBankCard"
+            width="20%"
+            :class="ClientBankCard.status"
           >
-            {{ Request.status }}
+            {{ ClientBankCard.status }}
           </td>
           <th
-            width="17%"
+            width="20%"
             scope="row"
           >經手人</th>
           <td
-            v-if="Request"
-            width="17%"
+            v-if="ClientBankCard"
+            width="20%"
             class="text-warning"
           >
-            {{ Request.issued_by }}
+            {{ ClientBankCard.issued_by }}
           </td>
+        </tr>
+        <tr>
           <th
-            width="17%"
+            width="20%"
             scope="row"
           >申請發送時間</th>
           <td
-            v-if="Request"
-            width="17%"
+            v-if="ClientBankCard"
+            width="20%"
             class="text-warning"
           >
-            {{ formateDateTime(Request.created_at) }}
+            {{ formateDateTime(ClientBankCard.created_at) }}
           </td>
+          <th
+            width="20%"
+            scope="row"
+          ></th>
+          <td
+            width="20%"
+            class="text-warning"
+          ></td>
+        </tr>
+        <tr>
+          <th
+            width="20%"
+            scope="row"
+          ></th>
+          <td colspan="3"></td>
         </tr>
       </tbody>
     </table>
     <table
-      v-if="Request && Request.status != 'approved'"
+      v-if="ClientBankCard && ClientBankCard.status != 'approved'"
       class="table table-bordered text-light"
     >
       <thead>
-        <tr v-if="Request.status == 'pending'">
+        <tr v-if="ClientBankCard.status == 'pending'">
           <th scope="col">
             <h5 class="mb-0">
               <b-form-checkbox
@@ -223,17 +186,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="Request">
+        <tr v-if="ClientBankCard">
           <td>
             <b-form-textarea
-              v-if="駁回 || Request.status == 'rejected'"
+              v-if="駁回 || ClientBankCard.status == 'rejected'"
               name="駁回信息"
               size="lg"
               class="w100 bg-secondary text-white"
               placeholder="請寫駁回理由"
               rows="5"
-              :disabled="Request.status == 'rejected'"
-              v-model="Request.remark"
+              :disabled="ClientBankCard.status == 'rejected'"
+              v-model="ClientBankCard.remark"
             ></b-form-textarea>
           </td>
         </tr>
@@ -241,7 +204,7 @@
     </table>
     <template #modal-footer="">
       <b-button
-        v-if="Request && Request.status=='pending'"
+        v-if="ClientBankCard && ClientBankCard.status == 'pending'"
         variant="success"
         @click="submit"
       >
@@ -257,13 +220,13 @@ export default {
     return {
       id: null,
       駁回: false,
-      Request: null,
       Client: null,
-      AyersAccounts: null,
+      ClientBankCard: null,
       ClientIDCard: null,
     };
   },
   mixins: [CommonFunctionMixin],
+  components: {},
   props: {
     title: String,
   },
@@ -271,9 +234,9 @@ export default {
     submit() {
       const self = this;
       let data = {};
-      data["駁回信息"] = self.Request.remark;
+      data["駁回信息"] = self.ClientBankCard.remark;
       axios
-        .put(`ClientHKFundOutRequests/${self.id}`, data)
+        .put(`ClientBankCards/${self.id}`, data)
         .then((res) => {
           console.log(res);
           self.$emit("audited");
@@ -288,28 +251,31 @@ export default {
       const self = this;
       self.id = id;
       axios
-        .get(`ClientHKFundOutRequests/${id}`)
+        .get(`ClientBankCards/${id}`)
         .then((res) => {
           console.log(res);
-          self.Request = res.data.Request;
           self.Client = res.data.Client;
-          self.AyersAccounts = res.data.AyersAccounts;
+          self.ClientBankCard = res.data.ClientBankCard;
           self.ClientIDCard = res.data.IDCard;
           self.$refs.modal.show();
         })
         .catch((error) => {
           console.log(error);
           self.checkLogin(error);
-          // self.$refs.modal.show();
+          //   self.$refs.modal.show();
         });
     },
     hideModal() {
       this.id = null;
-      this.Request = null;
       this.Client = null;
-      this.AyersAccounts = null;
+      this.ClientBankCard = null;
       this.ClientIDCard = null;
       this.$refs.modal.hide();
+    },
+  },
+  computed: {
+    BankCard() {
+      return `LoadBankCard?id=${this.id}`;
     },
   },
 };
