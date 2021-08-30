@@ -7,7 +7,7 @@ use App\Imports\ForbiddenWords;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use App\Ae;
+use App\AE;
 use App\Staff;
 use App\CysislbGtsClientAcc;
 use App\NotificationTemplate;

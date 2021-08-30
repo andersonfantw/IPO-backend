@@ -15,8 +15,9 @@
                 <p>產生簡訊的方式有：</p>
                 <ol>
                     <li>中台操作駁回時，由程式自動及時送出。</li>
-                                        <li>使用選擇器。以選擇器選擇收件的人員時，會自動帶入帳號[client_id]、中英文姓名[name]、中文名[zh_name]、英文名[en_name]、地址[addr]、電話[phone]的參數。變數不在上列的請改用匯入方式。</li>
+                    <li>使用選擇器。以選擇器選擇收件的人員時，會自動帶入帳號[client_id]、中英文姓名[name]、中文名[zh_name]、英文名[en_name]、地址[addr]、電話[phone]的參數。變數不在上列的請改用匯入方式。</li>
                     <li>在訊息中心手動發送通知訊息。</li>
+                    <li>畫面中有發送中的訊息，畫面每十秒更新一次</li>
                 </ol>
             </div>
         </b-alert>
@@ -196,6 +197,10 @@ export default {
     },
     created() {
         this.index();
+        this.$bus.$on('close',(client_id)=>this.index())
+    },
+    beforeDestroy(){
+        this.$bus.$off("close");
     },
     watch: {
         'pagination.current_page': function(n){
@@ -234,6 +239,10 @@ export default {
             let _this = this
             this.crudIndex(function(response){
                 _this.items = response.data
+
+                // 如果畫面中有未完成的項目，每十秒更新一次
+                let result =  _this.items.filter(i => !i.sending_time)
+                if(result.length>0) setTimeout(() => _this.index(), 10000)
 
                 _this.pagination.last_page = response.last_page
                 _this.pagination.base_url = response.path + '?page='

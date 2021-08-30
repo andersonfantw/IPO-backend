@@ -16,6 +16,7 @@
                 <ol>
                     <li>使用選擇器。<p>以選擇器選擇收件的人員時，會自動帶入帳號[client_id]、中英文姓名[name]、中文名[zh_name]、英文名[en_name]、地址[addr]、電話[phone]的參數。變數不在上列的請改用匯入方式。</p></li>
                     <li>透過匯入名單發送。預設抓取第一個sheet，匯入的名單可傳入變數。<p>以匯入方式匯入名單時，第一行必須是欄位名。第一列必須是client，第二列之後為自定義的變數，會以[變數名]的方式帶入至訊息中。ex: 客戶[name]您好 => 送出的訊息為 客戶王某某你好</p></li>
+                    <li>畫面中有發送中的訊息，畫面每十秒更新一次</li>
                     <li>系統排程自動產生。ex: 中籤通知</li>
                 </ol>
             </div>
@@ -203,6 +204,10 @@ export default {
             this.crudIndex(function(response){
                 _this.items = response.data
 
+                // 如果畫面中有未完成的項目，每十秒更新一次
+                let result =  _this.items.filter(i => (i.total!=(i.success+i.fail)))
+                if(result.length>0) setTimeout(() => _this.index(), 10000)
+
                 _this.pagination.last_page = response.last_page
                 _this.pagination.base_url = response.path + '?page='
             },'/'+this.$options.name+'?page='+this.pagination.current_page, this.filter);
@@ -222,7 +227,7 @@ export default {
         add_to_list(client){
             let _this = this
             this.myPost(function(response){
-
+                _this.index()
             },null,this.url(this.form.id+'/store/'+client.client_id+'/'))
         }
     }
