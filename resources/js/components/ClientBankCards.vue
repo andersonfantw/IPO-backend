@@ -1,8 +1,5 @@
 <template>
-  <b-container
-    fluid
-    class="p-0"
-  >
+  <b-container fluid>
     <h1 class="text-warning text-center">
       添加銀行卡申請
       <b-spinner
@@ -10,7 +7,7 @@
         variant="warning"
       ></b-spinner>
     </h1>
-    <b-row no-gutters>
+    <b-row class="mb-3">
       <b-col>
         <b-input-group prepend="帳戶號碼">
           <b-form-input
@@ -37,18 +34,26 @@
       </b-col>
       <b-col></b-col>
     </b-row>
-    <b-row no-gutters>
+    <b-row>
       <b-col>
-        <DateRange
-          :name="'發送時間'"
+        <date-picker
+          name="'發送時間'"
           v-model="filters['發送時間']"
+          range
+          placeholder="發送時間"
         />
       </b-col>
       <b-col>
-        <DateRange
-          :name="'審批時間'"
+        <date-picker
+          name="'審批時間'"
           v-model="filters['審批時間']"
+          range
+          placeholder="審批時間"
         />
+      </b-col>
+      <b-col>
+      </b-col>
+      <b-col>
       </b-col>
     </b-row>
     <b-row
@@ -130,7 +135,6 @@
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
-import DateRange from "./DateRange";
 import ClientBankCardDetails from "./ClientBankCardDetails";
 export default {
   data() {
@@ -153,7 +157,6 @@ export default {
     view_request_url: String,
   },
   components: {
-    DateRange,
     ClientBankCardDetails,
   },
   created() {
