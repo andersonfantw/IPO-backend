@@ -228,6 +228,7 @@ export default {
           const total = res.data.total;
           self.fields = res.data.fields;
           self.FilterType = res.data.filter_type;
+          debugger;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           if (total <= self.perPage) {
