@@ -32,7 +32,7 @@ class DeliverableList2Controller extends Controller
             ['key' => '開戶時間', 'sortable' => true],
             ['key' => '帳戶生成時間', 'sortable' => true],
         ];
-        $this->FilterType = [
+        $this->filter_type = [
             '帳戶號碼' => 'startsWith',
             '開通賬戶類型' => 'equals',
             '客户姓名' => 'startsWith',

@@ -26,7 +26,7 @@ class ClientFundInternalTransferRequestsController extends Controller
             ['key' => '審批時間', 'sortable' => true],
             ['key' => '操作'],
         ];
-        $this->FilterType = [
+        $this->filter_type = [
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '手機號碼' => 'startsWith',

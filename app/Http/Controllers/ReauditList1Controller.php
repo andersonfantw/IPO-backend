@@ -28,7 +28,7 @@ class ReauditList1Controller extends Controller
             ['key' => '提交時間', 'sortable' => true],
             ['key' => '操作'],
         ];
-        $this->FilterType = [
+        $this->filter_type = [
             'AE' => 'equals',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',

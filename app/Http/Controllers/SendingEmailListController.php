@@ -25,7 +25,7 @@ class SendingEmailListController extends Controller
             ['key' => '電郵發送者', 'sortable' => true],
             ['key' => '電郵發送時間', 'sortable' => true],
         ];
-        $this->FilterType = [
+        $this->filter_type = [
             '帳戶號碼' => 'contains',
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
