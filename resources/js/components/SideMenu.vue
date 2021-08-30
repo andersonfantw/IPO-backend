@@ -1,6 +1,10 @@
 <template>
   <div class="sticky-top">
-    <div v-for="menu in Menus" :key="menu.label" class="list-group rounded-0">
+    <div
+      v-for="menu in Menus"
+      :key="menu.label"
+      class="list-group rounded-0"
+    >
       <div class="list-group-item list-group-item-success">
         <h4 class="mb-0">{{ menu.label }}</h4>
       </div>
@@ -24,14 +28,14 @@
       >
         <h5 class="mb-0">
           <i class="fas fa-caret-right"></i> {{ item.label }}
-        </h5></router-link
-      >
+        </h5>
+      </router-link>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import MenuItem from "./MenuItem";
+// import MenuItem from "./MenuItem";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
 export default {
   mixins: [CommonFunctionMixin],
@@ -46,7 +50,7 @@ export default {
     current_url: String,
   },
   components: {
-    MenuItem,
+    // MenuItem,
   },
   created() {
     // this.Menus = this.menus;

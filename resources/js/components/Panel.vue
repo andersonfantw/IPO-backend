@@ -1,5 +1,8 @@
 <template>
-  <b-row no-gutters class="justify-content-center text-warning">
+  <b-row
+    no-gutters
+    class="justify-content-center text-warning"
+  >
     <b-col cols="2">
       <SideMenu />
     </b-col>
@@ -15,8 +18,6 @@ export default {
   components: {
     SideMenu,
   },
-  created() {
-    console.log(this.user_id);
-  },
+  created() {},
 };
 </script>
