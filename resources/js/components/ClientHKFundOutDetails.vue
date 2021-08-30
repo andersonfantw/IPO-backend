@@ -5,6 +5,8 @@
     :title="title"
     body-bg-variant="dark"
     body-text-variant="light"
+    @hidden="reset"
+    @ok="reset"
   >
     <table class="table table-bordered text-light">
       <thead>
@@ -277,10 +279,12 @@ export default {
         .then((res) => {
           console.log(res);
           self.$emit("audited");
-          self.hideModal();
+          self.reset();
+          self.$refs.modal.hide();
         })
         .catch((error) => {
           console.log(error);
+          self.reset();
           self.checkLogin(error);
         });
     },
@@ -303,13 +307,12 @@ export default {
           // self.$refs.modal.show();
         });
     },
-    hideModal() {
+    reset() {
       this.id = null;
       this.Request = null;
       this.Client = null;
       this.AyersAccounts = null;
       this.ClientIDCard = null;
-      this.$refs.modal.hide();
     },
   },
 };

@@ -5,6 +5,8 @@
     :title="title"
     body-bg-variant="dark"
     body-text-variant="light"
+    @hidden="reset"
+    @ok="reset"
   >
     <table class="table table-bordered text-light">
       <thead>
@@ -1021,10 +1023,12 @@ export default {
         .then((res) => {
           console.log(res);
           self.$emit("audited");
-          self.hideModal();
+          self.reset();
+          self.$refs.modal.hide();
         })
         .catch((error) => {
           console.log(error);
+          self.reset();
           self.checkLogin(error);
         });
     },
@@ -1122,7 +1126,7 @@ export default {
           // self.$refs.modal.show();
         });
     },
-    hideModal() {
+    reset() {
       this.uuid = null;
       this.next_status = null;
       this.Client = null;
@@ -1141,7 +1145,6 @@ export default {
       for (const property in this.駁回) {
         this.駁回[property] = false;
       }
-      this.$refs.modal.hide();
     },
   },
   computed: {
@@ -1182,28 +1185,28 @@ export default {
       return this.ClientEvaluationResults.agree ? "是" : "否";
     },
     AddressProof() {
-      return `LoadAddressProof?uuid=${this.uuid}`;
+      return this.uuid ? `LoadAddressProof?uuid=${this.uuid}` : null;
     },
     IDCardFace() {
-      return `LoadIDCardFace?uuid=${this.uuid}`;
+      return this.uuid ? `LoadIDCardFace?uuid=${this.uuid}` : null;
     },
     IDCardBack() {
-      return `LoadIDCardBack?uuid=${this.uuid}`;
+      return this.uuid ? `LoadIDCardBack?uuid=${this.uuid}` : null;
     },
     HKBankcardFace() {
-      return `LoadHKBankCard?uuid=${this.uuid}`;
+      return this.uuid ? `LoadHKBankCard?uuid=${this.uuid}` : null;
     },
     CNBankcardFace() {
-      return `LoadCNBankCard?uuid=${this.uuid}`;
+      return this.uuid ? `LoadCNBankCard?uuid=${this.uuid}` : null;
     },
     OtherBankcardFace() {
-      return `LoadOtherBankCard?uuid=${this.uuid}`;
+      return this.uuid ? `LoadOtherBankCard?uuid=${this.uuid}` : null;
     },
     NameCardFace() {
-      return `LoadNameCard?uuid=${this.uuid}`;
+      return this.uuid ? `LoadNameCard?uuid=${this.uuid}` : null;
     },
     DepositProof() {
-      return `LoadDepositProof?uuid=${this.uuid}`;
+      return this.uuid ? `LoadDepositProof?uuid=${this.uuid}` : null;
     },
   },
 };
