@@ -84,7 +84,7 @@
                 v-model="駁回.住址證明"
                 :value="true"
                 :unchecked-value="false"
-                :disabled="ClientAddressProof.status == 'rejected'"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -99,7 +99,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientAddressProof.remark"
-              :disabled="!駁回.住址證明 || ClientAddressProof.status == 'rejected'"
+              :disabled="!駁回.住址證明 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -213,6 +213,7 @@
                 :value="true"
                 :unchecked-value="false"
                 class="text-warning"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -230,7 +231,7 @@
               placeholder="請寫駁回理由"
               v-model="ClientIDCard.remark"
               rows="5"
-              :disabled="!駁回.身份證信息"
+              :disabled="!駁回.身份證信息 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -306,6 +307,7 @@
                 v-model="駁回.存款證明"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -320,7 +322,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientDepositProof.remark"
-              :disabled="!駁回.存款證明"
+              :disabled="!駁回.存款證明 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -430,6 +432,7 @@
                 v-model="駁回[銀行卡.lcid + '銀行卡信息']"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -444,7 +447,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="銀行卡.remark"
-              :disabled="!駁回[銀行卡.lcid + '銀行卡信息']"
+              :disabled="!駁回[銀行卡.lcid + '銀行卡信息'] || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -482,6 +485,7 @@
                 v-model="駁回.客戶補充資料"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -496,7 +500,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="Client.remark"
-              :disabled="!駁回.客戶補充資料"
+              :disabled="!駁回.客戶補充資料 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -572,6 +576,7 @@
                 v-model="駁回.工作狀態"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -586,7 +591,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientWorkingStatus.remark"
-              :disabled="!駁回.工作狀態"
+              :disabled="!駁回.工作狀態 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -646,6 +651,7 @@
                 v-model="駁回.財政狀況"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -660,7 +666,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientFinancialStatus.remark"
-              :disabled="!駁回.財政狀況"
+              :disabled="!駁回.財政狀況 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -732,6 +738,7 @@
                 v-model="駁回.投資經驗及衍生產品認識"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -746,7 +753,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientInvestmentExperience.remark"
-              :disabled="!駁回.投資經驗及衍生產品認識"
+              :disabled="!駁回.投資經驗及衍生產品認識 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -843,6 +850,7 @@
                 v-model="駁回.問卷調查"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -857,7 +865,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientEvaluationResults.remark"
-              :disabled="!駁回.問卷調查"
+              :disabled="!駁回.問卷調查 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
@@ -891,6 +899,7 @@
                 v-model="駁回.簽名"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="next_status == null"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -905,7 +914,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientSignature.remark"
-              :disabled="!駁回.簽名"
+              :disabled="!駁回.簽名 || next_status == null"
             ></b-form-textarea>
           </td>
         </tr>
