@@ -391,7 +391,7 @@
                     <table style="width:100%; border: solid 3px blue">
                         <tbody>
                             <tr>
-                                <td class="text-right"><h3>證卷營運：_____________________________</h3></td>
+                                <td class="text-right"><h3>證券營運：_____________________________</h3></td>
                                 <td class="text-right"></td>
                                 <td class="text-right" style="width:10%;height:1cm"></td>
                             </tr>

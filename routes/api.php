@@ -166,11 +166,12 @@ Route::get('client_info', 'VueController@ClientInfo');
 // Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
 
 //ae獎金計算
-Route::resource('ae_commission_summary', 'AeCommissionSummaryController');
+Route::get('ae_commission_summary/detail', 'AeCommissionSummaryController@detail');
+Route::post('ae_commission_summary/recalculate', 'AeCommissionSummaryController@recalculate');
 Route::post('ae_commission_summary/pay', 'AeCommissionSummaryController@pay');
+Route::resource('ae_commission_summary', 'AeCommissionSummaryController');
 Route::get('/list/ae', 'VueController@getAe');
 Route::get('/list/staff', 'VueController@getStaff');
-Route::resource('ae_commission_detail', 'AeCommissionDetailController');
 Route::resource('ipo_interest_list', 'IpoInterestListController');
 Route::resource('ipo_interest_import', 'IpoInterestImportController');
 // Anderson 2021-05-31 end

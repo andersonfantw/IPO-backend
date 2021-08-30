@@ -205,7 +205,7 @@ export default {
                 _this.items = response.data
 
                 // 如果畫面中有未完成的項目，每十秒更新一次
-                let result =  _this.items.filter(i => (i.total!=(i.success+i.fail)))
+                let result =  _this.items.filter(i => (parseInt(i.total)!=(parseInt(i.success)+parseInt(i.fail))))
                 if(result.length>0) setTimeout(() => _this.index(), 10000)
 
                 _this.pagination.last_page = response.last_page
