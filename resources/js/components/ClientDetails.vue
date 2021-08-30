@@ -84,6 +84,7 @@
                 v-model="駁回.住址證明"
                 :value="true"
                 :unchecked-value="false"
+                :disabled="ClientAddressProof.status == 'rejected'"
               >駁回
               </b-form-checkbox>
             </h5>
@@ -98,7 +99,7 @@
               placeholder="請寫駁回理由"
               rows="5"
               v-model="ClientAddressProof.remark"
-              :disabled="!駁回.住址證明"
+              :disabled="!駁回.住址證明 || ClientAddressProof.status == 'rejected'"
             ></b-form-textarea>
           </td>
         </tr>
@@ -922,7 +923,10 @@
         </td>
       </tbody>
     </table> -->
-    <template #modal-footer="">
+    <template
+      v-if="next_status"
+      #modal-footer=""
+    >
       <b-button
         variant="success"
         @click="submit"

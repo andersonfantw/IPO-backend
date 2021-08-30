@@ -122,34 +122,23 @@
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <b-form
-          :action="view_client_url"
-          method="post"
-        >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="RejectedList1"
-          />
-          <b-button-group>
-            <b-button
-              name="uuid"
-              :value="data.item.uuid"
-              variant="success"
-              type="submit"
-            >
-              <i class="far fa-eye"></i> 查看
-            </b-button>
-            <b-button
-              v-if="data.item.已退款 == '否'"
-              type="button"
-              variant="danger"
-              @click="refund(data.item.uuid)"
-            >
-              <i class="fas fa-hand-holding-usd"></i> 退款
-            </b-button>
-          </b-button-group>
-        </b-form>
+        <b-button-group>
+          <b-button
+            variant="success"
+            type="button"
+            @click="showClientDetails(data.item.uuid, null)"
+          >
+            <i class="far fa-eye"></i> 查看
+          </b-button>
+          <b-button
+            v-if="data.item.已退款 == '否'"
+            type="button"
+            variant="danger"
+            @click="refund(data.item.uuid)"
+          >
+            <i class="fas fa-hand-holding-usd"></i> 退款
+          </b-button>
+        </b-button-group>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -171,10 +160,16 @@
       align="center"
     >
     </b-pagination>
+    <ClientDetails
+      ref="ClientDetails"
+      :title="'客戶信息'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>
 // import DateRange from "./DateRange";
+import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -215,11 +210,12 @@ export default {
   },
   components: {
     // DateRange,
+    ClientDetails,
   },
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
-    this.loadData(1);
+    this.load(1);
   },
   beforeDestroy() {
     this.source.cancel("Operation canceled by the user.");
@@ -236,13 +232,24 @@ export default {
           self.data = [];
           self.progress = 0;
           self.busy = true;
-          self.loadData(1);
+          self.load(1);
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    loadData(pageNumber) {
+    showClientDetails(uuid) {
+      this.$refs.ClientDetails.showModal(uuid);
+    },
+    hideClientDetails() {
+      this.$refs.ClientDetails.hideModal();
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    load(pageNumber) {
       const self = this;
       axios
         .get("RejectedList1", {
@@ -266,7 +273,7 @@ export default {
             self.progress += (self.perPage / total) * 100;
           }
           if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
+            self.load(pageNumber + 1);
           } else {
             self.busy = false;
           }

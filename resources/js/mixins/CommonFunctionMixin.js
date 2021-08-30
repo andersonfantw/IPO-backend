@@ -68,7 +68,7 @@ export const CommonFunctionMixin = {
             }
         },
         checkLogin(res) {
-            if (res.response.status === 401) {
+            if (res.response && res.response.status === 401) {
                 // redirect to login page
                 window.location.href = "login";
             }
