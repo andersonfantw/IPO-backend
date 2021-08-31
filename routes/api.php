@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::any('/TestRoute', 'Controller@TestRoute');
+// Route::any('/TestRoute', 'Controller@TestRoute');
 
 Route::middleware('auth:api')->get('/user', 'Controller@user');
 

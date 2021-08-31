@@ -17,7 +17,7 @@ Route::get('/', 'Controller@welcome');
 
 Auth::routes();
 
-Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     // Route::get('/ClientProgress', 'ClientProgressController@index')->name('ClientProgress');
@@ -169,7 +169,6 @@ Route::any('/TestReport', 'UnauditedList1Controller@test')->name('TestReport');
 Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
 
-
 // Anderson 2021-05-31 start
 Route::middleware(['auth'])->group(function () {
     Route::get('/AccountReportSendingSummary', 'AccountReportSendingSummaryController@indexView')->name('AccountReportSendingSummary');
@@ -208,4 +207,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
 });
 // Anderson 2021-05-31 end
-

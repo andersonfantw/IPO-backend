@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Controller;
+use App\Controller as _Controller;
 use App\Permission;
 use App\Role;
 use App\RoleControllerPermission;
@@ -20,7 +20,7 @@ class RoleControllerPermissionController extends Controller
     public function index()
     {
         $Roles = Role::with(['RoleControllerPermission', 'RoleControllerPermission.Controller', 'RoleControllerPermission.Permission'])->get();
-        $Controllers = Controller::orderBy('name', 'asc')->get();
+        $Controllers = _Controller::orderBy('name', 'asc')->get();
         $columns = [
             ['key' => '功能', 'stickyColumn' => true, 'isRowHeader' => true],
         ];
