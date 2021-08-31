@@ -14,6 +14,7 @@
                 <p>使用說明：檢視AE業績。可添加非AE人員的業績。</p>
                 <p>當月獎金發出完畢後，則不可再添加人員，因會影響團體獎金的金額。</p>
                 <p>可對每一位AE各別發出獎金。當月最後一位的獎金發出時，會同時計算團體獎金的提撥。每月佣金結算後，畫面上才會顯示總表。</p>
+                <p>佣金於每日凌晨計算當月未發出佣金。若發生當月資料缺漏，可用重新計算即刻重算佣金。</p>
             </div>
         </b-alert>
 
@@ -83,14 +84,21 @@
 
             <b-row class="filter text-white">
                 <b-col cols="8">
+                    <b-button class="mb-3" variant="success" :disabled="group_info!=null || filter.month==''" v-b-modal.recalculate><i class="fas fa-calculator"></i> 重新計算當月佣金</b-button>
                     <b-button class="mb-3" variant="success" :disabled="group_info!=null || filter.month==''" v-b-modal.add><i class="fas fa-user-plus"></i> 添加員工</b-button>
-                    <b-button class="mb-3" variant="success" :disabled="filter.month==''" @click="showPdf"><i class="far fa-eye"></i> 檢視PDF報表</b-button>
-                    <b-button class="mb-3" variant="warning" :disabled="group_info!=null" v-b-modal.pay><i class="fas fa-money-check-alt"></i> 發出獎金</b-button>
+                    <b-button class="mb-3" variant="success" :disabled="filter.month==''" @click="showPdf"><i class="far fa-file-pdf"></i> 下載PDF報表</b-button>
+                    <b-button class="mb-3" variant="warning" :disabled="group_info!=null" v-b-modal.pay><i class="fas fa-money-check-alt"></i> 確認佣金</b-button>
                 </b-col>
                 <b-col cols="4">
                 </b-col>
             </b-row>
 
+            <b-progress
+                max="60"
+                height="5px"
+                v-if="recalculateCountDown"
+                :value="60-recalculateCountDown">
+            </b-progress>
             <b-table
                 sort-by="sending_time"
                 :sort-desc="true"
@@ -98,7 +106,7 @@
                 :items="items"
                 :fields="fields">
                 <template #cell(pay_date)="row">
-                    <b-form-checkbox v-model="selected" v-if="!row.item.pay_date" :value="btoa(row.item.month+'@'+row.item.uuid+'@'+row.item.reservations+'@'+row.item.commission)">發出獎金</b-form-checkbox>
+                    <b-form-checkbox v-model="selected" v-if="!row.item.pay_date" :value="btoa(row.item.month+'@'+row.item.uuid+'@'+row.item.reservations+'@'+row.item.commission)">確認佣金</b-form-checkbox>
                     <span v-else>已發出 {{row.item.pay_date}}</span>
                 </template>
                 
@@ -130,11 +138,14 @@
                     </table>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button size="sm" class="mr-1" variant="success" v-b-toggle.detail v-if="row.item.codes!=row.item.uuid" @click="show(row.item)" :disabled="row.item.status=='success'">
-                        <i class="fas fa-info-circle"></i> 詳細
-                    </b-button>
                     <b-button size="sm" class="mr-1" variant="danger" v-b-modal.del @click="target_item=row.item" v-if="row.item.codes==row.item.uuid" :disabled="!!row.item.pay_date">
                         <i class="fas fa-trash-alt"></i> 刪除
+                    </b-button>
+                    <b-button size="sm" class="mr-1" variant="success" v-b-toggle.commission_confirm v-if="row.item.codes!=row.item.uuid" @click="show(row.item)" :disabled="row.item.status=='success'">
+                        <i class="fas fa-info-circle"></i> 確認表
+                    </b-button>
+                    <b-button size="sm" class="mr-1" variant="success" v-b-toggle.commission_detail v-if="row.item.codes!=row.item.uuid" @click="show(row.item)" :disabled="row.item.status=='success'">
+                        <i class="fas fa-info-circle"></i> 佣金明細
                     </b-button>
                 </template>
             </b-table>
@@ -153,14 +164,23 @@
             <b-form-textarea v-model="form.content"></b-form-textarea>
         </b-modal>
 
+        <!-- recalculate commission -->
+        <b-modal id="recalculate" title="重新計算當月佣金" @ok="recalculate">
+            你確定要計算本月所有業務代表AE的佣金嗎?
+        </b-modal>
+
         <!-- pay commission -->
-        <b-modal id="pay" title="發出獎金" @ok="pay">
+        <b-modal id="pay" title="確認佣金" @ok="pay">
             <span v-if="selected.length==0" class="text-danger">請先勾選人員!</span>
-            <span v-else>你確定要發出勾選人員的獎金嗎?</span>
+            <span v-else>你確認勾選人員的佣金金額正確嗎?</span>
         </b-modal>
 
         <!-- ae commission confirm -->
-        <b-sidebar id="detail" :title="target_item.name + ' AE確認表'" lazy shadodw right>
+        <b-sidebar id="commission_confirm" :title="target_item.name + ' AE確認表'" lazy shadodw right>
+            <ae-commission-confirm :uuid="target_item.uuid" :month="target_item.month" ></ae-commission-confirm>
+        </b-sidebar>
+        <!-- ae commission detail -->
+        <b-sidebar id="commission_detail" :title="target_item.name + ' AE佣金明細'" lazy shadodw right>
             <ae-commission-detail :uuid="target_item.uuid" :month="target_item.month" ></ae-commission-detail>
         </b-sidebar>
 
@@ -180,6 +200,8 @@ export default {
         return {
           // alert
           dismissCountDown: 0,
+          // recalculate
+          recalculateCountDown: 0,
           tabIndex: 0,
           selected:[],
           month_options:[],
@@ -380,6 +402,13 @@ export default {
         showPdf(){
             window.open('AeCommissionSummary/ShowSummaryPdf/'+this.filter.month+'-01')
         },
+        recalculate(){
+            let _this = this
+            this.myPost(function(response){
+                _this.recalculateCountDown=60
+                _this.countdown()
+            },{month:this.filter.month},this.url('recalculate'))
+        },
         pay(){
             if(this.selected.length>0){
                 let _this = this
@@ -389,6 +418,13 @@ export default {
                     else _this.server_msg={variant:'danger',msg:response.msg}
                 },formdata,this.url('pay'))
             }
+        },
+        countdown(){
+            let _this=this
+            setTimeout(function(){
+                if(--_this.recalculateCountDown>0) _this.countdown()
+                else _this.index()
+            },1000)
         },
         clear_server_msg(){
             this.server_msg={variant:'',msg:''}
@@ -414,7 +450,8 @@ export default {
     float: right;
     margin: -20px 3px 0 0;
 }
-#detail{
-    width: 80%;
+#commission_confirm,
+#commission_detail{
+    width:80%;
 }
 </style>

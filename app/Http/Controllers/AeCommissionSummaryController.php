@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\AE;
 use App\Staff;
 use App\AeCommissionSummary;
+use App\TempClientBonusWithDummy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 use Carbon\Carbon;
 use PDF;
 use App\Traits\Report;
@@ -230,22 +232,24 @@ class AeCommissionSummaryController extends HomeController
 
         // 如果本月的獎金皆發出，則立即記錄團體獎金
         $unpaid = AeCommissionSummary::whereDate('buss_date','=',$k[0])->whereNull('pay_date')->count();
-        extract($this->aeCommissionSummaryData($k[0]));
-        $collect = collect($data);
-        AeCommissionSummary::firstOrCreate([
-            'buss_date'=>$k[0],
-            'ae_uuid'=>'group_info',
-            'cate'=>'group_info',
-        ],[
-            'ae_codes'=>'group_info',
-            'pay_date'=>now(),
-            'issued_by'=>'admin', //auth()->user()->name,
-            'application_fee_correction'=>$collect->sum('performance'),     // 本月業績 1/2
-            'bonus_application_correction'=>$collect->sum('commission'),    // 本月發出獎金
-            'application_cost_correction'=>$collect->sum('reservations'),   // 本月所有AE保留數
-            'ae_application_cost_correction'=>$collect->sum('performance')*0.1, // 團體提撥獎金
-            'transaction_number_correction'=>$collect->sum('qualified'),
-        ]);
+        if($unpaid==0){
+            extract($this->aeCommissionSummaryData($k[0]));
+            $collect = collect($data);
+            AeCommissionSummary::firstOrCreate([
+                'buss_date'=>$k[0],
+                'ae_uuid'=>'group_info',
+                'cate'=>'group_info',
+            ],[
+                'ae_codes'=>'group_info',
+                'pay_date'=>now(),
+                'issued_by'=>'admin', //auth()->user()->name,
+                'application_fee_correction'=>$collect->sum('performance'),     // 本月業績 1/2
+                'bonus_application_correction'=>$collect->sum('commission'),    // 本月發出獎金
+                'application_cost_correction'=>$collect->sum('reservations'),   // 本月所有AE保留數
+                'ae_application_cost_correction'=>$collect->sum('performance')*0.1, // 團體提撥獎金
+                'transaction_number_correction'=>$collect->sum('qualified'),
+            ]);
+        }
 
         return ['ok'=>true];
     }
@@ -368,6 +372,7 @@ class AeCommissionSummaryController extends HomeController
             }
             $AeCommissionSummary = AeCommissionSummary::where('ae_codes','=',$v['codes'])->where('buss_date','=',$month)->get()->toArray();
             foreach($AeCommissionSummary as $r) $hash[$r['cate']] = collect($r)->toArray();
+
             $arr1 = array(
                 'id' => ($v['type']=='ae')?0:$hash['principal']['id'],
                 'pay_date' => $hash['principal']['pay_date']??$hash['fee']['pay_date']??$hash['interest']['pay_date']??$hash['alloted']['pay_date']??$hash['sell']['pay_date'],
@@ -447,5 +452,60 @@ class AeCommissionSummaryController extends HomeController
         //$result['reservations'] = $result['subtitle']/10;
         //$result['commission'] = $result['subtitle']-$result['reservations'];
         return $result;
+    }
+
+    public function detail(Request $request){
+        $input = $request->only('uuid','month','cate','product_id','client_acc_id','dummy');
+        $AE = AE::select('name')
+            ->selectRaw("group_concat(code) as codes")
+            ->where('uuid','=',$input['uuid'])
+            ->groupBy('uuid','name')
+            ->first()->toArray();
+        if($AE['name']=='梧桐花開'){
+            $AE['name']='王浩進';
+            $AE['codes'] = $AE['codes'].',AEWHC';
+        }
+        $end = Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d');
+        $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
+            ->whereDate('allot_date','>=',$input['month'])
+            ->whereDate('allot_date','<=',$end);
+        foreach(['cate','product_id','client_acc_id','dummy'] as $item){
+            if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
+        }
+        return [
+            'month'=>$input['month'],
+            'ae'=>$AE['name'],
+            'data'=>$TempClientBonusWithDummy->get()
+        ];
+    }
+    public function detailCsv(Request $request){
+        extract($this->detail($request));
+        return response()->stream(function() use($data){
+            $file = fopen('php://output', 'w');
+            fputcsv($file,['id','cate','ae_code','buss_date','allot_date','client_acc_id','product_id','application_fee','bonus_application','application_cost','ae_application_const','accumulate_performance','seq','dummy','bonus_application1']);
+            foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
+            fclose($file);    
+        },200,[
+            'Content-Type'=>'text/csv',
+            'Content-Disposition'=>'attachment; filename=' . $month.$ae.'佣金明細.csv',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ]);
+    }
+    public function detailPdf(Request $request){
+        $result = $this->detail($request);
+        $pdf = PDF::loadView('pdf.AeCommissionDetailForm', array_merge(
+            $result,
+            $this->StylingImages()
+        ));
+        $pdf->setOptions(['isPhpEnabled' => true]);
+        return $pdf->stream('AeCommissionDetailForm.pdf');
+    }
+
+    public function recalculate(Request $request){
+        $input = $request->only('month');
+        Artisan::call('Commission:Recalculate',['month'=>$input['month'].'-01']);
+        return ['ok'=>true];
     }
 }

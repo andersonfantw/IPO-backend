@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -35,6 +36,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function(){
             (new AuditClientController)->NoticeClientCorrectToRejectItemOn5days();
         })->dailyAt('12:30');
+        $schedule->call(function(){
+            dispatch((new \App\Jobs\CommissionRecalculateJob((new Carbon('first day of this month'))->format('Y-m-d')))->onQueue('default'));
+        })->dailyAt('12:40');
     }
 
     /**
