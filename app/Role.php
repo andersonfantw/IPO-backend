@@ -21,6 +21,11 @@ class Role extends Model
         return $this->hasMany('App\RoleControllerPermission', 'role_id', 'id');
     }
 
+    public function RoleFunctionPermission()
+    {
+        return $this->hasMany('App\RoleFunctionPermission', 'role_id', 'id');
+    }
+
     public function RoleMenuItem()
     {
         return $this->hasMany('App\RoleMenuItem', 'role_id', 'id');

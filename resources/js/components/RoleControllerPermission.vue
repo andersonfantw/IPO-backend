@@ -185,7 +185,7 @@ export default {
       const self = this;
       this.busy = true;
       axios
-        .get(`RoleControllerPermission`)
+        .get("RoleControllerPermission")
         .then((res) => {
           console.log(res);
           self.Controllers = res.data.Controllers;

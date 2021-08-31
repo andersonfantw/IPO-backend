@@ -64,4 +64,16 @@ class AyersAccountController extends Controller
             dump($Client->IDCard->name_c);
         }
     }
+
+    public function setCanClose(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->update(['can_close' => 1]);
+        return ['success' => $Client > 0];
+    }
+
+    public function cancelCanClose(Request $request)
+    {
+        $Client = Client::where('uuid', $request->input('uuid'))->update(['can_close' => 0]);
+        return ['success' => $Client > 0];
+    }
 }

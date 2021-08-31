@@ -157,6 +157,10 @@ Route::middleware(['auth', 'CheckPermission', 'ResetPreviewingBy'])->group(funct
     Route::resource('AuditClient', 'AuditClientController');
     Route::resource('AuditClientHKFundOutRequest', 'AuditClientHKFundOutRequestController');
     Route::resource('AuditClientFundInRequest', 'AuditClientFundInRequestController');
+    Route::prefix('AyersAccount')->group(function () {
+        Route::post('SetCanClose', 'AyersAccountController@setCanClose');
+        Route::post('CancelCanClose', 'AyersAccountController@cancelCanClose');
+    });
 
 });
 

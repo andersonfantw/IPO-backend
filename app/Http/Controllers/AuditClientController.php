@@ -268,16 +268,4 @@ class AuditClientController extends Controller
     //     return $parameters;
     // }
 
-    public function setCanClose(Request $request)
-    {
-        $Client = Client::where('uuid', $request->input('uuid'))->update(['can_close' => 1]);
-        return ['success' => $Client > 0];
-    }
-
-    public function cancelCanCloseAC(Request $request)
-    {
-        $Client = Client::where('uuid', $request->input('uuid'))->update(['can_close' => 0]);
-        return ['success' => $Client > 0];
-    }
-
 }

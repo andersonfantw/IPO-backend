@@ -51,14 +51,23 @@
       </b-col>
       <b-col>
         <b-input-group prepend="AE">
-          <b-form-select v-model="filters['AE']" :options="aes">
+          <b-form-select
+            v-model="filters['AE']"
+            :options="aes"
+          >
           </b-form-select>
         </b-input-group>
       </b-col>
-      <b-col>
-        <b-button @click="query" variant="success">查詢</b-button>
-      </b-col>
       <b-col> </b-col>
+      <b-col> </b-col>
+    </b-row>
+    <b-row class="mb-3">
+      <b-col>
+        <b-button
+          @click="query"
+          variant="success"
+        ><i class="fas fa-search"></i> 查詢</b-button>
+      </b-col>
     </b-row>
     <b-table
       hover
@@ -97,10 +106,11 @@
           type="button"
           variant="danger"
           @click="setCanCloseAC(data.item.uuid)"
-          ><h5 class="mb-0">
-            <i class="far fa-window-close"></i> 可銷戶
-          </h5></b-button
         >
+          <h5 class="mb-0">
+            <i class="far fa-window-close"></i> 可銷戶
+          </h5>
+        </b-button>
         <b-button
           v-if="
             data.item.帳戶號碼 != '' &&
@@ -110,10 +120,9 @@
           type="button"
           variant="success"
           @click="cancelCanCloseAC(data.item.uuid)"
-          ><h5 class="mb-0">
-            <i class="far fa-window-close"></i> 取消銷戶
-          </h5></b-button
         >
+          <i class="far fa-window-close"></i> 取消銷戶
+        </b-button>
       </template>
     </b-table>
     <b-pagination
@@ -127,7 +136,6 @@
   </b-container>
 </template>
 <script>
-// import DateRange from "./DateRange";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -151,37 +159,21 @@ export default {
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
-  props: {
-    // p_columns: {
-    //   type: String,
-    //   required: true,
-    // },
-    // filter_type: {
-    //   type: String,
-    //   required: true,
-    // },
-  },
-  components: {
-    // DateRange,
-  },
-  created() {
-    // this.Columns = JSON.parse(this.p_columns);
-    // this.FilterType = JSON.parse(this.filter_type);
-    // this.busy = true;
-    // this.loadData(1);
-  },
+  props: {},
+  components: {},
+  created() {},
   methods: {
     setCanCloseAC(uuid) {
       const self = this;
       axios
-        .post("api/Client/setCanClose", {
+        .post("AyersAccount/SetCanClose", {
           uuid: uuid,
         })
         .then((res) => {
           console.log(res);
           self.data = [];
           self.busy = true;
-          self.loadData(1);
+          self.query();
         })
         .catch((error) => {
           console.log(error);
@@ -190,14 +182,14 @@ export default {
     cancelCanCloseAC(uuid) {
       const self = this;
       axios
-        .post("api/Client/cancelCanCloseAC", {
+        .post("AyersAccount/CancelCanClose", {
           uuid: uuid,
         })
         .then((res) => {
           console.log(res);
           self.data = [];
           self.busy = true;
-          self.loadData(1);
+          self.query();
         })
         .catch((error) => {
           console.log(error);
@@ -218,7 +210,7 @@ export default {
         data["至更新時間"] = self.filters["更新時間"][1];
       }
       axios
-        .get("api/ClientProgress", {
+        .get("ClientProgress", {
           params: data,
         })
         .then((res) => {
@@ -228,29 +220,6 @@ export default {
           self.data = res.data.data;
           self.totalRows = self.data.length;
           self.busy = false;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    loadData(pageNumber) {
-      const self = this;
-      axios
-        .post("api/ClientProgress/list", {
-          perPage: self.perPage,
-          pageNumber: pageNumber,
-        })
-        .then((res) => {
-          // const json = self.getDecryptedJsonObject(res.data);
-          console.log(res);
-          const data = res.data.data;
-          self.data = self.data.concat(data);
-          self.totalRows = self.data.length;
-          if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
         })
         .catch((error) => {
           console.log(error);

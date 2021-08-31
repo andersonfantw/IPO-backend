@@ -1,7 +1,10 @@
 <template>
   <b-container fluid>
     <h1 class="text-center">權限管理</h1>
-    <UserRole ref="UserRole" @reload="reloadRoleControllerPermission" />
+    <UserRole
+      ref="UserRole"
+      @reload="reloadRoleControllerPermission"
+    />
     <RoleMenuItem ref="RoleMenuItem" />
     <RoleControllerPermission ref="RoleControllerPermission" />
   </b-container>

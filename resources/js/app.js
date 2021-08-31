@@ -35,6 +35,7 @@ import ClientCreditCardFundOutRequests from "./components/ClientCreditCardFundOu
 import AccountReportSendingSummary from "./components/AccountReportSendingSummary.vue";
 import NotificationSummary from "./components/NotificationSummary.vue";
 import AeCommissionSummary from "./components/AeCommissionSummary.vue";
+import CheckingDeposit from "./components/CheckingDeposit.vue";
 
 const routes = [
     { path: '/Permission', component: Permission },
@@ -55,6 +56,7 @@ const routes = [
     { path: '/AccountReportSendingSummary', component: AccountReportSendingSummary },
     { path: '/NotificationSummary', component: NotificationSummary },
     { path: '/AeCommissionSummary', component: AeCommissionSummary },
+    { path: '/CheckingDeposit', component: CheckingDeposit },
 ];
 
 const router = new VueRouter({

@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Controller;
 use App\Permission;
 use App\Role;
-use App\RoleControllerPermission;
+use App\RoleFunctionPermission;
 use Illuminate\Http\Request;
 
 class RoleFunctionPermissionController extends Controller
 {
-    protected $name = 'RoleControllerPermission';
+    protected $name = 'RoleFunctionPermission';
 
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class RoleFunctionPermissionController extends Controller
      */
     public function index()
     {
-        $Roles = Role::with(['RoleControllerPermission', 'RoleControllerPermission.Controller', 'RoleControllerPermission.Permission'])->get();
+        $Roles = Role::with(['RoleFunctionPermission', 'RoleFunctionPermission.Controller', 'RoleFunctionPermission.Permission'])->get();
         $Controllers = Controller::orderBy('name', 'asc')->get();
         $columns = [
             ['key' => '功能', 'stickyColumn' => true, 'isRowHeader' => true],
@@ -33,7 +33,7 @@ class RoleFunctionPermissionController extends Controller
             ];
         }
         $Permissions = Permission::get();
-        $RoleControllerPermissions = [];
+        $RoleFunctionPermissions = [];
         $controllers = [];
         foreach ($Controllers as $Controller) {
             $controllers[] = [
@@ -62,16 +62,16 @@ class RoleFunctionPermissionController extends Controller
                     ];
                 }
             }
-            foreach ($Controller->RoleControllerPermission as $RoleControllerPermission) {
-                $controller_cols[$RoleControllerPermission->Role->name]['id'] = $RoleControllerPermission->id;
-                $controller_cols[$RoleControllerPermission->Role->name]['permissions'][$RoleControllerPermission->Permission->name]['granted'] = true;
+            foreach ($Controller->RoleFunctionPermission as $RoleFunctionPermission) {
+                $controller_cols[$RoleFunctionPermission->Role->name]['id'] = $RoleFunctionPermission->id;
+                $controller_cols[$RoleFunctionPermission->Role->name]['permissions'][$RoleFunctionPermission->Permission->name]['granted'] = true;
             }
-            $RoleControllerPermissions[] = $controller_cols;
+            $RoleFunctionPermissions[] = $controller_cols;
         }
         return json_encode([
             'Controllers' => $controllers,
             'fields' => $columns,
-            'RoleControllerPermissions' => $RoleControllerPermissions,
+            'RoleFunctionPermissions' => $RoleFunctionPermissions,
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -92,7 +92,7 @@ class RoleFunctionPermissionController extends Controller
      */
     public function store(Request $request)
     {
-        RoleControllerPermission::create([
+        RoleFunctionPermission::create([
             'role_id' => $request->input('role_id'),
             'controller_id' => $request->input('controller_id'),
             'permission_id' => $request->input('permission_id'),
@@ -141,6 +141,6 @@ class RoleFunctionPermissionController extends Controller
      */
     public function destroy($id)
     {
-        RoleControllerPermission::destroy($id);
+        RoleFunctionPermission::destroy($id);
     }
 }

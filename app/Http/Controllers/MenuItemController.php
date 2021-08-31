@@ -148,6 +148,15 @@ class MenuItemController extends Controller
                     ],
                 ],
             ],
+            [
+                'label' => "財務",
+                'items' => [
+                    [
+                        'label' => "核對入款記錄",
+                        'url' => 'CheckingDeposit',
+                    ],
+                ],
+            ],
         ];
     }
 
