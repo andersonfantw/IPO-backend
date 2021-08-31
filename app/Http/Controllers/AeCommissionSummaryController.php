@@ -482,7 +482,7 @@ class AeCommissionSummaryController extends HomeController
         extract($this->detail($request));
         return response()->stream(function() use($data){
             $file = fopen('php://output', 'w');
-            fputcsv($file,['id','cate','ae_code','buss_date','client_acc_id','product_id','application_fee','bonus_application','application_cost','ae_application_const','accumulate_performance','seq','dummy','bonus_application1']);
+            fputcsv($file,['id','cate','ae_code','buss_date','allot_date','client_acc_id','product_id','application_fee','bonus_application','application_cost','ae_application_const','accumulate_performance','seq','dummy','bonus_application1']);
             foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
             fclose($file);    
         },200,[
