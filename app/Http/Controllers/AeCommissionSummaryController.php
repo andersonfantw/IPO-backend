@@ -467,8 +467,8 @@ class AeCommissionSummaryController extends HomeController
         }
         $end = Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d');
         $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
-            ->whereDate('buss_date','>=',$input['month'])
-            ->whereDate('buss_date','<=',$end);
+            ->whereDate('allot_date','>=',$input['month'])
+            ->whereDate('allot_date','<=',$end);
         foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
