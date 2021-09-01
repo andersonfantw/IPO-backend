@@ -205,5 +205,56 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommissionSummary', 'AeCommissionSummaryController@indexView')->name('AeCommissionSummary');
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
+
+    Route::prefix('api')->group(function(){
+        // Anderson 2021-05-31 start
+        Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
+        Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
+
+        Route::get('/AccountReport/program', 'AccountReportSendingSummaryController@getProgram');
+        Route::post('/find/client', 'VueController@findClient');
+
+        Route::post('/AccountReport/MakePdf/{id}/', 'AccountReportController@makePdf')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/SendTestMail/{id}/', 'AccountReportController@sendTestMail')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/SendMail/{id}/', 'AccountReportController@sendMail')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/RemoveClient/{id}/', 'AccountReportController@removeClient')->where(['id' => '[0-9]+']);
+
+        // MakeAll 對應功能
+        Route::post('/AccountReport/MakeAll/{id}/', 'AccountReportController@makeAll')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/StopMake/{id}/', 'AccountReportController@stopMake')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/ClearMake/{id}/', 'AccountReportController@clearMake')->where(['id' => '[0-9]+']);
+        // SendAll 對應功能
+        Route::post('/AccountReport/SendAll/{id}/', 'AccountReportController@sendAll')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/StopSend/{id}/', 'AccountReportController@stopSend')->where(['id' => '[0-9]+']);
+        Route::post('/AccountReport/ClearSend/{id}/', 'AccountReportController@clearSend')->where(['id' => '[0-9]+']);
+
+        // 通知任務中心
+        Route::resource('notify_client', 'NotificationRecordController');
+        Route::resource('notify_group', 'NotificationGroupController');
+        Route::resource('system_notification_list', 'NotificationRecordController');
+
+        Route::get('/notify_group/{id}/list/', 'NotificationGroupController@list')->where(['id' => '[0-9]+']);
+        // Route::post('/notify_client/{id}/send/', 'NotificationRecordController@send')->where(['id' => '[0-9]+']);
+        Route::post('/notify_group/{id}/SendAll/', 'NotificationGroupController@sendAll')->where(['id' => '[0-9]+']);
+        Route::post('/notify_group/{id}/store/{client_id}/', 'NotificationGroupController@addClient')->where(['id' => '[0-9]+', 'client_id' => '[0-9]+']);
+
+        Route::get('forbidden_words', 'VueController@ForbiddenWords');
+        Route::get('template_list', 'VueController@NotificationTemplateList');
+        Route::get('client_info', 'VueController@ClientInfo');
+
+        // Route::resource('NotificationSummary', 'NotificationGroupController');
+        // Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');
+
+        //ae獎金計算
+        Route::get('ae_commission_summary/detail', 'AeCommissionSummaryController@detail');
+        Route::post('ae_commission_summary/recalculate', 'AeCommissionSummaryController@recalculate');
+        Route::post('ae_commission_summary/pay', 'AeCommissionSummaryController@pay');
+        Route::resource('ae_commission_summary', 'AeCommissionSummaryController');
+        Route::get('/list/ae', 'VueController@getAe');
+        Route::get('/list/staff', 'VueController@getStaff');
+        Route::resource('ipo_interest_list', 'IpoInterestListController');
+        Route::resource('ipo_interest_import', 'IpoInterestImportController');
+        // Anderson 2021-05-31 end
+    });
 });
 // Anderson 2021-05-31 end

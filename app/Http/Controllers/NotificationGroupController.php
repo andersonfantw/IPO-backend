@@ -89,7 +89,7 @@ class NotificationGroupController extends HomeController
         $data = [
             'route' => $input['_route'],
             'notification_template_id' => $input['template'],
-            'issued_by' => 'admin', //auth()->user()->name,
+            'issued_by' => auth()->user()->name,
         ];
         if(array_key_exists('title',$input)){
             $data['title'] = $input['title']??null;
