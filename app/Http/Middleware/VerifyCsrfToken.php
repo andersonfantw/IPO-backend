@@ -35,5 +35,6 @@ class VerifyCsrfToken extends Middleware
         'AuditClientCreditCard',
         'ViewClientCreditCard',
         'DoAuditClientCreditCard',
+        'CheckingDeposit',
     ];
 }

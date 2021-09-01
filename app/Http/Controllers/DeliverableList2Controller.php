@@ -7,13 +7,14 @@ use App\ClientCNIDCard;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\Traits\Excel;
+use App\Traits\Image;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class DeliverableList2Controller extends Controller
 {
 
-    use Excel;
+    use Excel, Image;
 
     protected $name = 'DeliverableList2';
     private $fields = null;

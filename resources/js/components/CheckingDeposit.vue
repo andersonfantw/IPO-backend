@@ -15,7 +15,10 @@
     </b-row>
     <b-row class="mb-3">
       <b-col>
-        <b-button variant="success"><i class="fas fa-file-upload"></i> 上載</b-button>
+        <b-button
+          variant="success"
+          @click="upload"
+        ><i class="fas fa-file-upload"></i> 上載</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -32,9 +35,12 @@ export default {
   created() {},
   methods: {
     upload() {
+      let formData = new FormData();
+      formData.append("file", this.file);
+      debugger;
       const self = this;
       axios
-        .post("")
+        .post("CheckingDeposit", formData)
         .then((res) => {})
         .catch((error) => {
           console.log(error);

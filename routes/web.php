@@ -161,6 +161,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('SetCanClose', 'AyersAccountController@setCanClose');
         Route::post('CancelCanClose', 'AyersAccountController@cancelCanClose');
     });
+    Route::resource('CheckingDeposit', 'CheckingDepositController');
 
 });
 

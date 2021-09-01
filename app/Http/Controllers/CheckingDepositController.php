@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UnknownDepositsImport;
+use Excel;
 use Illuminate\Http\Request;
 
 class CheckingDepositController extends Controller
@@ -34,7 +36,9 @@ class CheckingDepositController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Excel::import(new UnknownDepositsImport, storage_path('app/Acum Deposit.csv'));
+        (new UnknownDepositsImport)->import(storage_path('app/Acum Deposit.xlsx'), null, \Maatwebsite\Excel\Excel::XLSX);
+        // return $request;
     }
 
     /**
