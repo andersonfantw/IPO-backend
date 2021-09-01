@@ -182,13 +182,15 @@ export default {
         },
         index(){
             let _this = this
+            let d = new Date(this.filter.month);
+            let _month = (this.filter.cate=='principal')?d.setMonth(d.getMonth() - 1):this.filter.month
             this.myGet(function(response){
                 _this.items = response.data
                 _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
                 _this.product_id_options.unshift({value:'',text:'新股代號'})
                 _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
                 _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
-            },Object.assign({},{uuid:this.uuid,month:this.month},this.filter),this.url('detail'))
+            },Object.assign({},{uuid:this.uuid,month:this.month},this.filter,{month:_month}),this.url('detail'))
         },
         store(){
         },
