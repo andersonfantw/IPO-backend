@@ -215,7 +215,7 @@ class AeCommissionSummaryController extends HomeController
                 ->where('ae_uuid','=',$k[1])
                 ->update([
                     'pay_date'=>now(),
-                    'issued_by'=>'admin', //auth()->user()->name,
+                    'issued_by'=>auth()->user()->name,
                 ]);
             // 紀錄發出給AE的獎金金額與保留數
             AeCommissionSummary::create([
@@ -223,7 +223,7 @@ class AeCommissionSummaryController extends HomeController
                 'ae_uuid'=>$k[1],
                 'ae_codes'=>$k[1],
                 'pay_date'=>now(),
-                'issued_by'=>'admin', //auth()->user()->name,
+                'issued_by'=>auth()->user()->name,
                 'cate'=>'commission',
                 'bonus_application_correction'=>$k[3],
                 'ae_application_cost_correction'=>$k[2],
@@ -242,7 +242,7 @@ class AeCommissionSummaryController extends HomeController
             ],[
                 'ae_codes'=>'group_info',
                 'pay_date'=>now(),
-                'issued_by'=>'admin', //auth()->user()->name,
+                'issued_by'=>auth()->user()->name,
                 'application_fee_correction'=>$collect->sum('performance'),     // 本月業績 1/2
                 'bonus_application_correction'=>$collect->sum('commission'),    // 本月發出獎金
                 'application_cost_correction'=>$collect->sum('reservations'),   // 本月所有AE保留數
@@ -468,7 +468,8 @@ class AeCommissionSummaryController extends HomeController
         $end = Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d');
         $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$input['month'])
-            ->whereDate('allot_date','<=',$end);
+            ->whereDate('allot_date','<=',$end)
+            ->whereNotIn('client_acc_id',['20000113','20000313']);
         foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }

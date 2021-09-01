@@ -89,7 +89,7 @@ class NotificationGroupController extends HomeController
         $data = [
             'route' => $input['_route'],
             'notification_template_id' => $input['template'],
-            'issued_by' => 'admin', //auth()->user()->name,
+            'issued_by' => auth()->user()->name,
         ];
         if(array_key_exists('title',$input)){
             $data['title'] = $input['title']??null;
@@ -116,7 +116,9 @@ class NotificationGroupController extends HomeController
                     },'t')->distinct();
                 },'t1')->leftJoin('a_client_listing_csv02','a_client_listing_csv02.client_id','=','t1.client_id')
                 ->whereIn('a_client_listing_csv02.client_id',
-                    array_map(function($v){return $v['client_id'];},$imports[0])
+                    array_map(function($v){
+                        return (in_array(strlen($v['client_id']),[7,8]))?substr($v['client_id'],0,-2):$v['client_id'];
+                    },$imports[0])
                 )->get();
                 foreach($rows as $item){ $hash[$item->client_id] = array_map(function($v){return str_replace("\n","",$v);},collect($item)->toArray()); }
             }
