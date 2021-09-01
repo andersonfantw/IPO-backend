@@ -182,8 +182,6 @@ export default {
         },
         index(){
             let _this = this
-            let d = new Date(this.month);
-            
             this.myGet(function(response){
                 _this.items = response.data
                 _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
@@ -194,7 +192,7 @@ export default {
                 {
                     uuid:this.uuid,
                     month:(this.filter.cate=='principal')
-                        ?d.setMonth(d.getMonth() - 1).toISOString().slice(0, 10)
+                        ?(new Date(this.month)).setMonth((new Date(this.month)).getMonth() - 1).toISOString().slice(0, 10)
                         :this.month
                 },this.filter
             ),this.url('detail'))
