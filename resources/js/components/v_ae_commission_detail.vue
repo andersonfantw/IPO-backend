@@ -85,6 +85,7 @@ export default {
           ],
           cate_options:[
               {value:'', text:'項目'},
+              {value:'principal', text:'principal'},
               {value:'fee08', text:'fee08'},
               {value:'fee13', text:'fee13'},
               {value:'interest08', text:'interest08'},
