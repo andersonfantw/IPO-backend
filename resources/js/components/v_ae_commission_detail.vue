@@ -188,14 +188,7 @@ export default {
                 _this.product_id_options.unshift({value:'',text:'新股代號'})
                 _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
                 _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
-            },Object.assign({},
-                {
-                    uuid:this.uuid,
-                    month:(this.filter.cate=='principal')
-                        ?(new Date(this.month)).setMonth((new Date(this.month)).getMonth() - 1).toISOString().slice(0, 10)
-                        :this.month
-                },this.filter
-            ),this.url('detail'))
+            },Object.assign({},{ uuid:this.uuid, month:this.month},this.filter),this.url('detail'))
         },
         store(){
         },
