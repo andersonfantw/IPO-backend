@@ -1,15 +1,16 @@
 <?php
 namespace App\Imports;
 
+use App\UnknownDeposit;
+use Illuminate\Database\QueryException;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
-class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, WithValidation
+class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     use Importable;
 
@@ -20,7 +21,52 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
 
     public function model(array $row)
     {
-        var_dump($row);
+        try {
+            $row['收入金額'] = preg_replace('/,/', '', $row['收入金額']);
+            $row['支出金額'] = preg_replace('/,/', '', $row['支出金額']);
+            $row['餘額'] = preg_replace('/,/', '', $row['餘額']);
+            $row = array_map('trim', $row);
+            $row = array_map(function ($value) {
+                if (empty($value)) {
+                    return null;
+                } else {
+                    return $value;
+                }
+            }, $row);
+            if (!$row['收入金額']) {
+                return null;
+            }
+            unset($row['序號']);
+            unset($row['支出金額']);
+            $row['transaction_date'] = $row['交易時間'];
+            unset($row['交易時間']);
+            $row['value_date'] = $row['起息日期'];
+            unset($row['起息日期']);
+            $row['type'] = $row['業務類型'];
+            unset($row['業務類型']);
+            $row['summary'] = $row['摘要'];
+            unset($row['摘要']);
+            $row['remark'] = $row['備註'];
+            unset($row['備註']);
+            $row['identification_code'] = null;
+            $row['amount_in'] = $row['收入金額'];
+            unset($row['收入金額']);
+            $row['balance'] = $row['餘額'];
+            unset($row['餘額']);
+            $row['voucher_no'] = $row['憑證號'];
+            unset($row['憑證號']);
+            $row['account_no'] = $row['對方賬號'];
+            unset($row['對方賬號']);
+            $row['account_name'] = $row['對方戶名'];
+            unset($row['對方戶名']);
+            $row['trading_place'] = $row['交易場所'];
+            unset($row['交易場所']);
+            // var_dump($row);
+            return new UnknownDeposit($row);
+        } catch (QueryException $e) {
+            var_dump($e);
+            return null;
+        }
     }
 
     public function headingRow(): int
@@ -38,52 +84,4 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
         return 1000;
     }
 
-    public function rules(): array
-    {
-        return [
-            '交易時間' => [
-                // 'required',
-                'date_format:Y-m-d H:i:s',
-            ],
-            '起息日期' => [
-                // 'required',
-                'date',
-            ],
-            '業務類型' => [
-                // 'required',
-                'string',
-            ],
-            '摘要' => [
-                // 'required',
-                'string',
-            ],
-            '備註' => [
-                'string',
-            ],
-            '收入金額' => [
-                'numeric',
-            ],
-            '支出金額' => [
-                'numeric',
-            ],
-            '餘額' => [
-                // 'required',
-                'numeric',
-            ],
-            '憑證號' => [
-                'string',
-            ],
-            '對方賬號' => [
-                // 'required',
-                'string',
-            ],
-            '對方戶名' => [
-                // 'required',
-                'string',
-            ],
-            '交易場所' => [
-                'string',
-            ],
-        ];
-    }
 }

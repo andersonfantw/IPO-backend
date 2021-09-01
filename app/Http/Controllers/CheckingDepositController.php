@@ -3,19 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Imports\UnknownDepositsImport;
+use App\UnknownDeposit;
+use Carbon\Carbon;
 use Excel;
 use Illuminate\Http\Request;
 
 class CheckingDepositController extends Controller
 {
+    private $fields = null;
+    private $filter_type = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->fields = [
+            ['key' => 'transaction_date', 'sortable' => true],
+            ['key' => 'value_date', 'sortable' => true],
+            ['key' => 'type', 'sortable' => true],
+            ['key' => 'identification_code', 'sortable' => true],
+            ['key' => 'amount_in', 'sortable' => true],
+            ['key' => 'balance', 'sortable' => true],
+            ['key' => 'account_no', 'sortable' => true],
+            ['key' => 'account_name', 'sortable' => true],
+        ];
+        $this->filter_type = [
+            'transaction_date' => 'betweenDate',
+            'value_date' => 'betweenDate',
+            'type' => 'equals',
+            'identification_code' => 'startsWith',
+            'amount_in' => 'equals',
+            'balance' => 'equals',
+            'account_no' => 'startsWith',
+            'account_name' => 'betweenDate',
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $today = Carbon::today()->toDateString();
+        $UnknownDeposits = UnknownDeposit::where('created_at', 'like', "$today%")->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        return json_encode([
+            'fields' => $this->fields,
+            'filter_type' => $this->filter_type,
+            'data' => $UnknownDeposits,
+        ], JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -36,8 +76,10 @@ class CheckingDepositController extends Controller
      */
     public function store(Request $request)
     {
-        // Excel::import(new UnknownDepositsImport, storage_path('app/Acum Deposit.csv'));
-        (new UnknownDepositsImport)->import(storage_path('app/Acum Deposit.xlsx'), null, \Maatwebsite\Excel\Excel::XLSX);
+        $today = Carbon::today()->toDateString();
+        UnknownDeposit::where('created_at', 'like', "$today%")->delete();
+        // (new UnknownDepositsImport)->import($request->file('file')->path(), null, \Maatwebsite\Excel\Excel::XLSX);
+        Excel::import(new UnknownDepositsImport, $request->file('file')->path());
         // return $request;
     }
 
