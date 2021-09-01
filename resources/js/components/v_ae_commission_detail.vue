@@ -194,7 +194,7 @@ export default {
                 {
                     uuid:this.uuid,
                     month:(this.filter.cate=='principal')
-                        ?d.setMonth(d.getMonth() - 1)
+                        ?d.setMonth(d.getMonth() - 1).toISOString().slice(0, 10)
                         :this.month
                 },this.filter
             ),this.url('detail'))
