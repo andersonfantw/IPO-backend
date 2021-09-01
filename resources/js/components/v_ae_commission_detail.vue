@@ -196,7 +196,7 @@ export default {
                     month:(this.filter.cate=='principal')
                         ?d.setMonth(d.getMonth() - 1)
                         :this.month
-                },this.filter,{month:_month}
+                },this.filter
             ),this.url('detail'))
         },
         store(){
