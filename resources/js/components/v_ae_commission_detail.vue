@@ -97,10 +97,10 @@ export default {
           ],
           client_acc_id_options:[],
           product_id_options:[
-              {value:'', text:'新股代號'},
+              {value:'', text:'產品代號'},
           ],
           dummy_options:[
-              {value:'', text:'是否列入計算'},
+              {value:'', text:'列計算'},
               {value:'0', text:'否'},
               {value:'1', text:'是'},
           ],
@@ -113,7 +113,7 @@ export default {
               { key:'application_fee', label:'項目收入', class: 'text-right', sortable: true },
               { key:'application_cost', label:'項目成本', class: 'text-right', sortable: true },
               { key:'accumulate_performance', label:'帳戶累積收入', class: 'text-right', sortable: true },
-              { key:'seq', label:'13帳戶累積收入序號', class: 'text-center' },
+              { key:'seq', label:'13累積序號', class: 'text-center' },
               { key:'dummy', label:'是否計算佣金', class: 'text-center' },
               { key:'bonus_application1', label:'獎金', class: 'text-center' },
           ],
@@ -185,7 +185,7 @@ export default {
             this.myGet(function(response){
                 _this.items = response.data
                 _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
-                _this.product_id_options.unshift({value:'',text:'新股代號'})
+                _this.product_id_options.unshift({value:'',text:'產品代號'})
                 _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
                 _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
             },Object.assign({},{ uuid:this.uuid, month:this.month},this.filter),this.url('detail'))
