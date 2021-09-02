@@ -9,6 +9,7 @@ use App\TempClientBonusWithDummy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+use App\Exports\CommissionDetail;
 use Carbon\Carbon;
 use PDF;
 use App\Traits\Report;
@@ -482,18 +483,7 @@ class AeCommissionSummaryController extends HomeController
     }
     public function detailCsv(Request $request){
         extract($this->detail($request));
-        return response()->stream(function() use($data){
-            $file = fopen('php://output', 'w');
-            fputcsv($file,['項目','AE代碼','交易日','交收日','客戶帳號','產品代碼','項目收入','bonus_application','項目成本','ae_application_const','帳戶累積收入','13帳戶累積收入序號','是否計算佣金','獎金']);
-            foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
-            fclose($file);
-        },200,[
-            'Content-Type'=>'text/csv',
-            'Content-Disposition'=>'attachment; filename=' . $month.$ae.'佣金明細.csv',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        return (new CommissionDetail($data))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
     }
     public function detailPdf(Request $request){
         $result = $this->detail($request);
