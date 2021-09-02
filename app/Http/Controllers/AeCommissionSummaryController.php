@@ -466,13 +466,13 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $TempClientBonusWithDummy = TempClientBonusWithDummy::with(['CysislbGtsClientAcc:client_acc_id,name'])
-            ->select()
+        $TempClientBonusWithDummy = TempClientBonusWithDummy::select('tt_client_bonus_with_dummy.ae_code','buss_date','allot_date','tt_client_bonus_with_dummy.client_acc_id','name','product_id','application_fee','application_cost','accumulate_performance','seq','dummy','bonus_application1')
             ->selectRaw("case cate when 'principal' then '開戶激勵＿專戶' when 'fee08' then '申購手續費_現金戶' when 'fee13' then '申購手續費_專戶' when 'interest08' then '利息收支_現金戶' when 'interest13' then '利息收支_專戶' when 'alloted08' then '中籤收入_現金戶' when 'alloted13' then '中籤收入_專戶' when 'sell08' then '二級市場收入_現金戶' when 'sell13' then '二級市場收入_專戶' end as cate")
-            ->whereIn('ae_code',explode(',',$AE['codes']))
+            ->whereIn('tt_client_bonus_with_dummy.ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$input['month'])
             ->whereDate('allot_date','<=',Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d'))
-            ->whereNotIn('client_acc_id',['20000113','20000313']);
+            ->whereNotIn('tt_client_bonus_with_dummy.client_acc_id',['20000113','20000313'])
+            ->leftjoin('cysislb_gts_client_acc','cysislb_gts_client_acc.client_acc_id','=','tt_client_bonus_with_dummy.client_acc_id');
         foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
