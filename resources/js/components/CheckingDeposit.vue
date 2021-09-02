@@ -10,6 +10,7 @@
           :state="Boolean(file)"
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
+          accept=".csv, .xlsx, .xls"
         ></b-form-file>
       </b-col>
     </b-row>
@@ -42,7 +43,18 @@
     </b-row>
     <b-row class="mt-3">
       <b-col>
-        <b-form-select></b-form-select>
+        <b-form-select
+          v-model="selectedDate"
+          :options="dates"
+          @change="onChange"
+        >
+          <template #first>
+            <b-form-select-option
+              :value="null"
+              disabled
+            >請選擇上載日期</b-form-select-option>
+          </template>
+        </b-form-select>
       </b-col>
       <b-col class="text-center">
         <b-pagination
@@ -55,7 +67,11 @@
         </b-pagination>
       </b-col>
       <b-col class="text-right">
-        <b-button variant="success"><i class="fas fa-file-download"></i> 下載Unknown Deposits</b-button>
+        <b-button
+          variant="success"
+          :disabled="!Boolean(selectedDate) || downloading"
+          @click="downloadUnknownDepositsExcel"
+        ><i class="fas fa-file-download"></i> 下載Unknown Deposits</b-button>
       </b-col>
     </b-row>
     <b-table
@@ -101,27 +117,89 @@ export default {
       fields: [],
       data: [],
       busy: false,
+      downloading: false,
       file: null,
       source: null,
       currentPage: 1,
       perPage: 20,
       totalRows: 0,
       progress: 0,
+      selectedDate: null,
+      dates: [],
     };
   },
   mixins: [CommonFunctionMixin],
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
-    this.load(1);
+    this.getDates();
+    // this.load(1);
   },
   beforeDestroy() {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
-    reload() {
+    downloadUnknownDepositsExcel(e) {
+      const self = this;
+      self.downloading = true;
+      axios
+        .post(
+          "DownloadUnknownDepositsExcel",
+          {
+            uploaded_at: self.selectedDate,
+          },
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute(
+            "download",
+            `UnknownDeposits${self.selectedDate}.xlsx`
+          );
+          link.click();
+          self.downloading = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          self.downloading = false;
+        });
+    },
+    getDates() {
+      const self = this;
+      axios
+        .get("CheckingDepositDates", {
+          cancelToken: self.source.token,
+        })
+        .then((res) => {
+          console.log(res);
+          self.dates = res.data;
+        })
+        .catch((error) => {
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
+            console.log(error);
+          }
+          self.checkLogin(error);
+        });
+    },
+    // reload() {
+    //   this.data = [];
+    //   this.busy = true;
+    //   this.load(1);
+    // },
+    onChange() {
+      this.source.cancel("Operation canceled by the user.");
+      this.source = axios.CancelToken.source();
       this.data = [];
       this.busy = true;
+      this.progress = 0;
+      this.totalRows = 0;
       this.load(1);
     },
     load(pageNumber) {
@@ -131,6 +209,7 @@ export default {
           params: {
             perPage: self.perPage,
             pageNumber: pageNumber,
+            uploaded_at: self.selectedDate,
           },
           cancelToken: self.source.token,
         })
@@ -170,6 +249,8 @@ export default {
         .post("CheckingDeposit", formData)
         .then((res) => {
           console.log(res);
+          self.getDates();
+          alert("上載及核對完成，請選擇上載日期並下載Unknown Deposits");
         })
         .catch((error) => {
           console.log(error);

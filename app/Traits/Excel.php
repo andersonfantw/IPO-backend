@@ -8,6 +8,7 @@ use App\Exports\ClientHKFundOutRequestsExport2;
 use App\Exports\ClientHKFundOutRequestsExport;
 use App\Exports\ClientOverseasFundOutRequestsExport;
 use App\Imports\ClientFundInternalTransferRequestsImport;
+use App\Exports\UnknownDepositsExport;
 use Excel as _Excel;
 use Storage;
 
@@ -51,5 +52,10 @@ trait Excel
     public function exportClientFundInternalTransferFundInRequests()
     {
         return _Excel::download(new ClientFundInternalTransferRequestsImport(), 'FundInternalTransferFundInRequests.xlsx');
+    }
+
+    public function exportUnknownDeposits(String $date)
+    {
+        return _Excel::download(new UnknownDepositsExport(), "UnknownDeposits$date.xlsx");
     }
 }

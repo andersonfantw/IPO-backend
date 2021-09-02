@@ -162,6 +162,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('CancelCanClose', 'AyersAccountController@cancelCanClose');
     });
     Route::resource('CheckingDeposit', 'CheckingDepositController');
+    Route::any('CheckingDepositDates', 'CheckingDepositController@getDates');
+    Route::post('DownloadUnknownDepositsExcel', 'CheckingDepositController@downloadUnknownDeposits');
 
 });
 
@@ -207,7 +209,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
 
-    Route::prefix('api')->group(function(){
+    Route::prefix('api')->group(function () {
         // Anderson 2021-05-31 start
         Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
         Route::resource('AccountReportSendingSummary.AccountReport', 'AccountReportController');
