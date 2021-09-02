@@ -21,5 +21,6 @@ class UnknownDeposit extends Model
         'account_name',
         'trading_place',
         'status',
+        'uploaded_at',
     ];
 }
