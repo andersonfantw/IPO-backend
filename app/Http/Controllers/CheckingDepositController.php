@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Imports\UnknownDepositsImport;
+use App\Traits\Excel;
 use App\UnknownDeposit;
 use Carbon\Carbon;
-use Excel;
+use DB;
+use Excel as _Excel;
 use Illuminate\Http\Request;
 
 class CheckingDepositController extends Controller
 {
+    use Excel;
+
     private $fields = null;
     private $filter_type = null;
 
@@ -22,23 +26,25 @@ class CheckingDepositController extends Controller
     {
         $this->fields = [
             ['key' => 'transaction_date', 'sortable' => true],
-            ['key' => 'value_date', 'sortable' => true],
+            // ['key' => 'value_date', 'sortable' => true],
             ['key' => 'type', 'sortable' => true],
             ['key' => 'identification_code', 'sortable' => true],
             ['key' => 'amount_in', 'sortable' => true],
             ['key' => 'balance', 'sortable' => true],
             ['key' => 'account_no', 'sortable' => true],
             ['key' => 'account_name', 'sortable' => true],
+            ['key' => 'uploaded_at', 'sortable' => true],
         ];
         $this->filter_type = [
             'transaction_date' => 'betweenDate',
-            'value_date' => 'betweenDate',
+            // 'value_date' => 'betweenDate',
             'type' => 'equals',
             'identification_code' => 'startsWith',
             'amount_in' => 'equals',
             'balance' => 'equals',
             'account_no' => 'startsWith',
             'account_name' => 'betweenDate',
+            'uploaded_at' => 'betweenDate',
         ];
     }
 
@@ -49,13 +55,26 @@ class CheckingDepositController extends Controller
      */
     public function index(Request $request)
     {
-        $today = Carbon::today()->toDateString();
-        $UnknownDeposits = UnknownDeposit::where('created_at', 'like', "$today%")->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $today = Carbon::today()->toDateString();
+        $UnknownDeposits = UnknownDeposit::where('uploaded_at', $request->input('uploaded_at'))->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         return json_encode([
             'fields' => $this->fields,
             'filter_type' => $this->filter_type,
             'data' => $UnknownDeposits,
         ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getDates(Request $request)
+    {
+        $dates = UnknownDeposit::select(DB::raw('distinct uploaded_at as value, uploaded_at as text'))->orderBy('uploaded_at', 'desc')->get();
+        return $dates;
+        // $created_at = [];
+        // foreach ($dates as $date) {
+        //     $created_at[] = $date->created_at;
+        // }
+        // return json_encode([
+        //     'data' => $created_at,
+        // ], JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -79,7 +98,7 @@ class CheckingDepositController extends Controller
         $today = Carbon::today()->toDateString();
         UnknownDeposit::where('created_at', 'like', "$today%")->delete();
         // (new UnknownDepositsImport)->import($request->file('file')->path(), null, \Maatwebsite\Excel\Excel::XLSX);
-        Excel::import(new UnknownDepositsImport, $request->file('file')->path());
+        _Excel::import(new UnknownDepositsImport, $request->file('file')->path());
         // return $request;
     }
 
@@ -126,5 +145,10 @@ class CheckingDepositController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function downloadUnknownDeposits(Request $request)
+    {
+        return $this->exportUnknownDeposits($request->input('uploaded_at'));
     }
 }

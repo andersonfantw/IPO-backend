@@ -2,6 +2,7 @@
 namespace App\Imports;
 
 use App\UnknownDeposit;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -61,6 +62,7 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
             unset($row['對方戶名']);
             $row['trading_place'] = $row['交易場所'];
             unset($row['交易場所']);
+            $row['uploaded_at'] = Carbon::today()->toDateString();
             // var_dump($row);
             return new UnknownDeposit($row);
         } catch (QueryException $e) {
