@@ -26,7 +26,7 @@
                     </div>
                 </b-col>
                 <b-col cols="5">
-                    <div class="text-dark">
+                    <div v-if="items" class="text-dark">
                         共 {{items.length}} 筆記錄
                     </div>
                 </b-col>
@@ -51,8 +51,8 @@
                 <template #head(dummy)>
                     <b-form-select v-model="filter.dummy" :options="dummy_options"></b-form-select>
                 </template>
-                <template #cell(seq)>
-                    {{seq}}
+                <template #cell(seq)="row">
+                    {{row.index+1}}
                 </template>
                 <template #cell(application_fee)="row">
                     <v-money :value="row.item.application_fee?row.item.application_fee:0"></v-money>
@@ -195,10 +195,12 @@ export default {
             this.myGet(function(response){
                 _this.items = response.data
                 _this.seq=0
-                _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
-                _this.product_id_options.unshift({value:'',text:'產品代號'})
-                _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
-                _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
+                if(_this.items){
+                    _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
+                    _this.product_id_options.unshift({value:'',text:'產品代號'})
+                    _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
+                    _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
+                }
             },Object.assign({},{ uuid:this.uuid, month:this.month},this.filter),this.url('detail'))
         },
         store(){

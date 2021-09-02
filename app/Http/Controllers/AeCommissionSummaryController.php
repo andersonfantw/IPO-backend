@@ -471,7 +471,7 @@ class AeCommissionSummaryController extends HomeController
             ->whereDate('allot_date','>=',$month)
             ->whereDate('allot_date','<=',$end)
             ->whereNotIn('client_acc_id',['20000113','20000313']);
-        foreach(['cate','product_id','client_acc_id','dummy'] as $item){
+            foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
         return [
