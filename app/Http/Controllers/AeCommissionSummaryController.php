@@ -465,7 +465,7 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $month = ($input['cate']=='principal')?Carbon::parse($input['month'])->subMonth()->format('Y-m-d'):$input['month'];
+        $month = (($input['cate']??'')=='principal')?Carbon::parse($input['month'])->subMonth()->format('Y-m-d'):$input['month'];
         $end = Carbon::parse($month)->endOfMonth()->format('Y-m-d');
         $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$month)
