@@ -466,7 +466,9 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
+        $TempClientBonusWithDummy = TempClientBonusWithDummy::select()
+            ->selectRaw("case cate when 'principal' then '開戶激勵＿專戶' when 'fee08' then '申購手續費_現金戶' when 'fee13' then '申購手續費_專戶' when 'interest08' then '利息收支_現金戶' when 'interest13' then '利息收支_專戶' when 'alloted08' then '中籤收入_現金戶' when 'alloted13' then '中籤收入_專戶' when 'sell08' then '二級市場收入_現金戶' when 'sell13' then '二級市場收入_專戶' end as cate")
+            ->whereIn('ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$input['month'])
             ->whereDate('allot_date','<=',Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d'))
             ->whereNotIn('client_acc_id',['20000113','20000313']);
@@ -481,7 +483,7 @@ class AeCommissionSummaryController extends HomeController
     }
     public function detailCsv(Request $request){
         extract($this->detail($request));
-        return (new CommissionDetail($data->map()))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
+        return (new CommissionDetail($data))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
     }
     public function detailPdf(Request $request){
         $result = $this->detail($request);
