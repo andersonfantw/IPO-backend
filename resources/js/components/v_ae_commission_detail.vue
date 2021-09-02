@@ -26,7 +26,8 @@
                     </div>
                 </b-col>
                 <b-col cols="5">
-                    <div v-if="items" class="text-dark">
+                    <b-spinner v-if="busy" class="text-dark" label="Loading..." small></b-spinner>
+                    <div v-else-if="items" class="text-dark">
                         共 {{items.length}} 筆記錄
                     </div>
                 </b-col>
@@ -84,6 +85,7 @@ export default {
         return {
           // alert
           dismissCountDown: 0,
+          busy: false,
           dirty: false,
           month_options:[],
           seq:0,
@@ -192,7 +194,9 @@ export default {
         },
         index(){
             let _this = this
+            this.busy = true
             this.myGet(function(response){
+                _this.busy=false
                 _this.items = response.data
                 _this.seq=0
                 if(_this.items){
