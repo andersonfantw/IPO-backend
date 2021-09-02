@@ -6,8 +6,9 @@ use App\TempClientBonusWithDummy;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class CommissionDetail implements FromCollection, WithHeadings
+class CommissionDetail implements FromCollection, WithHeadings, WithMapping
 {
     use Exportable;
 
@@ -24,15 +25,33 @@ class CommissionDetail implements FromCollection, WithHeadings
             '交易日',
             '交收日',
             '客戶帳號',
+            '客戶姓名',
             '產品代碼',
             '項目收入',
-            'bonus_application',
             '項目成本',
-            'ae_application_const',
             '帳戶累積收入',
             '13帳戶累積收入序號',
             '是否計算佣金',
             '獎金'
+        ];
+    }
+
+    public function map($data):array
+    {
+        return [
+            $data->cate,
+            $data->ae_code,
+            $data->buss_date,
+            $data->allot_date,
+            $data->client_acc_id,
+            $data->name,
+            $data->product_id,
+            $data->application_fee,
+            $data->application_cost,
+            $data->accumulate_performance,
+            $data->seq,
+            $data->dummy,
+            $data->bonus_application1,
         ];
     }
 
