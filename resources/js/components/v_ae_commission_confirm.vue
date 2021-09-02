@@ -450,6 +450,7 @@ export default {
             formdata.append('month',this.month)
             this.crudUpdate(this.uuid, function(response){
                 if(response.ok) _this.dirty = false
+                _this.$bus.$emit('commission_comfirm::update')
             },formdata);
         },
         del(){

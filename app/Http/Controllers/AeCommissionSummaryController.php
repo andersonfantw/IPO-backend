@@ -465,13 +465,13 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $month = ($input['cate']=='principal')?Carbon::parse($input['month'])->subMonth()->format('Y-m-d'):$input['month'];
+        $month = (($input['cate']??'')=='principal')?Carbon::parse($input['month'])->subMonth()->format('Y-m-d'):$input['month'];
         $end = Carbon::parse($month)->endOfMonth()->format('Y-m-d');
         $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$month)
             ->whereDate('allot_date','<=',$end)
             ->whereNotIn('client_acc_id',['20000113','20000313']);
-        foreach(['cate','product_id','client_acc_id','dummy'] as $item){
+            foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
         return [
@@ -484,9 +484,9 @@ class AeCommissionSummaryController extends HomeController
         extract($this->detail($request));
         return response()->stream(function() use($data){
             $file = fopen('php://output', 'w');
-            fputcsv($file,['id','cate','ae_code','buss_date','allot_date','client_acc_id','product_id','application_fee','bonus_application','application_cost','ae_application_const','accumulate_performance','seq','dummy','bonus_application1']);
+            fputcsv($file,['項目','AE代碼','交易日','交收日','客戶帳號','產品代碼','項目收入','bonus_application','項目成本','ae_application_const','帳戶累積收入','13帳戶累積收入序號','是否計算佣金','獎金']);
             foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
-            fclose($file);    
+            fclose($file);
         },200,[
             'Content-Type'=>'text/csv',
             'Content-Disposition'=>'attachment; filename=' . $month.$ae.'佣金明細.csv',

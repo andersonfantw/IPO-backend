@@ -314,6 +314,7 @@ export default {
         }
     },
     created() {
+        this.$bus.$on('commission_comfirm::update',this.index)
         let _this=this
         // 由2021-07開始
         for(let y=2021;y<=(new Date()).getFullYear();y++){
@@ -333,6 +334,9 @@ export default {
             _this.staff_options.unshift({value:'all', text:'全部'})
         },'',this.url('/list/staff'))
         this.index()
+    },
+    beforeDestroy(){
+        this.$bus.$off("commission_comfirm::update");
     },
     methods: {
         // alert

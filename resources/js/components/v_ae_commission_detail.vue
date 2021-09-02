@@ -18,11 +18,17 @@
 
         <div class="m-4">
             <b-row class="filter text-white">
-                <b-col cols="8">
+                <b-col cols="3">
                     <div>
                         <!-- <b-button class="mb-3" variant="success" :disabled="dirty"><i class="fas fa-cogs"></i> 重製PDF報表</b-button> -->
                         <b-button class="mb-3" variant="success" :disabled="dirty" @click="downloadCsv"><i class="fas fa-file-csv"></i> 下載當月CSV佣金明細</b-button>
                         <!-- <b-button class="mb-3" variant="success" :disabled="dirty" @click="downloadPdf"><i class="far fa-file-pdf"></i> 下載當月PDF佣金明細</b-button> -->
+                    </div>
+                </b-col>
+                <b-col cols="5">
+                    <b-spinner v-if="busy" class="text-dark" label="Loading..." small></b-spinner>
+                    <div v-else-if="items" class="text-dark">
+                        共 {{items.length}} 筆記錄
                     </div>
                 </b-col>
                 <b-col cols="4">
@@ -45,6 +51,9 @@
                 </template>
                 <template #head(dummy)>
                     <b-form-select v-model="filter.dummy" :options="dummy_options"></b-form-select>
+                </template>
+                <template #cell(seq)="row">
+                    {{row.index+1}}
                 </template>
                 <template #cell(application_fee)="row">
                     <v-money :value="row.item.application_fee?row.item.application_fee:0"></v-money>
@@ -76,8 +85,10 @@ export default {
         return {
           // alert
           dismissCountDown: 0,
+          busy: false,
           dirty: false,
           month_options:[],
+          seq:0,
           ae_options:[
               {value:'all', text:'全部'},
               {value:'e550be72-fcb1-4779-980f-f255ff6eb041', text:'梧桐花開'},
@@ -85,37 +96,38 @@ export default {
           ],
           cate_options:[
               {value:'', text:'項目'},
-              {value:'principal', text:'principal'},
-              {value:'fee08', text:'fee08'},
-              {value:'fee13', text:'fee13'},
-              {value:'interest08', text:'interest08'},
-              {value:'interest13', text:'interest13'},
-              {value:'alloted08', text:'alloted08'},
-              {value:'alloted13', text:'alloted13'},
-              {value:'sell08', text:'sell08'},
-              {value:'sell13', text:'sell13'},
+              {value:'principal', text:'開戶激勵＿專戶'},
+              {value:'fee08', text:'申購手續費_現金戶'},
+              {value:'fee13', text:'申購手續費_專戶'},
+              {value:'interest08', text:'利息收支_現金戶'},
+              {value:'interest13', text:'利息收支_專戶'},
+              {value:'alloted08', text:'中籤收入_現金戶'},
+              {value:'alloted13', text:'中籤收入_專戶'},
+              {value:'sell08', text:'二級市場收入_現金戶'},
+              {value:'sell13', text:'二級市場收入_專戶'},
           ],
           client_acc_id_options:[],
           product_id_options:[
-              {value:'', text:'新股代號'},
+              {value:'', text:'產品代號'},
           ],
           dummy_options:[
-              {value:'', text:'是否列入計算'},
+              {value:'', text:'列計算'},
               {value:'0', text:'否'},
               {value:'1', text:'是'},
           ],
           fields:[
+              { key:'seq', label:'序號' },
               { key:'cate', label:'項目', sortable: true },
-              { key:'buss_date', label:'交易日期', sortable: true },
-              { key:'client_acc_id', label:'客戶ID', class: 'text-center', sortable: true },
-              { key:'product_id', label:'新股代號', class: 'text-center', sortable: true },
-              { key:'application_fee', label:'金額', class: 'text-right', sortable: true },
-              { key:'bonus_application', label:'佣金', class: 'text-right', sortable: true },
-              { key:'application_cost', label:'公司成本', class: 'text-right', sortable: true },
-              { key:'ae_application_cost', label:'AE成本', class: 'text-right', sortable: true },
-              { key:'accumulate_performance', label:'累計', class: 'text-right', sortable: true },
-              { key:'seq', label:'筆數', class: 'text-center' },
-              { key:'dummy', label:'是否列入計算', class: 'text-center' },
+              { key:'buss_date', label:'交易日', sortable: true },
+              { key:'allot_date', label:'交收日', sortable: true },
+              { key:'client_acc_id', label:'客戶帳號', class: 'text-center', sortable: true },
+              { key:'product_id', label:'產品代號', class: 'text-center', sortable: true },
+              { key:'application_fee', label:'項目收入', class: 'text-right', sortable: true },
+              { key:'application_cost', label:'項目成本', class: 'text-right', sortable: true },
+              { key:'accumulate_performance', label:'帳戶累積收入', class: 'text-right', sortable: true },
+              { key:'seq', label:'13累積序號', class: 'text-center' },
+              { key:'dummy', label:'是否計算佣金', class: 'text-center' },
+              { key:'bonus_application1', label:'獎金', class: 'text-center' },
           ],
           items:[
             {
@@ -182,12 +194,17 @@ export default {
         },
         index(){
             let _this = this
+            this.busy = true
             this.myGet(function(response){
+                _this.busy=false
                 _this.items = response.data
-                _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
-                _this.product_id_options.unshift({value:'',text:'新股代號'})
-                _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
-                _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
+                _this.seq=0
+                if(_this.items){
+                    _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
+                    _this.product_id_options.unshift({value:'',text:'產品代號'})
+                    _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
+                    _this.client_acc_id_options.unshift({value:'',text:'客戶帳號'})
+                }
             },Object.assign({},{ uuid:this.uuid, month:this.month},this.filter),this.url('detail'))
         },
         store(){
