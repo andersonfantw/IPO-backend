@@ -26,7 +26,7 @@
                     </div>
                 </b-col>
                 <b-col cols="5">
-                    <div>
+                    <div class="text-dark">
                         共 {{items.length}} 筆記錄
                     </div>
                 </b-col>
@@ -50,6 +50,9 @@
                 </template>
                 <template #head(dummy)>
                     <b-form-select v-model="filter.dummy" :options="dummy_options"></b-form-select>
+                </template>
+                <template #cell(seq)>
+                    {{++seq}}
                 </template>
                 <template #cell(application_fee)="row">
                     <v-money :value="row.item.application_fee?row.item.application_fee:0"></v-money>
@@ -83,6 +86,7 @@ export default {
           dismissCountDown: 0,
           dirty: false,
           month_options:[],
+          seq:0,
           ae_options:[
               {value:'all', text:'全部'},
               {value:'e550be72-fcb1-4779-980f-f255ff6eb041', text:'梧桐花開'},
@@ -110,6 +114,7 @@ export default {
               {value:'1', text:'是'},
           ],
           fields:[
+              { key:'seq', label:'序號' },
               { key:'cate', label:'項目', sortable: true },
               { key:'buss_date', label:'交易日', sortable: true },
               { key:'allot_date', label:'交收日', sortable: true },
@@ -189,6 +194,7 @@ export default {
             let _this = this
             this.myGet(function(response){
                 _this.items = response.data
+                _this.seq=0
                 _this.product_id_options = response.data.map(o=>o.product_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
                 _this.product_id_options.unshift({value:'',text:'產品代號'})
                 _this.client_acc_id_options = response.data.map(o=>o.client_acc_id).filter(function(v,i,s){return s.indexOf(v)===i}).map(o=>{return {value:o, text:o}})
