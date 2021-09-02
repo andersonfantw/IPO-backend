@@ -52,7 +52,7 @@
                     <b-form-select v-model="filter.dummy" :options="dummy_options"></b-form-select>
                 </template>
                 <template #cell(seq)>
-                    {{++seq}}
+                    {{seq}}
                 </template>
                 <template #cell(application_fee)="row">
                     <v-money :value="row.item.application_fee?row.item.application_fee:0"></v-money>
