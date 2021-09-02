@@ -484,9 +484,9 @@ class AeCommissionSummaryController extends HomeController
         extract($this->detail($request));
         return response()->stream(function() use($data){
             $file = fopen('php://output', 'w');
-            fputcsv($file,['id','cate','ae_code','buss_date','allot_date','client_acc_id','product_id','application_fee','bonus_application','application_cost','ae_application_const','accumulate_performance','seq','dummy','bonus_application1']);
+            fputcsv($file,['序號','項目','AE代碼','交易日','交收日','客戶帳號','產品代碼','項目收入','bonus_application','項目成本','ae_application_const','帳戶累積收入','13帳戶累積收入序號','是否計算佣金','獎金']);
             foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
-            fclose($file);    
+            fclose($file);
         },200,[
             'Content-Type'=>'text/csv',
             'Content-Disposition'=>'attachment; filename=' . $month.$ae.'佣金明細.csv',
