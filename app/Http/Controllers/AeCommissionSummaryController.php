@@ -484,7 +484,7 @@ class AeCommissionSummaryController extends HomeController
         extract($this->detail($request));
         return response()->stream(function() use($data){
             $file = fopen('php://output', 'w');
-            fputcsv($file,['序號','項目','AE代碼','交易日','交收日','客戶帳號','產品代碼','項目收入','bonus_application','項目成本','ae_application_const','帳戶累積收入','13帳戶累積收入序號','是否計算佣金','獎金']);
+            fputcsv($file,['項目','AE代碼','交易日','交收日','客戶帳號','產品代碼','項目收入','bonus_application','項目成本','ae_application_const','帳戶累積收入','13帳戶累積收入序號','是否計算佣金','獎金']);
             foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
             fclose($file);
         },200,[

@@ -18,11 +18,16 @@
 
         <div class="m-4">
             <b-row class="filter text-white">
-                <b-col cols="8">
+                <b-col cols="3">
                     <div>
                         <!-- <b-button class="mb-3" variant="success" :disabled="dirty"><i class="fas fa-cogs"></i> 重製PDF報表</b-button> -->
                         <b-button class="mb-3" variant="success" :disabled="dirty" @click="downloadCsv"><i class="fas fa-file-csv"></i> 下載當月CSV佣金明細</b-button>
                         <!-- <b-button class="mb-3" variant="success" :disabled="dirty" @click="downloadPdf"><i class="far fa-file-pdf"></i> 下載當月PDF佣金明細</b-button> -->
+                    </div>
+                </b-col>
+                <b-col cols="5">
+                    <div>
+                        共 {{items.length}} 筆記錄
                     </div>
                 </b-col>
                 <b-col cols="4">
