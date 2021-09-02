@@ -394,7 +394,7 @@ class AeCommissionSummaryController extends HomeController
                     +$hash['interest']['application_fee'] 
                     +$hash['alloted']['application_fee'] 
                     +$hash['sell']['application_fee'],
-                'content' => $hash['principal']['content'],
+                'content' => $hash['principal']['content']??'',
             );
             $arr1['subtitle'] = $arr1['excitation'] + $arr1['commission1'] + $arr1['commission2'];
             $arr1['reservations'] = ($arr1['codes']==$arr1['uuid'])?0:$arr1['subtitle']/10;
@@ -483,7 +483,7 @@ class AeCommissionSummaryController extends HomeController
     }
     public function detailCsv(Request $request){
         extract($this->detail($request));
-        return (new CommissionDetail($data))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
+        return (new CommissionDetail($data->map()))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
     }
     public function detailPdf(Request $request){
         $result = $this->detail($request);
