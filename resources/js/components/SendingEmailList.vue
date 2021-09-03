@@ -209,7 +209,7 @@ export default {
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.busy = true;
         axios
-          .post("api/OpenAccountEmail/send", {
+          .post("SendOpenAccountEmail", {
             clients: self.selectedClients,
             User: self.User,
           })

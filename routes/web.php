@@ -164,6 +164,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('CheckingDeposit', 'CheckingDepositController');
     Route::any('CheckingDepositDates', 'CheckingDepositController@getDates');
     Route::post('DownloadUnknownDepositsExcel', 'CheckingDepositController@downloadUnknownDeposits');
+    Route::post('SendOpenAccountEmail', 'EmailController@sendOpenAccountEmail');
 
 });
 
