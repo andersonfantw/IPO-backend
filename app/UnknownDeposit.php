@@ -23,4 +23,9 @@ class UnknownDeposit extends Model
         'status',
         'uploaded_at',
     ];
+
+    public function ClientDepositIdentificationCode()
+    {
+        return $this->belongsTo('App\ClientDepositIdentificationCode', 'identification_code', 'identification_code');
+    }
 }

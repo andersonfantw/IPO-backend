@@ -10,7 +10,7 @@
           :state="Boolean(file)"
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
-          accept=".xlsx"
+          accept=".xlsx, .xls"
         ></b-form-file>
       </b-col>
     </b-row>
