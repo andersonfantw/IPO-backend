@@ -49,7 +49,8 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
             unset($row['摘要']);
             $row['remark'] = $row['備註'];
             unset($row['備註']);
-            $row['identification_code'] = null;
+            preg_match("/CYSS[0-9a-zA-Z]{5}/i", $row['remark'], $matches);
+            $row['identification_code'] = empty($matches) ? null : $matches[0];
             $row['amount_in'] = $row['收入金額'];
             unset($row['收入金額']);
             $row['balance'] = $row['餘額'];
