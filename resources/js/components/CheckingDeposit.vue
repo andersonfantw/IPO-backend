@@ -43,20 +43,27 @@
     </b-row>
     <b-row class="mt-3">
       <b-col>
-        <b-form-select
-          v-model="selectedDate"
-          :options="dates"
-          @change="onChange"
-        >
-          <template #first>
-            <b-form-select-option
-              :value="null"
-              disabled
-            >請選擇上載日期</b-form-select-option>
-          </template>
-        </b-form-select>
+        <b-input-group>
+          <b-form-select
+            v-model="selectedDate"
+            :options="dates"
+            @change="onChange"
+          >
+            <template #first>
+              <b-form-select-option
+                :value="null"
+                disabled
+              >請選擇上載日期</b-form-select-option>
+            </template>
+          </b-form-select>
+          <b-button
+            variant="success"
+            :disabled="!Boolean(selectedDate)"
+            @click="reload"
+          ><i class="fas fa-sync"></i></b-button>
+        </b-input-group>
       </b-col>
-      <b-col class="text-center">
+      <b-col>
         <b-pagination
           v-if="totalRows > 0"
           v-model="currentPage"
@@ -98,14 +105,23 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="center"
-    >
-    </b-pagination>
+    <b-row class="mt-3">
+      <b-col>
+        {{totalRows}} Record(s)
+      </b-col>
+      <b-col>
+        <b-pagination
+          v-if="totalRows > 0"
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        >
+        </b-pagination>
+      </b-col>
+      <b-col>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 <script>
@@ -131,7 +147,7 @@ export default {
   mixins: [CommonFunctionMixin],
   created() {
     this.source = axios.CancelToken.source();
-    this.busy = true;
+    // this.busy = true;
     this.getDates();
     // this.load(1);
   },
@@ -188,12 +204,7 @@ export default {
           self.checkLogin(error);
         });
     },
-    // reload() {
-    //   this.data = [];
-    //   this.busy = true;
-    //   this.load(1);
-    // },
-    onChange() {
+    reload() {
       this.source.cancel("Operation canceled by the user.");
       this.source = axios.CancelToken.source();
       this.data = [];
@@ -201,6 +212,9 @@ export default {
       this.progress = 0;
       this.totalRows = 0;
       this.load(1);
+    },
+    onChange() {
+      this.reload();
     },
     load(pageNumber) {
       const self = this;

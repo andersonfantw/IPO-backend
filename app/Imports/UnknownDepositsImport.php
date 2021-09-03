@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use App\Traits\Algorithm;
 use App\UnknownDeposit;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -9,11 +10,12 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
-class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
+class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, WithUpserts
 {
-    use Importable;
+    use Importable, Algorithm;
 
     public function __construct()
     {
@@ -49,7 +51,21 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
             unset($row['摘要']);
             $row['remark'] = $row['備註'];
             unset($row['備註']);
-            preg_match("/CYSS[0-9a-zA-Z]{5}/i", $row['remark'], $matches);
+
+            $summary = $row['summary'];
+            $remark = $row['remark'];
+            $LCS = '';
+            while ($this->LongestCommonSubstring($summary, $remark, $LCS) > 0) {
+                $summary = str_replace($LCS, '', $summary);
+                $remark = str_replace($LCS, '', $remark);
+            }
+            // do {
+            //     $this->LongestCommonSubstring($summary, $remark, $LCS);
+            //     $summary = str_replace($LCS, '', $summary);
+            //     $remark = str_replace($LCS, '', $remark);
+            // } while (!empty($LCS));
+
+            preg_match("/CYSS[0-9a-zA-Z]{5}/i", $remark, $matches);
             $row['identification_code'] = empty($matches) ? null : $matches[0];
             $row['amount_in'] = $row['收入金額'];
             unset($row['收入金額']);
@@ -85,6 +101,11 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
     public function batchSize(): int
     {
         return 1000;
+    }
+
+    public function uniqueBy()
+    {
+        return ['transaction_date', 'account_no', 'account_name', 'amount_in', 'balance'];
     }
 
 }

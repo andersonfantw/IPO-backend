@@ -33,6 +33,7 @@ class CheckingDepositController extends Controller
             ['key' => 'balance', 'sortable' => true],
             ['key' => 'account_no', 'sortable' => true],
             ['key' => 'account_name', 'sortable' => true],
+            ['key' => 'status', 'sortable' => true],
             ['key' => 'uploaded_at', 'sortable' => true],
         ];
         $this->filter_type = [
@@ -44,6 +45,7 @@ class CheckingDepositController extends Controller
             'balance' => 'equals',
             'account_no' => 'startsWith',
             'account_name' => 'betweenDate',
+            'status' => 'equals',
             'uploaded_at' => 'betweenDate',
         ];
     }
@@ -56,7 +58,8 @@ class CheckingDepositController extends Controller
     public function index(Request $request)
     {
         // $today = Carbon::today()->toDateString();
-        $UnknownDeposits = UnknownDeposit::where('uploaded_at', $request->input('uploaded_at'))->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        $UnknownDeposits = UnknownDeposit::where('uploaded_at', $request->input('uploaded_at'))
+            ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         return json_encode([
             'fields' => $this->fields,
             'filter_type' => $this->filter_type,
