@@ -325,6 +325,10 @@ export default {
                 })
             }
         }
+        // 選取倒數第二個項目為預設顯示
+        if(this.month_options){
+            if(this.month_options.length>1) this.filter.month = this.month_options[this.month_options.length-2].value
+        }
         this.myGet(function(response){
             _this.ae_options = response
             _this.ae_options.unshift({value:'all', text:'全部'})
