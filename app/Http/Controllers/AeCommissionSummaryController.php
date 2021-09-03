@@ -9,6 +9,7 @@ use App\TempClientBonusWithDummy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+use App\Exports\CommissionDetail;
 use Carbon\Carbon;
 use PDF;
 use App\Traits\Report;
@@ -393,7 +394,7 @@ class AeCommissionSummaryController extends HomeController
                     +$hash['interest']['application_fee'] 
                     +$hash['alloted']['application_fee'] 
                     +$hash['sell']['application_fee'],
-                'content' => $hash['principal']['content'],
+                'content' => $hash['principal']['content']??'',
             );
             $arr1['subtitle'] = $arr1['excitation'] + $arr1['commission1'] + $arr1['commission2'];
             $arr1['reservations'] = ($arr1['codes']==$arr1['uuid'])?0:$arr1['subtitle']/10;
@@ -465,13 +466,14 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $month = (($input['cate']??'')=='principal')?Carbon::parse($input['month'])->subMonth()->format('Y-m-d'):$input['month'];
-        $end = Carbon::parse($month)->endOfMonth()->format('Y-m-d');
-        $TempClientBonusWithDummy = TempClientBonusWithDummy::whereIn('ae_code',explode(',',$AE['codes']))
-            ->whereDate('allot_date','>=',$month)
-            ->whereDate('allot_date','<=',$end)
-            ->whereNotIn('client_acc_id',['20000113','20000313']);
-            foreach(['cate','product_id','client_acc_id','dummy'] as $item){
+        $TempClientBonusWithDummy = TempClientBonusWithDummy::select('tt_client_bonus_with_dummy.ae_code','buss_date','allot_date','tt_client_bonus_with_dummy.client_acc_id','name','product_id','application_fee','application_cost','accumulate_performance','seq','dummy','bonus_application1')
+            ->selectRaw("case cate when 'principal' then '開戶激勵＿專戶' when 'fee08' then '申購手續費_現金戶' when 'fee13' then '申購手續費_專戶' when 'interest08' then '利息收支_現金戶' when 'interest13' then '利息收支_專戶' when 'alloted08' then '中籤收入_現金戶' when 'alloted13' then '中籤收入_專戶' when 'sell08' then '二級市場收入_現金戶' when 'sell13' then '二級市場收入_專戶' end as cate")
+            ->whereIn('tt_client_bonus_with_dummy.ae_code',explode(',',$AE['codes']))
+            ->whereDate('allot_date','>=',$input['month'])
+            ->whereDate('allot_date','<=',Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d'))
+            ->whereNotIn('tt_client_bonus_with_dummy.client_acc_id',['20000113','20000313'])
+            ->leftjoin('cysislb_gts_client_acc','cysislb_gts_client_acc.client_acc_id','=','tt_client_bonus_with_dummy.client_acc_id');
+        foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
         return [
@@ -482,18 +484,7 @@ class AeCommissionSummaryController extends HomeController
     }
     public function detailCsv(Request $request){
         extract($this->detail($request));
-        return response()->stream(function() use($data){
-            $file = fopen('php://output', 'w');
-            fputcsv($file,['項目','AE代碼','交易日','交收日','客戶帳號','產品代碼','項目收入','bonus_application','項目成本','ae_application_const','帳戶累積收入','13帳戶累積收入序號','是否計算佣金','獎金']);
-            foreach($data as $row) {fputcsv($file,array_values($row->toArray()));}
-            fclose($file);
-        },200,[
-            'Content-Type'=>'text/csv',
-            'Content-Disposition'=>'attachment; filename=' . $month.$ae.'佣金明細.csv',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        return (new CommissionDetail($data))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
     }
     public function detailPdf(Request $request){
         $result = $this->detail($request);
