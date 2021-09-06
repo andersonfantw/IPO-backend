@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Controller;
+use App\Controller as _Controller;
 use App\RoleControllerPermission;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,7 @@ class ControllerController extends Controller
      */
     public function store(Request $request)
     {
-        Controller::create([
+        _Controller::create([
             'name' => $request->input('name'),
         ]);
     }
@@ -82,7 +82,7 @@ class ControllerController extends Controller
      */
     public function destroy($id)
     {
-        Controller::destroy($id);
+        _Controller::destroy($id);
         RoleControllerPermission::where('controller_id', $id)->delete();
     }
 }
