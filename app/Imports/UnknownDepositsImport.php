@@ -3,23 +3,24 @@ namespace App\Imports;
 
 use App\Traits\Algorithm;
 use App\UnknownDeposit;
-use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
-class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, WithUpserts
+class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     use Importable, Algorithm;
 
-    public function __construct()
+    private $uploaded_at;
+
+    public function __construct(String $uploaded_at)
     {
         HeadingRowFormatter::default('none');
+        $this->uploaded_at = $uploaded_at;
     }
 
     public function model(array $row)
@@ -59,11 +60,6 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
                 $summary = str_replace($LCS, '', $summary);
                 $remark = str_replace($LCS, '', $remark);
             }
-            // do {
-            //     $this->LongestCommonSubstring($summary, $remark, $LCS);
-            //     $summary = str_replace($LCS, '', $summary);
-            //     $remark = str_replace($LCS, '', $remark);
-            // } while (!empty($LCS));
 
             preg_match("/CYSS[0-9a-zA-Z]{5}/i", $remark, $matches);
             $row['identification_code'] = empty($matches) ? null : $matches[0];
@@ -79,7 +75,7 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
             unset($row['對方戶名']);
             $row['trading_place'] = $row['交易場所'];
             unset($row['交易場所']);
-            $row['uploaded_at'] = Carbon::today()->toDateString();
+            $row['uploaded_at'] = $this->uploaded_at;
             // var_dump($row);
             return new UnknownDeposit($row);
         } catch (QueryException $e) {
@@ -101,11 +97,6 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
     public function batchSize(): int
     {
         return 1000;
-    }
-
-    public function uniqueBy()
-    {
-        return ['transaction_date', 'account_no', 'account_name', 'amount_in', 'balance'];
     }
 
 }

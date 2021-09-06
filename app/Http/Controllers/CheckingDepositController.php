@@ -98,11 +98,11 @@ class CheckingDepositController extends Controller
      */
     public function store(Request $request)
     {
-        $today = Carbon::today()->toDateString();
-        UnknownDeposit::where('uploaded_at', $today)->delete();
+        $now = Carbon::now()->toDateTimeString();
+        // UnknownDeposit::where('uploaded_at', $today)->delete();
         // (new UnknownDepositsImport)->import($request->file('file')->path(), null, \Maatwebsite\Excel\Excel::XLSX);
-        _Excel::import(new UnknownDepositsImport, $request->file('file')->path());
-        $UnknownDeposits = UnknownDeposit::has('ClientDepositIdentificationCode')->where('uploaded_at', $today)->update(['status' => 'matched']);
+        _Excel::import(new UnknownDepositsImport($now), $request->file('file')->path());
+        $UnknownDeposits = UnknownDeposit::has('ClientDepositIdentificationCode')->where('uploaded_at', $now)->update(['status' => 'matched']);
     }
 
     /**
