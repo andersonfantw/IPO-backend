@@ -258,6 +258,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/list/staff', 'VueController@getStaff');
         Route::resource('ipo_interest_list', 'IpoInterestListController');
         Route::resource('ipo_interest_import', 'IpoInterestImportController');
+
+        // 顧客資料修改
+        Route::resource('ClientDataUpdate','ClientDataUpdate');
         // Anderson 2021-05-31 end
     });
 });
