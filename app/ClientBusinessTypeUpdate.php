@@ -4,18 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientFinancialStatus extends Model
+class ClientBusinessTypeUpdate extends Model
 {
-    protected $table = 'client_financial_status';
+    protected $table = 'client_business_type_updates';
     protected $fillable = [
         'uuid',
-        'fund_source',
-        'other_fund_source',
-        'annual_income',
-        'net_assets',
+        'business_type',
+        'agree_direct_promotion',
+        'direct_promotion',
         'status',
         'remark',
-        'count_of_audits',
+        'issued_by',
+        'previewing_by',
     ];
 
     public function Client()

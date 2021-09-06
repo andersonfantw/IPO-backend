@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientFinancialStatus extends Model
+class ClientFinancialStatusUpdate extends Model
 {
-    protected $table = 'client_financial_status';
+    protected $table = 'client_financial_status_updates';
     protected $fillable = [
         'uuid',
         'fund_source',
@@ -15,7 +15,8 @@ class ClientFinancialStatus extends Model
         'net_assets',
         'status',
         'remark',
-        'count_of_audits',
+        'issued_by',
+        'previewing_by',
     ];
 
     public function Client()

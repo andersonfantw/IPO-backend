@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientInvestmentExperience extends Model
+class ClientInvestmentExperienceUpdate extends Model
 {
-    protected $table = 'client_investment_experience';
+    protected $table = 'client_investment_experience_updates';
     protected $fillable = [
         'uuid',
         'investment_objective',
@@ -19,7 +19,8 @@ class ClientInvestmentExperience extends Model
         'other_investment_experience',
         'status',
         'remark',
-        'count_of_audits',
+        'issued_by',
+        'previewing_by',
     ];
 
     public function Client()

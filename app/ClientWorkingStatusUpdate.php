@@ -4,14 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientAddressProofUpdate extends Model
+class ClientWorkingStatusUpdate extends Model
 {
-    protected $table = 'client_address_proof_updates';
+    protected $table = 'client_working_status_updates';
     protected $fillable = [
         'uuid',
-        'image',
-        'detailed_address',
-        'address_text',
+        'working_status',
+        'company_name',
+        'company_tel',
+        'school_name',
+        'industry',
+        'position',
+        'name_card_face',
         'status',
         'remark',
         'issued_by',
