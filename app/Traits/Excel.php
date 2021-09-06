@@ -7,8 +7,8 @@ use App\Exports\ClientFundInternalTransferRequestsExport;
 use App\Exports\ClientHKFundOutRequestsExport2;
 use App\Exports\ClientHKFundOutRequestsExport;
 use App\Exports\ClientOverseasFundOutRequestsExport;
-use App\Imports\ClientFundInternalTransferRequestsImport;
 use App\Exports\UnknownDepositsExport;
+use App\Imports\ClientFundInternalTransferRequestsImport;
 use Excel as _Excel;
 use Storage;
 
@@ -54,8 +54,8 @@ trait Excel
         return _Excel::download(new ClientFundInternalTransferRequestsImport(), 'FundInternalTransferFundInRequests.xlsx');
     }
 
-    public function exportUnknownDeposits(String $date)
+    public function exportUnknownDeposits(String $uploaded_at)
     {
-        return _Excel::download(new UnknownDepositsExport(), "UnknownDeposits$date.xlsx");
+        return _Excel::download(new UnknownDepositsExport($uploaded_at), "UnknownDeposits$uploaded_at.xlsx");
     }
 }
