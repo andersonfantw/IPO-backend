@@ -6,6 +6,7 @@
     <b-row class="mb-3">
       <b-col>
         <b-form-file
+          ref="file"
           v-model="file"
           :state="Boolean(file)"
           placeholder="Choose a file or drop it here..."
@@ -15,7 +16,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
+      <b-col class="text-right">
         <b-button
           variant="success"
           @click="upload"
@@ -93,6 +94,17 @@
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
     >
+      <template #cell(status)="data">
+        {{data.item.status}}
+        <i
+          v-if="data.item.status == 'matched'"
+          class="fas fa-check text-success"
+        ></i>
+        <i
+          v-else
+          class="fas fa-times text-danger"
+        ></i>
+      </template>
       <template #empty="scope">
         {{ scope.emptyText }}
       </template>
@@ -269,6 +281,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+      this.file = null;
     },
   },
   computed: {},
