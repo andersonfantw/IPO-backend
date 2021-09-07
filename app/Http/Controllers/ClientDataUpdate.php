@@ -69,7 +69,7 @@ class ClientDataUpdate extends Controller
                 ->where('client_investment_experience_updates.status','=','pending')
             )->union(ClientInvestmentOrientationUpdate::leftJoin('client_investment_orientation',function($join){
                 $join->on('client_investment_orientation_updates.uuid','=','client_investment_orientation.uuid')
-                ->on('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
+                ->where('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
             })->select('client_investment_orientation_updates.id','client_investment_orientation_updates.uuid')->selectRaw("'ClientInvestmentOrientationUpdate' as model")
                 ->selectRaw("json_object('question_text',client_investment_orientation_updates.question_text,'answer',client_investment_orientation_updates.answer) as updating")
                 ->selectRaw("json_object('question_text',client_investment_orientation.question_text,'answer',client_investment_orientation.answer) as original")
