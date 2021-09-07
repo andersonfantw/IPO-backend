@@ -68,8 +68,8 @@ class ClientDataUpdate extends Controller
                 ->selectRaw("json_object('investment_objective',client_investment_experience.investment_objective,'other_investment_objective',client_investment_experience.other_investment_objective,'stock',client_investment_experience.stock,'derivative_warrants',client_investment_experience.derivative_warrants,'cbbc',client_investment_experience.cbbc,'futures_and_options',client_investment_experience.futures_and_options,'bonds_funds',client_investment_experience.bonds_funds,'other_investment_experience',client_investment_experience.other_investment_experience) as original")
                 ->where('client_investment_experience_updates.status','=','pending')
             )->union(ClientInvestmentOrientationUpdate::leftJoin('client_investment_orientation',function($join){
-                $join->on('client_investment_orientation_updates.uuid','=','client_investment_orientation.uuid');
-                $join->on('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
+                $join->on('client_investment_orientation_updates.uuid','=','client_investment_orientation.uuid')
+                ->on('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
             })->select('client_investment_orientation_updates.id','client_investment_orientation_updates.uuid')->selectRaw("'ClientInvestmentOrientationUpdate' as model")
                 ->selectRaw("json_object('question_text',client_investment_orientation_updates.question_text,'answer',client_investment_orientation_updates.answer) as updating")
                 ->selectRaw("json_object('question_text',client_investment_orientation.question_text,'answer',client_investment_orientation.answer) as original")
