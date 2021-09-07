@@ -54,6 +54,7 @@ class ClientBankCardsController extends Controller
         $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->has('Client.AyersAccounts')
             ->where('type', '拼一手')
+            ->whereIn('status', ['approved', 'pending', 'rejected'])
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
