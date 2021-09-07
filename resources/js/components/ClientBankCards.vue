@@ -2,10 +2,6 @@
   <b-container fluid>
     <h1 class="text-warning text-center">
       添加銀行卡申請
-      <b-spinner
-        v-if="busy"
-        variant="warning"
-      ></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
@@ -32,7 +28,15 @@
           ></b-form-input>
         </b-input-group>
       </b-col>
-      <b-col></b-col>
+      <b-col>
+        <b-input-group prepend="狀態">
+          <b-form-select
+            v-model="filters['狀態']"
+            :options="狀態"
+          >
+          </b-form-select>
+        </b-input-group>
+      </b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -54,6 +58,24 @@
       <b-col>
       </b-col>
       <b-col>
+      </b-col>
+    </b-row>
+    <b-row
+      v-if="busy"
+      class="mt-3"
+    >
+      <b-col>
+        <b-progress
+          :max="100"
+          show-progress
+          animated
+          variant="success"
+        >
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress.toFixed(2)}%`"
+          ></b-progress-bar>
+        </b-progress>
       </b-col>
     </b-row>
     <b-row
@@ -149,6 +171,14 @@ export default {
       perPage: 20,
       FilterType: {},
       totalRows: 0,
+      progress: 0,
+      狀態: [
+        { value: null, text: "全部" },
+        { value: "approved", text: "approved" },
+        { value: "pending", text: "pending" },
+        { value: "rejected", text: "rejected" },
+      ],
+      source: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -160,8 +190,12 @@ export default {
     ClientBankCardDetails,
   },
   created() {
+    this.source = axios.CancelToken.source();
     this.busy = true;
     this.load(1);
+  },
+  beforeDestroy() {
+    this.source.cancel("Operation canceled by the user.");
   },
   methods: {
     showDetails(id) {
@@ -187,14 +221,21 @@ export default {
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
+          cancelToken: self.source.token,
         })
         .then((res) => {
           console.log(res);
           const data = res.data.data;
+          const total = res.data.total;
           self.fields = res.data.fields;
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
+          if (total <= self.perPage) {
+            self.progress = 100;
+          } else {
+            self.progress += (self.perPage / total) * 100;
+          }
           if (data.length >= self.perPage) {
             self.load(pageNumber + 1);
           } else {
@@ -202,7 +243,12 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
+          if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
+            console.log(error);
+          }
+          self.checkLogin(error);
         });
     },
     onFiltered(filteredItems) {
