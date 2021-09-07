@@ -27,6 +27,7 @@ class ClientBankCardsController extends Controller
             ['key' => '發送時間', 'sortable' => true],
             ['key' => '經手人', 'sortable' => true],
             ['key' => '審批時間', 'sortable' => true],
+            ['key' => '狀態', 'sortable' => true],
             ['key' => '操作'],
         ];
         $this->filter_type = [
@@ -39,6 +40,7 @@ class ClientBankCardsController extends Controller
             '發送時間' => 'betweenDate',
             '經手人' => 'startsWith',
             '審批時間' => 'betweenDate',
+            '狀態' => 'equals',
         ];
     }
 
@@ -50,7 +52,7 @@ class ClientBankCardsController extends Controller
     public function index(Request $request)
     {
         $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-            ->where('type', '拼一手')->whereIn('status', ['pending', 'approved'])
+            ->where('type', '拼一手')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
