@@ -123,6 +123,6 @@ Route::prefix('ClientCreditCards')->group(function () {
     Route::any('/list', 'ClientCreditCardsController@list');
 });
 
-Route::prefix('ClientAddressProofUpdates')->group(function () {
-    Route::any('/list', 'ClientAddressProofUpdatesController@list');
-});
+// Route::prefix('ClientAddressProofUpdates')->group(function () {
+//     Route::any('/list', 'ClientAddressProofUpdatesController@list');
+// });
