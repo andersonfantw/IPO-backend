@@ -52,14 +52,15 @@ class ClientBankCardsController extends Controller
     public function index(Request $request)
     {
         $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+            ->has('Client.AyersAccounts')
             ->where('type', '拼一手')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;
-            if ($Client->status != 'audited2') {
-                continue;
-            }
+            // if ($Client->status != 'audited2') {
+            //     continue;
+            // }
             $row = [];
             $AyersAccounts = [];
             foreach ($Client->AyersAccounts as $AyersAccount) {
