@@ -108,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Route::any('/ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController@index')->name('ClientCreditCardFundOutRequests');
 
-    Route::any('/ClientAddressProofUpdates', 'ClientAddressProofUpdatesController@index')->name('ClientAddressProofUpdates');
+    // Route::any('/ClientAddressProofUpdates', 'ClientAddressProofUpdatesController@index')->name('ClientAddressProofUpdates');
 
     Route::any('/AuditClientAddressProofUpdate', 'AuditClientAddressProofUpdateController@audit')->name('AuditClientAddressProofUpdate');
 
