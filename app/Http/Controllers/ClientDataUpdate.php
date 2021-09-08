@@ -78,8 +78,8 @@ class ClientDataUpdate extends Controller
                             $join->on('client_investment_orientation_updates.uuid','=','client_investment_orientation.uuid')
                             ->where('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
                         })->select('client_investment_orientation_updates.id','client_investment_orientation_updates.uuid','client_investment_orientation_updates.created_at')
-                        ->selectRaw("concat(client_investment_orientation_updates.question_text,':',client_investment_orientation_updates.answer) as updating")
-                        ->selectRaw("concat(client_investment_orientation.question_text,':',client_investment_orientation.answer) as original")
+                        ->selectRaw("concat('\"',client_investment_orientation_updates.question_text,'\":\"',client_investment_orientation_updates.answer,'\"') as updating")
+                        ->selectRaw("concat('\"',client_investment_orientation.question_text,'\":\"',client_investment_orientation.answer,'\"') as original")
                         ->where('client_investment_orientation_updates.status','=','pending')
                         ->getQuery(),'OU'
                     )->groupBy('uuid')
