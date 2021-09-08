@@ -99,7 +99,7 @@ class ClientDataUpdate extends Controller
         foreach($filter as $f){
             if($request->has($f)) $query->where($f,'like','%'.$input[$f].'%');
         }
-        return $query->paginate(30);
+        return $query->paginate(1);
     }
 
     /**
