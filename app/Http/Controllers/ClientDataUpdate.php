@@ -73,13 +73,22 @@ class ClientDataUpdate extends Controller
                     ->selectRaw("json_object('investment_objective',client_investment_experience.investment_objective,'other_investment_objective',client_investment_experience.other_investment_objective,'stock',client_investment_experience.stock,'derivative_warrants',client_investment_experience.derivative_warrants,'cbbc',client_investment_experience.cbbc,'futures_and_options',client_investment_experience.futures_and_options,'bonds_funds',client_investment_experience.bonds_funds,'other_investment_experience',client_investment_experience.other_investment_experience) as original")
                     ->where('client_investment_experience_updates.status','=','pending')
                 )->union(
-                    ClientInvestmentOrientationUpdate::leftJoin('client_investment_orientation',function($join){
-                        $join->on('client_investment_orientation_updates.uuid','=','client_investment_orientation.uuid')
-                        ->where('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
-                    })->select('client_investment_orientation_updates.id','client_investment_orientation_updates.uuid','client_investment_orientation_updates.created_at')->selectRaw("'ClientInvestmentOrientationUpdate' as model")
-                    ->selectRaw("json_object('question_text',client_investment_orientation_updates.question_text,'answer',client_investment_orientation_updates.answer) as updating")
-                    ->selectRaw("json_object('question_text',client_investment_orientation.question_text,'answer',client_investment_orientation.answer) as original")
-                    ->where('client_investment_orientation_updates.status','=','pending')
+                    DB::query()->fromSub(
+                        ClientInvestmentOrientationUpdate::leftJoin('client_investment_orientation',function($join){
+                            $join->on('client_investment_orientation_updates.uuid','=','client_investment_orientation.uuid')
+                            ->where('client_investment_orientation_updates.question_text','=','client_investment_orientation.question_text');
+                        })->select('client_investment_orientation_updates.id','client_investment_orientation_updates.uuid','client_investment_orientation_updates.created_at')
+                        ->selectRaw("concat(client_investment_orientation_updates.question_text,':',client_investment_orientation_updates.answer) as updating")
+                        ->selectRaw("concat(client_investment_orientation.question_text,':',client_investment_orientation.answer) as original")
+                        ->where('client_investment_orientation_updates.status','=','pending')
+                        ->getQuery(),'OU'
+                    )->groupBy('uuid')
+                    ->select('OU.uuid')
+                    ->selectRaw('min(OU.id) as id')
+                    ->selectRaw('min(OU.created_at) as created_at')
+                    ->selectRaw("'ClientInvestmentOrientationUpdate' as model")
+                    ->selectRaw("concat('{',group_concat(updating),'}') as updating")
+                    ->selectRaw("concat('{',group_concat(original),'}') as original")
                 )->union(ClientWorkingStatusUpdate::leftJoin('client_working_status','client_working_status_updates.uuid','=','client_working_status.uuid')
                     ->select('client_working_status_updates.id','client_working_status_updates.uuid','client_working_status_updates.created_at')->selectRaw("'ClientWorkingStatusUpdate' as model")
                     ->selectRaw("json_object('working_status',client_working_status_updates.working_status,'company_name',client_working_status_updates.company_name,'company_tel',client_working_status_updates.company_tel,'school_name',client_working_status_updates.school_name,'industry',client_working_status_updates.industry,'position',client_working_status_updates.position) as updating")
@@ -97,9 +106,9 @@ class ClientDataUpdate extends Controller
             })->select('model','t.id','name','client_ayers_account.client_id','phone as mobile','email','updating','original','t.created_at')
         ,'t2');
         foreach($filter as $f){
-            if($request->has($f)) $query->where($f,'like','%'.$input[$f].'%');
+            if($request->has($f) && ($input[$f]??'')!='') $query->where($f,'like','%'.$input[$f].'%');
         }
-        return $query->paginate(1);
+        return $query->paginate(30);
     }
 
     /**
