@@ -144,7 +144,7 @@ class MenuItemController extends Controller
                 'items' => [
                     [
                         'label' => "住址證明修改申請",
-                        'url' => 'ClientAddressProofUpdates',
+                        'url' => 'ClientDataUpdate',
                     ],
                 ],
             ],
