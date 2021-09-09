@@ -80,8 +80,14 @@
                     {{ cate_mapping[row.item.model] }}
                 </template>
                 <template #cell(modify)="row">
-                    <div v-for="(k) in Object.keys(row.item.revise)" :key="k">
-                        <p v-html="row.item.revise[k]"></p>
+                    <div v-for="(v,k) in row.item.updating" :key="k">
+                        <b-row>
+                            <b-col cols="4">{{k}}</b-col>
+                            <b-col cols="8">
+                                <span v-if="(((row.item.original)?(row.item.original.hasOwnProperty(k)?row.item.original[k]:''):'')==v)" class="text-gray">{{v}}</span>
+                                <b v-else class="text-success">{{v}}</b>
+                            </b-col>
+                        </b-row>
                     </div>
                 </template>
                 <template #cell(actions)="row">
@@ -100,6 +106,21 @@
 
         <!-- detail -->
         <b-sidebar id="client_data_detail" :title="'客戶資料修改 '+cate_mapping[target_item.model]" width="800px" backdrop shadow lazy>
+            <br />
+            <a href="javascript:;" class="hint text-dark" @click="dismissCountDown=20"><i class="fas fa-question-circle"></i></a>
+            <b-alert
+            :show="dismissCountDown"
+            dismissible
+            fade
+            class="m-4"
+            variant="dark"
+            @dismiss-count-down="countDownChanged"
+            >
+                <div @click="dismissCountDown=0">
+                    <p>使用說明：黑色文字為為變動的部分，綠色文字為有更動的項目。</p>
+                </div>
+            </b-alert>
+
             <h4>基本資料</h4>
             <b-table-simple>
                 <b-thead>
@@ -122,19 +143,23 @@
             <br />
             <h4>修改內容</h4>
             <b-table-simple>
-                <b-tbody v-for="(v,k) in target_item.updating" :key="k">
-                    <b-th>{{k}}</b-th>
-                    <b-td>
-                        <span v-if="(((target_item.original)?(target_item.original.hasOwnProperty(k)?target_item.original[k]:''):'')==v)" class="text-gray">{{v}}</span>
-                        <b v-else class="text-success">{{v}}</b>
-                    </b-td>
+                <b-tbody>
+                    <b-tr v-for="(v,k) in target_item.updating" :key="k">
+                        <b-th>{{k}}</b-th>
+                        <b-td>
+                            <span v-if="(((target_item.original)?(target_item.original.hasOwnProperty(k)?target_item.original[k]:''):'')==v)" class="text-gray">{{v}}</span>
+                            <b v-else class="text-success">{{v}}</b>
+                        </b-td>
+                    </b-tr>
                 </b-tbody>
             </b-table-simple>
             <br />
-            <h4>證明文件</h4>
-            <div v-for="(v,k) in target_item.images" :key="k">
-                <h5>{{k}}</h5>
-                <b-img :src="v"></b-img>
+            <div v-if="target_item.hasOwnProperty('images')">
+                <h4>證明文件</h4>
+                <div v-for="(v,k) in target_item.images" :key="k">
+                    <h5>{{k}}</h5>
+                    <b-img :src="v"></b-img>
+                </div>
             </div>
         </b-sidebar>
 
