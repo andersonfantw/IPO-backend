@@ -176,11 +176,11 @@
         </b-modal>
 
         <!-- ae commission confirm -->
-        <b-sidebar id="commission_confirm" :title="target_item.name + ' AE確認表'" lazy shadodw right>
+        <b-sidebar id="commission_confirm" width="80%" :title="target_item.name + ' AE確認表'" lazy backdrop shadodw left>
             <ae-commission-confirm :uuid="target_item.uuid" :month="target_item.month" ></ae-commission-confirm>
         </b-sidebar>
         <!-- ae commission detail -->
-        <b-sidebar id="commission_detail" :title="target_item.name + ' AE佣金明細'" lazy shadodw right>
+        <b-sidebar id="commission_detail" width="80%" :title="target_item.name + ' AE佣金明細'" lazy backdrop shadodw left>
             <ae-commission-detail :uuid="target_item.uuid" :month="target_item.month" ></ae-commission-detail>
         </b-sidebar>
 
@@ -457,9 +457,5 @@ export default {
     color:gray;
     float: right;
     margin: -20px 3px 0 0;
-}
-#commission_confirm,
-#commission_detail{
-    width:80%;
 }
 </style>

@@ -260,6 +260,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('ipo_interest_import', 'IpoInterestImportController');
 
         // 顧客資料修改
+        Route::get('/ClientDataUpdate/{model}/{id}', [App\Http\Controllers\ClientDataUpdate::class, 'show'])->where(['model'=>'[a-zA-Z]+','id'=>'[0-9]+']);
+        Route::get('/ClientDataUpdate/{model}/{id}/{image}', [App\Http\Controllers\ClientDataUpdate::class, 'image'])->where(['model'=>'[a-zA-Z]+','id'=>'[0-9]+','image'=>'[a-z]+']);
         Route::resource('ClientDataUpdate','ClientDataUpdate');
         // Anderson 2021-05-31 end
     });

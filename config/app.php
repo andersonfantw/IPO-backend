@@ -168,7 +168,7 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Intervention\Image\ImageServiceProvider::class,
         Cuby\Meteorsis\MeteorsisProvider::class,
         
         /*
@@ -234,7 +234,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
     'activity_id' => env('IPO_ACTIVITY_PERIOD_ID'),
