@@ -36,6 +36,7 @@ import AccountReportSendingSummary from "./components/AccountReportSendingSummar
 import NotificationSummary from "./components/NotificationSummary.vue";
 import AeCommissionSummary from "./components/AeCommissionSummary.vue";
 import CheckingDeposit from "./components/CheckingDeposit.vue";
+import ClientDataUpdate from "./components/ClientDataUpdate.vue";
 
 const routes = [
     { path: '/Permission', component: Permission },
@@ -57,6 +58,7 @@ const routes = [
     { path: '/NotificationSummary', component: NotificationSummary },
     { path: '/AeCommissionSummary', component: AeCommissionSummary },
     { path: '/CheckingDeposit', component: CheckingDeposit },
+    { path: '/ClientDataUpdate', component: ClientDataUpdate },
 ];
 
 const router = new VueRouter({
@@ -230,6 +232,7 @@ Vue.component('ipo-interest-import', require('./components/v_ipo_interest_import
 Vue.component('ipo-interest-setting', require('./components/v_ipo_interest_setting.vue').default);
 Vue.component('ae-commission-confirm', require('./components/v_ae_commission_confirm.vue').default);
 Vue.component('ae-commission-detail', require('./components/v_ae_commission_detail.vue').default);
+
 // Anderson end
 
 /**
