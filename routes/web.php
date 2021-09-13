@@ -165,7 +165,7 @@ Route::middleware(['auth'])->group(function () {
     Route::any('CheckingDepositDates', 'CheckingDepositController@getDates');
     Route::post('DownloadUnknownDepositsExcel', 'CheckingDepositController@downloadUnknownDeposits');
     Route::post('SendOpenAccountEmail', 'EmailController@sendOpenAccountEmail');
-
+    Route::get('Counts', 'MenuItemController@getCounts');
 });
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');
@@ -260,7 +260,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('ipo_interest_import', 'IpoInterestImportController');
 
         // 顧客資料修改
-        Route::resource('ClientDataUpdate','ClientDataUpdate');
+        Route::resource('ClientDataUpdate', 'ClientDataUpdate');
         // Anderson 2021-05-31 end
     });
 });

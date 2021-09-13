@@ -92,6 +92,17 @@
         </tr>
         <tr v-if="駁回.住址證明">
           <td colspan="3">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="住址證明駁回選擇 in 駁回選擇.住址證明"
+                :key="住址證明駁回選擇"
+              >
+                <b-form-checkbox :value="住址證明駁回選擇">
+                  {{住址證明駁回選擇}}
+                </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回住址證明"
@@ -224,6 +235,17 @@
             v-if="ClientIDCard"
             colspan="4"
           >
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="身份證駁回選擇 in 駁回選擇.身份證信息"
+                :key="身份證駁回選擇"
+              >
+                <b-form-checkbox :value="身份證駁回選擇">
+                  {{身份證駁回選擇}}
+                </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回身份證信息"
@@ -315,6 +337,17 @@
         </tr>
         <tr v-if="駁回.存款證明">
           <td colspan="4">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="存款證明駁回選擇 in 駁回選擇.存款證明"
+                :key="存款證明駁回選擇"
+              >
+                <b-form-checkbox :value="存款證明駁回選擇">
+                  {{存款證明駁回選擇}}
+                </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回存款證明"
@@ -440,6 +473,17 @@
         </tr>
         <tr v-if="駁回[銀行卡.lcid + '銀行卡信息']">
           <td colspan="3">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="銀行卡信息駁回選擇 in 駁回選擇[銀行卡.lcid + '銀行卡信息']"
+                :key="銀行卡信息駁回選擇"
+              >
+                <b-form-checkbox :value="銀行卡信息駁回選擇">
+                  {{銀行卡信息駁回選擇}}
+                </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               :name="'駁回' + 銀行卡.lcid + '銀行卡信息'"
@@ -493,6 +537,17 @@
         </tr>
         <tr v-if="駁回.客戶補充資料">
           <td colspan="2">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="客戶補充資料駁回選擇 in 駁回選擇.客戶補充資料"
+                :key="客戶補充資料駁回選擇"
+              >
+                <b-form-checkbox :value="客戶補充資料駁回選擇">
+                  {{客戶補充資料駁回選擇}}
+                </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回客戶補充資料"
@@ -529,7 +584,7 @@
           >
             {{ ClientWorkingStatus.working_status }}
           </td>
-          <th width="20%">雇主名稱</th>
+          <th width="20%">公司名稱</th>
           <td
             width="20%"
             class=""
@@ -584,6 +639,17 @@
         </tr>
         <tr v-if="駁回.工作狀態">
           <td colspan="4">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="工作狀態駁回選擇 in 駁回選擇.工作狀態"
+                :key="工作狀態駁回選擇"
+              >
+                <b-form-checkbox :value="工作狀態駁回選擇">
+                  {{工作狀態駁回選擇}}
+                </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回工作狀態"
@@ -965,6 +1031,52 @@ export default {
         簽名: false,
         住址證明: false,
         存款證明: false,
+      },
+      駁回選擇: {
+        身份證信息: [
+          "您的證件不清（反光/模糊/缺失），請重新上傳，謝謝。",
+          "您的證件有效期少於半年，已退回，謝謝。",
+        ],
+        "zh-hk銀行卡信息": [
+          "您的銀行結單不符合要求，請重新提供，銀行結單上需有銀行名稱、您的姓名及銀行號碼，謝謝。",
+          "您輸入的銀行號碼與提供的銀行帳單號碼不符，請重新修改，謝謝。",
+          "您的銀行結單不清（反光/模糊/缺失），請重新上傳，謝謝。",
+        ],
+        "zh-cn銀行卡信息": [
+          "您的銀行結單不符合要求，請重新提供，銀行結單上需有銀行名稱、您的姓名及銀行號碼，謝謝。",
+          "您輸入的銀行號碼與提供的銀行帳單號碼不符，請重新修改，謝謝。",
+          "您的銀行結單不清（反光/模糊/缺失），請重新上傳，謝謝。",
+        ],
+        others銀行卡信息: [
+          "您的銀行結單不符合要求，請重新提供，銀行結單上需有銀行名稱、您的姓名及銀行號碼，謝謝。",
+          "您輸入的銀行號碼與提供的銀行帳單號碼不符，請重新修改，謝謝。",
+          "您的銀行結單不清（反光/模糊/缺失），請重新上傳，謝謝。",
+        ],
+        客戶補充資料: [],
+        工作狀態: [
+          "請填寫完整的公司名稱，謝謝。",
+          "請填寫完整的學校名稱，謝謝。",
+        ],
+        財政狀況: [
+          "您的資金來源與工作狀態不匹配，請重新填寫，謝謝。",
+          "您的資金來源與投資經驗不匹配，請重新填寫，謝謝。",
+          "您的年收入與工作狀態不匹配，請重新填寫，謝謝。",
+        ],
+        投資經驗及衍生產品認識: [
+          "您的風險承受程度與所選之產品風險級別不一致，請重新考慮自己的風險承受度，謝謝。",
+        ],
+        問卷調查: [],
+        簽名: ["您的簽名不完整，請重新簽字，謝謝。"],
+        住址證明: [
+          "您的地址證明不清（反光/模糊/缺失），請重新上傳，謝謝。",
+          "您的地址證明不符合要求，請重新上傳，住址地址須由公營機構最近三個月內發出，信件上有客戶姓名及詳細地址，謝謝。",
+        ],
+        存款證明: [
+          "您的銀行憑證不符合要求，請重新填寫，銀行憑證需有客戶已登記的銀行號碼、資金匯出日期及我司銀行號碼，謝謝。",
+          "您的銀行憑證與您的入金紀錄不符，請重新填寫，謝謝。",
+          "您的銀行憑證不清（反光/模糊/缺失），請重新上傳，謝謝。",
+          "您的開戶審批已超時，資金已退回至您的帳上。如仍需開戶，請重新存入資金並提交申請，謝謝。",
+        ],
       },
       地區map: {},
       Client: null,

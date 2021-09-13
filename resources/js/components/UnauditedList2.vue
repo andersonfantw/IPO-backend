@@ -195,6 +195,7 @@ export default {
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
+    this.getCounts(axios);
     this.load(1);
   },
   beforeDestroy() {
@@ -230,6 +231,7 @@ export default {
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
+          // self.counts["二審資料未審核清單"] = self.totalRows;
           if (total <= self.perPage) {
             self.progress = 100;
           } else {
@@ -262,6 +264,14 @@ export default {
       },
       set(value) {
         this.$store.commit("UnauditedList2/filters", value);
+      },
+    },
+    counts: {
+      get() {
+        return this.$store.state.Menu.counts;
+      },
+      set(value) {
+        this.$store.commit("Menu/counts", value);
       },
     },
   },

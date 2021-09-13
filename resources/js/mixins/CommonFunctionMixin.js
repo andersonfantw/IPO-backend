@@ -72,6 +72,18 @@ export const CommonFunctionMixin = {
                 // redirect to login page
                 window.location.href = "login";
             }
+        },
+        getCounts(axios) {
+            const self = this;
+            axios
+                .get("Counts").then((res) => {
+                    self.counts["一審資料未審核清單"] = res.data.CountUnauditedList1;
+                    self.counts["一審資料再審核清單"] = res.data.CountReauditList1;
+                    self.counts["資料駁回清單"] = res.data.CountRejectedList1;
+                    self.counts["二審資料未審核清單"] = res.data.CountUnauditedList2;
+                }).catch((error) => {
+                    console.log(error);
+                });
         }
     }
 }

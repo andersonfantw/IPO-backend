@@ -8,12 +8,13 @@ use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\Traits\CountRecords;
 use App\Traits\Report;
+use App\Traits\Query;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class UnauditedList1Controller extends Controller
 {
-    use Report, CountRecords;
+    use Report, CountRecords, Query;
 
     protected $name = 'UnauditedList1';
     private $fields = null;
@@ -64,36 +65,39 @@ class UnauditedList1Controller extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
-            ->has('ClientBusinessType')->whereHasMorph('IDCard', [
-            ClientCNIDCard::class,
-            ClientHKIDCard::class,
-            ClientOtherIDCard::class,
-        ], function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'unaudited');
-        })->where('status', 'unaudited')
-            ->orWhere(function (Builder $query) {
-                $query->where('status', 'unaudited')
-                    ->where('progress', 16)
-                    ->where('idcard_type', 'App\ClientOtherIDCard')
-                    ->whereHas('ClientAddressProof', function (Builder $query) {
-                        $query->where('status', 'unaudited');
-                    });
-            })
+        $Clients = $this->getUnauditedList1Query()
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+        //     ->has('ClientBusinessType')->whereHasMorph('IDCard', [
+        //         ClientCNIDCard::class,
+        //         ClientHKIDCard::class,
+        //         ClientOtherIDCard::class,
+        //     ], function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->whereHas('ClientSignature', function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->whereHas('ClientDepositProof', function (Builder $query) {
+        //         $query->where('status', 'unaudited');
+        //     })->where('status', 'unaudited')
+        //     ->orWhere(function (Builder $query) {
+        //         $query->where('status', 'unaudited')
+        //             ->where('progress', 16)
+        //             ->where('idcard_type', 'App\ClientOtherIDCard')
+        //             ->whereHas('ClientAddressProof', function (Builder $query) {
+        //                 $query->where('status', 'unaudited');
+        //             });
+        //     })
+        //     ->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];

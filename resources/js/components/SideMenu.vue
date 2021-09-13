@@ -28,6 +28,11 @@
       >
         <h5 class="mb-0">
           <i class="fas fa-caret-right"></i> {{ item.label }}
+          <b-badge
+            v-if="counts[item.label] > 0"
+            pill
+            variant="danger"
+          >{{counts[item.label]}}</b-badge>
         </h5>
       </router-link>
     </div>
@@ -73,5 +78,16 @@ export default {
         });
     },
   },
+  computed: {
+    counts: {
+      get() {
+        return this.$store.state.Menu.counts;
+      },
+      // set(value) {
+      //   this.$store.commit("Menu/counts", value);
+      // },
+    },
+  },
+  watch: {},
 };
 </script>
