@@ -45,7 +45,7 @@ class CommissionRecalculateJob implements ShouldQueue
         }
         $end = Carbon::parse($this->month)->endOfMonth()->format('Y-m-d');
         foreach($AE as $row){
-            DB::select(sprintf("call sp_ae_commission('%s','%s','%s','%s')",$row['uuid'],$row['codes'],$month,$end));
+            DB::select(sprintf("call sp_ae_commission('%s','%s','%s','%s')",$row['uuid'],$row['codes'],$this->month,$end));
         }
     }
 }
