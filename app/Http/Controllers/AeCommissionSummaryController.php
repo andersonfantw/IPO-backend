@@ -466,7 +466,7 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $TempClientBonusWithDummy = TempClientBonusWithDummy::select('tt_client_bonus_with_dummy.ae_code','buss_date','allot_date','tt_client_bonus_with_dummy.client_acc_id','name','product_id','application_fee','application_cost','accumulate_performance','seq','dummy','bonus_application1')
+        $TempClientBonusWithDummy = TempClientBonusWithDummy::select('tt_client_bonus_with_dummy.ae_code','buss_date','allot_date','tt_client_bonus_with_dummy.client_acc_id','name','phone','product_id','application_fee','application_cost','accumulate_performance','seq','dummy','bonus_application1')
             ->selectRaw("case cate when 'principal' then '開戶激勵＿專戶' when 'fee08' then '申購手續費_現金戶' when 'fee13' then '申購手續費_專戶' when 'interest08' then '利息收支_現金戶' when 'interest13' then '利息收支_專戶' when 'alloted08' then '中籤收入_現金戶' when 'alloted13' then '中籤收入_專戶' when 'sell08' then '二級市場收入_現金戶' when 'sell13' then '二級市場收入_專戶' end as cate")
             ->whereIn('tt_client_bonus_with_dummy.ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$input['month'])
