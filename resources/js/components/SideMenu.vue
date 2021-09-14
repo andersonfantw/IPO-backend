@@ -29,6 +29,7 @@
         <h5 class="mb-0">
           <i class="fas fa-caret-right"></i> {{ item.label }}
           <b-badge
+            class="float-right"
             v-if="counts[item.label] > 0"
             pill
             variant="danger"
