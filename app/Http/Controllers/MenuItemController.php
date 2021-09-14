@@ -6,9 +6,12 @@ use App\MenuItem;
 use App\RoleMenuItem;
 use App\UserRole;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class MenuItemController extends Controller
 {
+    use Query;
+
     private $menus;
 
     /**
@@ -158,6 +161,20 @@ class MenuItemController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function getCounts()
+    {
+        $CountUnauditedList1 = $this->getUnauditedList1Query()->count();
+        $CountReauditList1 = $this->getReauditList1Query()->count();
+        $CountRejectedList1 = $this->getRejectedList1Query()->count();
+        $CountUnauditedList2 = $this->getUnauditedList2Query()->count();
+        return json_encode([
+            'CountUnauditedList1' => $CountUnauditedList1,
+            'CountReauditList1' => $CountReauditList1,
+            'CountRejectedList1' => $CountRejectedList1,
+            'CountUnauditedList2' => $CountUnauditedList2
+        ], JSON_UNESCAPED_UNICODE);
     }
 
     /**

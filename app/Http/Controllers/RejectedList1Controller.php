@@ -6,9 +6,12 @@ use App\Client;
 use App\ClientDepositProof;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class RejectedList1Controller extends Controller
 {
+    use Query;
+
     protected $name = 'RejectedList1';
     private $fields = null;
     private $filter_type = null;
@@ -47,11 +50,14 @@ class RejectedList1Controller extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
-            ->whereHas('EditableSteps', function (Builder $query) {
-                $query->where('reason', 'correction');
-            })->orderBy('updated_at', 'desc')
+        $Clients = $this->getRejectedList1Query()
+            ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+        //     ->whereHas('EditableSteps', function (Builder $query) {
+        //         $query->where('reason', 'correction');
+        //     })->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();
         $rows = [];
         foreach ($Clients as $Client) {

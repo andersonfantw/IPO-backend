@@ -8,9 +8,12 @@ use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class ReauditList1Controller extends Controller
 {
+    use Query;
+
     protected $name = 'ReauditList1';
     private $fields = null;
     private $filter_type = null;
@@ -47,31 +50,34 @@ class ReauditList1Controller extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
-            ->whereHasMorph('IDCard', [
-                ClientCNIDCard::class,
-                ClientHKIDCard::class,
-                ClientOtherIDCard::class,
-            ], function (Builder $query) {
-                $query->where('status', 'reaudit');
-            })->orWhereHas('ClientAddressProof', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'reaudit');
-        })->orWhere('status', 'reaudit')->orderBy('updated_at', 'desc')
+        $Clients = $this->getReauditList1Query()
+            ->orWhere('status', 'reaudit')->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+        //     ->whereHasMorph('IDCard', [
+        //         ClientCNIDCard::class,
+        //         ClientHKIDCard::class,
+        //         ClientOtherIDCard::class,
+        //     ], function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientAddressProof', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientBankCards', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientWorkingStatus', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientFinancialStatus', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientInvestmentExperience', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientEvaluationResults', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientSignature', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhereHas('ClientDepositProof', function (Builder $query) {
+        //         $query->where('status', 'reaudit');
+        //     })->orWhere('status', 'reaudit')->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];

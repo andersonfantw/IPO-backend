@@ -16,6 +16,7 @@ import ClientBankCards from "./modules/ClientBankCards";
 import ClientAddressProofUpdates from "./modules/ClientAddressProofUpdates";
 import ClientProgress from "./modules/ClientProgress";
 import ClientCreditCards from "./modules/ClientCreditCards";
+import Menu from "./modules/Menu";
 
 export default new Vuex.Store({
 	strict: false,
@@ -35,5 +36,6 @@ export default new Vuex.Store({
 		ClientAddressProofUpdates: ClientAddressProofUpdates,
 		ClientProgress: ClientProgress,
 		ClientCreditCards: ClientCreditCards,
+		Menu: Menu,
 	}
 });

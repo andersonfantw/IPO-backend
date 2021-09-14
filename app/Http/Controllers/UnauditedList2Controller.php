@@ -8,9 +8,12 @@ use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class UnauditedList2Controller extends Controller
 {
+    use Query;
+
     protected $name = 'UnauditedList2';
     private $fields = null;
     private $filter_type = null;
@@ -47,38 +50,41 @@ class UnauditedList2Controller extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
-            ->whereHasMorph('IDCard', [
-                ClientCNIDCard::class,
-                ClientHKIDCard::class,
-                ClientOtherIDCard::class,
-            ], function (Builder $query) {
-                $query->where('status', 'audited1');
-            })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientBankCards', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'audited1');
-        })->where('status', 'audited1')
-            ->orWhere(function (Builder $query) {
-                $query->where('status', 'audited1')
-                    ->where('progress', 16)
-                    ->where('idcard_type', 'App\ClientOtherIDCard')
-                    ->whereHas('ClientAddressProof', function (Builder $query) {
-                        $query->where('status', 'audited1');
-                    });
-            })
+        $Clients = $this->getUnauditedList2Query()
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientDepositProof', 'ClientAddressProof'])
+        //     ->whereHasMorph('IDCard', [
+        //         ClientCNIDCard::class,
+        //         ClientHKIDCard::class,
+        //         ClientOtherIDCard::class,
+        //     ], function (Builder $query) {
+        //         $query->where('status', 'audited1');
+        //     })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientBankCards', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'audited1');
+        // })->where('status', 'audited1')
+        //     ->orWhere(function (Builder $query) {
+        //         $query->where('status', 'audited1')
+        //             ->where('progress', 16)
+        //             ->where('idcard_type', 'App\ClientOtherIDCard')
+        //             ->whereHas('ClientAddressProof', function (Builder $query) {
+        //                 $query->where('status', 'audited1');
+        //             });
+        //     })
+        //     ->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();
         $rows = [];
         foreach ($Clients as $Client) {

@@ -165,7 +165,7 @@ Route::middleware(['auth'])->group(function () {
     Route::any('CheckingDepositDates', 'CheckingDepositController@getDates');
     Route::post('DownloadUnknownDepositsExcel', 'CheckingDepositController@downloadUnknownDeposits');
     Route::post('SendOpenAccountEmail', 'EmailController@sendOpenAccountEmail');
-
+    Route::get('Counts', 'MenuItemController@getCounts');
 });
 
 Route::any('/Chinayss', 'UnauditedList1Controller@Chinayss')->name('Chinayss');

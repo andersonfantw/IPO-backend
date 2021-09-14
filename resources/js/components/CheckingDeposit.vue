@@ -280,6 +280,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          alert("上載失敗，請檢查文件格式及內容");
         });
       this.file = null;
     },
