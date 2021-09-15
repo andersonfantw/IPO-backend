@@ -92,18 +92,7 @@
         </tr>
         <tr v-if="駁回.住址證明">
           <td colspan="3">
-            <!-- <b-list-group>
-              <b-list-group-item
-                class="text-light bg-dark"
-                v-for="住址證明駁回選擇 in 駁回選擇.住址證明"
-                :key="住址證明駁回選擇"
-              >
-                <b-form-checkbox :value="住址證明駁回選擇">
-                  {{住址證明駁回選擇}}
-                </b-form-checkbox>
-              </b-list-group-item>
-            </b-list-group> -->
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-warning bg-dark"
                 v-for="住址證明駁回選擇 in 駁回選擇.住址證明"
@@ -247,18 +236,7 @@
             v-if="ClientIDCard"
             colspan="4"
           >
-            <!-- <b-list-group>
-              <b-list-group-item
-                class="text-light bg-dark"
-                v-for="身份證駁回選擇 in 駁回選擇.身份證信息"
-                :key="身份證駁回選擇"
-              >
-                <b-form-checkbox :value="身份證駁回選擇">
-                  {{身份證駁回選擇}}
-                </b-form-checkbox>
-              </b-list-group-item>
-            </b-list-group> -->
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="身份證駁回選擇 in 駁回選擇.身份證信息"
@@ -361,18 +339,7 @@
         </tr>
         <tr v-if="駁回.存款證明">
           <td colspan="4">
-            <!-- <b-list-group>
-              <b-list-group-item
-                class="text-light bg-dark"
-                v-for="存款證明駁回選擇 in 駁回選擇.存款證明"
-                :key="存款證明駁回選擇"
-              >
-                <b-form-checkbox :value="存款證明駁回選擇">
-                  {{存款證明駁回選擇}}
-                </b-form-checkbox>
-              </b-list-group-item>
-            </b-list-group> -->
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="存款證明駁回選擇 in 駁回選擇.存款證明"
@@ -509,18 +476,7 @@
         </tr>
         <tr v-if="駁回[銀行卡.lcid + '銀行卡信息']">
           <td colspan="3">
-            <!-- <b-list-group>
-              <b-list-group-item
-                class="text-light bg-dark"
-                v-for="銀行卡信息駁回選擇 in 駁回選擇[銀行卡.lcid + '銀行卡信息']"
-                :key="銀行卡信息駁回選擇"
-              >
-                <b-form-checkbox :value="銀行卡信息駁回選擇">
-                  {{銀行卡信息駁回選擇}}
-                </b-form-checkbox>
-              </b-list-group-item>
-            </b-list-group> -->
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="銀行卡信息駁回選擇 in 駁回選擇[銀行卡.lcid + '銀行卡信息']"
@@ -585,18 +541,7 @@
         </tr>
         <tr v-if="駁回.客戶補充資料">
           <td colspan="2">
-            <!-- <b-list-group>
-              <b-list-group-item
-                class="text-light bg-dark"
-                v-for="客戶補充資料駁回選擇 in 駁回選擇.客戶補充資料"
-                :key="客戶補充資料駁回選擇"
-              >
-                <b-form-checkbox :value="客戶補充資料駁回選擇">
-                  {{客戶補充資料駁回選擇}}
-                </b-form-checkbox>
-              </b-list-group-item>
-            </b-list-group> -->
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="客戶補充資料駁回選擇 in 駁回選擇.客戶補充資料"
@@ -699,18 +644,7 @@
         </tr>
         <tr v-if="駁回.工作狀態">
           <td colspan="4">
-            <!-- <b-list-group>
-              <b-list-group-item
-                class="text-light bg-dark"
-                v-for="工作狀態駁回選擇 in 駁回選擇.工作狀態"
-                :key="工作狀態駁回選擇"
-              >
-                <b-form-checkbox :value="工作狀態駁回選擇">
-                  {{工作狀態駁回選擇}}
-                </b-form-checkbox>
-              </b-list-group-item>
-            </b-list-group> -->
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="工作狀態駁回選擇 in 駁回選擇.工作狀態"
@@ -797,7 +731,7 @@
         </tr>
         <tr v-if="駁回.財政狀況">
           <td colspan="4">
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="財政狀況駁回選擇 in 駁回選擇.財政狀況"
@@ -896,7 +830,7 @@
         </tr>
         <tr v-if="駁回.投資經驗及衍生產品認識">
           <td colspan="4">
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="投資經驗及衍生產品認識駁回選擇 in 駁回選擇.投資經驗及衍生產品認識"
@@ -1026,7 +960,7 @@
           </tr>
           <tr v-if="駁回.問卷調查">
             <td colspan="7">
-              <b-list-group>
+              <b-list-group v-if="next_status != null">
                 <b-list-group-item
                   class="text-light bg-dark"
                   v-for="問卷調查駁回選擇 in 駁回選擇.問卷調查"
@@ -1088,7 +1022,7 @@
         </tr>
         <tr v-if="駁回.簽名">
           <td>
-            <b-list-group>
+            <b-list-group v-if="next_status != null">
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="簽名駁回選擇 in 駁回選擇.簽名"
