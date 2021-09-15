@@ -8,13 +8,14 @@ use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
 use App\Traits\Excel;
 use App\Traits\Image;
+use App\Traits\Query;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class DeliverableList2Controller extends Controller
 {
 
-    use Excel, Image;
+    use Excel, Image, Query;
 
     protected $name = 'DeliverableList2';
     private $fields = null;
@@ -52,26 +53,7 @@ class DeliverableList2Controller extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['AyersAccounts', 'IDCard'])
-            ->whereHasMorph('IDCard', [
-                ClientCNIDCard::class,
-                ClientHKIDCard::class,
-                ClientOtherIDCard::class,
-            ], function (Builder $query) {
-                $query->where('status', 'audited2');
-            })->whereHas('ClientWorkingStatus', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientFinancialStatus', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientEvaluationResults', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientSignature', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->whereHas('ClientDepositProof', function (Builder $query) {
-            $query->where('status', 'audited2');
-        })->where('status', 'audited2')
+        $Clients = $this->getDeliverableList2Query()
             ->orWhere(function (Builder $query) {
                 $query->where('status', 'audited2')
                     ->where('progress', 16)
@@ -79,6 +61,33 @@ class DeliverableList2Controller extends Controller
             })
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $Clients = Client::with(['AyersAccounts', 'IDCard'])
+        //     ->whereHasMorph('IDCard', [
+        //         ClientCNIDCard::class,
+        //         ClientHKIDCard::class,
+        //         ClientOtherIDCard::class,
+        //     ], function (Builder $query) {
+        //         $query->where('status', 'audited2');
+        //     })->whereHas('ClientWorkingStatus', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientSignature', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->whereHas('ClientDepositProof', function (Builder $query) {
+        //     $query->where('status', 'audited2');
+        // })->where('status', 'audited2')
+        //     ->orWhere(function (Builder $query) {
+        //         $query->where('status', 'audited2')
+        //             ->where('progress', 16)
+        //             ->where('idcard_type', 'App\ClientOtherIDCard');
+        //     })
+        //     ->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();
         $rows = [];
         foreach ($Clients as $Client) {

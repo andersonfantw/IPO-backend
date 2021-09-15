@@ -194,6 +194,7 @@ export default {
   created() {
     // this.User = JSON.parse(this.user);
     this.busy = true;
+    this.getCounts(axios);
     this.loadData(1);
   },
   methods: {
@@ -280,6 +281,14 @@ export default {
         return this.selectedClients.length == this.filteredClients.length;
       },
       set(value) {},
+    },
+    counts: {
+      get() {
+        return this.$store.state.Menu.counts;
+      },
+      set(value) {
+        this.$store.commit("Menu/counts", value);
+      },
     },
   },
   watch: {},

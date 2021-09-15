@@ -169,11 +169,25 @@ class MenuItemController extends Controller
         $CountReauditList1 = $this->getReauditList1Query()->count();
         $CountRejectedList1 = $this->getRejectedList1Query()->count();
         $CountUnauditedList2 = $this->getUnauditedList2Query()->count();
+        $CountDeliverableList2 = $this->getDeliverableList2Query()->whereDoesntHave('AyersAccounts')->count();
+        $CountSendingEmailList = $this->getSendingEmailListQuery()->count();
+        $CountClientBankCards = $this->getClientBankCardsQuery()->count();
+        $CountClientFundInRequests = $this->getClientFundInRequestsQuery()
+            ->where('status', 'pending')
+            ->count();
+        $CountClientHKFundOutRequests = $this->getClientHKFundOutRequestsQuery()
+            ->where('status', 'pending')
+            ->count();
         return json_encode([
             'CountUnauditedList1' => $CountUnauditedList1,
             'CountReauditList1' => $CountReauditList1,
             'CountRejectedList1' => $CountRejectedList1,
-            'CountUnauditedList2' => $CountUnauditedList2
+            'CountUnauditedList2' => $CountUnauditedList2,
+            'CountDeliverableList2' => $CountDeliverableList2,
+            'CountSendingEmailList' => $CountSendingEmailList,
+            'CountClientBankCards' => $CountClientBankCards,
+            'CountClientFundInRequests' => $CountClientFundInRequests,
+            'CountClientHKFundOutRequests' => $CountClientHKFundOutRequests,
         ], JSON_UNESCAPED_UNICODE);
     }
 

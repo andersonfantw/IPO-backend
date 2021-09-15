@@ -216,6 +216,7 @@ export default {
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
+    this.getCounts(axios);
     this.load(1);
   },
   beforeDestroy() {
@@ -370,6 +371,14 @@ export default {
         return this.selectedClients.length == this.filteredClients.length;
       },
       set(value) {},
+    },
+    counts: {
+      get() {
+        return this.$store.state.Menu.counts;
+      },
+      set(value) {
+        this.$store.commit("Menu/counts", value);
+      },
     },
   },
   watch: {},

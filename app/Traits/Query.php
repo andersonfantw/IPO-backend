@@ -6,6 +6,9 @@ use App\Client;
 use App\ClientCNIDCard;
 use App\ClientHKIDCard;
 use App\ClientOtherIDCard;
+use App\ClientBankCard;
+use App\ClientFundInRequest;
+use App\ClientHKFundOutRequest;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Query
@@ -113,6 +116,66 @@ trait Query
                         $query->where('status', 'audited1');
                     });
             });
+        return $Query;
+    }
+
+    public function getDeliverableList2Query()
+    {
+        $Query = Client::with(['AyersAccounts', 'IDCard'])
+            ->whereHasMorph('IDCard', [
+                ClientCNIDCard::class,
+                ClientHKIDCard::class,
+                ClientOtherIDCard::class,
+            ], function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientWorkingStatus', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientFinancialStatus', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientInvestmentExperience', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientEvaluationResults', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientSignature', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->whereHas('ClientDepositProof', function (Builder $query) {
+                $query->where('status', 'audited2');
+            })->where('status', 'audited2');
+        // ->orWhere(function (Builder $query) {
+        //     $query->where('status', 'audited2')
+        //         ->where('progress', 16)
+        //         ->where('idcard_type', 'App\ClientOtherIDCard');
+        // });
+        return $Query;
+    }
+
+    public function getSendingEmailListQuery()
+    {
+        $Query = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
+            ->whereHas('AyersAccounts', function (Builder $query) {
+                $query->where('status', '!=', 'suspended');
+            })->where('type', '拼一手');
+        return $Query;
+    }
+
+    public function getClientBankCardsQuery()
+    {
+        $Query = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+            ->has('Client.AyersAccounts')
+            ->where('type', '拼一手')
+            ->whereIn('status', ['approved', 'pending', 'rejected']);
+        return $Query;
+    }
+
+    public function getClientFundInRequestsQuery()
+    {
+        $Query = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard']);
+        return $Query;
+    }
+
+    public function getClientHKFundOutRequestsQuery()
+    {
+        $Query = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard']);
         return $Query;
     }
 }

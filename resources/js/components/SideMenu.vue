@@ -15,6 +15,7 @@
         :no_of_news="item.no_of_news"
         :class="{ active: current_url == item.url }"
       /> -->
+
       <router-link
         v-for="item in menu.items"
         :key="item.label"
@@ -28,13 +29,12 @@
       >
         <h5 class="mb-0">
           <i class="fas fa-caret-right"></i> {{ item.label }}
-          <b-badge
-            class="float-right"
-            v-if="counts[item.label] > 0"
-            pill
-            variant="danger"
-          >{{counts[item.label]}}</b-badge>
         </h5>
+        <b-badge
+          v-if="counts[item.label] > 0"
+          pill
+          variant="danger"
+        >{{counts[item.label]}}</b-badge>
       </router-link>
     </div>
   </div>

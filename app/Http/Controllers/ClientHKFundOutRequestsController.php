@@ -6,10 +6,11 @@ use App\Client;
 use App\ClientHKFundOutRequest;
 use App\Traits\Excel;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class ClientHKFundOutRequestsController extends Controller
 {
-    use Excel;
+    use Excel, Query;
 
     protected $name = 'ClientHKFundOutRequests';
     private $fields = null;
@@ -52,9 +53,12 @@ class ClientHKFundOutRequestsController extends Controller
     public function index(Request $request)
     {
         // $yesterday = today()->subDays(3)->toDateString();
-        $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+        $ClientHKFundOutRequests = $this->getClientHKFundOutRequestsQuery()
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+        //     ->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
             $Client = $ClientHKFundOutRequest->Client;

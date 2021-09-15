@@ -192,6 +192,7 @@ export default {
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
+    this.getCounts(axios);
     this.load(1);
   },
   beforeDestroy() {
@@ -272,6 +273,14 @@ export default {
         return this.SelectedBankCards.length == this.FilteredBankCards.length;
       },
       set(value) {},
+    },
+    counts: {
+      get() {
+        return this.$store.state.Menu.counts;
+      },
+      set(value) {
+        this.$store.commit("Menu/counts", value);
+      },
     },
   },
   watch: {},

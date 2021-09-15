@@ -219,6 +219,7 @@ export default {
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
+    this.getCounts(axios);
     this.load(1);
   },
   beforeDestroy() {
@@ -367,6 +368,14 @@ export default {
       },
       set(value) {
         this.$store.commit("ClientHKFundOutRequests/filters", value);
+      },
+    },
+    counts: {
+      get() {
+        return this.$store.state.Menu.counts;
+      },
+      set(value) {
+        this.$store.commit("Menu/counts", value);
       },
     },
   },

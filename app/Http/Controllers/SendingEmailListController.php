@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class SendingEmailListController extends Controller
 {
+    use Query;
+
     protected $name = 'SendingEmailList';
     private $fields = null;
     private $filter_type = null;
@@ -44,11 +47,15 @@ class SendingEmailListController extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
-            ->whereHas('AyersAccounts', function (Builder $query) {
-                $query->where('status', '!=', 'suspended');
-            })->where('type', '拼一手')->orderBy('updated_at', 'desc')
+        $Clients = $this->getSendingEmailListQuery()
+            ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $Clients = Client::with(['IDCard', 'AyersAccounts', 'SentEmailRecords'])
+        //     ->whereHas('AyersAccounts', function (Builder $query) {
+        //         $query->where('status', '!=', 'suspended');
+        //     })->where('type', '拼一手')
+        //     ->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         $total = $Clients->total();
         foreach ($Clients as $Client) {

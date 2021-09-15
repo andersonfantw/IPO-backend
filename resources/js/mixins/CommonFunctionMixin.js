@@ -81,6 +81,11 @@ export const CommonFunctionMixin = {
                     self.counts["一審資料再審核清單"] = res.data.CountReauditList1;
                     self.counts["資料駁回清單"] = res.data.CountRejectedList1;
                     self.counts["二審資料未審核清單"] = res.data.CountUnauditedList2;
+                    self.counts["二審資料可投遞清單"] = res.data.CountDeliverableList2;
+                    self.counts["開戶信發送清單"] = res.data.CountSendingEmailList;
+                    self.counts["添加銀行卡申請"] = res.data.CountClientBankCards;
+                    self.counts["存款申請"] = res.data.CountClientFundInRequests;
+                    self.counts["香港出款申請"] = res.data.CountClientHKFundOutRequests;
                 }).catch((error) => {
                     console.log(error);
                 });

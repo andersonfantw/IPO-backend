@@ -6,10 +6,11 @@ use App\Client;
 use App\ClientBankCard;
 use App\Traits\ImageLoader;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class ClientBankCardsController extends Controller
 {
-    use ImageLoader;
+    use ImageLoader, Query;
 
     protected $name = 'ClientBankCards';
     private $fields = null;
@@ -51,11 +52,13 @@ class ClientBankCardsController extends Controller
      */
     public function index(Request $request)
     {
-        $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-            ->has('Client.AyersAccounts')
-            ->where('type', '拼一手')
-            ->whereIn('status', ['approved', 'pending', 'rejected'])
+        $ClientBankCards = $this->getClientBankCardsQuery()
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+        //     ->has('Client.AyersAccounts')
+        //     ->where('type', '拼一手')
+        //     ->whereIn('status', ['approved', 'pending', 'rejected'])
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;

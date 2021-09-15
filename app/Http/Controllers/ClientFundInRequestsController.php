@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\ClientFundInRequest;
 use App\Traits\Excel;
 use Illuminate\Http\Request;
+use App\Traits\Query;
 
 class ClientFundInRequestsController extends Controller
 {
-    use Excel;
+    use Excel, Query;
 
     protected $name = 'ClientFundInRequests';
     private $fields = null;
@@ -50,9 +51,12 @@ class ClientFundInRequestsController extends Controller
      */
     public function index(Request $request)
     {
-        $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+        $ClientFundInRequests = $this->getClientFundInRequestsQuery()
             ->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        // $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
+        //     ->orderBy('updated_at', 'desc')
+        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $rows = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
             $Client = $ClientFundInRequest->Client;
@@ -137,6 +141,5 @@ class ClientFundInRequestsController extends Controller
 
     public function downloadAyersImportData2(Request $request)
     {
-
     }
 }

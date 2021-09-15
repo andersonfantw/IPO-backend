@@ -92,7 +92,7 @@
         </tr>
         <tr v-if="駁回.住址證明">
           <td colspan="3">
-            <b-list-group>
+            <!-- <b-list-group>
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="住址證明駁回選擇 in 駁回選擇.住址證明"
@@ -101,6 +101,18 @@
                 <b-form-checkbox :value="住址證明駁回選擇">
                   {{住址證明駁回選擇}}
                 </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group> -->
+            <b-list-group>
+              <b-list-group-item
+                class="text-warning bg-dark"
+                v-for="住址證明駁回選擇 in 駁回選擇.住址證明"
+                :key="住址證明駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientAddressProof.remark = concatRemark(ClientAddressProof.remark, 住址證明駁回選擇)"
+                >{{住址證明駁回選擇}}</b-button>
               </b-list-group-item>
             </b-list-group>
             <b-form-textarea
@@ -235,7 +247,7 @@
             v-if="ClientIDCard"
             colspan="4"
           >
-            <b-list-group>
+            <!-- <b-list-group>
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="身份證駁回選擇 in 駁回選擇.身份證信息"
@@ -244,6 +256,18 @@
                 <b-form-checkbox :value="身份證駁回選擇">
                   {{身份證駁回選擇}}
                 </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group> -->
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="身份證駁回選擇 in 駁回選擇.身份證信息"
+                :key="身份證駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientIDCard.remark = concatRemark(ClientIDCard.remark, 身份證駁回選擇)"
+                >{{身份證駁回選擇}}</b-button>
               </b-list-group-item>
             </b-list-group>
             <b-form-textarea
@@ -337,7 +361,7 @@
         </tr>
         <tr v-if="駁回.存款證明">
           <td colspan="4">
-            <b-list-group>
+            <!-- <b-list-group>
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="存款證明駁回選擇 in 駁回選擇.存款證明"
@@ -346,6 +370,18 @@
                 <b-form-checkbox :value="存款證明駁回選擇">
                   {{存款證明駁回選擇}}
                 </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group> -->
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="存款證明駁回選擇 in 駁回選擇.存款證明"
+                :key="存款證明駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientDepositProof.remark = concatRemark(ClientDepositProof.remark, 存款證明駁回選擇)"
+                >{{存款證明駁回選擇}}</b-button>
               </b-list-group-item>
             </b-list-group>
             <b-form-textarea
@@ -473,7 +509,7 @@
         </tr>
         <tr v-if="駁回[銀行卡.lcid + '銀行卡信息']">
           <td colspan="3">
-            <b-list-group>
+            <!-- <b-list-group>
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="銀行卡信息駁回選擇 in 駁回選擇[銀行卡.lcid + '銀行卡信息']"
@@ -482,6 +518,18 @@
                 <b-form-checkbox :value="銀行卡信息駁回選擇">
                   {{銀行卡信息駁回選擇}}
                 </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group> -->
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="銀行卡信息駁回選擇 in 駁回選擇[銀行卡.lcid + '銀行卡信息']"
+                :key="銀行卡信息駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="銀行卡.remark = concatRemark(銀行卡.remark, 銀行卡信息駁回選擇)"
+                >{{銀行卡信息駁回選擇}}</b-button>
               </b-list-group-item>
             </b-list-group>
             <b-form-textarea
@@ -537,7 +585,7 @@
         </tr>
         <tr v-if="駁回.客戶補充資料">
           <td colspan="2">
-            <b-list-group>
+            <!-- <b-list-group>
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="客戶補充資料駁回選擇 in 駁回選擇.客戶補充資料"
@@ -546,6 +594,18 @@
                 <b-form-checkbox :value="客戶補充資料駁回選擇">
                   {{客戶補充資料駁回選擇}}
                 </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group> -->
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="客戶補充資料駁回選擇 in 駁回選擇.客戶補充資料"
+                :key="客戶補充資料駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="Client.remark = concatRemark(Client.remark, 客戶補充資料駁回選擇)"
+                >{{客戶補充資料駁回選擇}}</b-button>
               </b-list-group-item>
             </b-list-group>
             <b-form-textarea
@@ -639,7 +699,7 @@
         </tr>
         <tr v-if="駁回.工作狀態">
           <td colspan="4">
-            <b-list-group>
+            <!-- <b-list-group>
               <b-list-group-item
                 class="text-light bg-dark"
                 v-for="工作狀態駁回選擇 in 駁回選擇.工作狀態"
@@ -648,6 +708,18 @@
                 <b-form-checkbox :value="工作狀態駁回選擇">
                   {{工作狀態駁回選擇}}
                 </b-form-checkbox>
+              </b-list-group-item>
+            </b-list-group> -->
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="工作狀態駁回選擇 in 駁回選擇.工作狀態"
+                :key="工作狀態駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientWorkingStatus.remark = concatRemark(ClientWorkingStatus.remark, 工作狀態駁回選擇)"
+                >{{工作狀態駁回選擇}}</b-button>
               </b-list-group-item>
             </b-list-group>
             <b-form-textarea
@@ -725,6 +797,18 @@
         </tr>
         <tr v-if="駁回.財政狀況">
           <td colspan="4">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="財政狀況駁回選擇 in 駁回選擇.財政狀況"
+                :key="財政狀況駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientFinancialStatus.remark = concatRemark(ClientFinancialStatus.remark, 財政狀況駁回選擇)"
+                >{{財政狀況駁回選擇}}</b-button>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回財政狀況"
@@ -812,6 +896,18 @@
         </tr>
         <tr v-if="駁回.投資經驗及衍生產品認識">
           <td colspan="4">
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="投資經驗及衍生產品認識駁回選擇 in 駁回選擇.投資經驗及衍生產品認識"
+                :key="投資經驗及衍生產品認識駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientInvestmentExperience.remark = concatRemark(ClientInvestmentExperience.remark, 投資經驗及衍生產品認識駁回選擇)"
+                >{{投資經驗及衍生產品認識駁回選擇}}</b-button>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回投資經驗及衍生產品認識"
@@ -825,118 +921,137 @@
         </tr>
       </tbody>
     </table>
-    <table
-      v-if="ClientEvaluationResults"
-      class="table table-bordered text-light"
-    >
-      <thead>
-        <tr>
-          <th
-            colspan="3"
-            scope="col"
+    <b-button
+      v-b-toggle.collapse
+      variant="warning"
+      class="mb-3"
+    >顯示/隱藏分數</b-button>
+    <b-collapse id="collapse">
+      <table
+        v-if="ClientEvaluationResults"
+        class="table table-bordered text-light"
+      >
+        <thead>
+          <tr>
+            <th
+              colspan="3"
+              scope="col"
+            >
+              <h5 class="mb-0"><i class="fas fa-question"></i> 問題</h5>
+            </th>
+            <th
+              colspan="3"
+              scope="col"
+            >
+              <h5 class="mb-0"><i class="far fa-lightbulb"></i> 答案</h5>
+            </th>
+            <th
+              colspan="1"
+              scope="col"
+            >
+              <h5 class="mb-0"><i class="fas fa-poll"></i> 分數</h5>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(score, index) of ClientScore"
+            :key="index"
           >
-            <h5 class="mb-0"><i class="fas fa-question"></i> 問題</h5>
-          </th>
-          <th
-            colspan="3"
-            scope="col"
-          >
-            <h5 class="mb-0"><i class="far fa-lightbulb"></i> 答案</h5>
-          </th>
-          <th
-            colspan="1"
-            scope="col"
-          >
-            <h5 class="mb-0"><i class="fas fa-poll"></i> 分數</h5>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(score, index) of ClientScore"
-          :key="index"
-        >
-          <th colspan="3">{{ score.question_text }}?</th>
-          <td
-            colspan="3"
-            class=""
-          >
-            {{ score.answer }}
-          </td>
-          <td
-            colspan="1"
-            class=""
-          >
-            {{ score.score }}
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <h5 class="mb-0">評估結果</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">
-              {{ 評估結果 }}
-            </h5>
-          </td>
-          <th>
-            <h5 class="mb-0">投資者特徵</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">{{ 投資者特徵 }}</h5>
-          </td>
-          <th>
-            <h5 class="mb-0">風險承受程度</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">{{ 風險承受程度 }}</h5>
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <h5 class="mb-0">用戶是否同意</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">{{ 用戶是否同意 }}</h5>
-          </td>
-          <th>
-            <h5 class="mb-0">投資者同意的特徵</h5>
-          </th>
-          <td>
-            <h5 class="mb-0">
-              {{ ClientEvaluationResults.investor_characteristics }}
-            </h5>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="7">
-            <h5 class="mb-0">
-              <b-form-checkbox
-                id="駁回問卷調查"
-                v-model="駁回.問卷調查"
-                :value="true"
-                :unchecked-value="false"
-                :disabled="next_status == null"
-              >駁回
-              </b-form-checkbox>
-            </h5>
-          </td>
-        </tr>
-        <tr v-if="駁回.問卷調查">
-          <td colspan="7">
-            <b-form-textarea
-              class="text-light bg-dark"
-              name="駁回問卷調查"
-              style="width: 100%"
-              placeholder="請寫駁回理由"
-              rows="5"
-              v-model="ClientEvaluationResults.remark"
-              :disabled="!駁回.問卷調查 || next_status == null"
-            ></b-form-textarea>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <th colspan="3">{{ score.question_text }}?</th>
+            <td
+              colspan="3"
+              class=""
+            >
+              {{ score.answer }}
+            </td>
+            <td
+              colspan="1"
+              class=""
+            >
+              {{ score.score }}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <h5 class="mb-0">評估結果</h5>
+            </th>
+            <td>
+              <h5 class="mb-0">
+                {{ 評估結果 }}
+              </h5>
+            </td>
+            <th>
+              <h5 class="mb-0">投資者特徵</h5>
+            </th>
+            <td>
+              <h5 class="mb-0">{{ 投資者特徵 }}</h5>
+            </td>
+            <th>
+              <h5 class="mb-0">風險承受程度</h5>
+            </th>
+            <td>
+              <h5 class="mb-0">{{ 風險承受程度 }}</h5>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <h5 class="mb-0">用戶是否同意</h5>
+            </th>
+            <td>
+              <h5 class="mb-0">{{ 用戶是否同意 }}</h5>
+            </td>
+            <th>
+              <h5 class="mb-0">投資者同意的特徵</h5>
+            </th>
+            <td>
+              <h5 class="mb-0">
+                {{ ClientEvaluationResults.investor_characteristics }}
+              </h5>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="7">
+              <h5 class="mb-0">
+                <b-form-checkbox
+                  id="駁回問卷調查"
+                  v-model="駁回.問卷調查"
+                  :value="true"
+                  :unchecked-value="false"
+                  :disabled="next_status == null"
+                >駁回
+                </b-form-checkbox>
+              </h5>
+            </td>
+          </tr>
+          <tr v-if="駁回.問卷調查">
+            <td colspan="7">
+              <b-list-group>
+                <b-list-group-item
+                  class="text-light bg-dark"
+                  v-for="問卷調查駁回選擇 in 駁回選擇.問卷調查"
+                  :key="問卷調查駁回選擇"
+                >
+                  <b-button
+                    variant="outline-warning"
+                    @click="ClientEvaluationResults.remark = concatRemark(ClientEvaluationResults.remark, 問卷調查駁回選擇)"
+                  >{{問卷調查駁回選擇}}</b-button>
+                </b-list-group-item>
+              </b-list-group>
+              <b-form-textarea
+                class="text-light bg-dark"
+                name="駁回問卷調查"
+                style="width: 100%"
+                placeholder="請寫駁回理由"
+                rows="5"
+                v-model="ClientEvaluationResults.remark"
+                :disabled="!駁回.問卷調查 || next_status == null"
+              ></b-form-textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </b-collapse>
     <table
       v-if="ClientSignature"
       class="table table-bordered text-light"
@@ -973,6 +1088,18 @@
         </tr>
         <tr v-if="駁回.簽名">
           <td>
+            <b-list-group>
+              <b-list-group-item
+                class="text-light bg-dark"
+                v-for="簽名駁回選擇 in 駁回選擇.簽名"
+                :key="簽名駁回選擇"
+              >
+                <b-button
+                  variant="outline-warning"
+                  @click="ClientSignature.remark = concatRemark(ClientSignature.remark, 簽名駁回選擇)"
+                >{{簽名駁回選擇}}</b-button>
+              </b-list-group-item>
+            </b-list-group>
             <b-form-textarea
               class="text-light bg-dark"
               name="駁回簽名"
@@ -1105,6 +1232,13 @@ export default {
     title: String,
   },
   methods: {
+    concatRemark(original, _new) {
+      if (original) {
+        return original + "\r\n" + _new;
+      } else {
+        return _new;
+      }
+    },
     submit() {
       const self = this;
       let data = {};
