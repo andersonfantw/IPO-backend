@@ -73,7 +73,7 @@
         small
       />
     </b-button>
-    <b-row
+    <!-- <b-row
       v-if="busy"
       class="mt-3"
     >
@@ -90,7 +90,7 @@
           ></b-progress-bar>
         </b-progress>
       </b-col>
-    </b-row>
+    </b-row> -->
     <b-row
       no-gutters
       class="mt-3"
@@ -326,7 +326,7 @@ export default {
         .then((res) => {
           console.log(res);
           const data = res.data.data;
-          const total = res.data.total;
+          // const total = res.data.total;
           self.fields = res.data.fields;
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
