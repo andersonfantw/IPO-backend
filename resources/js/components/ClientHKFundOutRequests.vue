@@ -96,14 +96,21 @@
       class="mt-3"
     >
       <b-col class="text-center">
-        <b-pagination
+        <b-pagination-nav
+          v-if="last_page"
+          :link-gen="linkGen"
+          :number-of-pages="last_page"
+          @change="onPageChange"
+          align="center"
+        ></b-pagination-nav>
+        <!-- <b-pagination
           v-if="totalRows > 0"
           v-model="currentPage"
           :total-rows="totalRows"
           :per-page="perPage"
           align="center"
         >
-        </b-pagination>
+        </b-pagination> -->
       </b-col>
     </b-row>
     <b-table
@@ -179,14 +186,14 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
+    <!-- <b-pagination
       v-if="totalRows > 0"
       v-model="currentPage"
       :total-rows="totalRows"
       :per-page="perPage"
       align="center"
     >
-    </b-pagination>
+    </b-pagination> -->
     <ClientHKFundOutDetails
       ref="ClientHKFundOutDetails"
       :title="'客戶香港出款申請'"
@@ -218,6 +225,7 @@ export default {
       Auditing: false,
       source: null,
       progress: 0,
+      last_page: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -241,6 +249,17 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    linkGen(pageNum) {
+      return {
+        path: "/ClientHKFundOutRequests/",
+        query: { page: pageNum },
+      };
+    },
+    onPageChange(pageNo) {
+      this.data = [];
+      this.busy = true;
+      this.load(pageNo);
+    },
     showDetails(id) {
       this.$refs.ClientHKFundOutDetails.showModal(id);
     },
@@ -305,16 +324,18 @@ export default {
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          if (total <= self.perPage) {
-            self.progress = 100;
-          } else {
-            self.progress += (self.perPage / total) * 100;
-          }
-          if (data.length >= self.perPage) {
-            self.load(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
+          self.last_page = res.data.last_page;
+          self.busy = false;
+          // if (total <= self.perPage) {
+          //   self.progress = 100;
+          // } else {
+          //   self.progress += (self.perPage / total) * 100;
+          // }
+          // if (data.length >= self.perPage) {
+          //   self.load(pageNumber + 1);
+          // } else {
+          //   self.busy = false;
+          // }
         })
         .catch((error) => {
           if (axios.isCancel(error)) {

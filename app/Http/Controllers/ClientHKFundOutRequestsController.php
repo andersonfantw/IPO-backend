@@ -55,11 +55,13 @@ class ClientHKFundOutRequestsController extends Controller
         // $yesterday = today()->subDays(3)->toDateString();
         $ClientHKFundOutRequests = $this->getClientHKFundOutRequestsQuery()
             ->orderBy('updated_at', 'desc')
+            // ->paginate();
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
         //     ->orderBy('updated_at', 'desc')
         //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $ClientHKFundOutRequests->total();
+        $last_page = $ClientHKFundOutRequests->lastPage();
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
             $Client = $ClientHKFundOutRequest->Client;
@@ -86,6 +88,7 @@ class ClientHKFundOutRequestsController extends Controller
             'filter_type' => $this->filter_type,
             'data' => $rows,
             'total' => $total,
+            'last_page' => $last_page
         ], JSON_UNESCAPED_UNICODE);
     }
 
