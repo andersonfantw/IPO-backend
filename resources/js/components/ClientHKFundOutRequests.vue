@@ -9,6 +9,7 @@
           <b-form-input
             type="search"
             v-model="filters['帳戶號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -17,6 +18,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -25,6 +27,7 @@
           <b-form-input
             type="search"
             v-model="filters['手機號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -73,24 +76,6 @@
         small
       />
     </b-button>
-    <!-- <b-row
-      v-if="busy"
-      class="mt-3"
-    >
-      <b-col>
-        <b-progress
-          :max="100"
-          show-progress
-          animated
-          variant="success"
-        >
-          <b-progress-bar
-            :value="progress"
-            :label="`${progress.toFixed(2)}%`"
-          ></b-progress-bar>
-        </b-progress>
-      </b-col>
-    </b-row> -->
     <b-row
       no-gutters
       class="mt-3"
@@ -104,14 +89,6 @@
           @change="onPageChange"
           align="center"
         ></b-pagination-nav>
-        <!-- <b-pagination
-          v-if="totalRows > 0"
-          v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          align="center"
-        >
-        </b-pagination> -->
       </b-col>
     </b-row>
     <b-table
@@ -120,32 +97,12 @@
       dark
       :items="data"
       :fields="fields"
-      :filter="filters"
-      :filter-function="filter"
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
       @filtered="onFiltered"
     >
       <template #cell(操作)="data">
-        <!-- <b-form
-          v-if="data.item.狀態 == 'pending'"
-          :action="audit_request_url"
-          method="post"
-        >
-          <input
-            type="hidden"
-            name="redirect_route"
-            value="ClientHKFundOutRequests"
-          />
-          <b-button
-            name="id"
-            :value="data.item.id"
-            variant="warning"
-            type="submit"
-            ><h5 class="mb-0"><i class="far fa-edit"></i> 審核</h5></b-button
-          >
-        </b-form> -->
         <b-button
           :disabled="Auditing"
           v-if="data.item.狀態 == 'pending'"
@@ -193,14 +150,6 @@
       @change="onPageChange"
       align="center"
     ></b-pagination-nav>
-    <!-- <b-pagination
-      v-if="totalRows > 0"
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="center"
-    >
-    </b-pagination> -->
     <ClientHKFundOutDetails
       ref="ClientHKFundOutDetails"
       :title="'客戶香港出款申請'"
@@ -256,11 +205,12 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    search(e) {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
     linkGen(pageNum) {
-      // return {
-      //   path: "/ClientHKFundOutRequests/",
-      //   query: { page: pageNum },
-      // };
       return null;
     },
     onPageChange(pageNo) {
@@ -315,10 +265,16 @@ export default {
       this.load(1);
     },
     load(pageNumber) {
+      const 帳戶號碼 = this.filters["帳戶號碼"];
+      const 客户姓名 = this.filters["客户姓名"];
+      const 手機號碼 = this.filters["手機號碼"];
       const self = this;
       axios
         .get("ClientHKFundOutRequests", {
           params: {
+            帳戶號碼: 帳戶號碼,
+            客户姓名: 客户姓名,
+            手機號碼: 手機號碼,
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
@@ -327,23 +283,12 @@ export default {
         .then((res) => {
           console.log(res);
           const data = res.data.data;
-          // const total = res.data.total;
           self.fields = res.data.fields;
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
           self.last_page = res.data.last_page;
           self.busy = false;
-          // if (total <= self.perPage) {
-          //   self.progress = 100;
-          // } else {
-          //   self.progress += (self.perPage / total) * 100;
-          // }
-          // if (data.length >= self.perPage) {
-          //   self.load(pageNumber + 1);
-          // } else {
-          //   self.busy = false;
-          // }
         })
         .catch((error) => {
           if (axios.isCancel(error)) {
