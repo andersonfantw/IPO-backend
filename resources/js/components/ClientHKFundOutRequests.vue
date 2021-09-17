@@ -2,10 +2,6 @@
   <b-container fluid>
     <h1 class="text-warning text-center">
       客戶香港出款申請
-      <b-spinner
-        v-if="busy"
-        variant="warning"
-      ></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
@@ -77,6 +73,24 @@
         small
       />
     </b-button>
+    <b-row
+      v-if="busy"
+      class="mt-3"
+    >
+      <b-col>
+        <b-progress
+          :max="100"
+          show-progress
+          animated
+          variant="success"
+        >
+          <b-progress-bar
+            :value="progress"
+            :label="`${progress.toFixed(2)}%`"
+          ></b-progress-bar>
+        </b-progress>
+      </b-col>
+    </b-row>
     <b-row
       no-gutters
       class="mt-3"
@@ -203,6 +217,7 @@ export default {
       DownloadingExcel: false,
       Auditing: false,
       source: null,
+      progress: 0,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -285,10 +300,16 @@ export default {
         .then((res) => {
           console.log(res);
           const data = res.data.data;
+          const total = res.data.total;
           self.fields = res.data.fields;
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
+          if (total <= self.perPage) {
+            self.progress = 100;
+          } else {
+            self.progress += (self.perPage / total) * 100;
+          }
           if (data.length >= self.perPage) {
             self.load(pageNumber + 1);
           } else {
