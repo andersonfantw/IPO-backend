@@ -188,6 +188,7 @@
     <b-pagination-nav
       v-if="last_page"
       v-model="currentPage"
+      :link-gen="linkGen"
       :number-of-pages="last_page"
       @change="onPageChange"
       align="center"
@@ -256,10 +257,11 @@ export default {
   },
   methods: {
     linkGen(pageNum) {
-      return {
-        path: "/ClientHKFundOutRequests/",
-        query: { page: pageNum },
-      };
+      // return {
+      //   path: "/ClientHKFundOutRequests/",
+      //   query: { page: pageNum },
+      // };
+      return null;
     },
     onPageChange(pageNo) {
       this.data = [];
