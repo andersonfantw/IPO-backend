@@ -120,8 +120,6 @@
       dark
       :items="data"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
       :filter="filters"
       :filter-function="filter"
       show-empty
