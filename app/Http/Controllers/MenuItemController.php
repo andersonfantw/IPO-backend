@@ -165,30 +165,71 @@ class MenuItemController extends Controller
 
     public function getCounts()
     {
-        $CountUnauditedList1 = $this->getUnauditedList1Query()->count();
-        $CountReauditList1 = $this->getReauditList1Query()->count();
-        $CountRejectedList1 = $this->getRejectedList1Query()->count();
-        $CountUnauditedList2 = $this->getUnauditedList2Query()->count();
-        $CountDeliverableList2 = $this->getDeliverableList2Query()->whereDoesntHave('AyersAccounts')->count();
-        $CountSendingEmailList = $this->getSendingEmailListQuery()->count();
-        $CountClientBankCards = $this->getClientBankCardsQuery()->count();
-        $CountClientFundInRequests = $this->getClientFundInRequestsQuery()
-            ->where('status', 'pending')
-            ->count();
-        $CountClientHKFundOutRequests = $this->getClientHKFundOutRequestsQuery()
-            ->where('status', 'pending')
-            ->count();
-        return json_encode([
-            'CountUnauditedList1' => $CountUnauditedList1,
-            'CountReauditList1' => $CountReauditList1,
-            'CountRejectedList1' => $CountRejectedList1,
-            'CountUnauditedList2' => $CountUnauditedList2,
-            'CountDeliverableList2' => $CountDeliverableList2,
-            'CountSendingEmailList' => $CountSendingEmailList,
-            'CountClientBankCards' => $CountClientBankCards,
-            'CountClientFundInRequests' => $CountClientFundInRequests,
-            'CountClientHKFundOutRequests' => $CountClientHKFundOutRequests,
-        ], JSON_UNESCAPED_UNICODE);
+
+        $Counts = $this->getUnauditedList1Query()
+            ->selectRaw("'一審資料未審核清單' as name")
+            ->selectRaw('count(*) as count')->union(
+                $this->getReauditList1Query()
+                    ->selectRaw("'一審資料再審核清單' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getRejectedList1Query()
+                    ->selectRaw("'資料駁回清單' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getUnauditedList2Query()
+                    ->selectRaw("'二審資料未審核清單' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getDeliverableList2Query()
+                    ->whereDoesntHave('AyersAccounts')
+                    ->selectRaw("'二審資料可投遞清單' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getSendingEmailListQuery()
+                    ->selectRaw("'開戶信發送清單' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getClientBankCardsQuery()
+                    ->where('status', 'pending')
+                    ->selectRaw("'添加銀行卡申請' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getClientFundInRequestsQuery()
+                    ->where('status', 'pending')
+                    ->selectRaw("'存款申請' as name")
+                    ->selectRaw('count(*) as count')
+            )->union(
+                $this->getClientHKFundOutRequestsQuery()
+                    ->where('status', 'pending')
+                    ->selectRaw("'香港出款申請' as name")
+                    ->selectRaw('count(*) as count')
+            )->get()->toArray();
+        return $Counts;
+        // $CountUnauditedList1 = $this->getUnauditedList1Query()->count();
+        // $CountReauditList1 = $this->getReauditList1Query()->count();
+        // $CountRejectedList1 = $this->getRejectedList1Query()->count();
+        // $CountUnauditedList2 = $this->getUnauditedList2Query()->count();
+        // $CountDeliverableList2 = $this->getDeliverableList2Query()->whereDoesntHave('AyersAccounts')->count();
+        // $CountSendingEmailList = $this->getSendingEmailListQuery()->count();
+        // $CountClientBankCards = $this->getClientBankCardsQuery()->count();
+        // $CountClientFundInRequests = $this->getClientFundInRequestsQuery()
+        //     ->where('status', 'pending')
+        //     ->count();
+        // $CountClientHKFundOutRequests = $this->getClientHKFundOutRequestsQuery()
+        //     ->where('status', 'pending')
+        //     ->count();
+        // return json_encode([
+        //     'CountUnauditedList1' => $CountUnauditedList1,
+        //     'CountReauditList1' => $CountReauditList1,
+        //     'CountRejectedList1' => $CountRejectedList1,
+        //     'CountUnauditedList2' => $CountUnauditedList2,
+        //     'CountDeliverableList2' => $CountDeliverableList2,
+        //     'CountSendingEmailList' => $CountSendingEmailList,
+        //     'CountClientBankCards' => $CountClientBankCards,
+        //     'CountClientFundInRequests' => $CountClientFundInRequests,
+        //     'CountClientHKFundOutRequests' => $CountClientHKFundOutRequests,
+        // ], JSON_UNESCAPED_UNICODE);
     }
 
     /**

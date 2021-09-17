@@ -53,6 +53,7 @@ class ClientBankCardsController extends Controller
     public function index(Request $request)
     {
         $ClientBankCards = $this->getClientBankCardsQuery()
+            ->whereIn('status', ['approved', 'pending', 'rejected'])
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
         //     ->has('Client.AyersAccounts')

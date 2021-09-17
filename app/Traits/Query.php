@@ -162,8 +162,7 @@ trait Query
     {
         $Query = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
             ->has('Client.AyersAccounts')
-            ->where('type', '拼一手')
-            ->whereIn('status', ['approved', 'pending', 'rejected']);
+            ->where('type', '拼一手');
         return $Query;
     }
 
