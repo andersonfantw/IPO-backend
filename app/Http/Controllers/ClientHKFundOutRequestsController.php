@@ -55,7 +55,6 @@ class ClientHKFundOutRequestsController extends Controller
         // $yesterday = today()->subDays(3)->toDateString();
         $ClientHKFundOutRequests = $this->getClientHKFundOutRequestsQuery()
             ->orderBy('updated_at', 'desc')
-            // ->paginate();
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $ClientHKFundOutRequests = ClientHKFundOutRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
         //     ->orderBy('updated_at', 'desc')
