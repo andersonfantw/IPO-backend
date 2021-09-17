@@ -98,6 +98,7 @@
       <b-col class="text-center">
         <b-pagination-nav
           v-if="last_page"
+          v-model="currentPage"
           :link-gen="linkGen"
           :number-of-pages="last_page"
           @change="onPageChange"
@@ -186,6 +187,14 @@
         </div>
       </template>
     </b-table>
+    <b-pagination-nav
+      v-if="last_page"
+      v-model="currentPage"
+      :link-gen="linkGen"
+      :number-of-pages="last_page"
+      @change="onPageChange"
+      align="center"
+    ></b-pagination-nav>
     <!-- <b-pagination
       v-if="totalRows > 0"
       v-model="currentPage"
