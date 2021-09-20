@@ -36,6 +36,7 @@
           <b-form-select
             v-model="filters['狀態']"
             :options="狀態"
+            @change="search"
           >
           </b-form-select>
         </b-input-group>
