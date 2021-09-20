@@ -2,10 +2,6 @@
   <b-container fluid>
     <h1 class="text-warning text-center">
       客戶存款申請
-      <b-spinner
-        v-if="busy"
-        variant="warning"
-      ></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
