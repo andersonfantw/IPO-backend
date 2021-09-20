@@ -6,6 +6,9 @@ use App\ClientFundInRequest;
 use App\Traits\Excel;
 use Illuminate\Http\Request;
 use App\Traits\Query;
+use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 
 class ClientFundInRequestsController extends Controller
 {
@@ -51,12 +54,56 @@ class ClientFundInRequestsController extends Controller
      */
     public function index(Request $request)
     {
-        $ClientFundInRequests = $this->getClientFundInRequestsQuery()
-            ->orderBy('updated_at', 'desc')
+        $帳戶號碼 = $request->input('帳戶號碼', null);
+        $客户姓名 = $request->input('客户姓名', null);
+        $手機號碼 = $request->input('手機號碼', null);
+        $狀態 = $request->input('狀態', null);
+        $發送時間 = $request->input('發送時間', null);
+        $審批時間 = $request->input('審批時間', null);
+        $Query = $this->getClientFundInRequestsQuery();
+        if ($帳戶號碼) {
+            $Query = $Query->whereHas('Client.AyersAccounts', function (Builder $query) use ($帳戶號碼) {
+                $query->where('account_no', 'like', "$帳戶號碼%");
+            });
+        }
+        if ($客户姓名) {
+            $Query = $Query->whereHas('Client', function (Builder $query) use ($客户姓名) {
+                $query->whereHasMorph('IDCard', ['App\ClientHKIDCard', 'App\ClientCNIDCard', 'App\ClientOtherIDCard'], function (Builder $query) use ($客户姓名) {
+                    $query->where('name_c', 'like', "$客户姓名%");
+                });
+            });
+        }
+        if ($手機號碼) {
+            $Query = $Query->whereHas('Client', function (Builder $query) use ($手機號碼) {
+                $query->where('mobile', 'like', "$手機號碼%");
+            });
+        }
+        if ($狀態) {
+            $Query = $Query->where('status', $狀態);
+        }
+        if (is_array($發送時間) && count($發送時間) == 2) {
+            try {
+                $發送時間[0] = Carbon::parse($發送時間[0])->addDays(1)->format('Y-m-d');
+                $發送時間[1] = Carbon::parse($發送時間[1])->addDays(1)->format('Y-m-d');
+                $Query = $Query->whereBetween('created_at', [$發送時間[0], $發送時間[1]]);
+            } catch (InvalidFormatException $e) {
+            }
+        }
+        if (is_array($審批時間) && count($審批時間) == 2) {
+            try {
+                $審批時間[0] = Carbon::parse($審批時間[0])->addDays(1)->format('Y-m-d');
+                $審批時間[1] = Carbon::parse($審批時間[1])->addDays(1)->format('Y-m-d');
+                $Query = $Query->whereBetween('updated_at', [$審批時間[0], $審批時間[1]]);
+            } catch (InvalidFormatException $e) {
+            }
+        }
+        $ClientFundInRequests = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
         //     ->orderBy('updated_at', 'desc')
         //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        $total = $ClientFundInRequests->total();
+        $last_page = $ClientFundInRequests->lastPage();
         $rows = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
             $Client = $ClientFundInRequest->Client;
@@ -82,6 +129,8 @@ class ClientFundInRequestsController extends Controller
             'fields' => $this->fields,
             'filter_type' => $this->filter_type,
             'data' => $rows,
+            'total' => $total,
+            'last_page' => $last_page
         ], JSON_UNESCAPED_UNICODE);
     }
 
