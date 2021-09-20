@@ -9,6 +9,7 @@
           <b-form-input
             type="search"
             v-model="filters['帳戶號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -17,6 +18,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -25,6 +27,7 @@
           <b-form-input
             type="search"
             v-model="filters['手機號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -45,6 +48,7 @@
           v-model="filters['發送時間']"
           range
           placeholder="發送時間"
+          @change="search"
         />
       </b-col>
       <b-col>
@@ -53,29 +57,12 @@
           v-model="filters['審批時間']"
           range
           placeholder="審批時間"
+          @change="search"
         />
       </b-col>
       <b-col>
       </b-col>
       <b-col>
-      </b-col>
-    </b-row>
-    <b-row
-      v-if="busy"
-      class="mt-3"
-    >
-      <b-col>
-        <b-progress
-          :max="100"
-          show-progress
-          animated
-          variant="success"
-        >
-          <b-progress-bar
-            :value="progress"
-            :label="`${progress.toFixed(2)}%`"
-          ></b-progress-bar>
-        </b-progress>
       </b-col>
     </b-row>
     <b-row
@@ -225,10 +212,22 @@ export default {
       this.load(1);
     },
     load(pageNumber) {
+      const 帳戶號碼 = this.filters["帳戶號碼"];
+      const 客户姓名 = this.filters["客户姓名"];
+      const 手機號碼 = this.filters["手機號碼"];
+      const 狀態 = this.filters["狀態"];
+      const 發送時間 = this.filters["發送時間"];
+      const 審批時間 = this.filters["審批時間"];
       const self = this;
       axios
         .get("ClientBankCards", {
           params: {
+            帳戶號碼: 帳戶號碼,
+            客户姓名: 客户姓名,
+            手機號碼: 手機號碼,
+            狀態: 狀態,
+            發送時間: 發送時間,
+            審批時間: 審批時間,
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
