@@ -242,6 +242,7 @@ export default {
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
+          self.last_page = res.data.last_page;
           self.busy = false;
         })
         .catch((error) => {
