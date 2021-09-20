@@ -52,14 +52,16 @@ class ClientBankCardsController extends Controller
      */
     public function index(Request $request)
     {
-        $ClientBankCards = $this->getClientBankCardsQuery()
-            ->whereIn('status', ['approved', 'pending', 'rejected'])
+        $Query = $this->getClientBankCardsQuery();
+        $ClientBankCards = $Query->whereIn('status', ['approved', 'pending', 'rejected'])
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         // $ClientBankCards = ClientBankCard::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
         //     ->has('Client.AyersAccounts')
         //     ->where('type', '拼一手')
         //     ->whereIn('status', ['approved', 'pending', 'rejected'])
         //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
+        $total = $ClientBankCards->total();
+        $last_page = $ClientBankCards->lastPage();
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;
@@ -88,6 +90,8 @@ class ClientBankCardsController extends Controller
             'fields' => $this->fields,
             'filter_type' => $this->filter_type,
             'data' => $rows,
+            'total' => $total,
+            'last_page' => $last_page
         ], JSON_UNESCAPED_UNICODE);
     }
 

@@ -83,14 +83,14 @@
       class="mt-3"
     >
       <b-col class="text-center">
-        <b-pagination
-          v-if="totalRows > 0"
+        <b-pagination-nav
+          v-if="last_page"
           v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
+          :link-gen="linkGen"
+          :number-of-pages="last_page"
+          @change="onPageChange"
           align="center"
-        >
-        </b-pagination>
+        ></b-pagination-nav>
       </b-col>
     </b-row>
     <b-table
@@ -99,10 +99,6 @@
       dark
       :items="data"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filters"
-      :filter-function="filter"
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
@@ -138,14 +134,14 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
+    <b-pagination-nav
+      v-if="last_page"
       v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
+      :link-gen="linkGen"
+      :number-of-pages="last_page"
+      @change="onPageChange"
       align="center"
-    >
-    </b-pagination>
+    ></b-pagination-nav>
     <ClientBankCardDetails
       ref="ClientBankCardDetails"
       :title="'添加銀行卡申請'"
@@ -179,6 +175,7 @@ export default {
         { value: "rejected", text: "rejected" },
       ],
       source: null,
+      last_page: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -199,6 +196,19 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    search(e) {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    linkGen(pageNum) {
+      return null;
+    },
+    onPageChange(pageNo) {
+      this.data = [];
+      this.busy = true;
+      this.load(pageNo);
+    },
     showDetails(id) {
       this.$refs.ClientBankCardDetails.showModal(id);
     },
@@ -232,16 +242,7 @@ export default {
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          if (total <= self.perPage) {
-            self.progress = 100;
-          } else {
-            self.progress += (self.perPage / total) * 100;
-          }
-          if (data.length >= self.perPage) {
-            self.load(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
+          self.busy = false;
         })
         .catch((error) => {
           if (axios.isCancel(error)) {
