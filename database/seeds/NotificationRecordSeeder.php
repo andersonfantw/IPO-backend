@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\NotificationRecord;
+use App\Models\NotificationRecord;
 
 class NotificationRecordSeeder extends Seeder
 {

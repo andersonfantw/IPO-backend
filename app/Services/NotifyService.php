@@ -2,8 +2,8 @@
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Collection;
-use App\NotificationTemplate;
-use App\NotificationRecord;
+use App\Models\NotificationTemplate;
+use App\Models\NotificationRecord;
 use App\Services\NotifyMessage;
 use App\Notifications\MeteorsisSMS;
 use App\Notifications\CYSSMail;

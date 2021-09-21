@@ -61,6 +61,7 @@ export default {
             ],
             client_info:{},
             form:{
+                _route:'account_overview',
                 client_id: '',
                 template:'',
                 file:null,

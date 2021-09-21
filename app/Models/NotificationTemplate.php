@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,5 +35,8 @@ class NotificationTemplate extends Model
         return $query->where(function($query){
             $query->where('cate','=','group')->orWhere('cate','=','account_overview')->orWhere('cate','=','group_account_overview');
         });
+    }
+    public function scopeAllotedNotice($query){
+        return $query->whereIn('id',[5,6]);
     }
 }

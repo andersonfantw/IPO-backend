@@ -4,8 +4,8 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\NotificationGroup;
-use App\NotificationTemplate;
+use App\Models\NotificationGroup;
+use App\Models\NotificationTemplate;
 
 class NotifyMessage{
     private $title=null;
@@ -72,10 +72,11 @@ class NotifyMessage{
      * 包含收件人資料的data row
      *
      * @param [type] $row
-     * @return void
+     * @return NotifyMessage
      */
     function rowClientInfo($row){
         $this->row_client_info = $row;
+        return $this;
     }
 
     function __construct(Request $request=null){
@@ -99,11 +100,11 @@ class NotifyMessage{
      */
     function toData(): array
     {
-        if(in_array($this->route,['email','account_overview']))
-            if($this->title=='') abort(500,sprintf('[NotifyMessage] route=%s 缺少必要參數 title',$this->route));
-
         // 通訊方式以設定的為優先，會要另外設定通常是因為當時的資料庫通訊紀錄尚未修改
         $this->_params = $this->toParams();
+
+        if(in_array($this->route,['email','account_overview']))
+            if($this->title=='') abort(500,sprintf('[NotifyMessage] route=%s 缺少必要參數 title',$this->route));
 
         $_params=[]; // 提供文案中變數的替換
         foreach($this->_params as $k => $v) $_params['['.$k.']'] = $v;
@@ -111,7 +112,7 @@ class NotifyMessage{
             'notification_group_id' => 0,
             'route' => $this->route,
             'notification_template_id' => $this->template_id,
-            'client_id' => $this->client_id,
+            'client_id' => $this->client_id??$_params['[client_id]'],
             'name' => $_params['[name]']??null,
             'phone' => $this->mobile??$_params['[phone]']??null,
             'email' => $this->email??$_params['[email]']??null,
@@ -141,6 +142,7 @@ class NotifyMessage{
         // 有設定Template未設定content，將content設定為模板訊息
         if($this->template_id>0 && $this->content==''){
             $NotificationTemplate = NotificationTemplate::findOrFail($this->template_id);
+            $this->title = $this->title??$NotificationTemplate->name;
             $this->content = $this->content??$NotificationTemplate->template;
         }
 

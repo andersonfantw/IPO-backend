@@ -9,7 +9,7 @@ use App\Notifications\CYSSMail;
 use App\Notifications\AccountOverview;
 use App\Services\NotifyMessage;
 use App\Services\NotifyService;
-use App\NotificationRecord;
+use App\Models\NotificationRecord;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
 
