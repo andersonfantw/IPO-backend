@@ -7,6 +7,7 @@
           <b-form-input
             type="search"
             v-model="filters['帳戶號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -15,6 +16,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -23,6 +25,7 @@
           <b-form-input
             type="search"
             v-model="filters['證件號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -31,18 +34,19 @@
           <b-form-input
             type="search"
             v-model="filters['電郵']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
     </b-row>
     <b-row class="mb-3">
       <b-col>
-        <!-- <DateRange :name="'投遞日期'" v-model="filters['投遞日期']" /> -->
         <date-picker
           name="'投遞日期'"
           v-model="filters['投遞日期']"
           range
           placeholder="投遞日期"
+          @change="search"
         />
       </b-col>
       <b-col>
@@ -50,6 +54,7 @@
           <b-form-select
             v-model="filters['狀態']"
             :options="options"
+            @change="search"
           >
           </b-form-select>
         </b-input-group>
@@ -59,6 +64,7 @@
           <b-form-input
             type="search"
             v-model="filters['電郵發送者']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -68,6 +74,7 @@
           v-model="filters['電郵發送時間']"
           range
           placeholder="電郵發送時間"
+          @change="search"
         />
       </b-col>
     </b-row>
@@ -98,14 +105,14 @@
       class="mt-3"
     >
       <b-col class="text-center">
-        <b-pagination
-          v-if="totalRows > 0"
+        <b-pagination-nav
+          v-if="last_page"
           v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
+          :link-gen="linkGen"
+          :number-of-pages="last_page"
+          @change="onPageChange"
           align="center"
-        >
-        </b-pagination>
+        ></b-pagination-nav>
       </b-col>
     </b-row>
     <b-table
@@ -114,10 +121,6 @@
       dark
       :items="data"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filters"
-      :filter-function="filter"
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
@@ -147,14 +150,14 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
+    <b-pagination-nav
+      v-if="last_page"
       v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
+      :link-gen="linkGen"
+      :number-of-pages="last_page"
+      @change="onPageChange"
       align="center"
-    >
-    </b-pagination>
+    ></b-pagination-nav>
   </b-container>
 </template>
 <script>
@@ -181,6 +184,7 @@ export default {
         { value: "已發送", text: "已發送" },
       ],
       progress: 0,
+      last_page: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -195,9 +199,22 @@ export default {
     // this.User = JSON.parse(this.user);
     this.busy = true;
     this.getCounts(axios);
-    this.loadData(1);
+    this.load(1);
   },
   methods: {
+    search(e) {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    linkGen(pageNum) {
+      return null;
+    },
+    onPageChange(pageNo) {
+      this.data = [];
+      this.busy = true;
+      this.load(pageNo);
+    },
     selectAll(e) {
       if (e) {
         this.selectedClients = this.filteredClients;
@@ -218,7 +235,7 @@ export default {
             console.log(res);
             self.data = [];
             self.progress = 0;
-            self.loadData(1);
+            self.load(1);
           })
           .catch((error) => {
             console.log(error);
@@ -227,11 +244,27 @@ export default {
         alert("請先選中客戶！");
       }
     },
-    loadData(pageNumber) {
+    load(pageNumber) {
+      const 帳戶號碼 = this.filters["帳戶號碼"];
+      const 客户姓名 = this.filters["客户姓名"];
+      const 證件號碼 = this.filters["證件號碼"];
+      const 電郵 = this.filters["電郵"];
+      const 投遞日期 = this.filters["投遞日期"];
+      const 狀態 = this.filters["狀態"];
+      const 電郵發送者 = this.filters["電郵發送者"];
+      const 電郵發送時間 = this.filters["電郵發送時間"];
       const self = this;
       axios
         .get("SendingEmailList", {
           params: {
+            帳戶號碼: 帳戶號碼,
+            客户姓名: 客户姓名,
+            證件號碼: 證件號碼,
+            電郵: 電郵,
+            投遞日期: 投遞日期,
+            狀態: 狀態,
+            電郵發送者: 電郵發送者,
+            電郵發送時間: 電郵發送時間,
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
@@ -245,16 +278,8 @@ export default {
           self.data = self.data.concat(data);
           self.filteredClients = self.data;
           self.totalRows = self.data.length;
-          if (total <= self.perPage) {
-            self.progress = 100;
-          } else {
-            self.progress += (self.perPage / total) * 100;
-          }
-          if (data.length >= self.perPage) {
-            self.loadData(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
+          self.last_page = res.data.last_page;
+          self.busy = false;
         })
         .catch((error) => {
           console.log(error);
