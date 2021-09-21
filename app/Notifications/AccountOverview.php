@@ -3,13 +3,11 @@
 namespace App\Notifications;
 
 use App\Services\NotifyMessage;
-use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Carbon\Carbon;
 
 class AccountOverview extends Notification
 {
-    use Queueable;
 
     /**
      * Create a new notification instance.

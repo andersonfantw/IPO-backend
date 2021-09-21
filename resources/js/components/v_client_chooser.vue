@@ -1,26 +1,37 @@
 <template>
     <div>
-        <b-button v-b-modal.client_chooser class="w-100" :disabled="disabled">{{text}}</b-button>
-        <b-modal id="client_chooser" title="請選擇客戶">
-            <b-form-group label="選擇客戶類別" v-slot="{ ariaDescribedby }">
-                <b-form-radio-group
-                    id="client_type"
-                    v-model="selected_type"
-                    :options="type_options"
-                    :aria-describedby="ariaDescribedby"
-                ></b-form-radio-group>
-            </b-form-group>
+        <b-button v-b-modal.client_chooser class="w-100" :disabled="disabled">{{return_text}}</b-button>
+        <b-modal id="client_chooser" size='xl' title="請選擇客戶">
+            <b-row>
+                <b-col cols="4">
+                    <b-form-group label="依業務" v-slot="{ ariaDescribedby }">
+                        <b-form-checkbox-group
+                            id="ae"
+                            v-model="form.selected_ae"
+                            :options="ae_options"
+                            :aria-describedby="ariaDescribedby"
+                            @change="onChange"
+                        ></b-form-checkbox-group>
+                    </b-form-group>
+                </b-col>
+                <b-col cols="8">
+                    <b-form-group v-for="(v,k) in cate_options" :key="k" :label="k" v-slot="{ ariaDescribedby1 }">
+                        <b-form-checkbox-group
+                            id="client_cate"
+                            v-model="form.selected_cate"
+                            :options="v"
+                            :aria-describedby="ariaDescribedby1"
+                            name="flavour-1"
+                            @change="onChange"
+                        ></b-form-checkbox-group>
+                    </b-form-group>
+                </b-col>
+            </b-row>
+                <b-table :items="items" :fields="fields">
+
+                </b-table>
             <hr />
-            <b-form-group :label="selected_type" v-slot="{ ariaDescribedby1 }">
-                <b-form-checkbox-group
-                    id="client_cate"
-                    v-model="selected_cate"
-                    :options="cate_options[selected_type]"
-                    :aria-describedby="ariaDescribedby1"
-                    name="flavour-1"
-                    @change="$emit('input', selected_cate_by_type)"
-                ></b-form-checkbox-group>
-            </b-form-group>
+
             <!-- <hr />
             <b-form-group label="地區" v-slot="{ ariaDescribedby2 }">
                 <b-form-checkbox-group
@@ -41,44 +52,64 @@ export default {
     props: ['value','disabled'],
     data(){
         return {
-            selected_type: '客戶',
-            selected_cate: [],
+            form:{
+                selected_ae: [],
+                selected_cate: [],
+            },
             selected_locale: ['zn','hk','others'],
-            type_options:[
-                {text:'客戶',value:'客戶'},
-                {text:'非客戶',value:'非客戶'},
-            ],
+            ae_options:[],
             cate_options:{
-                '客戶':[
+                '依方案':[
                     {text:'現金帳戶',value:'cash'},
-                    {text:'全權委託有入金',value:'authorize_deposit'},
-                    {text:'全權委託無入金',value:'authorize'},
-                    {text:'暫停交易',value:'suspend'},
+                    {text:'拚一手',value:'authorize_deposit'},
+                    {text:'拳頭打新',value:'authorize'},
                 ],
-                '非客戶':[
-                    {text:'未完成開戶系統客戶',value:'open'},
-                    {text:'銷戶客戶',value:'cancel'}
+                '依客戶狀態':[
+                    {text:'活躍',value:'active'},
+                    {text:'銷戶',value:'closed'},
+                    {text:'暫停交易',value:'suspend'},
+                    {text:'未完成開戶',value:'opening'},
                 ]
             },
             locale_options:[
                 {text:'大陸地區',value:'zn'},
                 {text:'香港地區',value:'hk'},
                 {text:'其他國家',value:'others'},
-            ]
+            ],
+            fields:[],
+            items:[],
         }
     },
     computed:{
-        selected_cate_by_type(){
-            let arr = this.cate_options[this.selected_type].map(i => i.value)
-            return arr.filter(i => this.selected_cate.indexOf(i)!==-1)
+        cate(){
+            return this.cate_options['客戶'].concat(this.cate_options['非客戶'])
         },
-        text(){
-            let arr = this.cate_options[this.selected_type].filter(i => this.selected_cate_by_type.indexOf(i.value)!==-1)
-            return (this.selected_cate_by_type.length>0)?arr.map(i => i.text).join(','):'請選擇客戶'
+        return_text(){
+            let _this=this
+            let a=[]
+            this.selected_cate.map(function(v){
+                let arr = _this.cate.filter(i=>i.value==v)
+                if(arr.length>0) a.push(arr.map(i => i.text))
+            })
+            return (a.length==0)?'請選擇客戶':a.join(',')
         }
     },
     created(){
         this.selected_cate = this.value
+        let _this=this
+        this.myGet(function(response){
+            _this.ae_options=response
+        },null,this.url('/list/ae'))
+    },
+    methods:{
+        onChange(){
+            let _this=this
+            let formData = this.getFormData();
+            this.myPost(function(response){
+
+            },formData,this.url('/list/clients'))
+            this.$emit('pick_clients', this.form)
+        }
     }
 }
 </script>

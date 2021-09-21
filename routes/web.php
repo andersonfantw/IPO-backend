@@ -213,6 +213,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
 
+    Route::get('ttttt',function(){
+        return Illuminate\Support\Str::snake('ClientCnIdCardUpdate');
+    });
+
     Route::prefix('api')->group(function () {
         // Anderson 2021-05-31 start
         Route::resource('AccountReportSendingSummary', 'AccountReportSendingSummaryController');
@@ -244,6 +248,7 @@ Route::middleware(['auth'])->group(function () {
         // Route::post('/notify_client/{id}/send/', 'NotificationRecordController@send')->where(['id' => '[0-9]+']);
         Route::post('/notify_group/{id}/SendAll/', 'NotificationGroupController@sendAll')->where(['id' => '[0-9]+']);
         Route::post('/notify_group/{id}/store/{client_id}/', 'NotificationGroupController@addClient')->where(['id' => '[0-9]+', 'client_id' => '[0-9]+']);
+        Route::post('/notify_group/uploadCustomizeNoticeList','NotificationGroupController@customizeNotice');
 
         Route::get('forbidden_words', 'VueController@ForbiddenWords');
         Route::get('template_list', 'VueController@NotificationTemplateList');
@@ -263,9 +268,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('ipo_interest_import', 'IpoInterestImportController');
 
         // 顧客資料修改
-        Route::get('/ClientDataUpdate/{model}/{id}', [App\Http\Controllers\ClientDataUpdate::class, 'show'])->where(['model' => '[a-zA-Z]+', 'id' => '[0-9]+']);
-        Route::get('/ClientDataUpdate/{model}/{id}/{image}', [App\Http\Controllers\ClientDataUpdate::class, 'image'])->where(['model' => '[a-zA-Z]+', 'id' => '[0-9]+', 'image' => '[a-z]+']);
-        Route::resource('ClientDataUpdate', 'ClientDataUpdate');
+        Route::get('/ClientDataUpdate/model_cname','ClientDataUpdateController@modelCname');
+        Route::get('/ClientDataUpdate/{model}/{client_ayers_account:uuid}/{image}', 'ClientDataUpdateController@image')->where(['model'=>'[a-zA-Z]+','image'=>'[a-z_]+']);
+        Route::get('/ClientDataUpdate/{model}/{client_ayers_account:uuid}', 'ClientDataUpdateController@show')->where(['model'=>'[a-zA-Z]+']);
+        Route::put('/ClientDataUpdate/{model}/{client_ayers_account:uuid}', 'ClientDataUpdateController@update')->where(['model'=>'[a-zA-Z]+']);
+        Route::resource('ClientDataUpdate','ClientDataUpdateController');
         // Anderson 2021-05-31 end
     });
 });

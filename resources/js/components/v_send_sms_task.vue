@@ -191,9 +191,11 @@ export default {
     created(){
         this.index()
         this.$bus.$on('find_a_client::client',(o)=>this.get_client_info(o))
+        this.$bus.$on('pick_clients',(o)=>this.get_client_info(o))
     },
     beforeDestroy(){
         this.$bus.$off("find_a_client::client");
+        this.$bus.$off("pick_clients");
     },
     methods:{
         autogrow(){

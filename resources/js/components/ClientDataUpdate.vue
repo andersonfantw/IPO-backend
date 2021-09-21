@@ -24,7 +24,7 @@
 
         <div class="m-4">
             <b-row class="filter text-white">
-                <b-col cols="9" class="mb-3">
+                <b-col cols="6" class="mb-3">
                     <b-tabs v-model="tabIndex" class="switch_search">
                         <b-tab title="帳戶號碼" active>
                             <b-input id="client_id" v-model="filter.client_id" @keyup.enter="index" placeholder="帳戶號碼，按[ENTER]查詢"></b-input>
@@ -41,8 +41,12 @@
                     </b-tabs>
                 </b-col>
                 <b-col cols="3" class="mb-3">
-                    <label for="sending_period">提交時間</label>
-                    <date-picker v-model="filter.date" type="date" @change="index" range placeholder="Select date range"></date-picker>
+                    <label for="sending_period">申請時間</label>
+                    <date-picker v-model="filter.created_at" type="date" @change="index" range placeholder="Select date range"></date-picker>
+                </b-col>
+                <b-col cols="3" class="mb-3">
+                    <label for="sending_period">狀態</label>
+                    <b-form-select v-model="filter.status" :options="status_options" @change="index"></b-form-select>
                 </b-col>
             </b-row>
 
@@ -70,19 +74,22 @@
                 class="text-white"
                 :items="items"
                 :fields="fields">
-                <template #head(route)>
-                    <b-form-select id="sending_status" :options="route_options" v-model="filter.route" @change="index"></b-form-select>
+                <template #table-colgroup="scope">
+                    <col v-for="field in scope.fields" :key="field.key" :style="{ width: field.width }">
                 </template>
-                <template #head(status)>
-                    <b-form-select id="sending_status" :options="status_options" v-model="filter.status" @change="index"></b-form-select>
+                <template #head(model)>
+                    <b-form-select v-model="filter.model" :options="model_options" @change="index"></b-form-select>
+                </template>
+                <template #cell(name)="row">
+                    {{ row.item.client_id }}<br />{{ row.item.name }}
                 </template>
                 <template #cell(model)="row">
-                    {{ cate_mapping[row.item.model] }}
+                    {{ cate_mapping[row.item.model] }} <i class="far fa-image text-warning" v-if="row.item.image"></i>
                 </template>
                 <template #cell(modify)="row">
                     <div v-for="(v,k) in row.item.updating" :key="k">
                         <b-row>
-                            <b-col cols="4">{{k}}</b-col>
+                            <b-col cols="4"><b>{{k}}</b></b-col>
                             <b-col cols="8">
                                 <span v-if="(((row.item.original)?(row.item.original.hasOwnProperty(k)?row.item.original[k]:''):'')==v)" class="text-gray">{{v}}</span>
                                 <b v-else class="text-success">{{v}}</b>
@@ -90,14 +97,17 @@
                         </b-row>
                     </div>
                 </template>
+                <template #cell(created_at)="row">
+                    {{ row.item.created_at }}<br /><span :class="(row.item.status=='approved')?'text-success':(row.item.status=='rejected')?'text-danger':''">{{ row.item.status }}</span>
+                </template>
                 <template #cell(actions)="row">
                     <b-button size="sm" variant="success" v-b-toggle.client_data_detail @click="show(row.item)">
                         <i class="far fa-eye"></i> 檢視
                     </b-button>
-                    <b-button size="sm" variant="success" @mouseover="target_item=row.item">
+                    <b-button size="sm" variant="success" v-if="row.item.status=='pending'" @click="update('approved',row.item)">
                         <i class="fas fa-check"></i> 通過
                     </b-button>
-                    <b-button size="sm" class="mr-1" variant="danger" v-b-modal.del @click="form.id=row.item.id" v-if="row.item.status!='success'">
+                    <b-button size="sm" class="mr-1" variant="danger" v-if="row.item.status=='pending'" v-b-modal.rejected @click="target_item=row.item">
                         <i class="fas fa-times"></i> 駁回
                     </b-button>
                 </template>
@@ -117,7 +127,7 @@
             @dismiss-count-down="countDownChanged"
             >
                 <div @click="dismissCountDown=0">
-                    <p>使用說明：黑色文字為為變動的部分，綠色文字為有更動的項目。</p>
+                    <p>使用說明：綠色文字為有更動的項目。</p>
                 </div>
             </b-alert>
 
@@ -164,8 +174,8 @@
         </b-sidebar>
 
         <!-- del confirm -->
-        <b-modal id="del" title="刪除發送任務" @ok="del">
-            <p class="my-4">您確定要刪除尚未送出 序號為{{form.id}} 的通知嗎?</p>
+        <b-modal id="rejected" title="請填寫駁回理由" @ok="update('rejected',target_item)">
+            <b-form-textarea v-model="form.remark" rows="3" max-rows="6"></b-form-textarea>
         </b-modal>
     </div>
 </template>
@@ -181,35 +191,20 @@ export default {
           // alert
           dismissCountDown: 0,
           tabIndex: 0,
-          cate_mapping:{
-              ClientAddressProofUpdate: '住址證明',
-              ClientHKIDCardUpdate:'香港身分證',
-              ClientWorkingStatusUpdate:'工作狀態',
-              ClientFinancialStatusUpdate:'財務狀態',
-              ClientInvestmentExperienceUpdate:'投資經驗',
-              ClientInvestmentOrientationUpdate : '投資方向',
-              ClientCNIDCardUpdate: '內地身分證',
-          },
-          route_options:[
-              {value:'all', text:'通知方式'},
-              {value:'sms', text:'簡訊'},
-              {value:'email', text:'電子郵件'},
-              {value:'account_overview', text:'帳戶總覽'}
-          ],
+          model_options:[],
           status_options:[
               {value:'all', text:'狀態'},
-              {value:'nulls', text:'無'},
-              {value:'pending', text:'排程中 pending'},
-              {value:'success', text:'成功 success'},
-              {value:'failure', text:'失敗 fail'}
+              {value:'pending', text:'待處理 pending'},
+              {value:'rejected', text:'駁回 rejected'},
+              {value:'approved', text:'通過 approved'}
           ],
           fields:[
-            { key: 'id', label: 'ID', sortable: false },
-            { key: 'model', label: '資料類別', sortable: false },
-            { key: 'name', label: '姓名', sortable: false },
+            { key: 'model', label: '資料類別', width:'120px', sortable: false },
+            { key: 'id', label: 'ID', width:'50px', sortable: false },
+            { key: 'name', label: '姓名', width:'130px', sortable: false },
             { key: 'modify', label: '修改內容', sortable: false },
-            { key: 'created_at', label: '提交時間', sortable: true },
-            { key: 'actions', label: '操作' }
+            { key: 'created_at', label: '申請時間', width:'130px', sortable: true },
+            { key: 'actions', label: '操作', width:'220px' }
           ],
           pagination:{
               current_page: 1,
@@ -219,19 +214,23 @@ export default {
           items:[],
           target_item:{},
           form:{
-              id:0
+              uuid:'',
+              remark:'',
           },
           filter:{
               client_id: '',
               name: '',
               phone: '',
               email: '',
-              date: [],
+              created_at:[],
+              status: 'pending',
+              model:'all',
           },
         }
     },
     created() {
         this.index();
+        this.getModelCname();
     },
     watch: {
         'pagination.current_page': function(n){
@@ -239,6 +238,11 @@ export default {
         }
     },
     computed:{
+        cate_mapping(){
+            let o={}
+            this.model_options.forEach(el=>(o[el.value]=el.text))
+            return o
+        },
         filterByTag(){
             let a = ['client_id','name','phone','email']
             let e = a[this.tabIndex]
@@ -257,14 +261,12 @@ export default {
             let el = e.currentTarget
             el.setAttribute('style',(el.getAttribute('style').indexOf('nowrap') >= 0)?'white-space: initial':'white-space: nowrap; text-decoration: underline;')
         },
-        modify(){
-            if(this.form.id===0) this.store()
-            else this.update()
-            this.index()
-        },
-        reload(v){
-            this.filter.client_id = v
-            this.index()
+        getModelCname(){
+            let _this=this
+            this.myGet(function(response){
+                _this.model_options = response
+                _this.model_options.unshift({value:'all', text:'資料類別'})
+            },null,this.url('model_cname'))
         },
         index(){
             let _this = this
@@ -287,13 +289,6 @@ export default {
                 _this.pagination.base_url = response.path + '?page='
             },'/'+this.$options.name+'?page='+this.pagination.current_page, this.filterByTag);
         },
-        store(){
-            let _this = this
-            let formdata = this.getFormData();
-            this.crudStore(function(response){
-                _this.index()
-            }, formdata);
-        },
         show(item){
             this.target_item=item
             let _this = this
@@ -301,19 +296,17 @@ export default {
                 _this.target_item = response
                 _this.target_item.updating = JSON.parse(_this.target_item.updating)
                 _this.target_item.original = JSON.parse(_this.target_item.original)
-            },null,this.url(this.target_item.model+'/'+this.target_item.id))
+            },null,this.url(this.target_item.model+'/'+this.target_item.uuid))
         },
-        update(){
-            let formdata = this.getFormData();
-            this.crudUpdate(this.form.id, function(response){
-
-            }, formdata);
-        },
-        del(){
+        update(method, item){
+            this.target_item=item
             let _this = this
-            this.crudDestroy(this.form.id,function(response){
-                _this.index()
-            })
+            let formdata = this.getFormData({'method':method});
+            if(method=='rejected') formdata.append('remark',this.form.remark)
+            this.myPut(function(response){
+                if(response.ok) _this.index()
+                _this.form.remark = ''
+            }, formdata,this.url(this.target_item.model+'/'+this.target_item.uuid));
         },
         revise(ns1,os2){
             let arr=[]

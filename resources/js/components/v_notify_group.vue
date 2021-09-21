@@ -28,6 +28,7 @@
                     <b-button class="mb-3" variant="success" v-b-modal.group_sms @click="target_item={}"><i class="fas fa-sms"></i> 發送簡訊任務</b-button>
                     <b-button class="mb-3" variant="success" v-b-modal.group_email @click="target_item={}"><i class="fas fa-envelope-open"></i> 發送郵件任務</b-button>
                     <b-button class="mb-3" variant="success" v-b-modal.group_account_overview @click="target_item={}"><i class="fab fa-app-store-ios"></i> 帳戶總覽訊息任務</b-button>
+                    <b-button class="mb-3" variant="success" v-b-modal.group_alloted_notice @click="target_item={}"><i class="fas fa-tools"></i> 發送中籤通知</b-button>
                 </b-col>
                 <b-col cols="4">
                     <b-pagination-nav
@@ -61,7 +62,7 @@
                     <div v-else>未發送</div>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button size="sm" class="mr-1" variant="success" @click="edit(row.item, row.index, $event.target)" :disabled="row.item.success>0">
+                    <b-button size="sm" class="mr-1" variant="success" @click="edit(row.item, row.index, $event.target)" :disabled="row.item.success>0 || ['sms','email','account_overview'].indexOf(row.item.route)==-1">
                         編輯
                     </b-button>
                     <b-button size="sm" class="mr-1" variant="success" v-b-modal.send_all @click="form.id=row.item.id" :disabled="(parseInt(row.item.success)+parseInt(row.item.failure)==row.item.total && row.item.total!=0) || row.item.pending>0">
@@ -96,6 +97,8 @@
         <send-email-task id="group_email" :item="target_item" mode="group" @close="index"></send-email-task>
         <!-- Account Overview -->
         <send-account-overview-task id="group_account_overview" :item="target_item" mode="group" @close="index"></send-account-overview-task>
+        <!-- Alloted Notice -->
+        <send-alloted-notice-task id="group_alloted_notice" :item="target_item" mode="group" @close="index"></send-alloted-notice-task>
     </div>
 </template>
 
@@ -172,9 +175,11 @@ export default {
     created() {
         this.index();
         this.$bus.$on('find_a_client::add',(o)=>this.add_to_list(o))
+        this.$bus.$on('close',(o)=>this.index())
     },
     beforeDestroy(){
         this.$bus.$off("find_a_client::add");
+        this.$bus.$off('close',(o)=>this.index())
     },
     watch: {
         'pagination.current_page': function(n){
