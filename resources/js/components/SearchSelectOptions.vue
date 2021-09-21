@@ -1,6 +1,9 @@
 <template>
   <b-input-group :prepend="name">
-    <b-form-select v-model="filters[name]">
+    <b-form-select
+      v-model="filters[name]"
+      @change="onChange"
+    >
       <slot></slot>
     </b-form-select>
   </b-input-group>
@@ -30,6 +33,10 @@ export default {
       },
     },
   },
-  methods: {},
+  methods: {
+    onChange(event) {
+      this.$emit("change", event);
+    },
+  },
 };
 </script>

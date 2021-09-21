@@ -146,6 +146,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('ClientCreditCards', 'ClientCreditCardsController');
     Route::resource('ClientFundInRequests', 'ClientFundInRequestsController');
     Route::resource('ClientHKFundOutRequests', 'ClientHKFundOutRequestsController');
+    Route::prefix('ClientHKFundOutRequests')->group(function () {
+        Route::post('search', 'ClientHKFundOutRequestsController@search');
+    });
     Route::resource('ClientInternalTransferRequests', 'ClientFundInternalTransferRequestsController');
     Route::resource('ClientOverseasFundOutRequests', 'ClientOverseasFundOutRequestsController');
     Route::resource('ClientCreditCardFundOutRequests', 'ClientCreditCardFundOutRequestsController');

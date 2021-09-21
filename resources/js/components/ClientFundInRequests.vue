@@ -2,10 +2,6 @@
   <b-container fluid>
     <h1 class="text-warning text-center">
       客戶存款申請
-      <b-spinner
-        v-if="busy"
-        variant="warning"
-      ></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
@@ -13,6 +9,7 @@
           <b-form-input
             type="search"
             v-model="filters['帳戶號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -21,6 +18,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -36,6 +34,7 @@
         <SearchSelectOptions
           :name="'狀態'"
           :store-name-spaced="'ClientFundInRequests'"
+          @change="search"
         >
           <option value="">全部</option>
           <option value="pending">pending</option>
@@ -52,6 +51,7 @@
           v-model="filters['發送時間']"
           range
           placeholder="發送時間"
+          @change="search"
         />
       </b-col>
       <b-col>
@@ -60,6 +60,7 @@
           v-model="filters['審批時間']"
           range
           placeholder="審批時間"
+          @change="search"
         />
       </b-col>
       <b-col>
@@ -82,14 +83,14 @@
       class="mt-3"
     >
       <b-col class="text-center">
-        <b-pagination
-          v-if="totalRows > 0"
+        <b-pagination-nav
+          v-if="last_page"
           v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
+          :link-gen="linkGen"
+          :number-of-pages="last_page"
+          @change="onPageChange"
           align="center"
-        >
-        </b-pagination>
+        ></b-pagination-nav>
       </b-col>
     </b-row>
     <b-table
@@ -98,10 +99,6 @@
       dark
       :items="data"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filters"
-      :filter-function="filter"
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
@@ -165,14 +162,14 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
+    <b-pagination-nav
+      v-if="last_page"
       v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
+      :link-gen="linkGen"
+      :number-of-pages="last_page"
+      @change="onPageChange"
       align="center"
-    >
-    </b-pagination>
+    ></b-pagination-nav>
     <ClientFundInDetails
       ref="ClientFundInDetails"
       :title="'客戶存款申請'"
@@ -202,6 +199,7 @@ export default {
       DownloadingExcel: false,
       Auditing: false,
       source: null,
+      last_page: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -224,6 +222,19 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    search(e) {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    linkGen(pageNum) {
+      return null;
+    },
+    onPageChange(pageNo) {
+      this.data = [];
+      this.busy = true;
+      this.load(pageNo);
+    },
     showDetails(id) {
       this.$refs.ClientFundInDetails.showModal(id);
     },
@@ -278,11 +289,22 @@ export default {
       this.load(1);
     },
     load(pageNumber) {
+      const 帳戶號碼 = this.filters["帳戶號碼"];
+      const 客户姓名 = this.filters["客户姓名"];
+      const 手機號碼 = this.filters["手機號碼"];
+      const 狀態 = this.filters["狀態"];
+      const 發送時間 = this.filters["發送時間"];
+      const 審批時間 = this.filters["審批時間"];
       const self = this;
-      self.busy = true;
       axios
         .get("ClientFundInRequests", {
           params: {
+            帳戶號碼: 帳戶號碼,
+            客户姓名: 客户姓名,
+            手機號碼: 手機號碼,
+            狀態: 狀態,
+            發送時間: 發送時間,
+            審批時間: 審批時間,
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
@@ -295,11 +317,8 @@ export default {
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          if (data.length >= self.perPage) {
-            self.load(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
+          self.last_page = res.data.last_page;
+          self.busy = false;
         })
         .catch((error) => {
           if (axios.isCancel(error)) {
