@@ -334,13 +334,11 @@ class AeCommissionSummaryController extends HomeController
         $input = $request->only('month');
 
         $pdf = PDF::loadView('pdf.AeCommissionConfirmForm', array_merge(
-            ['data'=>$this->aeConfirmData($uuid,$input['month'])],
+            $this->aeConfirmData($uuid,$input['month']),
             $this->StylingImages(),
         ));
         $pdf->setOptions(['isPhpEnabled' => true]);
         return $pdf->stream('AeCommissionConfirmForm.pdf');
-        // $pdf->setOptions(['isPhpEnabled' => true]);
-        // return ['ok'=>true,'msg'=>'','PDF'=>$pdf];
     }
 
     private function aeCommissionSummaryData($month,$ae_uuid=null): array
@@ -440,6 +438,7 @@ class AeCommissionSummaryController extends HomeController
             'codes' => $AE['codes'],
             'uuid' => $AE['uuid'],
             'month' => $month,
+            'end_date' => Carbon::parse($month)->endOfMonth()->format('Y-m-d'),
             'accumulated_provision'=>AeCommissionSummary::where('ae_codes','=',$AE['codes'])->where('cate','=','reserve')->whereDate('buss_date','<',$month)->sum('bonus_application_correction'),
         ],$hash);
         $result['subtitle'] = ($result['principal']['bonus_application_correction']??$result['principal']['bonus_application'])
@@ -472,7 +471,7 @@ class AeCommissionSummaryController extends HomeController
             ->whereDate('allot_date','>=',$input['month'])
             ->whereDate('allot_date','<=',Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d'))
             ->whereNotIn('tt_client_bonus_with_dummy.client_acc_id',['20000113','20000313'])
-            ->leftjoin('cysislb_gts_client_acc','cysislb_gts_client_acc.client_acc_id','=','tt_client_bonus_with_dummy.client_acc_id');
+            ->leftJoin('cysislb_gts_client_acc','cysislb_gts_client_acc.client_acc_id','=','tt_client_bonus_with_dummy.client_acc_id');
         foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
@@ -487,13 +486,22 @@ class AeCommissionSummaryController extends HomeController
         return (new CommissionDetail($data))->download($month.$ae.'佣金明細.csv', \Maatwebsite\Excel\Excel::CSV);
     }
     public function detailPdf(Request $request){
-        $result = $this->detail($request);
         $pdf = PDF::loadView('pdf.AeCommissionDetailForm', array_merge(
-            $result,
+            $this->detail($request),
             $this->StylingImages()
         ));
         $pdf->setOptions(['isPhpEnabled' => true]);
         return $pdf->stream('AeCommissionDetailForm.pdf');
+    }
+    public function PaymentRequestForm(string $uuid, Request $request){
+        $input = $request->only('month');
+
+        $pdf = PDF::loadView('pdf.PaymentRequestForm', array_merge(
+            $this->aeConfirmData($uuid,$input['month']),
+            $this->StylingImages(),
+        ));
+        $pdf->setOptions(['isPhpEnabled' => true]);
+        return $pdf->stream('PaymentRequestForm.pdf');
     }
 
     public function recalculate(Request $request){

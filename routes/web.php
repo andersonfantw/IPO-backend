@@ -209,6 +209,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommissionSummary/ShowSummary/{ae_commission_summary:buss_date}', 'AeCommissionSummaryController@aeCommissionSummary')->name('aeCommissionSummary');
     Route::get('/AeCommissionSummary/ShowPdf/{ae:uuid}', 'AeCommissionSummaryController@aeConfirmReport')->name('AeCommissionConfirmReportPdf');
     Route::get('/AeCommissionSummary/Show/{ae:uuid}', 'AeCommissionSummaryController@aeConfirm')->name('AeCommissionConfirmReport');
+    Route::get('/AeCommissionSummary/PaymentRequestForm/{ae:uuid}','AeCommissionSummaryController@PaymentRequestForm');
     Route::get('/AeCommissionSummary', 'AeCommissionSummaryController@indexView')->name('AeCommissionSummary');
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
@@ -216,6 +217,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('ttttt',function(){
         return Illuminate\Support\Str::snake('ClientCnIdCardUpdate');
     });
+
+
 
     Route::prefix('api')->group(function () {
         // Anderson 2021-05-31 start
