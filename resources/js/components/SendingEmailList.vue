@@ -83,24 +83,6 @@
       @click="sendEmails"
     ><i class="far fa-envelope"></i> 一鍵發送</b-button>
     <b-row
-      v-if="busy"
-      class="mt-3"
-    >
-      <b-col>
-        <b-progress
-          :max="100"
-          show-progress
-          animated
-          variant="success"
-        >
-          <b-progress-bar
-            :value="progress"
-            :label="`${progress.toFixed(2)}%`"
-          ></b-progress-bar>
-        </b-progress>
-      </b-col>
-    </b-row>
-    <b-row
       no-gutters
       class="mt-3"
     >

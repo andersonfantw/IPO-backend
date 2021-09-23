@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Controller@welcome');
 
+Route::get('/phpinfo', 'Controller@phpinfo');
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {

@@ -113,7 +113,7 @@ class SendingEmailListController extends Controller
         $Clients = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();
-        $last_page = $Clients->lastPage();
+        $last_page = ceil($total / $request->input('perPage'));
         $rows = [];
         foreach ($Clients as $Client) {
             $row = [];

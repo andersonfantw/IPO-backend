@@ -24,6 +24,11 @@ class Controller extends BaseController
         return view('welcome');
     }
 
+    public function phpinfo(Request $request)
+    {
+        phpinfo();
+    }
+
     // public function TestRoute(Request $request)
     // {
     //     $route = $request->input('route');

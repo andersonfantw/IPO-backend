@@ -101,7 +101,7 @@ class ClientBankCardsController extends Controller
         $ClientBankCards = $Query->whereIn('status', ['approved', 'pending', 'rejected'])
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $ClientBankCards->total();
-        $last_page = $ClientBankCards->lastPage();
+        $last_page = ceil($total / $request->input('perPage'));
         $rows = [];
         foreach ($ClientBankCards as $ClientBankCard) {
             $Client = $ClientBankCard->Client;

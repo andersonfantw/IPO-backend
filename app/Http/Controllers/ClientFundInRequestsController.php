@@ -99,11 +99,8 @@ class ClientFundInRequestsController extends Controller
         }
         $ClientFundInRequests = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
-        // $ClientFundInRequests = ClientFundInRequest::with(['Client', 'Client.AyersAccounts', 'Client.IDCard'])
-        //     ->orderBy('updated_at', 'desc')
-        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $ClientFundInRequests->total();
-        $last_page = $ClientFundInRequests->lastPage();
+        $last_page = ceil($total / $request->input('perPage'));
         $rows = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
             $Client = $ClientFundInRequest->Client;

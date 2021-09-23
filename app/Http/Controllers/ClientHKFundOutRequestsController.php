@@ -146,7 +146,7 @@ class ClientHKFundOutRequestsController extends Controller
         $ClientHKFundOutRequests = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $ClientHKFundOutRequests->total();
-        $last_page = $ClientHKFundOutRequests->lastPage();
+        $last_page = ceil($total / $request->input('perPage'));
         $rows = [];
         foreach ($ClientHKFundOutRequests as $ClientHKFundOutRequest) {
             $Client = $ClientHKFundOutRequest->Client;
