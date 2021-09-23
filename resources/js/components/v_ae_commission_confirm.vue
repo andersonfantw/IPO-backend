@@ -21,7 +21,8 @@
                 <b-col cols="8">
                     <div>
                         <!-- <b-button class="mb-3" variant="success" :disabled="dirty"><i class="fas fa-cogs"></i> 重製PDF報表</b-button> -->
-                        <b-button class="mb-3" variant="success" :disabled="dirty" @click="showPdf"><i class="far fa-file-pdf"></i> 下載當月總表</b-button>
+                        <b-button class="mb-3" variant="success" :disabled="dirty" @click="showConfirmPdf"><i class="far fa-file-pdf"></i> 下載當月確認表</b-button>
+                        <b-button class="mb-3" variant="success" :disabled="dirty" @click="showPaymentRequestFormPdf"><i class="far fa-file-pdf"></i> 下載當月PaymentRequestForm</b-button>
                     </div>
                 </b-col>
                 <b-col cols="4">
@@ -459,8 +460,11 @@ export default {
                 _this.index()
             })
         },
-        showPdf(){
+        showConfirmPdf(){
             window.open('AeCommissionSummary/ShowPdf/'+this.uuid+'?month='+this.month)
+        },
+        showPaymentRequestFormPdf(){
+            window.open('AeCommissionSummary/PaymentRequestForm/'+this.uuid+'?month='+this.month)
         },
         valid_number(style, val){
             if(val=='' || val===null) return '';
