@@ -149,6 +149,11 @@ class Client extends Model
         return $this->hasMany('App\Models\NotificationRecord', 'email', 'email')->orderBy('created_at', 'desc');
     }
 
+    public function DepositIdentificationCode()
+    {
+        return $this->hasOne('App\ClientDepositIdentificationCode', 'uuid', 'uuid');
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
