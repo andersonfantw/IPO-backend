@@ -178,6 +178,7 @@ Route::any('/TestReport', 'UnauditedList1Controller@test')->name('TestReport');
 Route::any('/QRCode', 'AEController@QRCode')->name('QRCode');
 Route::any('/generateQRCode', 'AEController@generateQRCode')->name('generateQRCode');
 
+
 // Anderson 2021-05-31 start
 Route::middleware(['auth'])->group(function () {
     Route::get('/AccountReportSendingSummary', 'AccountReportSendingSummaryController@indexView')->name('AccountReportSendingSummary');
@@ -190,6 +191,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/max/MailList', 'SimpleListController@MailList');
     Route::get('/max/OpenStatus', 'SimpleListController@OpenStatus');
     Route::get('/max/BankcardRejected', 'SimpleListController@BankcardRejected');
+    Route::get('/max/StatusMismatch', 'SimpleListController@StatusMismatch');
 
     Route::get('/sendsms', 'SimpleListController@sms');
     Route::post('/sendsms', 'SimpleListController@sendsms');
@@ -215,12 +217,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/AeCommissionSummary', 'AeCommissionSummaryController@indexView')->name('AeCommissionSummary');
     Route::get('/AeCommission', 'AeCommissionSummaryController@indexView')->name('AeCommission');
     Route::get('/AeCommissionDetail', 'AeCommissionDetailController@indexView')->name('AeCommissionDetail');
-
-    Route::get('ttttt',function(){
-        return Illuminate\Support\Str::snake('ClientCnIdCardUpdate');
-    });
-
-
 
     Route::prefix('api')->group(function () {
         // Anderson 2021-05-31 start
@@ -258,6 +254,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('forbidden_words', 'VueController@ForbiddenWords');
         Route::get('template_list', 'VueController@NotificationTemplateList');
         Route::get('client_info', 'VueController@ClientInfo');
+        Route::post('/list/clients', 'VueController@ListClients');
 
         // Route::resource('NotificationSummary', 'NotificationGroupController');
         // Route::resource('NotificationSummary.NotificationRecords', 'NotificationRecordController');

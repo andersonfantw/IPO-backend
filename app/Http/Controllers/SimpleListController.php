@@ -63,16 +63,29 @@ class SimpleListController extends Controller
     }
 
     public function BankcardRejected(){
-        return view('Table', 
-            [
-                'data' => ClientBankCard::select('name_c','name_en','lcid','bank_name','bank_code','account_no','client_bankcard.status as bankcard_status')
-                    ->leftJoin('view_client_idcard','view_client_idcard.uuid','=','client_bankcard.uuid')
-                    ->whereIn('client_bankcard.uuid',Client::where('status','=','audited2')->pluck('uuid'))
-                    ->where('client_bankcard.status','=','rejected')
-                    ->get()->toArray()
-            ]
-        ); 
+        return view('Table', [
+            'data' => ClientBankCard::select('name_c','name_en','lcid','bank_name','bank_code','account_no','client_bankcard.status as bankcard_status')
+                ->leftJoin('view_client_idcard','view_client_idcard.uuid','=','client_bankcard.uuid')
+                ->whereIn('client_bankcard.uuid',Client::where('status','=','audited2')->pluck('uuid'))
+                ->where('client_bankcard.status','=','rejected')
+                ->get()->toArray()
+        ]); 
     }
+    
+    //select * from  cysislb_gts_client_acc where upper(name) like '%CLOSE%' and status!='C';
+    //select * from  cysislb_gts_client_acc where upper(name) like '%SUSPEND%' and status!='S';
+    public function StatusMismatch(){
+        return view('Table',[
+            'data'=>CysislbGtsClientAcc::select('client_acc_id','name','status')
+            ->where(function($query){
+                $query->whereRaw("upper(name) like '%CLOSE%'")->where("status",'!=','C');
+            })->orWhere(function($query){
+                $query->whereRaw("upper(name) like '%SUSPEND%'")->where("status",'!=','S');
+            })->get()->toArray()
+        ]);
+
+    }
+
 
     public function sms(){
         return View('SendSMS');
