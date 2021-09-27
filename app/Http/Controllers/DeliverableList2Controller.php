@@ -88,7 +88,7 @@ class DeliverableList2Controller extends Controller
             $Query = $Query->where('mobile', 'like', "$手機號碼%");
         }
         if ($郵箱) {
-            $Query = $Query->where('email', 'like', "$手機號碼%");
+            $Query = $Query->where('email', 'like', "$郵箱%");
         }
         if (is_array($開戶時間) && count($開戶時間) == 2) {
             try {
