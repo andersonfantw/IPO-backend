@@ -26,7 +26,7 @@ class DeliverableList2Controller extends Controller
     public function __construct()
     {
         $this->fields = [
-            ['key' => '操作'],
+            ['key' => '選擇'],
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '開通賬戶類型', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
@@ -35,6 +35,7 @@ class DeliverableList2Controller extends Controller
             ['key' => '郵箱', 'sortable' => true],
             ['key' => '開戶時間', 'sortable' => true],
             ['key' => '帳戶生成時間', 'sortable' => true],
+            ['key' => '操作']
         ];
         $this->filter_type = [
             '帳戶號碼' => 'startsWith',

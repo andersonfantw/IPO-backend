@@ -129,17 +129,26 @@
       empty-text="沒有找到記錄"
       @filtered="onFiltered"
     >
-      <template #head(操作)>
+      <template #head(選擇)>
         <b-form-checkbox
           v-model="checked"
           @change="selectAll"
         />
       </template>
-      <template #cell(操作)="data">
+      <template #cell(選擇)="data">
         <b-form-checkbox
           v-model="selectedClients"
           :value="data.item"
         />
+      </template>
+      <template #cell(操作)="data">
+        <b-button
+          variant="success"
+          type="button"
+          @click="showClientDetails(data.item.uuid, null)"
+        >
+          <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+        </b-button>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -161,9 +170,15 @@
       @change="onPageChange"
       align="center"
     ></b-pagination-nav>
+    <ClientDetails
+      ref="ClientDetails"
+      :title="'客戶信息'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>
+import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -195,7 +210,9 @@ export default {
   props: {
     generate_ayers_account_url: String,
   },
-  components: {},
+  components: {
+    ClientDetails,
+  },
   created() {
     this.source = axios.CancelToken.source();
     this.busy = true;
@@ -218,6 +235,12 @@ export default {
       this.data = [];
       this.busy = true;
       this.load(pageNo);
+    },
+    showClientDetails(uuid) {
+      this.$refs.ClientDetails.showModal(uuid);
+    },
+    hideClientDetails() {
+      this.$refs.ClientDetails.hideModal();
     },
     selectAll(e) {
       if (e) {
@@ -306,6 +329,11 @@ export default {
       } else {
         alert("請先選中客戶！");
       }
+    },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
     },
     load(pageNumber) {
       const 帳戶號碼 = this.filters["帳戶號碼"];
