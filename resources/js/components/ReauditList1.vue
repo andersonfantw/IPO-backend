@@ -2,10 +2,6 @@
   <b-container fluid>
     <h1 class="text-warning text-center">
       一審資料再審核清單
-      <b-spinner
-        v-if="busy"
-        variant="warning"
-      ></b-spinner>
     </h1>
     <b-row class="mb-3">
       <b-col>
@@ -13,6 +9,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -21,6 +18,7 @@
           <b-form-input
             type="search"
             v-model="filters['證件號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -29,6 +27,7 @@
           <b-form-input
             type="search"
             v-model="filters['手機號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -37,18 +36,19 @@
           <b-form-input
             type="search"
             v-model="filters['郵箱']"
+            @keypress.enter="search"
           />
         </b-input-group>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <!-- <DateRange :name="'提交時間'" v-model="filters['提交時間']" /> -->
         <date-picker
           name="'提交時間'"
           v-model="filters['提交時間']"
           range
           placeholder="提交時間"
+          @change="search"
         />
       </b-col>
       <b-col>
@@ -56,6 +56,7 @@
           <b-form-select
             v-model="filters['AE']"
             :options="aes"
+            @change="search"
           >
           </b-form-select>
         </b-input-group>
@@ -65,6 +66,7 @@
           <b-form-select
             v-model="filters['已入金']"
             :options="已入金"
+            @change="search"
           >
           </b-form-select>
         </b-input-group>
@@ -76,14 +78,14 @@
       class="mt-3"
     >
       <b-col class="text-center">
-        <b-pagination
-          v-if="totalRows > 0"
+        <b-pagination-nav
+          v-if="last_page"
           v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
+          :link-gen="linkGen"
+          :number-of-pages="last_page"
+          @change="onPageChange"
           align="center"
-        >
-        </b-pagination>
+        ></b-pagination-nav>
       </b-col>
     </b-row>
     <b-table
@@ -92,10 +94,6 @@
       dark
       :items="data"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filters"
-      :filter-function="filter"
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
@@ -124,14 +122,14 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
+    <b-pagination-nav
+      v-if="last_page"
       v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
+      :link-gen="linkGen"
+      :number-of-pages="last_page"
+      @change="onPageChange"
       align="center"
-    >
-    </b-pagination>
+    ></b-pagination-nav>
     <ClientDetails
       ref="ClientDetails"
       :title="'客戶信息'"
@@ -140,7 +138,6 @@
   </b-container>
 </template>
 <script>
-// import DateRange from "./DateRange";
 import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
@@ -169,6 +166,7 @@ export default {
       ],
       next_status: "audited1",
       source: null,
+      last_page: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -176,7 +174,6 @@ export default {
     audit_client_url: String,
   },
   components: {
-    // DateRange,
     ClientDetails,
   },
   created() {
@@ -189,6 +186,19 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    search(e) {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    linkGen(pageNum) {
+      return null;
+    },
+    onPageChange(pageNo) {
+      this.data = [];
+      this.busy = true;
+      this.load(pageNo);
+    },
     showClientDetails(uuid) {
       this.$refs.ClientDetails.showModal(uuid, this.next_status);
     },
@@ -201,10 +211,24 @@ export default {
       this.load(1);
     },
     load(pageNumber) {
+      const 客户姓名 = this.filters["客户姓名"];
+      const 證件號碼 = this.filters["證件號碼"];
+      const 手機號碼 = this.filters["手機號碼"];
+      const 郵箱 = this.filters["郵箱"];
+      const 提交時間 = this.filters["提交時間"];
+      const AE = this.filters["AE"];
+      const 已入金 = this.filters["已入金"];
       const self = this;
       axios
         .get("ReauditList1", {
           params: {
+            客户姓名: 客户姓名,
+            證件號碼: 證件號碼,
+            手機號碼: 手機號碼,
+            郵箱: 郵箱,
+            提交時間: 提交時間,
+            AE: AE,
+            已入金: 已入金,
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
@@ -217,11 +241,8 @@ export default {
           self.FilterType = res.data.filter_type;
           self.data = self.data.concat(data);
           self.totalRows = self.data.length;
-          if (data.length >= self.perPage) {
-            self.load(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
+          self.last_page = res.data.last_page;
+          self.busy = false;
         })
         .catch((error) => {
           if (axios.isCancel(error)) {
