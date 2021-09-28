@@ -255,7 +255,7 @@ export default {
         self.DownloadFilesForOpeningAccount = true;
         axios
           .post(
-            "api/DeliverableList2/DownloadFilesForOpeningAccount",
+            "DeliverableList2/DownloadFilesForOpeningAccount",
             {
               clients: self.selectedClients,
             },
@@ -280,13 +280,19 @@ export default {
         alert("請先選中客戶！");
       }
     },
+    downloadOpenAccountDepositExcel() {
+      const self = this;
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.DownloadingExcel = true;
+      }
+    },
     downloadExcel() {
       const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.DownloadingExcel = true;
         axios
           .post(
-            "api/DeliverableList2/DownloadAyersImportData",
+            "DeliverableList2/DownloadAyersImportData",
             {
               clients: self.selectedClients,
             },

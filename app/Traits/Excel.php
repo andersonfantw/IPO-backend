@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Traits;
 
 use App\Exports\AyersDataExport;
+use App\Exports\OpenAccountDepositExport;
 use App\Exports\ClientFundInRequestsExport;
 use App\Exports\ClientFundInternalTransferRequestsExport;
 use App\Exports\ClientHKFundOutRequestsExport2;
@@ -17,6 +19,11 @@ trait Excel
     public function exportAyersImportData(array $clients)
     {
         return _Excel::download(new AyersDataExport($clients), 'AyersImportData.xlsx');
+    }
+
+    public function exportOpenAccountDepositData(array $clients)
+    {
+        return _Excel::download(new OpenAccountDepositExport($clients), 'OpenAccountDepositData.xlsx');
     }
 
     public function exportClientFundInRequests()

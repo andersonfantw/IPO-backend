@@ -65,11 +65,6 @@ class DeliverableList2Controller extends Controller
         $開戶時間 = $request->input('開戶時間', null);
         $帳戶生成時間 = $request->input('帳戶生成時間', null);
         $Query = $this->getDeliverableList2Query();
-        $Query = $Query->orWhere(function (Builder $query) {
-            $query->where('status', 'audited2')
-                ->where('progress', 16)
-                ->where('idcard_type', 'App\ClientOtherIDCard');
-        });
         if ($帳戶號碼) {
             $Query = $Query->whereHas('AyersAccounts', function (Builder $query) use ($帳戶號碼) {
                 $query->where('account_no', 'like', "$帳戶號碼%");
@@ -114,6 +109,11 @@ class DeliverableList2Controller extends Controller
             } catch (InvalidFormatException $e) {
             }
         }
+        $Query = $Query->orWhere(function (Builder $query) {
+            $query->where('status', 'audited2')
+                ->where('progress', 16)
+                ->where('idcard_type', 'App\ClientOtherIDCard');
+        });
         $Clients = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();
@@ -155,6 +155,11 @@ class DeliverableList2Controller extends Controller
             'total' => $total,
             'last_page' => $last_page
         ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadOpenAccountDepositExcel(Request $request)
+    {
+        $clients = $request->input('clients');
     }
 
     public function downloadAyersImportData(Request $request)
