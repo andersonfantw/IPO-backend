@@ -38,7 +38,7 @@ class CommissionRecalculateJob implements ShouldQueue
         $AE = AE::select('name','uuid')
             ->selectRaw("group_concat(code) as codes")
             ->groupBy('uuid','name')
-            ->first()->toArray();
+            ->get()->toArray();
         if($AE['name']=='梧桐花開'){
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
