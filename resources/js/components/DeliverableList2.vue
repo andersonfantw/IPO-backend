@@ -7,6 +7,7 @@
           <b-form-input
             type="search"
             v-model="filters['帳戶號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -15,6 +16,7 @@
           <b-form-select
             v-model="filters['開通賬戶類型']"
             :options="options"
+            @change="search"
           >
           </b-form-select>
         </b-input-group>
@@ -24,6 +26,7 @@
           <b-form-input
             type="search"
             v-model="filters['客户姓名']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -32,6 +35,7 @@
           <b-form-input
             type="search"
             v-model="filters['證件號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -42,6 +46,7 @@
           <b-form-input
             type="search"
             v-model="filters['手機號碼']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
@@ -50,16 +55,17 @@
           <b-form-input
             type="search"
             v-model="filters['郵箱']"
+            @keypress.enter="search"
           ></b-form-input>
         </b-input-group>
       </b-col>
       <b-col>
-        <!-- <DateRange :name="'開戶時間'" v-model="filters['開戶時間']" /> -->
         <date-picker
           name="'開戶時間'"
           v-model="filters['開戶時間']"
           range
           placeholder="開戶時間"
+          @change="search"
         />
       </b-col>
       <b-col>
@@ -68,6 +74,7 @@
           v-model="filters['帳戶生成時間']"
           range
           placeholder="帳戶生成時間"
+          @change="search"
         />
       </b-col>
     </b-row>
@@ -97,36 +104,18 @@
       </b-col>
     </b-row>
     <b-row
-      v-if="busy"
-      class="mt-3"
-    >
-      <b-col>
-        <b-progress
-          :max="100"
-          show-progress
-          animated
-          variant="success"
-        >
-          <b-progress-bar
-            :value="progress"
-            :label="`${progress.toFixed(2)}%`"
-          ></b-progress-bar>
-        </b-progress>
-      </b-col>
-    </b-row>
-    <b-row
       no-gutters
       class="mt-3"
     >
       <b-col class="text-center">
-        <b-pagination
-          v-if="totalRows > 0"
+        <b-pagination-nav
+          v-if="last_page"
           v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
+          :link-gen="linkGen"
+          :number-of-pages="last_page"
+          @change="onPageChange"
           align="center"
-        >
-        </b-pagination>
+        ></b-pagination-nav>
       </b-col>
     </b-row>
     <b-table
@@ -135,26 +124,31 @@
       dark
       :items="data"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filters"
-      :filter-function="filter"
       show-empty
       empty-filtered-text="沒有找到記錄"
       empty-text="沒有找到記錄"
       @filtered="onFiltered"
     >
-      <template #head(操作)>
+      <template #head(選擇)>
         <b-form-checkbox
           v-model="checked"
           @change="selectAll"
         />
       </template>
-      <template #cell(操作)="data">
+      <template #cell(選擇)="data">
         <b-form-checkbox
           v-model="selectedClients"
           :value="data.item"
         />
+      </template>
+      <template #cell(操作)="data">
+        <b-button
+          variant="success"
+          type="button"
+          @click="showClientDetails(data.item.uuid, null)"
+        >
+          <h5 class="mb-0"><i class="far fa-eye"></i> 查看</h5>
+        </b-button>
       </template>
       <template #empty="scope">
         {{ scope.emptyText }}
@@ -168,18 +162,23 @@
         </div>
       </template>
     </b-table>
-    <b-pagination
-      v-if="totalRows > 0"
+    <b-pagination-nav
+      v-if="last_page"
       v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
+      :link-gen="linkGen"
+      :number-of-pages="last_page"
+      @change="onPageChange"
       align="center"
-    >
-    </b-pagination>
+    ></b-pagination-nav>
+    <ClientDetails
+      ref="ClientDetails"
+      :title="'客戶信息'"
+      @audited="reload"
+    />
   </b-container>
 </template>
 <script>
-// import DateRange from "./DateRange";
+import ClientDetails from "./ClientDetails";
 import axios from "axios";
 import { DecryptionMixin } from "../mixins/DecryptionMixin";
 import { CommonFunctionMixin } from "../mixins/CommonFunctionMixin";
@@ -204,6 +203,7 @@ export default {
       ],
       progress: 0,
       source: null,
+      last_page: null,
     };
   },
   mixins: [DecryptionMixin, CommonFunctionMixin],
@@ -211,7 +211,7 @@ export default {
     generate_ayers_account_url: String,
   },
   components: {
-    // DateRange,
+    ClientDetails,
   },
   created() {
     this.source = axios.CancelToken.source();
@@ -223,6 +223,25 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    search(e) {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
+    linkGen(pageNum) {
+      return null;
+    },
+    onPageChange(pageNo) {
+      this.data = [];
+      this.busy = true;
+      this.load(pageNo);
+    },
+    showClientDetails(uuid) {
+      this.$refs.ClientDetails.showModal(uuid);
+    },
+    hideClientDetails() {
+      this.$refs.ClientDetails.hideModal();
+    },
     selectAll(e) {
       if (e) {
         this.selectedClients = this.filteredClients;
@@ -236,7 +255,7 @@ export default {
         self.DownloadFilesForOpeningAccount = true;
         axios
           .post(
-            "api/DeliverableList2/DownloadFilesForOpeningAccount",
+            "DeliverableList2/DownloadFilesForOpeningAccount",
             {
               clients: self.selectedClients,
             },
@@ -261,13 +280,19 @@ export default {
         alert("請先選中客戶！");
       }
     },
+    downloadOpenAccountDepositExcel() {
+      const self = this;
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.DownloadingExcel = true;
+      }
+    },
     downloadExcel() {
       const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
         self.DownloadingExcel = true;
         axios
           .post(
-            "api/DeliverableList2/DownloadAyersImportData",
+            "DeliverableList2/DownloadAyersImportData",
             {
               clients: self.selectedClients,
             },
@@ -311,11 +336,32 @@ export default {
         alert("請先選中客戶！");
       }
     },
+    reload() {
+      this.data = [];
+      this.busy = true;
+      this.load(1);
+    },
     load(pageNumber) {
+      const 帳戶號碼 = this.filters["帳戶號碼"];
+      const 開通賬戶類型 = this.filters["開通賬戶類型"];
+      const 客户姓名 = this.filters["客户姓名"];
+      const 證件號碼 = this.filters["證件號碼"];
+      const 手機號碼 = this.filters["手機號碼"];
+      const 郵箱 = this.filters["郵箱"];
+      const 開戶時間 = this.filters["開戶時間"];
+      const 帳戶生成時間 = this.filters["帳戶生成時間"];
       const self = this;
       axios
         .get("DeliverableList2", {
           params: {
+            帳戶號碼: 帳戶號碼,
+            開通賬戶類型: 開通賬戶類型,
+            客户姓名: 客户姓名,
+            證件號碼: 證件號碼,
+            手機號碼: 手機號碼,
+            郵箱: 郵箱,
+            開戶時間: 開戶時間,
+            帳戶生成時間: 帳戶生成時間,
             perPage: self.perPage,
             pageNumber: pageNumber,
           },
@@ -330,16 +376,8 @@ export default {
           self.data = self.data.concat(data);
           self.filteredClients = self.data;
           self.totalRows = self.data.length;
-          if (total <= self.perPage) {
-            self.progress = 100;
-          } else {
-            self.progress += (self.perPage / total) * 100;
-          }
-          if (data.length >= self.perPage) {
-            self.load(pageNumber + 1);
-          } else {
-            self.busy = false;
-          }
+          self.last_page = res.data.last_page;
+          self.busy = false;
         })
         .catch((error) => {
           if (axios.isCancel(error)) {

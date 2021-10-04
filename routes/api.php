@@ -61,13 +61,6 @@ Route::prefix('ReauditList1')->group(function () {
     // Route::any('/NoOfNews', 'ReauditList1Controller@getNoOfNews');
 });
 
-Route::prefix('DeliverableList2')->group(function () {
-    Route::any('/list', 'DeliverableList2Controller@list');
-    // Route::any('/NoOfNews', 'DeliverableList2Controller@getNoOfNews');
-    Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
-    Route::any('/DownloadFilesForOpeningAccount', 'DeliverableList2Controller@downloadFilesForOpeningAccount');
-});
-
 Route::prefix('Ayers')->group(function () {
     Route::any('/testCSVImport', 'HomeController@testCSVImport');
 });

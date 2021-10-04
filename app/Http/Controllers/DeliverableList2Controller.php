@@ -11,6 +11,8 @@ use App\Traits\Image;
 use App\Traits\Query;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 
 class DeliverableList2Controller extends Controller
 {
@@ -24,7 +26,7 @@ class DeliverableList2Controller extends Controller
     public function __construct()
     {
         $this->fields = [
-            ['key' => '操作'],
+            ['key' => '選擇'],
             ['key' => '帳戶號碼', 'sortable' => true],
             ['key' => '開通賬戶類型', 'sortable' => true],
             ['key' => '客户姓名', 'sortable' => true],
@@ -33,6 +35,7 @@ class DeliverableList2Controller extends Controller
             ['key' => '郵箱', 'sortable' => true],
             ['key' => '開戶時間', 'sortable' => true],
             ['key' => '帳戶生成時間', 'sortable' => true],
+            ['key' => '操作']
         ];
         $this->filter_type = [
             '帳戶號碼' => 'startsWith',
@@ -53,42 +56,68 @@ class DeliverableList2Controller extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = $this->getDeliverableList2Query()
-            ->orWhere(function (Builder $query) {
-                $query->where('status', 'audited2')
-                    ->where('progress', 16)
-                    ->where('idcard_type', 'App\ClientOtherIDCard');
-            })
-            ->orderBy('updated_at', 'desc')
+        $帳戶號碼 = $request->input('帳戶號碼', null);
+        $開通賬戶類型 = $request->input('開通賬戶類型', null);
+        $客户姓名 = $request->input('客户姓名', null);
+        $證件號碼 = $request->input('證件號碼', null);
+        $手機號碼 = $request->input('手機號碼', null);
+        $郵箱 = $request->input('郵箱', null);
+        $開戶時間 = $request->input('開戶時間', null);
+        $帳戶生成時間 = $request->input('帳戶生成時間', null);
+        $Query = $this->getDeliverableList2Query();
+        if ($帳戶號碼) {
+            $Query = $Query->whereHas('AyersAccounts', function (Builder $query) use ($帳戶號碼) {
+                $query->where('account_no', 'like', "$帳戶號碼%");
+            });
+        }
+        if ($開通賬戶類型) {
+            $Query = $Query->whereHas('AyersAccounts', function (Builder $query) use ($開通賬戶類型) {
+                $query->where('type', $開通賬戶類型);
+            });
+        }
+        if ($客户姓名) {
+            $Query = $Query->whereHasMorph('IDCard', ['App\ClientHKIDCard', 'App\ClientCNIDCard', 'App\ClientOtherIDCard'], function (Builder $query) use ($客户姓名) {
+                $query->where('name_c', 'like', "$客户姓名%");
+            });
+        }
+        if ($證件號碼) {
+            $Query = $Query->whereHasMorph('IDCard', ['App\ClientHKIDCard', 'App\ClientCNIDCard', 'App\ClientOtherIDCard'], function (Builder $query) use ($證件號碼) {
+                $query->where('idcard_no', 'like', "$證件號碼%");
+            });
+        }
+        if ($手機號碼) {
+            $Query = $Query->where('mobile', 'like', "$手機號碼%");
+        }
+        if ($郵箱) {
+            $Query = $Query->where('email', 'like', "$郵箱%");
+        }
+        if (is_array($開戶時間) && count($開戶時間) == 2) {
+            try {
+                $開戶時間[0] = Carbon::parse($開戶時間[0])->addDays(1)->format('Y-m-d');
+                $開戶時間[1] = Carbon::parse($開戶時間[1])->addDays(1)->format('Y-m-d');
+                $Query = $Query->whereBetween('updated_at', [$開戶時間[0], $開戶時間[1]]);
+            } catch (InvalidFormatException $e) {
+            }
+        }
+        if (is_array($帳戶生成時間) && count($帳戶生成時間) == 2) {
+            try {
+                $帳戶生成時間[0] = Carbon::parse($帳戶生成時間[0])->addDays(1)->format('Y-m-d H:i:s');
+                $帳戶生成時間[1] = Carbon::parse($帳戶生成時間[1])->addDays(1)->format('Y-m-d H:i:s');
+                $Query = $Query->whereHas('AyersAccounts', function (Builder $query) use ($帳戶生成時間) {
+                    $query->whereBetween('updated_at', [$帳戶生成時間[0], $帳戶生成時間[1]]);
+                });
+            } catch (InvalidFormatException $e) {
+            }
+        }
+        $Query = $Query->orWhere(function (Builder $query) {
+            $query->where('status', 'audited2')
+                ->where('progress', 16)
+                ->where('idcard_type', 'App\ClientOtherIDCard');
+        });
+        $Clients = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
-        // $Clients = Client::with(['AyersAccounts', 'IDCard'])
-        //     ->whereHasMorph('IDCard', [
-        //         ClientCNIDCard::class,
-        //         ClientHKIDCard::class,
-        //         ClientOtherIDCard::class,
-        //     ], function (Builder $query) {
-        //         $query->where('status', 'audited2');
-        //     })->whereHas('ClientWorkingStatus', function (Builder $query) {
-        //     $query->where('status', 'audited2');
-        // })->whereHas('ClientFinancialStatus', function (Builder $query) {
-        //     $query->where('status', 'audited2');
-        // })->whereHas('ClientInvestmentExperience', function (Builder $query) {
-        //     $query->where('status', 'audited2');
-        // })->whereHas('ClientEvaluationResults', function (Builder $query) {
-        //     $query->where('status', 'audited2');
-        // })->whereHas('ClientSignature', function (Builder $query) {
-        //     $query->where('status', 'audited2');
-        // })->whereHas('ClientDepositProof', function (Builder $query) {
-        //     $query->where('status', 'audited2');
-        // })->where('status', 'audited2')
-        //     ->orWhere(function (Builder $query) {
-        //         $query->where('status', 'audited2')
-        //             ->where('progress', 16)
-        //             ->where('idcard_type', 'App\ClientOtherIDCard');
-        //     })
-        //     ->orderBy('updated_at', 'desc')
-        //     ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();
+        $last_page = ceil($total / $request->input('perPage'));
         $rows = [];
         foreach ($Clients as $Client) {
             if (count($Client->AyersAccounts) > 0) {
@@ -124,7 +153,13 @@ class DeliverableList2Controller extends Controller
             'filter_type' => $this->filter_type,
             'data' => $rows,
             'total' => $total,
+            'last_page' => $last_page
         ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function downloadOpenAccountDepositExcel(Request $request)
+    {
+        $clients = $request->input('clients');
     }
 
     public function downloadAyersImportData(Request $request)
