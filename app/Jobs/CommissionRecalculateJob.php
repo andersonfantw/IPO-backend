@@ -35,7 +35,7 @@ class CommissionRecalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $AE = AE::select('name')
+        $AE = AE::select('name','uuid')
             ->selectRaw("group_concat(code) as codes")
             ->groupBy('uuid','name')
             ->first()->toArray();
