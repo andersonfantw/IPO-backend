@@ -473,7 +473,7 @@ class AeCommissionSummaryController extends HomeController
             ->whereDate('allot_date','<=',Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d'))
             ->whereNotIn('tt_client_bonus_with_dummy.client_acc_id',['20000113','20000313'])
             ->leftJoin('cysislb_gts_client_acc','cysislb_gts_client_acc.client_acc_id','=','tt_client_bonus_with_dummy.client_acc_id');
-        })->select();
+        },'t')->select();
         foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }
