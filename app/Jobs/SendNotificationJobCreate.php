@@ -45,6 +45,7 @@ class SendNotificationJobCreate implements ShouldQueue
         })->get();
         switch($NotificationGroup->route){
             case 'sms':
+            case 'alloted_notice':
                 foreach($NotificationRecord as $record){
                     $record->queue_time = Carbon::now();
                     $record->save();
