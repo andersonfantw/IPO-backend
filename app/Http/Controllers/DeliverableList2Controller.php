@@ -157,9 +157,10 @@ class DeliverableList2Controller extends Controller
         ], JSON_UNESCAPED_UNICODE);
     }
 
-    public function downloadOpenAccountDepositExcel(Request $request)
+    public function downloadDepositExcel(Request $request)
     {
         $clients = $request->input('clients');
+        return $this->exportOpenAccountDeposit($clients);
     }
 
     public function downloadAyersImportData(Request $request)

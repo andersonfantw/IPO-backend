@@ -21,9 +21,9 @@ trait Excel
         return _Excel::download(new AyersDataExport($clients), 'AyersImportData.xlsx');
     }
 
-    public function exportOpenAccountDepositData(array $clients)
+    public function exportOpenAccountDeposit(array $clients)
     {
-        return _Excel::download(new OpenAccountDepositExport($clients), 'OpenAccountDepositData.xlsx');
+        return _Excel::download(new OpenAccountDepositExport($clients), 'OpenAccountDeposit.xlsx');
     }
 
     public function exportClientFundInRequests()

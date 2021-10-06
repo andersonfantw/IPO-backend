@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\ClientDepositProof;
+use App\Client;
 use App\Exports\AyersValueBinder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Carbon;
@@ -26,15 +27,24 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
         foreach ($this->clients as $client) {
             $uuids[] = $client['uuid'];
         }
+        $Clients = Client::with(['ClientDepositProof', 'AyersAccounts' => function ($query) {
+            $query->where('account_no', 'like', '%08');
+        }])->whereIn('uuid', $uuids)->get();
         $OpenAccountDeposits = [];
-        $ClientDepositProofs = ClientDepositProof::whereIn('uuid', $uuids)->get();
-        foreach ($ClientDepositProofs as $ClientDepositProof) {
-            $OpenAccountDeposit['tran_date'] = Carbon::parse($ClientDepositProof->transfer_time)->format('d/m/Y');
-            $OpenAccountDeposit['ccclnId'] = '';
+        foreach ($Clients as $Client) {
+            $OpenAccountDeposit['tran_date'] = Carbon::parse($Client->ClientDepositProof->transfer_time)->format('d/m/Y');
+            $OpenAccountDeposit['ccclnId'] = $Client->AyersAccounts->first()->account_no;
             $OpenAccountDeposit['ccy'] = 'HKD';
-            $OpenAccountDeposit['amount'] = $ClientDepositProof->deposit_amount;
+            $OpenAccountDeposit['amount'] = $Client->ClientDepositProof->deposit_amount;
             $OpenAccountDeposit['remark'] = 'PRINCIPAL IN';
             $OpenAccountDeposit['gl_mapping_item_id'] = null;
+            $OpenAccountDeposit['bank_acc_id'] = "{$Client->ClientDepositProof->deposit_bank}:HKD:{$Client->ClientDepositProof->deposit_bank_account}";
+            $OpenAccountDeposit['cheque'] = null;
+            $OpenAccountDeposits[] = $OpenAccountDeposit;
         }
+        return view('excel.OpenAccountDepositExport', [
+            'Headers' => $this->Headers,
+            'OpenAccountDeposits' => $OpenAccountDeposits,
+        ]);
     }
 }
