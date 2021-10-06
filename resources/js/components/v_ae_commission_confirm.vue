@@ -371,21 +371,21 @@ export default {
     },
     computed: {
         commission_calculate_subtitle(){
-            return (parseFloat(this.calculate_form.fee)
-                +parseFloat(this.calculate_form.interest)
-                +parseFloat(this.calculate_form.alloted)
-                +parseFloat(this.calculate_form.fee_cost)
-                +parseFloat(this.calculate_form.interest_cost)
-                +parseFloat(this.calculate_form.sell)) * 0.6
+            return parseFloat(this.calculate_form.fee_bonus)
+                +parseFloat(this.calculate_form.interest_bonus)
+                +parseFloat(this.calculate_form.alloted_bonus)
+                +parseFloat(this.calculate_form.ae_fee_cost)
+                +parseFloat(this.calculate_form.ae_interest_cost)
+                +parseFloat(this.calculate_form.sell_bonus)
                 +parseFloat(this.calculate_form.principal)
         },
         commission_subtitle(){
-            return (parseFloat((this.form.fee)?this.form.fee:this.calculate_form.fee)
-                +parseFloat((this.form.interest)?this.form.interest:this.calculate_form.interest)
-                +parseFloat((this.form.alloted)?this.form.alloted:this.calculate_form.alloted)
-                +parseFloat((this.form.fee_cost)?this.form.fee_cost:this.calculate_form.fee_cost)
-                +parseFloat((this.form.interest_cost)?this.form.interest_cost:this.calculate_form.interest_cost)
-                +parseFloat((this.form.sell)?this.form.sell:this.calculate_form.sell)) * 0.6
+            return parseFloat((this.form.fee)?this.form.fee*0.6:this.calculate_form.fee_bonus)
+                +parseFloat((this.form.interest)?this.form.interest*0.6:this.calculate_form.interest_bonus)
+                +parseFloat((this.form.alloted)?this.form.alloted*0.6:this.calculate_form.alloted_bonus)
+                +parseFloat((this.form.fee_cost)?this.form.fee_cost*0.6:this.calculate_form.ae_fee_cost)
+                +parseFloat((this.form.interest_cost)?this.form.interest_cost*0.6:this.calculate_form.ae_interest_cost)
+                +parseFloat((this.form.sell)?this.form.sell*0.6:this.calculate_form.sell_bonus)
                 +parseFloat((this.form.principal_number)?this.form.principal_number*450:this.calculate_form.principal)
         },
         subtitle(){
