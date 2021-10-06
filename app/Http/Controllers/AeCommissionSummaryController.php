@@ -103,11 +103,17 @@ class AeCommissionSummaryController extends HomeController
                     ??$result['sell']['pay_date']
                     ??null,
                 'fee'=>$result['fee']['application_fee'],
+                'fee_bonus'=>$result['fee']['bonus_application'],
                 'interest'=>$result['interest']['application_fee'],
+                'interest_bonus'=>$result['interest']['bonus_application'],
                 'alloted'=>$result['alloted']['application_fee'],
+                'alloted_bonus'=>$result['alloted']['bonus_application'],
                 'fee_cost'=>$result['fee']['application_cost'],
+                'ae_fee_cost'=>$result['fee']['ae_application_cost'],
                 'interest_cost'=>$result['interest']['application_cost'],
+                'ae_interest_cost'=>$result['interest']['ae_application_cost'],
                 'sell'=>$result['sell']['application_fee'],
+                'sell_bonus'=>$result['sell']['bonus_application'],
                 'principal'=>$result['principal']['bonus_application'],
                 'principal_number'=>(string)$result['principal']['transaction_number'],
                 'accumulated_provision'=>$result['accumulated_provision'],
@@ -465,13 +471,15 @@ class AeCommissionSummaryController extends HomeController
             $AE['name']='王浩進';
             $AE['codes'] = $AE['codes'].',AEWHC';
         }
-        $TempClientBonusWithDummy = TempClientBonusWithDummy::select('tt_client_bonus_with_dummy.ae_code','buss_date','allot_date','tt_client_bonus_with_dummy.client_acc_id','name','phone','product_id','application_fee','application_cost','accumulate_performance','seq','dummy','bonus_application1')
+        $TempClientBonusWithDummy = DB::query()->fromSub(function($query) use($AE,$input){
+            $query->from('tt_client_bonus_with_dummy')->select('tt_client_bonus_with_dummy.ae_code','buss_date','allot_date','tt_client_bonus_with_dummy.client_acc_id','name','phone','product_id','application_fee','application_cost','accumulate_performance','seq','dummy','bonus_application1')
             ->selectRaw("case cate when 'principal' then '開戶激勵＿專戶' when 'fee08' then '申購手續費_現金戶' when 'fee13' then '申購手續費_專戶' when 'interest08' then '利息收支_現金戶' when 'interest13' then '利息收支_專戶' when 'alloted08' then '中籤收入_現金戶' when 'alloted13' then '中籤收入_專戶' when 'sell08' then '二級市場收入_現金戶' when 'sell13' then '二級市場收入_專戶' end as cate")
             ->whereIn('tt_client_bonus_with_dummy.ae_code',explode(',',$AE['codes']))
             ->whereDate('allot_date','>=',$input['month'])
             ->whereDate('allot_date','<=',Carbon::parse($input['month'])->endOfMonth()->format('Y-m-d'))
             ->whereNotIn('tt_client_bonus_with_dummy.client_acc_id',['20000113','20000313'])
             ->leftJoin('cysislb_gts_client_acc','cysislb_gts_client_acc.client_acc_id','=','tt_client_bonus_with_dummy.client_acc_id');
+        },'t')->select();
         foreach(['cate','product_id','client_acc_id','dummy'] as $item){
             if($request->has($item)) if($input[$item]!='') $TempClientBonusWithDummy->where($item,'=',$input[$item]);
         }

@@ -19,7 +19,13 @@
             text-align: center;
             margin-top: 0;
             margin-bottom: 10px;
+            line-height: 1rem;
         }
+        h3{
+            margin-top: 0;
+            margin-bottom: 10px;
+            line-height: 1.35rem;
+        },
         h4{
             margin: 0;
         }
@@ -150,6 +156,9 @@
         .w-100{
             width: 100%;
         }
+        .w-50{
+            width: 50%;
+        }
         header {
             position: fixed;
             top: 0px;
@@ -228,9 +237,9 @@
 
     <h1>China Yinsheng International Securities Ltd.,</h1>
     <h2>銷售人員個人銷售業績確認表</h2>
-    <div class="container border">
+    <div class="container">
         <div class="row">
-            <div class="col px-5 py-4">
+            <div class="col px-5 py-4 border">
                 <table>
                     <tbody>
                         <tr>
@@ -360,7 +369,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <br /><br />
+                <br />
                 <table class="border w-100">
                     <tr>
                         <td style="width:30%">本期佣金可發放金額</td>
@@ -368,6 +377,24 @@
                         <td style="width:22%" class="text-right"></td>
                     </tr>
                 </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="text-right"><h3>銷售代表：_____________________________</h3></td>
+                            <td class="text-right" style="width:35px;height:1cm">&nbsp;</td>
+                            <td class="text-right"><h3>業務部門：_____________________________</h3></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right"><h3>財務部門：_____________________________</h3></td>
+                            <td class="text-right" style="width:10%;height:1cm"></td>
+                            <td class="text-right"></td>
+                        </tr>
+                    </tbody>
+                </table>        
             </div>
         </div>
     </div>

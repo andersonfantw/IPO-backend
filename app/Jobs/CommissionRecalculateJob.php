@@ -35,16 +35,16 @@ class CommissionRecalculateJob implements ShouldQueue
      */
     public function handle()
     {
-        $AE = AE::select('name')
+        $AE = AE::select('name','uuid')
             ->selectRaw("group_concat(code) as codes")
             ->groupBy('uuid','name')
-            ->first()->toArray();
-        if($AE['name']=='梧桐花開'){
-            $AE['name']='王浩進';
-            $AE['codes'] = $AE['codes'].',AEWHC';
-        }
+            ->get()->toArray();
         $end = Carbon::parse($this->month)->endOfMonth()->format('Y-m-d');
         foreach($AE as $row){
+            if($row['name']=='梧桐花開'){
+                $row['name']='王浩進';
+                $row['codes'] = $row['codes'].',AEWHC';
+            }
             DB::select(sprintf("call sp_ae_commission('%s','%s','%s','%s')",$row['uuid'],$row['codes'],$this->month,$end));
         }
     }

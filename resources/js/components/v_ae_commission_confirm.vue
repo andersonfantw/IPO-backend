@@ -60,8 +60,8 @@
                         </b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right border-right"><v-money :value="calculate_form.fee*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="((form.fee)?form.fee:calculate_form.fee)*0.6"></v-money></b-col>
+                                <b-col class="text-right border-right"><v-money :value="calculate_form.fee_bonus"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="(form.fee)?form.fee*0.6:calculate_form.fee_bonus"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -82,8 +82,8 @@
                         </b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right border-right"><v-money :value="calculate_form.interest*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="((form.interest)?form.interest:calculate_form.interest)*0.6"></v-money></b-col>
+                                <b-col class="text-right border-right"><v-money :value="calculate_form.interest_bonus"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="(form.interest)?form.interest*0.6:calculate_form.interest_bonus"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -104,8 +104,8 @@
                         </b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right border-right"><v-money :value="calculate_form.alloted*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="((form.alloted)?form.alloted:calculate_form.alloted)*0.6"></v-money></b-col>
+                                <b-col class="text-right border-right"><v-money :value="calculate_form.alloted_bonus"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="(form.alloted)?form.alloted*0.6:calculate_form.alloted_bonus"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -126,8 +126,8 @@
                         </b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right border-right"><v-money :value="calculate_form.fee_cost*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="((form.fee_cost)?form.fee_cost:calculate_form.fee_cost)*0.6"></v-money></b-col>
+                                <b-col class="text-right border-right"><v-money :value="calculate_form.ae_fee_cost"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="(form.fee_cost)?form.fee_cost*0.6:calculate_form.ae_fee_cost"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -148,8 +148,8 @@
                         </b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right border-right"><v-money :value="calculate_form.interest_cost*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="((form.interest_cost)?form.interest_cost:calculate_form.interest_cost)*0.6"></v-money></b-col>
+                                <b-col class="text-right border-right"><v-money :value="calculate_form.ae_interest_cost"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="(form.interest_cost)?form.interest_cost*0.6:calculate_form.ae_interest_cost"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -170,8 +170,8 @@
                         </b-td>
                         <b-td>
                             <b-row>
-                                <b-col class="text-right border-right"><v-money :value="calculate_form.sell*0.6"></v-money></b-col>
-                                <b-col class="text-right"><v-money :value="((form.sell)?form.sell:calculate_form.sell)*0.6"></v-money></b-col>
+                                <b-col class="text-right border-right"><v-money :value="calculate_form.sell_bonus"></v-money></b-col>
+                                <b-col class="text-right"><v-money :value="(form.sell)?form.sell*0.6:calculate_form.sell_bonus"></v-money></b-col>
                             </b-row>
                         </b-td>
                         <b-td></b-td>
@@ -329,10 +329,15 @@ export default {
           calculate_form:{
               pay_date: '',
               fee: 0,
+              fee_bonus: 0,
               interest: 0,
+              interest_bonus: 0,
               alloted: 0,
+              alloted_bonus: 0,
               fee_cost: 0,
+              ae_fee_cost: 0,
               interest_cost: 0,
+              ae_interest_cost: 0,
               sell: 0,
               principal: 0,
               principal_number: '0',
@@ -366,21 +371,21 @@ export default {
     },
     computed: {
         commission_calculate_subtitle(){
-            return (parseFloat(this.calculate_form.fee)
-                +parseFloat(this.calculate_form.interest)
-                +parseFloat(this.calculate_form.alloted)
-                +parseFloat(this.calculate_form.fee_cost)
-                +parseFloat(this.calculate_form.interest_cost)
-                +parseFloat(this.calculate_form.sell)) * 0.6
+            return parseFloat(this.calculate_form.fee_bonus)
+                +parseFloat(this.calculate_form.interest_bonus)
+                +parseFloat(this.calculate_form.alloted_bonus)
+                +parseFloat(this.calculate_form.ae_fee_cost)
+                +parseFloat(this.calculate_form.ae_interest_cost)
+                +parseFloat(this.calculate_form.sell_bonus)
                 +parseFloat(this.calculate_form.principal)
         },
         commission_subtitle(){
-            return (parseFloat((this.form.fee)?this.form.fee:this.calculate_form.fee)
-                +parseFloat((this.form.interest)?this.form.interest:this.calculate_form.interest)
-                +parseFloat((this.form.alloted)?this.form.alloted:this.calculate_form.alloted)
-                +parseFloat((this.form.fee_cost)?this.form.fee_cost:this.calculate_form.fee_cost)
-                +parseFloat((this.form.interest_cost)?this.form.interest_cost:this.calculate_form.interest_cost)
-                +parseFloat((this.form.sell)?this.form.sell:this.calculate_form.sell)) * 0.6
+            return parseFloat((this.form.fee)?this.form.fee*0.6:this.calculate_form.fee_bonus)
+                +parseFloat((this.form.interest)?this.form.interest*0.6:this.calculate_form.interest_bonus)
+                +parseFloat((this.form.alloted)?this.form.alloted*0.6:this.calculate_form.alloted_bonus)
+                +parseFloat((this.form.fee_cost)?this.form.fee_cost*0.6:this.calculate_form.ae_fee_cost)
+                +parseFloat((this.form.interest_cost)?this.form.interest_cost*0.6:this.calculate_form.ae_interest_cost)
+                +parseFloat((this.form.sell)?this.form.sell*0.6:this.calculate_form.sell_bonus)
                 +parseFloat((this.form.principal_number)?this.form.principal_number*450:this.calculate_form.principal)
         },
         subtitle(){
