@@ -17,6 +17,7 @@ class NotifyMessage{
     private $mobile=null;
     private $email=null;
     private $route='account_overview';
+    private $issued_by=null;
 
     private $send_now=false;
     private $_params=[];
@@ -66,6 +67,7 @@ class NotifyMessage{
         $this->name = $model->name;
         $this->phone = $model->phone;
         $this->email = $model->email;
+        $this->issued_by = $model->issued_by;
         return $this;
     }
     /**
@@ -108,6 +110,7 @@ class NotifyMessage{
 
         $_params=[]; // 提供文案中變數的替換
         foreach($this->_params as $k => $v) $_params['['.$k.']'] = $v;
+    if(strlen($_params['[name]']??null)>40) var_dump($_params['[name]']);
         return [
             'notification_group_id' => 0,
             'route' => $this->route,
@@ -118,7 +121,7 @@ class NotifyMessage{
             'email' => $this->email??$_params['[email]']??null,
             'title' => strtr($this->title,$_params),
             'content' => strtr($this->content,$_params),
-            'issued_by' => auth()->user()->name, 
+            'issued_by' => auth()->user()->name??$this->issued_by??'', 
         ];
     }
 
