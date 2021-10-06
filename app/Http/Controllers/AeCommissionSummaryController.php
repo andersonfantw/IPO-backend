@@ -432,7 +432,10 @@ class AeCommissionSummaryController extends HomeController
         $arr = [];
         foreach(['principal','alloted','fee','interest','sell'] as $i){
             $arr[$i]['cate'] = $i;
-            foreach(['application_fee','bonus_application','application_cost','ae_application_cost','transaction_number'] as $j) $arr[$i][$j] = 0;
+            foreach(['application_fee','bonus_application','application_cost','ae_application_cost','transaction_number'] as $j){
+                $arr[$i][$j] = 0;
+                $arr[$i][$j.'_correction'] = 0;
+            }
         }
 
         $hash = $arr;
