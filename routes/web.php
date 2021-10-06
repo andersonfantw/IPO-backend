@@ -148,6 +148,7 @@ Route::middleware(['auth'])->group(function () {
         Route::any('/list', 'DeliverableList2Controller@list');
         Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
         Route::any('/DownloadFilesForOpeningAccount', 'DeliverableList2Controller@downloadFilesForOpeningAccount');
+        Route::any('DownloadDepositExcel', 'DeliverableList2Controller@downloadDepositExcel');
     });
 
     Route::resource('SendingEmailList', 'SendingEmailListController');

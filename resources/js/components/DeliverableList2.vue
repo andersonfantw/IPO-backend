@@ -286,6 +286,37 @@ export default {
         self.DownloadingExcel = true;
       }
     },
+    downloadDepositExcel() {
+      const self = this;
+      if (self.selectedClients && self.selectedClients.length > 0) {
+        self.DownloadingExcel = true;
+        axios
+          .post(
+            "DeliverableList2/DownloadDepositExcel",
+            {
+              clients: self.selectedClients,
+            },
+            {
+              responseType: "arraybuffer",
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "DepositExcel.xlsx");
+            link.click();
+            self.DownloadingExcel = false;
+          })
+          .catch((error) => {
+            console.log(error);
+            self.DownloadingExcel = false;
+          });
+      } else {
+        alert("請先選中客戶！");
+      }
+    },
     downloadExcel() {
       const self = this;
       if (self.selectedClients && self.selectedClients.length > 0) {
@@ -308,10 +339,12 @@ export default {
             link.setAttribute("download", "AyersImportData.xlsx");
             link.click();
             self.DownloadingExcel = false;
+            self.downloadDepositExcel();
           })
           .catch((error) => {
             console.log(error);
             self.DownloadingExcel = false;
+            self.downloadDepositExcel();
           });
       } else {
         alert("請先選中客戶！");
