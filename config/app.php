@@ -240,4 +240,6 @@ return [
     'activity_id' => env('IPO_ACTIVITY_PERIOD_ID'),
     'it_mobile' => env('IT_MOBILE'),
     'maintain_ip' => env('MAINTAIN_IP'),
+    'ae_code_pys' => env('AE_CODE_PYS'),
+    'ae_code_group' => env('AE_CODE_GROUP'),
 ];

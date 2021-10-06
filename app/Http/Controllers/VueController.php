@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\AE;
+use App\Client;
 use App\Staff;
 use App\CysislbGtsClientAcc;
 use App\Models\NotificationTemplate;
@@ -73,68 +74,70 @@ class VueController extends Controller
     }
 
     function ListClients(Request $request){
-        $input = $request->only('selected_ae','selected_cate');
-        $ae_uuid = ($input['selected_ae']=='')?[]:explode(',',$input['selected_ae']);
-        $cate = ($input['selected_cate']=='')?[]:explode(',',$input['selected_cate']);
-        $query = CysislbGtsClientAcc::select();
-        if(!empty($ae_uuid)){
-            $query->whereIn('ae_code',function($query) use($ae_uuid){
-                $query->from('ae')->select('code')->whereIn('uuid',$ae_uuid);
-                if(in_array('e550be72-fcb1-4779-980f-f255ff6eb041',$ae_uuid)){
-                    $query->union(DB::query()->selectRaw("'AEWHC' as code"));
-                }
+        $query = $this->ListClientsQuery($request);
+        return $query->paginate(100);
+    }
+
+    function ListClientsQuery(Request $request){
+        $input = $request->only('selected_plan','selected_ae','selected_not_client','selected_status','selected_cate','selected_risk');
+        
+        if($input['selected_not_client']??''=='opening'){
+            return Client::select('email as name','mobile as phone','email')
+            ->selectRaw("'' as addr")->selectRaw("0 as client_id")
+            ->whereNotIn('uuid',function($query){
+                $query->from('client_ayers_account')->select('uuid');
             });
         }
-        if(!empty($cate)){
-            foreach($cate as $c){
-                switch($c){
-                    case 'cash':
-                        $query->where(function($query){
-                            $query->where('status','=','A')
-                            ->whereRaw("LOCATE('CLOSED',UPPER(name))=0")
-                            ->whereRaw("LOCATE('SUSPENDED',UPPER(name))=0")
-                            ->where(function($query){
-                                $query->whereRaw("substr(client_acc_id,length(client_acc_id)-1)='08'")
-                                ->whereRaw("LOCATE('(CLOSED)',UPPER(name))=0")
-                                ->whereRaw("LOCATE('SUSPENDED',UPPER(name))=0")
-                                ->where('status','=','A');
-                            })
-                            ->whereNotIn('client_acc_id',function($query){
-                                $query->selectRaw("concat(substr(client_acc_id,1,length(client_acc_id)-2),'08') as client_acc_id")
-                                ->from('cysislb_gts_client_acc')
-                                ->whereRaw("substr(client_acc_id,length(client_acc_id)-1)='13'")
-                                ->whereRaw("LOCATE('(CLOSED)',UPPER(name))=0")
-                                ->whereRaw("LOCATE('SUSPENDED',UPPER(name))=0")
-                                ->where('status','=','A');
-                            });
-                        });
-                        break;
-                    case 'authorize_deposit':
-                        $query->whereIn('client_acc_id',function($query){
-                            $query->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-                            ->from('ipo_initial_value');
-                        });
-                        break;
-                    case 'authorize':
-                        $query->whereNotIn('client_acc_id', function($query){
-                            $query->select('client_acc_id')->from('ipo_initial_value');
-                        });
-                        break;
-                    case 'suspend':
-                        case 'closed':
-                            $query->orWhere('status','=','S');
-                            break;    
-                        break;
-                    case 'opening':
-                        break;
-                    case 'closed':
-                        $query->orWhere('status','=','C');
-                        break;
-                }
+
+        $arr_codes = [
+            'C' => ['HCS001'],
+            'S' => ['HSS001','HSS002'],
+        ];
+
+        $ae_code = [];
+        $condition_ae_code = [];
+        $selected_plan = explode(',',$input['selected_plan']??'');
+        $selected_ae = explode(',',$input['selected_ae']??'');
+        $selected_status = explode(',',$input['selected_status']??'');
+        $selected_cate = explode(',',$input['selected_cate']??'');
+        $selected_risk = explode(',',$input['selected_risk']??'');
+
+        $query = CysislbGtsClientAcc::select();
+        if(count(array_intersect($selected_plan,['plan1','plan2']))==2){
+        }elseif(in_array('plan1',$selected_plan)){
+            if(($input['selected_ae']??'')==''){
+                $query->whereRaw(sprintf("find_in_set(ae_code,'%s')",config('app.ae_code_pys')));
+            }else{
+                $AE = array_map(function($row){
+                    if($row['uuid']=='e550be72-fcb1-4779-980f-f255ff6eb041') $row['codes'].=',AEWHC';
+                    return $row;
+                }, AE::select('uuid')->selectRaw("group_concat(code) as codes")->whereIn('uuid',$selected_ae)->groupBy('uuid')->get()->toArray());
+                foreach($AE as $row) $ae_code = array_merge($ae_code,explode(',',$row['codes']));
+            }
+        }elseif(in_array('plan2',$selected_plan)){
+            if(($input['selected_risk']??'')==''){
+                $condition_ae_code=explode(',',config('app.ae_code_group'));
+                foreach(['HH','MH','MM','LM'] as $v) $condition_ae_code[]='D'.$v.'%';
+                $query->whereRaw("length(client_acc_id)=7");
+            }else{
+                foreach($selected_risk as $r) $condition_ae_code[] = 'D'.$r.'%';
             }
         }
-        //dd($query->toSql());
-        return $query->get();
-
+        if(in_array('C',$selected_status)) $ae_code = array_merge($ae_code,$arr_codes['C']);
+        if(in_array('S',$selected_status)) $ae_code = array_merge($ae_code,$arr_codes['S']);
+        if(($input['selected_cate']??'')!=''){
+            $query->where(function($query) use($selected_cate){
+                if(in_array('cash',$selected_cate)) $query->orWhereRaw("substr(client_acc_id,-2,2)='08'");
+                if(in_array('authorize',$selected_cate)) $query->orWhereRaw("substr(client_acc_id,-2,2)='13'");
+            });
+        }
+        $query->where(function($query) use($ae_code, $condition_ae_code){
+            if(!empty($ae_code)) $query->whereIn('ae_code',$ae_code);
+            foreach($condition_ae_code as $r) $query->orWhere('ae_code','like', $r);
+        });
+        $query->select('name')->selectRaw('max(phone) as phone')->selectRaw('max(email) as email')->selectRaw("'' as addr")
+            ->selectRaw('substr(min(client_acc_id),1,length(min(client_acc_id))-2) as client_id')
+            ->groupBy('name');
+        return DB::query()->fromSub($query,'t');
     }
 }
