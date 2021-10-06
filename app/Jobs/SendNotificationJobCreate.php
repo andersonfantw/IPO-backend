@@ -10,8 +10,8 @@ use Illuminate\Queue\SerializesModels;
 use App\Notifications\MeteorsisSMS;
 use App\Notifications\CYSSMail;
 use App\Services\NotifyMessage;
-use App\NotificationGroup;
-use App\NotificationRecord;
+use App\Models\NotificationGroup;
+use App\Models\NotificationRecord;
 use Carbon\Carbon;
 
 class SendNotificationJobCreate implements ShouldQueue

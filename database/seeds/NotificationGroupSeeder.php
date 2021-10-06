@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\NotificationGroup;
+use App\Models\NotificationGroup;
 
 class NotificationGroupSeeder extends Seeder
 {
