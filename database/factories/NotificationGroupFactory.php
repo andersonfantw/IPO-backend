@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\NotificationGroup;
+use App\Models\NotificationGroup;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 

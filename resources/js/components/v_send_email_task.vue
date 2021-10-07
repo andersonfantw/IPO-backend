@@ -108,7 +108,7 @@ export default {
                 _route:'email',
                 groups:[],
                 file:null,
-                client_id: '',
+                client_id: this.value??'',
                 template:0,
                 email:'',
                 title:'',
@@ -176,6 +176,11 @@ export default {
     created(){
         this.index()
         this.$bus.$on('find_a_client::client',(o)=>this.get_client_info(o))
+        this.$bus.$on('pick_clients',(o)=>this.client_filter_condition(o))
+    },
+    beforeDestroy(){
+        this.$bus.$off("find_a_client::client")
+        this.$bus.$off("pick_clients")
     },
     methods:{
         get_template_list(){
@@ -236,6 +241,9 @@ export default {
                     _this.$emit('close',_this.form.client_id)
                 }
             },formdata,'/'+this.name);
+        },
+        client_filter_condition(f){
+            this.form = Object.assign(this.form,f)
         }
     }
 }
