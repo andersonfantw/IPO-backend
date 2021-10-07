@@ -18,7 +18,7 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
     public function __construct(array $clients)
     {
         $this->clients = $clients;
-        $this->Headers = ['tran_date', 'ccclnId', 'ccy', 'amount', 'remark', 'gl_mapping_item_id', 'bank_acc_id', 'cheque'];
+        $this->Headers = ['tran_date', 'client_acc_id', 'ccy', 'amount', 'remark', 'gl_mapping_item_id', 'bank_acc_id', 'cheque'];
     }
 
     public function view(): View
@@ -29,14 +29,25 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
         }
         $Clients = Client::with(['ClientDepositProof', 'AyersAccounts' => function ($query) {
             $query->where('account_no', 'like', '%08');
-        }])->whereIn('uuid', $uuids)->get();
+        }, 'DepositIdentificationCode.UnknownDeposit'])->whereIn('uuid', $uuids)->get();
         $OpenAccountDeposits = [];
         foreach ($Clients as $Client) {
-            $OpenAccountDeposit['tran_date'] = Carbon::parse($Client->ClientDepositProof->transfer_time)->format('d/m/Y');
-            $OpenAccountDeposit['ccclnId'] = $Client->AyersAccounts->first()->account_no;
+            $AyersAccount = $Client->AyersAccounts->first();
+            if (!is_object($Client->ClientDepositProof) || !is_object($AyersAccount)) {
+                continue;
+            }
+            $dt = Carbon::parse($Client->ClientDepositProof->transfer_time);
+            $OpenAccountDeposit['tran_date'] = "{$dt->day}/{$dt->month}/{$dt->year}";
+            $OpenAccountDeposit['client_acc_id'] = $AyersAccount->account_no;
             $OpenAccountDeposit['ccy'] = 'HKD';
             $OpenAccountDeposit['amount'] = $Client->ClientDepositProof->deposit_amount;
-            $OpenAccountDeposit['remark'] = 'PRINCIPAL IN';
+            if (is_object($Client->DepositIdentificationCode) && is_object($Client->DepositIdentificationCode->UnknownDeposit)) {
+                $UnknownDeposit = $Client->DepositIdentificationCode->UnknownDeposit;
+                $transaction_date = $UnknownDeposit->transaction_date->toDateString();
+                $OpenAccountDeposit['remark'] = "PRINCIPAL IN $transaction_date";
+            } else {
+                $OpenAccountDeposit['remark'] = "PRINCIPAL IN";
+            }
             $OpenAccountDeposit['gl_mapping_item_id'] = null;
             $OpenAccountDeposit['bank_acc_id'] = "{$Client->ClientDepositProof->deposit_bank}:HKD:{$Client->ClientDepositProof->deposit_bank_account}";
             $OpenAccountDeposit['cheque'] = null;

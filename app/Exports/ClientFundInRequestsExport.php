@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exports;
 
 use App\ClientFundInRequest;
@@ -15,7 +16,8 @@ class ClientFundInRequestsExport extends AyersValueBinder implements FromView
         $ClientFundInRequests = ClientFundInRequest::where('status', 'approved')->get();
         $Requests = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
-            $Request['tran_date'] = Carbon::parse($ClientFundInRequest->transfer_time)->format('d/m/Y');
+            $dt = Carbon::parse($ClientFundInRequest->transfer_time);
+            $Request['tran_date'] = "{$dt->day}/{$dt->month}/{$dt->year}";
             $Request['ccclnId'] = $ClientFundInRequest->account_in;
             $Request['ccy'] = 'HKD';
             $Request['amount'] = $ClientFundInRequest->amount;

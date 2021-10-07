@@ -145,9 +145,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('DeliverableList2', 'DeliverableList2Controller');
 
     Route::prefix('DeliverableList2')->group(function () {
-        Route::any('/list', 'DeliverableList2Controller@list');
-        Route::any('/DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
-        Route::any('/DownloadFilesForOpeningAccount', 'DeliverableList2Controller@downloadFilesForOpeningAccount');
+        Route::any('list', 'DeliverableList2Controller@list');
+        Route::any('DownloadAyersImportData', 'DeliverableList2Controller@downloadAyersImportData');
+        Route::any('DownloadFilesForOpeningAccount', 'DeliverableList2Controller@downloadFilesForOpeningAccount');
         Route::any('DownloadDepositExcel', 'DeliverableList2Controller@downloadDepositExcel');
     });
 
