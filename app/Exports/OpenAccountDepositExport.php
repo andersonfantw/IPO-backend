@@ -43,7 +43,7 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
             $OpenAccountDeposit['amount'] = $Client->ClientDepositProof->deposit_amount;
             if (is_object($Client->DepositIdentificationCode) && is_object($Client->DepositIdentificationCode->UnknownDeposit->first())) {
                 $UnknownDeposit = $Client->DepositIdentificationCode->UnknownDeposit->first();
-                $transaction_date = $UnknownDeposit->transaction_date->toDateString();
+                $transaction_date = $UnknownDeposit->transaction_date;
                 $OpenAccountDeposit['remark'] = "PRINCIPAL IN $transaction_date";
             } else {
                 $OpenAccountDeposit['remark'] = "PRINCIPAL IN";
