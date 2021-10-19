@@ -254,7 +254,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('system_notification_list', 'NotificationRecordController');
 
         Route::get('/notify_group/{id}/list/', 'NotificationGroupController@list')->where(['id' => '[0-9]+']);
-        // Route::post('/notify_client/{id}/send/', 'NotificationRecordController@send')->where(['id' => '[0-9]+']);
+        Route::post('/notify_client/{id}/send/', 'NotificationRecordController@send')->where(['id' => '[0-9]+']);
         Route::post('/notify_group/{id}/SendAll/', 'NotificationGroupController@sendAll')->where(['id' => '[0-9]+']);
         Route::post('/notify_group/{id}/store/{client_id}/', 'NotificationGroupController@addClient')->where(['id' => '[0-9]+', 'client_id' => '[0-9]+']);
         Route::post('/notify_group/uploadCustomizeNoticeList', 'NotificationGroupController@customizeNotice');

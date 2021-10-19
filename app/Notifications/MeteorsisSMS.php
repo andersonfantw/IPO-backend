@@ -72,4 +72,9 @@ class MeteorsisSMS extends Notification implements ShouldQueue
     {
         return $this->NotifyMessage->getRecordId();
     }
+
+    public function getMobile(): string
+    {
+        return $this->NotifyMessage->getMobile();
+    }
 }

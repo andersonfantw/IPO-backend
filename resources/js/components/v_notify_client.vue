@@ -269,6 +269,12 @@ export default {
                 _this.index()
             })
         },
+        resend(item){
+            let _this = this
+            this.myPost(function(response){
+                _this.index()
+            },null,this.url(item.id+'/send/'))
+        }
     }
 }
 </script>

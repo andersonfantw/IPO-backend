@@ -162,7 +162,6 @@ class NotificationGroupController extends HomeController
                 );
                 unset($NotifyMessage);
             }
-
         }else{
             $query = (new VueController)->ListClientsQuery($request);
             $data = [];
@@ -173,68 +172,6 @@ class NotificationGroupController extends HomeController
                     ['notification_group_id'=>$NotificationGroup->id]
                 );
             }
-            // $client_id = [];
-            // $groups = explode(',',$input['groups']);
-            // // 現金帳戶
-            // if(in_array('cash',$groups)){
-            //     $result = DB::query()->select('client_id')
-            //     ->fromSub(function($query){
-            //         $query->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-            //             ->from('cysislb_gts_client_acc')
-            //             ->where('status','=','A');
-            //     },'t')->groupBy('client_id')->havingRaw('count(*)=1');
-            //     $client_id = array_merge($client_id,$result->pluck('client_id')->all());
-            // }
-            // // 全權委託有入金
-            // if(in_array('authorize_deposit',$groups)){
-            //     $result = DB::query()->fromSub(function($query){
-            //         $query->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-            //             ->from('ipo_initial_value');
-            //     },'t')->distinct()->get(['client_id']);
-            //     $client_id = array_merge($client_id,$result->pluck('client_id')->all());
-            // }
-            // // 全權委託無入金
-            // if(in_array('authorize',$groups)){
-            //     $result = DB::query()->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-            //     ->from('cysislb_gts_client_acc')
-            //     ->where('status','=','A')
-            //     ->whereRaw("substr(client_acc_id,-2,2)='13'")
-            //     ->whereNotIn('client_acc_id', function($query){
-            //         $query->select('client_acc_id')->from('ipo_initial_value');
-            //     });
-            //     $client_id = array_merge($client_id,$result->pluck('client_id')->all());
-            // }
-            // // 暫停帳戶
-            // if(in_array('suspend',$groups)){
-            //     $result = DB::query()->fromSub(function($query){
-            //         $query->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-            //             ->from('cysislb_gts_client_acc')
-            //             ->where('status','=','S');
-            //     },'t')->distinct()->get(['client_id']);
-            //     $client_id = array_merge($client_id,$result->pluck('client_id')->all());
-            // }
-            // // 未完成開戶程序
-            // // 銷戶
-            // if(in_array('cancel',$groups)){
-            //     $result = DB::query()->fromSub(function($query){
-            //         $query->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-            //             ->from('cysislb_gts_client_acc')
-            //             ->where('status','=','C');
-            //     },'t')->distinct()->get(['client_id']);
-            //     $client_id = array_merge($client_id,$result->pluck('client_id')->all());
-            // }
-            // $hash = [];
-            // $rows = DB::query()->select('t.client_id','t.name','addr','phone','email')
-            // ->fromSub(function($query){
-            //     $query->select('name')
-            //     ->selectRaw('substr(client_acc_id,1,length(client_acc_id)-2) as client_id')
-            //     ->from('cysislb_gts_client_acc')->distinct();
-            // },'t')->leftJoin('a_client_listing_csv02','a_client_listing_csv02.client_id','=','t.client_id')
-            // ->WhereIn('t.client_id',$client_id)->distinct()->get();
-            // $data = [];
-            // foreach($rows as $row){
-            //     $data[] = (new NotifyMessage($request))->modelNotificationGroup($NotificationGroup)->rowClientInfo($row)->toData();
-            // }
         }
 
         NotificationRecord::insert($data);
