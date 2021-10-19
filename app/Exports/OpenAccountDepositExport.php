@@ -36,15 +36,16 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
             if (!is_object($Client->ClientDepositProof) || !is_object($AyersAccount)) {
                 continue;
             }
-            $dt = Carbon::parse($Client->ClientDepositProof->transfer_time);
-            $OpenAccountDeposit['tran_date'] = "{$dt->day}/{$dt->month}/{$dt->year}";
+            $updated_at = $Client->ClientDepositProof->updated_at;
+            $OpenAccountDeposit['tran_date'] = "{$updated_at->day}/{$updated_at->month}/{$updated_at->year}";
             $OpenAccountDeposit['client_acc_id'] = $AyersAccount->account_no;
             $OpenAccountDeposit['ccy'] = 'HKD';
             $OpenAccountDeposit['amount'] = $Client->ClientDepositProof->deposit_amount;
             if (is_object($Client->DepositIdentificationCode) && is_object($Client->DepositIdentificationCode->UnknownDeposit->first())) {
                 $UnknownDeposit = $Client->DepositIdentificationCode->UnknownDeposit->first();
-                $transaction_date = Carbon::parse($UnknownDeposit->transaction_date)->toDateString();
-                $OpenAccountDeposit['remark'] = "PRINCIPAL IN $transaction_date";
+                $dt = Carbon::parse($Client->ClientDepositProof->transfer_time);
+                // $transaction_date = Carbon::parse($UnknownDeposit->transaction_date)->toDateString();
+                $OpenAccountDeposit['remark'] = "PRINCIPAL IN_" . $dt->format('Ymd');
             } else {
                 $OpenAccountDeposit['remark'] = "PRINCIPAL IN";
             }
