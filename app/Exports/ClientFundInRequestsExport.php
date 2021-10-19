@@ -16,12 +16,13 @@ class ClientFundInRequestsExport extends AyersValueBinder implements FromView
         $ClientFundInRequests = ClientFundInRequest::where('status', 'approved')->get();
         $Requests = [];
         foreach ($ClientFundInRequests as $ClientFundInRequest) {
-            $dt = Carbon::parse($ClientFundInRequest->transfer_time);
-            $Request['tran_date'] = "{$dt->day}/{$dt->month}/{$dt->year}";
+            $updated_at = $ClientFundInRequest->updated_at;
+            $Request['tran_date'] = "{$updated_at->day}/{$updated_at->month}/{$updated_at->year}";
             $Request['ccclnId'] = $ClientFundInRequest->account_in;
             $Request['ccy'] = 'HKD';
             $Request['amount'] = $ClientFundInRequest->amount;
-            $Request['remark'] = 'PRINCIPAL IN';
+            $dt = Carbon::parse($ClientFundInRequest->transfer_time);
+            $Request['remark'] = "PRINCIPAL IN_{$dt->year}_{$dt->month}_{$dt->day}";
             $Request['gl_mapping_item_id'] = null;
             $Request['bank_acc_id'] = "$ClientFundInRequest->bank:HKD:$ClientFundInRequest->bank_account";
             $Request['cheque'] = null;
