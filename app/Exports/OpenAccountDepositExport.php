@@ -41,14 +41,9 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
             $OpenAccountDeposit['client_acc_id'] = $AyersAccount->account_no;
             $OpenAccountDeposit['ccy'] = 'HKD';
             $OpenAccountDeposit['amount'] = $Client->ClientDepositProof->deposit_amount;
-            if (is_object($Client->DepositIdentificationCode) && is_object($Client->DepositIdentificationCode->UnknownDeposit->first())) {
-                $UnknownDeposit = $Client->DepositIdentificationCode->UnknownDeposit->first();
-                $dt = Carbon::parse($Client->ClientDepositProof->transfer_time);
-                // $transaction_date = Carbon::parse($UnknownDeposit->transaction_date)->toDateString();
-                $OpenAccountDeposit['remark'] = "PRINCIPAL IN_" . $dt->format('Ymd');
-            } else {
-                $OpenAccountDeposit['remark'] = "PRINCIPAL IN";
-            }
+            $dt = Carbon::parse($Client->ClientDepositProof->transfer_time);
+            // $transaction_date = Carbon::parse($UnknownDeposit->transaction_date)->toDateString();
+            $OpenAccountDeposit['remark'] = "PRINCIPAL IN_" . $dt->format('Ymd');
             $OpenAccountDeposit['gl_mapping_item_id'] = null;
             $OpenAccountDeposit['bank_acc_id'] = "{$Client->ClientDepositProof->deposit_bank}:HKD:{$Client->ClientDepositProof->deposit_bank_account}";
             $OpenAccountDeposit['cheque'] = null;
