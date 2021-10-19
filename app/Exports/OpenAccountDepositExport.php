@@ -36,8 +36,8 @@ class OpenAccountDepositExport extends AyersValueBinder implements FromView
             if (!is_object($Client->ClientDepositProof) || !is_object($AyersAccount)) {
                 continue;
             }
-            $updated_at = $Client->ClientDepositProof->updated_at;
-            $OpenAccountDeposit['tran_date'] = "{$updated_at->day}/{$updated_at->month}/{$updated_at->year}";
+            $now = Carbon::now();
+            $OpenAccountDeposit['tran_date'] = "{$now->day}/{$now->month}/{$now->year}";
             $OpenAccountDeposit['client_acc_id'] = $AyersAccount->account_no;
             $OpenAccountDeposit['ccy'] = 'HKD';
             $OpenAccountDeposit['amount'] = $Client->ClientDepositProof->deposit_amount;
