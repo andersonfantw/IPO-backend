@@ -158,4 +158,10 @@ class NotificationRecordController extends HomeController
         }
         return $result;
     }
+    public function send($id){
+        $NotificationRecord = NotificationRecord::find($id);
+        $NotifyMessage = (new NotifyMessage())->modelNotificationRecord($NotificationRecord);
+        (new NotifyService)->notify($NotifyMessage);
+        return ['ok' => true]; 
+    }
 }

@@ -6,8 +6,10 @@ use App\Models\NotificationTemplate;
 use App\Models\NotificationRecord;
 use App\Services\NotifyMessage;
 use App\Notifications\MeteorsisSMS;
+use App\Notifications\SmswaySMS;
 use App\Notifications\CYSSMail;
 use App\Notifications\AccountOverview;
+use CubyBase\Common\Phone;
 use Carbon\Carbon;
 
 class NotifyService{
@@ -31,11 +33,19 @@ class NotifyService{
      * @return void
      */
     public function notify(NotifyMessage $NotifyMessage){
-        $NotificationRecord = NotificationRecord::create($NotifyMessage->toData());
-        $NotifyMessage->recordId($NotificationRecord->id);
+        if($NotifyMessage->getRecordId()==0){
+            $NotificationRecord = NotificationRecord::create($NotifyMessage->toData());
+            $NotifyMessage->recordId($NotificationRecord->id);
+        }else{
+            $NotificationRecord = NotificationRecord::find($NotifyMessage->getRecordId());
+        }
         switch($NotifyMessage->getRoute()){
             case 'sms':
-                $NotificationRecord->notify(new MeteorsisSMS($NotifyMessage));
+                if(Phone::create($NotifyMessage->getMobile())->format('c')=='86'){
+                    $NotificationRecord->notify(new SmswaySMS($NotifyMessage));
+                }else{
+                    $NotificationRecord->notify(new MeteorsisSMS($NotifyMessage));
+                }
                 break;
             case 'email':
                 $NotificationRecord->notify(new CYSSMail($NotifyMessage));

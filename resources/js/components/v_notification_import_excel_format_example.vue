@@ -11,7 +11,7 @@
                 <b-img fluid src="images/import_example_email.png"></b-img>
             </b-tab>
         </b-tabs>
-        <b-link href="#">下載範本</b-link>
+        <b-link href="/files/example.xls">下載範本</b-link>
     </div>
 </template>
 

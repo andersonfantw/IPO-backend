@@ -5,11 +5,11 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Cuby\Meteorsis\MeteorsisMessage;
-use App\Channels\MeteorsisChannel;
+use Cuby\Smsway\SmswayMessage;
+use App\Channels\SmswayChannel;
 use App\Services\NotifyMessage;
 
-class MeteorsisSMS extends Notification implements ShouldQueue
+class SmswaySMS extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -33,7 +33,7 @@ class MeteorsisSMS extends Notification implements ShouldQueue
     public function viaQueues()
     {
         return [
-            MeteorsisChannel::class => 'notify',
+            SmswayChannel::class => 'notify',
         ];
     }
 
@@ -45,22 +45,20 @@ class MeteorsisSMS extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return [MeteorsisChannel::class];
+        return [SmswayChannel::class];
     }
 
     /**
-     * Get the Meteorsis representation of the notification.
+     * Get the Smsway representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \cuby\meteorsis\MeteorsisMessage
+     * @return \cuby\Smsway\SmswayMessage
      */
-    public function toMeteorsis($notifiable)
+    public function toSmsway($notifiable)
     {
         $data = $this->NotifyMessage->toData();
-        return (new MeteorsisMessage)
-            ->title('CYSS')
-            ->content($data['content'])
-            ->unicode()->at('now');
+        return (new SmswayMessage)
+            ->content($data['content']);
     }
 
     /**

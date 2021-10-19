@@ -9,11 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "alphasnow/opencc-php": "dev-master",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "cache/redis-adapter": "^1.1",
         "cache/simple-cache-bridge": "^1.1",
         "cuby/cubybase": "dev-master",
         "cuby/meteorsis": "dev-master",
+        "cuby/smsway": "dev-master",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",

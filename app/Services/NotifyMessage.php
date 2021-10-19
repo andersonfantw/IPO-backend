@@ -18,6 +18,7 @@ class NotifyMessage{
     private $email=null;
     private $route='account_overview';
     private $issued_by=null;
+    private $autoTranslate=true;
 
     private $send_now=false;
     private $_params=[];
@@ -46,6 +47,9 @@ class NotifyMessage{
     function getTemplate(){ return $this->template_id; }
     function isSendNow(){ return $this->send_now; }
 
+    function enableTranslate(){$this->autoTranslate=true;}
+    function disableTranslate(){$this->autoTranslate=false;}
+
     function modelNotificationGroup($model){
         $this->model_group = $model;
         $this->group_id = $model->id;
@@ -65,7 +69,7 @@ class NotifyMessage{
         $this->title = $model->title;
         $this->content = $model->content;
         $this->name = $model->name;
-        $this->phone = $model->phone;
+        $this->mobile = $model->phone;
         $this->email = $model->email;
         $this->issued_by = $model->issued_by;
         return $this;
@@ -110,7 +114,14 @@ class NotifyMessage{
 
         $_params=[]; // 提供文案中變數的替換
         foreach($this->_params as $k => $v) $_params['['.$k.']'] = $v;
-    if(strlen($_params['[name]']??null)>40) var_dump($_params['[name]']);
+        $title = strtr($this->title,$_params);
+        $content = strtr($this->content,$_params);
+        $this->mobile = '8615816873170';
+        if(substr($this->mobile,0,2)=='86' && strlen($this->mobile)==13){
+            $title = \OpenCC::convert($title,'t2s.json');
+            $content = \OpenCC::convert($content,'t2s.json');
+        }
+Log::debug($content);
         return [
             'notification_group_id' => 0,
             'route' => $this->route,
@@ -119,16 +130,14 @@ class NotifyMessage{
             'name' => $_params['[name]']??null,
             'phone' => $this->mobile??$_params['[phone]']??null,
             'email' => $this->email??$_params['[email]']??null,
-            'title' => strtr($this->title,$_params),
-            'content' => strtr($this->content,$_params),
+            'title' => $title,
+            'content' => $content,
             'issued_by' => auth()->user()->name??$this->issued_by??'', 
         ];
     }
 
     /**
      * @param array $params : 參數必須在中括號[]內
-     *
-     * @param array $params
      * @return array
      */
     function toParams(array $params=[]):array
@@ -147,6 +156,10 @@ class NotifyMessage{
             $NotificationTemplate = NotificationTemplate::findOrFail($this->template_id);
             $this->title = $this->title??$NotificationTemplate->name;
             $this->content = $this->content??$NotificationTemplate->template;
+            if($this->autoTranslate){
+                $this->title = \OpenCC::convert($this->title,'t2s.json');
+                $this->content = \OpenCC::convert($this->content,'t2s.json');
+            }
         }
 
         $_params = [];

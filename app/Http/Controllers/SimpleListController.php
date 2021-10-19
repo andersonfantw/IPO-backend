@@ -86,7 +86,6 @@ class SimpleListController extends Controller
 
     }
 
-
     public function sms(){
         return View('SendSMS');
     }
