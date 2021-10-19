@@ -22,7 +22,7 @@ class ClientFundInRequestsExport extends AyersValueBinder implements FromView
             $Request['ccy'] = 'HKD';
             $Request['amount'] = $ClientFundInRequest->amount;
             $dt = Carbon::parse($ClientFundInRequest->transfer_time);
-            $Request['remark'] = "PRINCIPAL IN_{$dt->year}_{$dt->month}_{$dt->day}";
+            $Request['remark'] = "PRINCIPAL IN_" . $dt->format('Ymd');
             $Request['gl_mapping_item_id'] = null;
             $Request['bank_acc_id'] = "$ClientFundInRequest->bank:HKD:$ClientFundInRequest->bank_account";
             $Request['cheque'] = null;
