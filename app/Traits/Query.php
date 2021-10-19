@@ -35,7 +35,10 @@ trait Query
             })->whereHas('ClientDepositProof', function (Builder $query) {
                 $query->where('status', 'unaudited');
             })->where('status', 'unaudited')
-            ->has('DepositIdentificationCode.UnknownDeposit')
+            ->where(function (Builder $query) {
+                $query->has('DepositIdentificationCode.UnknownDeposit')
+                    ->orHas('ClientBankCards.UnknownDeposit');
+            })
             ->orWhere(function (Builder $query) {
                 $query->where('status', 'unaudited')
                     ->where('progress', 16)

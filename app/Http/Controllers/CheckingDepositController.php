@@ -102,7 +102,29 @@ class CheckingDepositController extends Controller
         // UnknownDeposit::where('uploaded_at', $today)->delete();
         // (new UnknownDepositsImport)->import($request->file('file')->path(), null, \Maatwebsite\Excel\Excel::XLSX);
         _Excel::import(new UnknownDepositsImport($now), $request->file('file'));
-        $UnknownDeposits = UnknownDeposit::has('ClientDepositIdentificationCode')->where('uploaded_at', $now)->update(['status' => 'matched']);
+        $code_matched = UnknownDeposit::has('ClientDepositIdentificationCode')->where('uploaded_at', $now)->update(['status' => 'code_matched']);
+        if (!$code_matched) {
+            $UnknownDeposit = UnknownDeposit::has('ClientBankCard')->where('uploaded_at', $now)->first();
+            if (is_object($UnknownDeposit)) {
+                $IDCard = $UnknownDeposit->ClientBankCard->Client->ClientCNIDCard;
+                if ("{$IDCard->surname} {$IDCard->given_name}" == $UnknownDeposit->account_name) {
+                    $UnknownDeposit->status = 'bank_account_matched';
+                    $UnknownDeposit->save();
+                } else {
+                    $IDCard = $UnknownDeposit->ClientBankCard->Client->ClientHKIDCard;
+                    if ($IDCard->name_en == $UnknownDeposit->account_name) {
+                        $UnknownDeposit->status = 'bank_account_matched';
+                        $UnknownDeposit->save();
+                    } else {
+                        $IDCard = $UnknownDeposit->ClientBankCard->Client->ClientOtherIDCard;
+                        if ($IDCard->name_en == $UnknownDeposit->account_name) {
+                            $UnknownDeposit->status = 'bank_account_matched';
+                            $UnknownDeposit->save();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

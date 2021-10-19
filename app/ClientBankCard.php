@@ -29,4 +29,9 @@ class ClientBankCard extends Model
     {
         return $this->belongsTo('App\Client', 'uuid', 'uuid');
     }
+
+    public function UnknownDeposit()
+    {
+        return $this->hasMany('App\UnknownDeposit', 'account_no', 'account_no');
+    }
 }

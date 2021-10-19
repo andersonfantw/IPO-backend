@@ -28,4 +28,9 @@ class UnknownDeposit extends Model
     {
         return $this->belongsTo('App\ClientDepositIdentificationCode', 'identification_code', 'identification_code');
     }
+
+    public function ClientBankCard()
+    {
+        return $this->belongsTo('App\ClientBankCard', 'account_no', 'account_no');
+    }
 }
