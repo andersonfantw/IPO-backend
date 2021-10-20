@@ -4,7 +4,7 @@ namespace App\Channels;
 use Cuby\Meteorsis\MeteorsisService;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Channels\MailChannel;
-use App\NotificationRecord;
+use App\Models\NotificationRecord;
 use Carbon\Carbon;
 
 class CYSSMailChannel extends MailChannel
