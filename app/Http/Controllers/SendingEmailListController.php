@@ -130,7 +130,6 @@ class SendingEmailListController extends Controller
             $NotificationRecord = $Client->NotificationRecord
                 ->where('status', 'success')
                 ->whereIn('title', ['帳戶開戶通知書', '帐户开户通知书'])
-                ->orderBy('updated_at', 'desc')
                 ->first();
             if (is_object($NotificationRecord)) {
                 $row['狀態'] = '已發送';

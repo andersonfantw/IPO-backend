@@ -146,7 +146,7 @@ class Client extends Model
 
     public function NotificationRecord()
     {
-        return $this->hasMany('App\Models\NotificationRecord', 'email', 'email');
+        return $this->hasMany('App\Models\NotificationRecord', 'email', 'email')->orderBy('updated_at', 'desc');
     }
 
     public function DepositIdentificationCode()
