@@ -251,7 +251,7 @@ class AuditClientController extends Controller
             $Client->ClientDepositProof->save();
         }
         if ($rejected) {
-            // $this->sendRejectionSMS($Client);
+            $this->sendRejectionSMS($Client);
         } elseif ($request->input('next_status') == 'audited1') {
             $Client->auditor1 = auth()->user()->name;
         } elseif ($request->input('next_status') == 'audited2') {
