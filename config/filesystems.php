@@ -79,6 +79,21 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => '152.101.38.18',
+            'username' => 'YSG2',
+            'password' => 'Teletsci2021',
+
+            // Settings for SSH key based authentication...
+            // 'privateKey' => '/path/to/privateKey',
+            // 'password' => 'encryption-password',
+
+            // Optional SFTP Settings...
+            // 'port' => 22,
+            // 'root' => '',
+            // 'timeout' => 30,
+        ],
     ],
 
     /*

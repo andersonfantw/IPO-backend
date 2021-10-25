@@ -59,7 +59,7 @@ class AEController extends Controller
     {
         // $introducer = Staff::where('name', '范焜華')->first();
         // $introducer = Salesman::where('name', '量化簡財')->first();
-        $introducer = AE::where('name', 'Rebecca')->first();
+        $introducer = AE::where('name', 'Nansen')->first();
         return QrCode::format('png')->merge(public_path('images/ccyss-removebg-preview.png'), .3, true)->size(250)->generate("https://pys.chinayss.hk?introducer_uuid=$introducer->uuid");
     }
 
