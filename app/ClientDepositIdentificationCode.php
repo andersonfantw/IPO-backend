@@ -16,4 +16,9 @@ class ClientDepositIdentificationCode extends Model
     {
         return $this->hasMany('App\UnknownDeposit', 'identification_code', 'identification_code');
     }
+
+    public function Client()
+    {
+        return $this->belongsTo('App\Client', 'uuid', 'uuid');
+    }
 }
