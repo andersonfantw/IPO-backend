@@ -14,6 +14,7 @@ class UnknownDeposit extends Model
         'summary',
         'remark',
         'identification_code',
+        'ayers_account_no',
         'amount_in',
         'balance',
         'voucher_no',
@@ -32,5 +33,10 @@ class UnknownDeposit extends Model
     public function ClientBankCard()
     {
         return $this->belongsTo('App\ClientBankCard', 'account_no', 'account_no');
+    }
+
+    public function ClientAyersAccount()
+    {
+        return $this->belongsTo('App\ClientAyersAccount', 'account_no', 'ayers_account_no');
     }
 }

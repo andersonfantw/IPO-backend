@@ -102,9 +102,11 @@ class CheckingDepositController extends Controller
         // UnknownDeposit::where('uploaded_at', $today)->delete();
         // (new UnknownDepositsImport)->import($request->file('file')->path(), null, \Maatwebsite\Excel\Excel::XLSX);
         _Excel::import(new UnknownDepositsImport($now), $request->file('file'));
-        $UnknownDeposit = UnknownDeposit::has('ClientDepositIdentificationCode')->where('uploaded_at', $now)->first();
+        $UnknownDeposit = UnknownDeposit::with(['ClientDepositIdentificationCode.Client.ClientDepositProof'])
+            ->has('ClientDepositIdentificationCode')->where('uploaded_at', $now)->first();
         if (!is_object($UnknownDeposit)) {
-            $UnknownDeposit = UnknownDeposit::has('ClientBankCard')->where('uploaded_at', $now)->first();
+            $UnknownDeposit = UnknownDeposit::with(['ClientBankCard.Client'])
+                ->has('ClientBankCard')->where('uploaded_at', $now)->first();
             if (is_object($UnknownDeposit)) {
                 $Client = $UnknownDeposit->ClientBankCard->Client;
                 $IDCard = $Client->ClientCNIDCard;
@@ -130,6 +132,16 @@ class CheckingDepositController extends Controller
                             $ClientDepositProof = $Client->ClientDepositProof;
                             $ClientDepositProof->deposit_amount = $UnknownDeposit->amount_in;
                             $ClientDepositProof->save();
+                        } else {
+                            $UnknownDeposit = UnknownDeposit::with(['ClientAyersAccount.Client.ClientDepositProof'])
+                                ->has('ClientAyersAccount')->where('uploaded_at', $now)->first();
+                            if (is_object($UnknownDeposit)) {
+                                $UnknownDeposit->status = 'ayers_account_matched';
+                                $UnknownDeposit->save();
+                                $ClientDepositProof = $UnknownDeposit->ClientAyersAccount->Client->ClientDepositProof;
+                                $ClientDepositProof->deposit_amount = $UnknownDeposit->amount_in;
+                                $ClientDepositProof->save();
+                            }
                         }
                     }
                 }

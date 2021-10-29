@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Imports\TradeGoCashInImport as _TradeGoCashInImport;
 use Excel;
 use Carbon\Carbon;
+use App\ClientAyersAccount;
+use App\ClientFundInRequest;
+use App\ClientBankCard;
 
 class TradeGoCashInImport extends Command
 {
@@ -34,7 +37,7 @@ class TradeGoCashInImport extends Command
         parent::__construct();
     }
 
-    private function readCSV($csvFile, $array)
+    private function readCSV($csvFile)
     {
         $string = Storage::disk('sftp')->get($csvFile);
         $lines = str_getcsv($string, "\n");
@@ -43,11 +46,11 @@ class TradeGoCashInImport extends Command
             $h = str_getcsv($lines[0], ",");
             for ($i = 1; $i < count($lines); $i++) {
                 $l = str_getcsv($lines[$i], ",");
-                $row = [];
+                // $row = [];
                 for ($j = 0; $j < count($l); $j++) {
-                    $row[$h[$j]] = $l[$j];
+                    $csv[$h[$j]] = $l[$j];
                 }
-                $csv[] = $row;
+                // $csv[] = $row;
             }
         }
         return $csv;
@@ -75,7 +78,34 @@ class TradeGoCashInImport extends Command
         sort($images);
         for ($i = 0; $i < count($csvs); $i++) {
             $image = Storage::disk('sftp')->get($images[$i]);
-            // $=$this->readCSV($csvs[$i], array('delimiter' => ','));
+            $csv = $this->readCSV($csvs[$i]);
+            $ClientAyersAccount = ClientAyersAccount::with(['Client.ClientBankCards' => function ($query) {
+                $query->where('lcid', 'zh-hk')->orWhere('lcid', 'others');
+            }])->where('account_no', $csv['ccclnld'])->first();
+            $bank_name = explode(" ", $csv['bank_name']);
+            $remark = explode(";", $csv['remark']);
+            $ClientBankCard = $ClientAyersAccount->Client->ClientBankCards->first();
+            ClientFundInRequest::firstOrCreate(
+                [
+                    'uuid' => $ClientAyersAccount->uuid,
+                    'transfer_time' => $csv['cash_in_date'],
+                ],
+                [
+                    'bank' => $bank_name[0],
+                    'bank_account' => $csv['bank_acc_id'],
+                    'account_in' => $csv['ccclnld'],
+                    'amount' => $csv['amount'],
+                    'method' => $remark[2],
+                    // 'status' => 'pending',
+                    // 'issued_by',
+                    // 'remark',
+                    'receipt' => $image,
+                    'bankcard' => $ClientBankCard->bankcard_blob,
+                    'timezone' => 8,
+                    // 'previewing_by',
+                ]
+            );
+            // var_dump($csv);
         }
         // foreach ($files as $file) {
         //     Excel::import(new _TradeGoCashInImport, $file, 'sftp')->allOnQueue('TradeGoCashInImport');
