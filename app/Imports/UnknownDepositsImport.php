@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Imports;
 
 use App\Traits\Algorithm;
@@ -60,7 +61,6 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
                 $summary = str_replace($LCS, '', $summary);
                 $remark = str_replace($LCS, '', $remark);
             }
-
             preg_match("/CYSS[0-9a-zA-Z]{5}/i", $remark, $matches);
             $row['identification_code'] = empty($matches) ? null : $matches[0];
             $row['amount_in'] = $row['收入金額'];
@@ -77,7 +77,15 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
             unset($row['交易場所']);
             $row['uploaded_at'] = $this->uploaded_at;
             // var_dump($row);
-            return new UnknownDeposit($row);
+            $UnknownDeposit = UnknownDeposit::where('transaction_date', $row['transaction_date'])
+                ->where('amount_in', $row['amount_in'])
+                ->where('account_no', $row['account_no'])
+                ->where('account_name', $row['account_name'])->first();
+            if (is_object($UnknownDeposit)) {
+                return null;
+            } else {
+                return new UnknownDeposit($row);
+            }
         } catch (QueryException $e) {
             var_dump($e);
             return null;
@@ -98,5 +106,4 @@ class UnknownDepositsImport implements ToModel, WithHeadingRow, WithBatchInserts
     {
         return 1000;
     }
-
 }
