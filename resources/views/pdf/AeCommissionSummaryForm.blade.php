@@ -377,7 +377,11 @@
                 <td></td>
                 <td class="text-center">HK${{number_format(($performance+$cost)*0.1,2)}}</td>
                 <td class="text-center">HK${{number_format($total_group_commission,2)}}</td>
-                <td>1/2級交易佣金提撥10% {{$commission_content}}</td>
+                @if ($commission_content)
+                <td>{{$commission_content}}</td>
+                @else
+                <td>1/2級交易佣金提撥10%</td>
+                @endif
             </tr>
         </tbody>
     </table>
