@@ -253,7 +253,7 @@ class AeCommissionSummaryController extends HomeController
                 'application_fee_correction'=>$collect->sum('performance'),     // 本月業績 1/2 級市場
                 'bonus_application_correction'=>$collect->sum('commission'),    // 本月發出獎金
                 'application_cost_correction'=>$collect->sum('reservations'),   // 本月所有AE保留數
-                'ae_application_cost_correction'=>($collect->sum('performance')-$collect->sum('cost'))*0.1, // 團體提撥獎金
+                'ae_application_cost_correction'=>($collect->sum('performance')+$collect->sum('cost'))*0.1, // 團體提撥獎金
                 'transaction_number_correction'=>$collect->sum('qualified'),
             ]);
         }
