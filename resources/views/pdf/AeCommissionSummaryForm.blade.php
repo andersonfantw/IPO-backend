@@ -410,7 +410,7 @@
                                 <td class="text-center">本期總發放金額</td>
                             </tr>
                             <tr>
-                                <td style="border:solid 2px #000;height:1cm;text-align:center;background-color:rgb(178, 188, 194);"><h3>HK${{number_format($commission,2)}}</h3></td>
+                                <td style="border:solid 2px #000;height:1cm;text-align:center;background-color:rgb(213, 220, 224);"><h3>HK${{number_format($commission,2)}}</h3></td>
                             </tr>                
                         </tbody>
                     </table>
