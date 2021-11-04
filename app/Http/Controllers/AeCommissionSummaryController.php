@@ -250,10 +250,10 @@ class AeCommissionSummaryController extends HomeController
                 'ae_codes'=>'group_info',
                 'pay_date'=>now(),
                 'issued_by'=>auth()->user()->name,
-                'application_fee_correction'=>$collect->sum('performance'),     // 本月業績 1/2
+                'application_fee_correction'=>$collect->sum('performance'),     // 本月業績 1/2 級市場
                 'bonus_application_correction'=>$collect->sum('commission'),    // 本月發出獎金
                 'application_cost_correction'=>$collect->sum('reservations'),   // 本月所有AE保留數
-                'ae_application_cost_correction'=>$collect->sum('performance')*0.1, // 團體提撥獎金
+                'ae_application_cost_correction'=>($collect->sum('performance')+$collect->sum('cost'))*0.1, // 團體提撥獎金
                 'transaction_number_correction'=>$collect->sum('qualified'),
             ]);
         }
@@ -286,8 +286,10 @@ class AeCommissionSummaryController extends HomeController
                 'reservations'=>$collect->sum('reservations'),
                 'commission'=>$collect->sum('commission'),
                 'performance'=>$collect->sum('performance'),
+                'cost'=>$collect->sum('cost'),
                 'total_group_open'=>$group['total_group_open'],
                 'total_group_commission'=>$group['total_group_commission'],
+                'commission_content'=>$group['content']??null,
             ],
             $this->StylingImages(),
         ));
@@ -318,8 +320,10 @@ class AeCommissionSummaryController extends HomeController
                 'reservations'=>$collect->sum('reservations'),
                 'commission'=>$collect->sum('commission'),
                 'performance'=>$collect->sum('performance'),
+                'cost'=>$collect->sum('cost'),
                 'total_group_open'=>$group['total_group_open']??null,
                 'total_group_commission'=>$group['total_group_commission']??null,
+                'commission_content'=>$group['content']??null,
             ],
             $this->StylingImages(),
         ));
@@ -398,6 +402,10 @@ class AeCommissionSummaryController extends HomeController
                     +$hash['interest']['application_fee'] 
                     +$hash['alloted']['application_fee'] 
                     +$hash['sell']['application_fee'],
+                'cost' => $hash['fee']['application_cost'] 
+                    +$hash['interest']['application_cost'] 
+                    +$hash['alloted']['application_cost'] 
+                    +$hash['sell']['application_cost'],
                 'content' => $hash['principal']['content']??'',
             );
             $arr1['subtitle'] = $arr1['excitation'] + $arr1['commission1'] + $arr1['commission2'];
@@ -408,7 +416,7 @@ class AeCommissionSummaryController extends HomeController
         return [
             'data'=>$result,
             'ae'=>$AE,
-            'group'=>AeCommissionSummary::select()
+            'group'=>AeCommissionSummary::select('content')
                 ->selectRaw(sprintf("(select sum(transaction_number_correction)*50 from ae_commission_summary where datediff(buss_date,'%s')<=0 and cate='group_info') as total_group_open",$month))
                 ->selectRaw(sprintf("(select sum(ae_application_cost_correction) from ae_commission_summary where datediff(buss_date,'%s')<=0 and cate='group_info') as total_group_commission",$month))
                 ->where('ae_codes','=','group_info')->where('buss_date','=',$month)->first(),

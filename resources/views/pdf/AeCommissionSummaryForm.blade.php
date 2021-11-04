@@ -375,9 +375,13 @@
             <tr>
                 <td class="text-center">佣金</td>
                 <td></td>
-                <td class="text-center">HK${{number_format($performance*0.1,2)}}</td>
+                <td class="text-center">HK${{number_format(($performance+$cost)*0.1,2)}}</td>
                 <td class="text-center">HK${{number_format($total_group_commission,2)}}</td>
+                @if ($commission_content)
+                <td>{{$commission_content}}</td>
+                @else
                 <td>1/2級交易佣金提撥10%</td>
+                @endif
             </tr>
         </tbody>
     </table>
@@ -410,7 +414,7 @@
                                 <td class="text-center">本期總發放金額</td>
                             </tr>
                             <tr>
-                                <td style="border:solid 2px #000;height:1cm;text-align:center;background-color:rgb(178, 188, 194);"><h3>HK${{number_format($commission,2)}}</h3></td>
+                                <td style="border:solid 2px #000;height:1cm;text-align:center;background-color:rgb(213, 220, 224);"><h3>HK${{number_format($commission,2)}}</h3></td>
                             </tr>                
                         </tbody>
                     </table>
