@@ -116,12 +116,11 @@ class NotifyMessage{
         foreach($this->_params as $k => $v) $_params['['.$k.']'] = $v;
         $title = strtr($this->title,$_params);
         $content = strtr($this->content,$_params);
-        $this->mobile = '8615816873170';
         if(substr($this->mobile,0,2)=='86' && strlen($this->mobile)==13){
             $title = \OpenCC::convert($title,'t2s.json');
             $content = \OpenCC::convert($content,'t2s.json');
         }
-Log::debug($content);
+
         return [
             'notification_group_id' => 0,
             'route' => $this->route,
