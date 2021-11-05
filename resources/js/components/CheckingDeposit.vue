@@ -97,7 +97,7 @@
       <template #cell(status)="data">
         {{data.item.status}}
         <i
-          v-if="data.item.status == 'matched'"
+          v-if="isMatched(data.item.status)"
           class="fas fa-check text-success"
         ></i>
         <i
@@ -167,6 +167,10 @@ export default {
     this.source.cancel("Operation canceled by the user.");
   },
   methods: {
+    isMatched(status) {
+      let pattern = /matched$/g;
+      return pattern.test(status);
+    },
     downloadUnknownDepositsExcel(e) {
       const self = this;
       self.downloading = true;
