@@ -454,7 +454,7 @@
             >銀行卡號</div>
           </th>
           <td>
-            {{ 銀行卡.account_no }}
+            {{ 銀行卡.branch_code }}{{ 銀行卡.account_no }}
           </td>
         </tr>
         <tr>

@@ -81,9 +81,9 @@ return [
 
         'sftp' => [
             'driver' => 'sftp',
-            'host' => '152.101.38.18',
-            'username' => 'YSG2',
-            'password' => 'Teletsci2021',
+            'host' => env('TRADEGO_SFTP_HOST'),
+            'username' => env('TRADEGO_SFTP_USERNAME'),
+            'password' => env('TRADEGO_SFTP_PASSWORD'),
 
             // Settings for SSH key based authentication...
             // 'privateKey' => '/path/to/privateKey',
