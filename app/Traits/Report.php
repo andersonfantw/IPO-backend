@@ -43,6 +43,7 @@ trait Report
             return;
         }
         $ClientSignature = $this->imagePathToBase64(storage_path("app/upload/$Client->uuid/signature.png"));
+        $ROSignature = $this->imagePathToBase64(storage_path("images/Max.png"));
         $ViewClientQuestionnaire = $Client->ViewClientQuestionnaire;
         if (!is_object($ViewClientQuestionnaire)) {
             return;
@@ -84,6 +85,7 @@ trait Report
             'ClientNameC' => [$Client->IDCard->name_c, null],
             'ClientNameE' => [$ClientNameE, null],
             'ClientSignature' => [$ClientSignature, null],
+            'ROSignature' => $ROSignature,
             'Gender' => [$Client->IDCard->gender, null],
             'IDNo' => [$Client->IDCard->idcard_no, null],
             'Nationality' => [$Nationality[$Client->nationality], null],
@@ -274,8 +276,8 @@ trait Report
                 'Date' => null,
             ],
             'ResponsibleOfficer' => [
-                'Signature' => null,
-                'Name' => null,
+                'Signature' => $ROSignature,
+                'Name' => '洪榮聰',
                 'Date' => null,
             ],
             'DocumentReviewedBy' => [
