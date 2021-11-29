@@ -61,6 +61,20 @@ trait Report
         if (!is_object($Client->ClientInvestmentExperience)) {
             return;
         }
+        $BankCard = $Client->ClientBankCards->whereIn('lcid', ['zh-hk', 'others'])->first();
+        if (!is_object($BankCard)) {
+            return;
+        }
+        if (!is_object($Client->ClientAddressProof)) {
+            $FullResidentialAddress = $Client->ClientAddressProof->address_text;
+        } else {
+            $FullResidentialAddress = $Client->IDCard->idcard_address;
+        }
+        if ($Client->IDCard->name_en) {
+            $ClientNameE = $Client->IDCard->name_en;
+        } else {
+            $ClientNameE = "{$Client->IDCard->surname} {$Client->IDCard->given_name}";
+        }
         $data = [
             'logo' => $logo,
             'AccountNature' => '個人',
@@ -68,13 +82,13 @@ trait Report
             'AccountNo' => null,
             'InternetTradingService' => '是',
             'ClientNameC' => [$Client->IDCard->name_c, null],
-            'ClientNameE' => [$Client->IDCard->name_en, null],
+            'ClientNameE' => [$ClientNameE, null],
             'ClientSignature' => [$ClientSignature, null],
             'Gender' => [$Client->IDCard->gender, null],
             'IDNo' => [$Client->IDCard->idcard_no, null],
             'Nationality' => [$Nationality[$Client->nationality], null],
             'EducationLevel' => [substr($Client->education_level, 0, 1), null],
-            'FullResidentialAddress' => [$Client->IDCard->address, null],
+            'FullResidentialAddress' => [$FullResidentialAddress, null],
             'Tel' => [null, null],
             'Mobile' => [$Client->mobile, null],
             'Fax' => [null, null],
@@ -219,9 +233,9 @@ trait Report
                 'Nationality' => null,
             ],
             'D' => [
-                '銀行名稱' => null,
-                '貨幣' => null,
-                '帳戶號碼' => null,
+                '銀行名稱' => $BankCard->bank_name,
+                '貨幣' => $BankCard->currency,
+                '帳戶號碼' => "{$BankCard->bank_code}{$BankCard->branch_code}{$BankCard->account_no}",
                 '請註明' => null,
                 '銀行帳戶持有人名稱' => $Client->IDCard->name_c,
                 '地區及銀行代碼' => null,
