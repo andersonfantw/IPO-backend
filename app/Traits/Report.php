@@ -65,7 +65,7 @@ trait Report
         if (!is_object($BankCard)) {
             return;
         }
-        if (!is_object($Client->ClientAddressProof)) {
+        if (is_object($Client->ClientAddressProof)) {
             $FullResidentialAddress = $Client->ClientAddressProof->address_text;
         } else {
             $FullResidentialAddress = $Client->IDCard->idcard_address;
