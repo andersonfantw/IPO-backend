@@ -13,11 +13,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
+use App\Traits\Report;
 
 class DeliverableList2Controller extends Controller
 {
 
-    use Excel, Image, Query;
+    use Excel, Image, Query, Report;
 
     protected $name = 'DeliverableList2';
     private $fields = null;
@@ -178,6 +179,7 @@ class DeliverableList2Controller extends Controller
             $ClientIDCard = $Client->IDCard;
             $idcard_face = $this->saveBase64Image($this->blobToBase64($ClientIDCard->idcard_face), "upload/$ClientIDCard->uuid", 'idcard_face');
             $idcard_back = $this->saveBase64Image($this->blobToBase64($ClientIDCard->idcard_back), "upload/$ClientIDCard->uuid", 'idcard_back');
+            $this->AccountOpeningForm($Client);
             $zipFile->addDir(storage_path("app/upload/$ClientIDCard->uuid"));
         }
         $zipFile->saveAsFile(storage_path("app/public/file.zip"))->close();

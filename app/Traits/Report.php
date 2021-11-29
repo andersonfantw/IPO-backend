@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use App\Client;
@@ -268,21 +269,6 @@ trait Report
                 'Signature' => null,
                 'Date' => null,
             ],
-            // 'yes' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/yes.png')),
-            // 'image_11_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/11.jpg')),
-            // 'image_a2_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-2.jpg')),
-            // 'image_a3_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-3.jpg')),
-            // 'image_a4_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-4.jpg')),
-            // 'image_a5_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-5.jpg')),
-            // 'image_a6_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-6.jpg')),
-            // 'image_a7_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-7.jpg')),
-            // 'image_a8_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-8.jpg')),
-            // 'image_a9_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-9.jpg')),
-            // 'image_a10_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-10.jpg')),
-            // 'image_a11_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-11.jpg')),
-            // 'image_a12_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-12.jpg')),
-            // 'image_a13_1_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-13-1.jpg')),
-            // 'image_a14_jpg' => $this->imagePathToBase64(storage_path('images/AccountOpeningForm/a-14.jpg')),
         ];
         // return view('pdf.AccountOpeningForm', $data);
         $pdf = PDF::loadView('pdf.AccountOpeningForm', $data);
