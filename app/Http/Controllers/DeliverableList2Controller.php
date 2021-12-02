@@ -66,33 +66,41 @@ class DeliverableList2Controller extends Controller
         $開戶時間 = $request->input('開戶時間', null);
         $帳戶生成時間 = $request->input('帳戶生成時間', null);
         $Query = $this->getDeliverableList2Query();
+        $f=true;
         if ($帳戶號碼) {
+            $f=false;
             $Query = $Query->whereHas('AyersAccounts', function (Builder $query) use ($帳戶號碼) {
                 $query->where('account_no', 'like', "$帳戶號碼%");
             });
         }
         if ($開通賬戶類型) {
+            $f=false;
             $Query = $Query->whereHas('AyersAccounts', function (Builder $query) use ($開通賬戶類型) {
                 $query->where('type', $開通賬戶類型);
             });
         }
         if ($客户姓名) {
+            $f=false;
             $Query = $Query->whereHasMorph('IDCard', ['App\ClientHKIDCard', 'App\ClientCNIDCard', 'App\ClientOtherIDCard'], function (Builder $query) use ($客户姓名) {
                 $query->where('name_c', 'like', "$客户姓名%");
             });
         }
         if ($證件號碼) {
+            $f=false;
             $Query = $Query->whereHasMorph('IDCard', ['App\ClientHKIDCard', 'App\ClientCNIDCard', 'App\ClientOtherIDCard'], function (Builder $query) use ($證件號碼) {
                 $query->where('idcard_no', 'like', "$證件號碼%");
             });
         }
         if ($手機號碼) {
+            $f=false;
             $Query = $Query->where('mobile', 'like', "$手機號碼%");
         }
         if ($郵箱) {
+            $f=false;
             $Query = $Query->where('email', 'like', "$郵箱%");
         }
         if (is_array($開戶時間) && count($開戶時間) == 2) {
+            $f=false;
             try {
                 $開戶時間[0] = Carbon::parse($開戶時間[0])->addDays(1)->format('Y-m-d');
                 $開戶時間[1] = Carbon::parse($開戶時間[1])->addDays(1)->format('Y-m-d');
@@ -101,6 +109,7 @@ class DeliverableList2Controller extends Controller
             }
         }
         if (is_array($帳戶生成時間) && count($帳戶生成時間) == 2) {
+            $f=false;
             try {
                 $帳戶生成時間[0] = Carbon::parse($帳戶生成時間[0])->addDays(1)->format('Y-m-d H:i:s');
                 $帳戶生成時間[1] = Carbon::parse($帳戶生成時間[1])->addDays(1)->format('Y-m-d H:i:s');
@@ -110,11 +119,13 @@ class DeliverableList2Controller extends Controller
             } catch (InvalidFormatException $e) {
             }
         }
-        $Query = $Query->orWhere(function (Builder $query) {
-            $query->where('status', 'audited2')
-                ->where('progress', 16)
-                ->where('idcard_type', 'App\ClientOtherIDCard');
-        });
+        if($f){
+            $Query = $Query->orWhere(function (Builder $query) {
+                $query->where('status', 'audited2')
+                    ->where('progress', 16)
+                    ->where('idcard_type', 'App\ClientOtherIDCard');
+            });
+        }
         $Clients = $Query->orderBy('updated_at', 'desc')
             ->paginate($request->input('perPage'), ['*'], 'page', $request->input('pageNumber'));
         $total = $Clients->total();

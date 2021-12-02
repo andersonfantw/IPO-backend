@@ -69,10 +69,10 @@ class TradeGoCashInImport extends Command
         }
         $files = Storage::disk('sftp')->files($date);
         $csvs = array_filter($files, function ($file) {
-            return preg_match("/cash_in.+\.csv$/i", $file);
+            return preg_match("/cash_in.+_1\.csv$/i", $file);
         });
         $images = array_filter($files, function ($file) {
-            return preg_match("/\.(jpeg|png)$/i", $file);
+            return preg_match("/\_1.(jpg|jpeg|png)$/i", $file);
         });
         sort($csvs);
         sort($images);
@@ -88,7 +88,7 @@ class TradeGoCashInImport extends Command
             ClientFundInRequest::firstOrCreate(
                 [
                     'uuid' => $ClientAyersAccount->uuid,
-                    'transfer_time' => $csv['cash_in_date'],
+                    'transfer_time' => trim($csv['cash_in_date']).':00',
                 ],
                 [
                     'bank' => $bank_name[0],
