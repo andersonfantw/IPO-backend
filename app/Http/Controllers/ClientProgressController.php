@@ -27,6 +27,7 @@ class ClientProgressController extends Controller
             ['key' => '客户姓名', 'sortable' => true],
             ['key' => '證件號碼', 'sortable' => true],
             ['key' => '手機號碼', 'sortable' => true],
+            ['key' => '銀行卡號', 'sortable' => true],
             ['key' => '流程', 'sortable' => true],
             ['key' => '開戶進度', 'sortable' => true],
             ['key' => '狀態', 'sortable' => true],
@@ -42,6 +43,7 @@ class ClientProgressController extends Controller
             '客户姓名' => 'startsWith',
             '證件號碼' => 'startsWith',
             '手機號碼' => 'startsWith',
+            '銀行卡號' => 'startsWith',
             '流程' => 'equals',
             '開戶進度' => 'equals',
             '狀態' => 'equals',
@@ -60,7 +62,7 @@ class ClientProgressController extends Controller
      */
     public function index(Request $request)
     {
-        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'EditableSteps' => function ($query) {
+        $Clients = Client::with(['ViewIntroducer', 'IDCard', 'ClientBankCards', 'EditableSteps' => function ($query) {
             $query->where('reason', 'correction');
         }, 'AyersAccounts'])
             ->where('type', '拼一手')
@@ -71,17 +73,22 @@ class ClientProgressController extends Controller
                     ClientOtherIDCard::class,
                 ], function (Builder $query) use ($request) {
                     if ($request->filled('客户姓名')) {
-                        $query = $query->where('name_c', 'like', $request->input('客户姓名') . '%');
+                        $query->where('name_c', 'like', $request->input('客户姓名') . '%');
                     }
                     if ($request->filled('證件號碼')) {
-                        $query = $query->where('idcard_no', 'like', $request->input('證件號碼') . '%');
+                        $query->where('idcard_no', 'like', $request->input('證件號碼') . '%');
                     }
                 });
                 if ($request->filled('手機號碼')) {
-                    $query = $query->where('mobile', 'like', $request->input('手機號碼') . '%');
+                    $query->where('mobile', 'like', $request->input('手機號碼') . '%');
                 }
                 if ($request->filled('郵箱')) {
-                    $query = $query->where('email', 'like', $request->input('郵箱') . '%');
+                    $query->where('email', 'like', $request->input('郵箱') . '%');
+                }
+                if ($request->filled('銀行卡號')) {
+                    $query->whereHas('ClientBankCards', function (Builder $query) use ($request) {
+                        $query->where('account_no', 'like', $request->input('銀行卡號') . '%');
+                    });
                 }
                 if ($request->filled('AE')) {
                     $query = $query->whereHas('ViewIntroducer', function (Builder $query) use ($request) {
@@ -94,11 +101,14 @@ class ClientProgressController extends Controller
             })->get();
         $rows = [];
         foreach ($Clients as $Client) {
-            $row = [];
+            $row = [
+                '銀行卡號'=>null,
+            ];
             $row['AE'] = $Client->ViewIntroducer->ae_name;
             $row['客户姓名'] = is_object($Client->IDCard) ? $Client->IDCard->name_c : null;
             $row['證件號碼'] = is_object($Client->IDCard) ? $Client->IDCard->idcard_no : null;
             $row['手機號碼'] = $Client->mobile;
+            if(is_object($Client->ClientBankCards)) $row['銀行卡號'] = $Client->ClientBankCards[0]->account_no;
             if ($Client->selected_flow) {
                 $selected_flow = json_decode($Client->selected_flow, true);
                 if ($selected_flow[1] == 'zh-hk') {

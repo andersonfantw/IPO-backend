@@ -37,6 +37,7 @@ import NotificationSummary from "./components/NotificationSummary.vue";
 import AeCommissionSummary from "./components/AeCommissionSummary.vue";
 import CheckingDeposit from "./components/CheckingDeposit.vue";
 import ClientDataUpdate from "./components/ClientDataUpdate.vue";
+import SubscriptionGroup from "./components/SubscriptionGroup.vue";
 
 const routes = [
     { path: '/Permission', component: Permission },
@@ -59,6 +60,7 @@ const routes = [
     { path: '/AeCommissionSummary', component: AeCommissionSummary },
     { path: '/CheckingDeposit', component: CheckingDeposit },
     { path: '/ClientDataUpdate', component: ClientDataUpdate },
+    { path: '/SubscriptionJob', component: SubscriptionGroup },
 ];
 
 const router = new VueRouter({
@@ -229,6 +231,9 @@ Vue.component('ipo-interest-setting', require('./components/v_ipo_interest_setti
 Vue.component('ae-commission-confirm', require('./components/v_ae_commission_confirm.vue').default);
 Vue.component('ae-commission-detail', require('./components/v_ae_commission_detail.vue').default);
 
+Vue.component('subscription-group', require('./components/SubscriptionGroup.vue').default);
+Vue.component('add-subscription-task', require('./components/v_add_subscription_task.vue').default);
+Vue.component('subscription-calculation',require('./components/v_subscription_calculation.vue').default);
 // Anderson end
 
 /**

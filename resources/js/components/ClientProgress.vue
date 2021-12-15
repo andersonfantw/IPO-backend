@@ -41,6 +41,15 @@
     </b-row>
     <b-row class="mb-3">
       <b-col>
+        <b-input-group prepend="銀行卡號">
+          <b-form-input
+            type="search"
+            v-model="filters['銀行卡號']"
+            @keyup.enter="query"
+          />
+        </b-input-group>
+      </b-col>
+      <b-col>
         <!-- <DateRange :name="'更新時間'" v-model="filters['更新時間']" /> -->
         <date-picker
           name="'更新時間'"
@@ -58,7 +67,6 @@
           </b-form-select>
         </b-input-group>
       </b-col>
-      <b-col> </b-col>
       <b-col> </b-col>
     </b-row>
     <b-row class="mb-3">
@@ -202,6 +210,7 @@ export default {
         客户姓名: self.filters["客户姓名"],
         證件號碼: self.filters["證件號碼"],
         手機號碼: self.filters["手機號碼"],
+        銀行卡號: self.filters["銀行卡號"],
         郵箱: self.filters["郵箱"],
         AE: self.filters["AE"],
       };
