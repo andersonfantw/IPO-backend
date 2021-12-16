@@ -138,7 +138,7 @@ class NotificationRecordController extends HomeController
     public function preview($template_id, Request $request){
         $input = $request->only('client_id');
         $NotifyMessage = (new NotifyMessage)->templateId($template_id);
-        if($request->has('client_id')) if($input['client_id']!='') $NotifyMessage->clientId($input['client_id']);
+        if(($input['client_id']?'')!='') $NotifyMessage->clientId($input['client_id']);
         return (new CYSSMail($NotifyMessage))->toMail();
     }
 

@@ -199,7 +199,8 @@ class NotifyMessage{
             $_params['title'] = $this->title;
             $_params['content'] = $this->content;
         }
-        // array_map(function($v){return str_replace("\n","",$v);},$_params),
+        $_params['content'] = str_replace(["\r\n","\n","\r"],'<br />',$_params['content']);
+        array_map(function($v){return str_replace("\n","",$v);},$_params),
         return $this->_params = array_merge(
             $_params,
             $params,

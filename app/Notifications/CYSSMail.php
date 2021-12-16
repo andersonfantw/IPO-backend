@@ -84,7 +84,7 @@ class CYSSMail extends Notification implements ShouldQueue
                     $arr = $this->NotifyMessage->toParams();
                     $arr['content'] = str_replace(["\r\n", "\n", "\r"],'<br />',$arr['content']);
                     $params = array_merge(
-                        $template_params[$NotificationTemplate->blade],
+                        $template_params[$NotificationTemplate->blade]??[],
                         $arr
                     );
                 }
