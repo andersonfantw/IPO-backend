@@ -62,7 +62,7 @@ class SendNotificationJobCreate implements ShouldQueue
                 break;
             case 'email':
                 foreach($NotificationRecord as $record){
-                    sleep(1);
+                    sleep(3);
                     $record->queue_time = Carbon::now();
                     $record->save();
                     $record->notify(new CYSSMail((new NotifyMessage)->modelNotificationRecord($record)));
